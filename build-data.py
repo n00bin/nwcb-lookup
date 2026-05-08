@@ -32,6 +32,7 @@ FILE_MAP = {
     "buffs.json":                   ("buffs.js",                   "BUFFS_DATA"),
     "artifacts.json":               ("artifacts.js",               "ARTIFACTS_DATA"),
     "classes.json":                 ("classes.js",                 "CLASSES_DATA"),
+    "races.json":                   ("races.js",                   "RACES_DATA"),
 }
 
 def build_header(source_name):
