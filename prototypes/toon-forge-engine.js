@@ -285,8 +285,62 @@
     }
 
     // 7. Guild boons — TODO once shape is finalized
-    // 8. Buffs — TODO once shape is finalized
 
+    // 8. Buffs (any active effect with percentStats/ratingStats).
+    //    Currently used for: summoned-companion party buffs.
+    var buffs = character.buffs || [];
+    for (var bi = 0; bi < buffs.length; bi++) {
+      var buff = buffs[bi];
+      if (!buff) continue;
+      var label = "Buff: " + (buff.source || buff.name || "?");
+      ingestPercentStats(result, buff.percentStats, label);
+      ingestRatingStats(result, buff.ratingStats, label);
+    }
+
+    return result;
+  }
+
+  // ---------------------------------------------------------------
+  // Stage 2.5: ability score → stat conversions
+  // ---------------------------------------------------------------
+  //
+  // Per NW Hub canonical formula: each ability score grants
+  //   primary stat:   +0.5% per absolute point
+  //   secondary stat: +0.25% per absolute point
+  // (NOT "+1% per point above 10" as some sources state.)
+  //
+  // Verified from in-game NW Hub character editor: a Wizard with
+  // base STR 8 shows Stamina Regen 4.0% (8 × 0.5).
+
+  var ABILITY_CONVERSIONS = {
+    STR: [{stat: "Stamina Regeneration", rate: 0.5},
+          {stat: "Physical Damage",      rate: 0.25}],
+    CON: [{stat: "Maximum Hit Points",   rate: 0.5},
+          {stat: "Action Point Gain",    rate: 0.25}],
+    DEX: [{stat: "Critical Severity",    rate: 0.5},
+          {stat: "Movement Speed",       rate: 0.25}],
+    INT: [{stat: "Control Bonus",        rate: 0.5},
+          {stat: "Magical Damage",       rate: 0.25}],
+    WIS: [{stat: "Control Resist",       rate: 0.5},
+          {stat: "Outgoing Healing",     rate: 0.25}],
+    CHA: [{stat: "Forte",                rate: 0.5},
+          {stat: "Recharge Speed",       rate: 0.25}]
+  };
+
+  function aggregateAbilityScores(character, result) {
+    var scores = character.abilityScores || {};
+    for (var ability in ABILITY_CONVERSIONS) {
+      if (!Object.prototype.hasOwnProperty.call(ABILITY_CONVERSIONS, ability)) continue;
+      var key = ability.toLowerCase();
+      var score = +scores[key] || 0;
+      if (score <= 0) continue;
+      var conversions = ABILITY_CONVERSIONS[ability];
+      for (var i = 0; i < conversions.length; i++) {
+        var c = conversions[i];
+        var amt = score * c.rate;
+        addPercent(result, c.stat, amt, "Ability: " + ability + " " + score);
+      }
+    }
     return result;
   }
 
@@ -439,6 +493,7 @@
     var result = initResult(character);
     aggregateRatings(character, result);
     aggregatePercents(character, result);
+    aggregateAbilityScores(character, result);
     applyForte(character, result);
     finalize(result);
     return result;

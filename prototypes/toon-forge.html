@@ -254,6 +254,13 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 0.6rem;
     }
+    /* Gear-only override: 2 columns, column-major (top-to-bottom in col 1,
+       then top-to-bottom in col 2). */
+    #gear-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(6, auto);
+      grid-auto-flow: column;
+    }
     .slot {
       background: var(--elevated);
       border: 1px solid var(--border);
@@ -316,6 +323,68 @@
     }
 
     /* ===== Buff toggle list ===== */
+    /* ===== Boons (point allocator) ===== */
+    .boon-budget {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.78rem;
+      color: var(--text-mute);
+      margin-bottom: 0.7rem;
+    }
+    .boon-budget strong { color: var(--amber); font-size: 0.85rem; }
+    .boon-tier { margin-bottom: 1rem; }
+    .boon-tier-header {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--amber);
+      font-weight: 700;
+      margin: 0 0 0.4rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid var(--border);
+      font-family: Georgia, serif;
+    }
+    .boon-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.7rem;
+      padding: 0.4rem 0.7rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      margin-bottom: 0.3rem;
+    }
+    .boon-row.has-pts { border-color: var(--gold); background: rgba(210,153,34,0.04); }
+    .boon-row-info { flex: 1 1 auto; min-width: 0; }
+    .boon-row-name { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .boon-row-effect { font-size: 0.75rem; color: var(--text-mute); margin-top: 0.15rem; }
+    .boon-counter {
+      display: flex; align-items: center; gap: 0.35rem;
+      flex: 0 0 auto;
+    }
+    .boon-btn {
+      width: 26px; height: 26px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--elevated);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1;
+      padding: 0;
+    }
+    .boon-btn:hover { border-color: var(--amber); color: var(--amber); }
+    .boon-count {
+      min-width: 38px;
+      text-align: center;
+      font-family: ui-monospace, monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
     .toggle-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
     .toggle {
       background: var(--elevated);
@@ -450,6 +519,497 @@
     }
     .mini-bar > div { height: 100%; background: var(--amber); transition: width 0.3s; }
     .mini-bar > div.cap { background: var(--pos); }
+
+    /* Reinforcement kit chip — small button under each gear dropdown */
+    .gear-kit-chip {
+      margin-top: 0.4rem;
+      padding: 0.3rem 0.5rem;
+      font-size: 0.74rem;
+      border: 1px dashed var(--border);
+      border-radius: 5px;
+      color: var(--text-dim);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .gear-kit-chip:hover { border-color: var(--amber); color: var(--amber); }
+    .gear-kit-chip.filled { border-style: solid; border-color: var(--gold); color: var(--gold); }
+
+    /* Enchantment row — typed slot chips laid out side-by-side */
+    .ench-row {
+      display: flex; gap: 0.45rem; flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .ench-chip {
+      flex: 1 1 110px;
+      min-width: 110px;
+      padding: 0.45rem 0.6rem;
+      background: var(--elevated);
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.12s, background 0.12s;
+    }
+    .ench-chip:hover { border-color: var(--amber); }
+    .ench-chip.filled { border-style: solid; border-color: var(--gold); background: rgba(210,153,34,0.06); }
+    .ench-chip-label {
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      font-weight: 600;
+      margin-bottom: 0.15rem;
+    }
+    .ench-chip.filled .ench-chip-label { color: var(--gold); }
+    .ench-chip-name {
+      font-size: 0.84rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .ench-chip:not(.filled) .ench-chip-name { color: var(--text-mute); font-style: italic; }
+
+    /* Top loadout row: 5 chips (enchantment, enhancement, 3 equipment). */
+    .comp-loadout {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed var(--border);
+    }
+    .comp-loadout-chip {
+      background: var(--elevated);
+      border: 1.5px dashed var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.7rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      min-height: 56px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .comp-loadout-chip:hover { border-color: var(--amber); }
+    .comp-loadout-chip.filled {
+      border-style: solid;
+      border-color: var(--gold);
+      background: rgba(210,153,34,0.08);
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* Companion picker rows (summoned + 5 active) — even sizes. */
+    .comp-row-active { margin-bottom: 0.5rem; }
+    .comp-row-active .comp-slot {
+      aspect-ratio: auto;
+      min-height: 56px;
+      padding: 0.55rem 0.8rem;
+    }
+    .comp-row-active .comp-slot.summoned { min-height: 56px; }
+    .comp-enh-slot, .comp-gear-slot {
+      font-size: 0.76rem;
+      padding: 0.4rem 0.55rem;
+      min-height: auto;
+      color: var(--text-mute);
+    }
+    .comp-enh-slot.filled { color: var(--gold); border-color: var(--gold); }
+    .comp-gear-slot.filled { color: var(--gold); border-color: var(--gold); }
+
+    /* ===== Searchable picker modal (companions, mounts, collars, insignias) ===== */
+    .picker-overlay {
+      display: none; position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,0.75);
+      align-items: flex-start; justify-content: center;
+      padding: 4vh 1rem; overflow-y: auto;
+    }
+    .picker-overlay.open { display: flex; }
+    .picker-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-width: 720px; width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+    .picker-header {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .picker-header h3 { margin: 0; color: var(--amber); font-family: Georgia, serif; flex: 0 0 auto; }
+    .picker-header input {
+      flex: 1; padding: 0.5rem 0.7rem;
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      border-radius: 6px; font-size: 0.95rem;
+    }
+    .picker-header input:focus { outline: none; border-color: var(--amber); }
+    .picker-close {
+      background: transparent; color: var(--text-mute);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.3rem 0.7rem; cursor: pointer;
+    }
+    .picker-list {
+      max-height: 70vh; overflow-y: auto;
+      padding: 0.5rem 0.6rem 0.8rem;
+    }
+    .picker-item {
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 0.35rem;
+      cursor: pointer;
+      transition: border-color 0.12s, background 0.12s;
+      background: var(--bg);
+    }
+    .picker-item:hover { border-color: var(--amber); background: var(--elevated); }
+    .picker-item.empty {
+      border-style: dashed; color: var(--text-dim);
+      font-style: italic; text-align: center;
+    }
+    .picker-item-name {
+      font-weight: 700; color: var(--text); font-size: 0.95rem;
+    }
+    .picker-item-meta {
+      color: var(--text-mute); font-size: 0.78rem; margin-top: 0.2rem;
+      font-family: ui-monospace, monospace;
+    }
+    .picker-item-desc {
+      color: var(--text-mute); font-size: 0.82rem; margin-top: 0.3rem;
+    }
+    .picker-empty {
+      color: var(--text-dim); text-align: center; padding: 1.5rem;
+    }
+
+    /* ===== Mount stable ===== */
+    .stable-row {
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
+      margin-bottom: 0.6rem;
+    }
+    .stable-row-header {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+    .stable-row-pickers {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
+    }
+    /* Override .comp-slot's forced square shape inside the stable. */
+    .stable-row .comp-slot {
+      aspect-ratio: auto;
+      min-height: 0;
+    }
+    .stable-mount, .stable-collar, .stable-ins {
+      flex: 0 0 auto;
+      padding: 0.32rem 0.55rem;
+      font-size: 0.78rem;
+      border-radius: 5px;
+    }
+    .stable-mount { min-width: 160px; }
+    .stable-collar { min-width: 120px; }
+    .stable-ins { min-width: 95px; font-size: 0.72rem; }
+    .stable-insignias {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      flex: 1 1 auto; padding-left: 0.4rem;
+      border-left: 1px dashed var(--border);
+    }
+    .stable-insignias-empty {
+      color: var(--text-dim);
+      font-size: 0.78rem;
+      font-style: italic;
+      padding-left: 0.6rem;
+    }
+    #insignia-summary {
+      margin-top: 0.8rem;
+      padding: 0.6rem 0.8rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .insignia-summary-line { font-size: 0.85rem; }
+
+    /* Per-mount bonus indicator inside the stable row */
+    .stable-bonus {
+      margin-top: 0.5rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 6px;
+      background: rgba(248,81,73,0.06);
+      border: 1px solid var(--border);
+      font-size: 0.83rem;
+      color: var(--text-mute);
+    }
+    .stable-bonus.active {
+      background: rgba(63,185,80,0.10);
+      border-color: var(--pos);
+      color: var(--text);
+    }
+    .stable-bonus-status {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      color: var(--text-dim);
+    }
+    .stable-bonus.active .stable-bonus-status { color: var(--pos); }
+    .stable-bonus-effect {
+      margin-top: 0.3rem;
+      color: var(--text-mute);
+      font-size: 0.78rem;
+    }
+    .active-power-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.7rem;
+    }
+    .stable-bonus-row { margin-top: 0.45rem; }
+    .stable-bonus-pick {
+      aspect-ratio: auto;
+      min-height: 0;
+      padding: 0.34rem 0.6rem;
+      font-size: 0.78rem;
+      margin-bottom: 0.35rem;
+    }
+    .insignia-pill {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-right: 0.3rem;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .insignia-crescent     { color: #4fb3ff; border-color: #4fb3ff; }
+    .insignia-barbed       { color: #ff5e5e; border-color: #ff5e5e; }
+    .insignia-illuminated  { color: #ffd866; border-color: #ffd866; }
+    .insignia-enlightened  { color: #d2a8ff; border-color: #d2a8ff; }
+    .insignia-regal        { color: #f0883e; border-color: #f0883e; }
+
+    /* ===== Gear warning banner ===== */
+    #gear-warnings { margin-bottom: 0.75rem; }
+    .gear-warning {
+      padding: 0.55rem 0.85rem;
+      background: rgba(210,153,34,0.10);
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      color: var(--gold);
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+    }
+
+    /* ===== Ability score allocation grid ===== */
+    .abil-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.7rem;
+    }
+    .abil-grid th, .abil-grid td {
+      padding: 0.35rem 0.5rem;
+      text-align: center;
+      border: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .abil-grid th {
+      background: var(--elevated);
+      color: var(--text-mute);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .abil-grid th.col-all { color: var(--gold); }
+    .abil-grid td.row-label {
+      background: var(--elevated);
+      font-weight: 700;
+      color: var(--amber);
+      font-family: Georgia, serif;
+    }
+    .abil-grid td.cell-base, .abil-grid td.cell-total {
+      font-weight: 700;
+      color: var(--text);
+      font-family: ui-monospace, monospace;
+    }
+    .abil-grid td.cell-total { color: var(--amber); background: var(--elevated); }
+    .abil-grid td.cell-pick {
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .abil-grid td.cell-pick:hover { background: var(--hover); }
+    .abil-grid td.cell-pick.on {
+      background: var(--amber-glow);
+      color: var(--amber);
+      font-weight: 700;
+    }
+    .abil-grid td.cell-all {
+      background: rgba(210,153,34,0.10);
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .abil-grid td.cell-bonus input {
+      width: 100%; max-width: 60px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); padding: 0.2rem 0.3rem;
+      border-radius: 4px;
+      font-family: ui-monospace, monospace;
+      text-align: center; font-size: 0.85rem;
+    }
+    .abil-grid td.cell-bonus input:focus { outline: none; border-color: var(--amber); }
+    .abil-summary {
+      margin-top: 0.6rem; font-size: 0.82rem; color: var(--text-mute);
+    }
+    .abil-summary strong { color: var(--amber); }
+
+    /* Race choice callout — prominent so users don't miss it */
+    .race-choice-callout {
+      margin: 0 0 1rem 0;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      border: 2px solid var(--amber);
+      background: var(--amber-glow);
+    }
+    .race-choice-callout.complete {
+      border-color: var(--pos);
+      background: rgba(63,185,80,0.08);
+    }
+    .race-choice-callout.needs-pick {
+      animation: race-choice-pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes race-choice-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(240,136,62,0.0); }
+      50%      { box-shadow: 0 0 0 6px rgba(240,136,62,0.18); }
+    }
+    .race-choice-header {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 0.6rem;
+      font-family: Georgia, serif;
+    }
+    .race-choice-callout.complete .race-choice-header { color: var(--pos); }
+    .race-choice-status {
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-mute);
+      margin-left: 0.4rem;
+    }
+    .race-choice-row {
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 0.6rem; margin-bottom: 0.5rem; font-size: 0.88rem;
+    }
+    .race-choice-row:last-child { margin-bottom: 0; }
+    .race-choice-label {
+      color: var(--text-mute);
+      min-width: 200px;
+    }
+    .race-choice-options { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .race-choice-btn {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: ui-monospace, monospace;
+    }
+    .race-choice-btn:hover {
+      border-color: var(--amber); color: var(--amber);
+    }
+    .race-choice-btn.on {
+      background: var(--amber); color: #000;
+      border-color: var(--amber);
+    }
+
+    /* ===== Detailed Stats modal ===== */
+    .dstats-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 500;
+      align-items: flex-start; justify-content: center;
+      padding: 3vh 1rem;
+      overflow-y: auto;
+    }
+    .dstats-overlay.open { display: flex; }
+    .dstats-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-width: 880px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    .dstats-header {
+      padding: 1rem 1.4rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dstats-header h2 { margin: 0; color: var(--amber); font-family: Georgia, serif; }
+    .dstats-close {
+      background: transparent; color: var(--text-mute);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.3rem 0.7rem; cursor: pointer; font-size: 1rem;
+    }
+    .dstats-close:hover { color: var(--text); border-color: var(--amber); }
+    .dstats-body { padding: 1rem 1.4rem 1.4rem; }
+    .dstats-section {
+      margin-bottom: 1.2rem;
+    }
+    .dstats-section-title {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-dim); margin: 0 0 0.5rem;
+    }
+    .dstat-row {
+      display: grid;
+      grid-template-columns: 1fr auto 180px;
+      gap: 0.7rem; align-items: center;
+      padding: 0.55rem 0.7rem;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 0.35rem;
+      font-size: 0.88rem;
+    }
+    .dstat-row.cap-reached { border-color: var(--pos); }
+    .dstat-name { font-weight: 600; }
+    .dstat-detail { color: var(--text-mute); font-family: ui-monospace, monospace; font-size: 0.78rem; }
+    .dstat-bar {
+      height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden;
+    }
+    .dstat-bar > div {
+      height: 100%; background: var(--amber);
+      transition: width 0.3s;
+    }
+    .dstat-bar.uncapped > div { background: var(--gold); }
+    .dstat-row.cap-reached .dstat-bar > div { background: var(--pos); }
+    .dstat-contributors {
+      grid-column: 1 / -1;
+      font-size: 0.75rem; color: var(--text-dim);
+      padding-top: 0.3rem; margin-top: 0.3rem;
+      border-top: 1px dashed var(--border);
+    }
+    .dstats-warnings {
+      background: rgba(248,81,73,0.08);
+      border: 1px solid var(--neg);
+      border-radius: 6px;
+      padding: 0.6rem 0.8rem;
+      margin-bottom: 1rem;
+      font-size: 0.82rem; color: #ffb4ad;
+    }
+    .dstats-warnings ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
 
     /* ===== Tooltips ===== */
     [data-tip] { position: relative; }
@@ -627,9 +1187,9 @@
 
         <div class="field">
           <label>Item Level
-            <span class="hint-icon" data-tip="Total IL across all your gear. Find this on the Character sheet in-game.">?</span>
+            <span class="hint-icon" data-tip="Auto-summed from gear when you equip pieces in step 3. You can also type it directly.">?</span>
           </label>
-          <input type="number" id="f-il" placeholder="e.g. 44,632">
+          <input type="number" id="f-il" placeholder="auto-fills as you equip gear, or type manually">
         </div>
 
         <div class="field">
@@ -640,15 +1200,8 @@
 
       <div class="panel">
         <h2>Ability scores</h2>
-        <p class="hint">From the Character sheet → Stats screen.</p>
-        <div class="row-6">
-          <div class="field"><label style="text-align:center;">STR</label><input type="number" id="abil-str" value="14"></div>
-          <div class="field"><label style="text-align:center;">CON</label><input type="number" id="abil-con" value="16"></div>
-          <div class="field"><label style="text-align:center;">DEX</label><input type="number" id="abil-dex" value="18"></div>
-          <div class="field"><label style="text-align:center;">INT</label><input type="number" id="abil-int" value="22"></div>
-          <div class="field"><label style="text-align:center;">WIS</label><input type="number" id="abil-wis" value="14"></div>
-          <div class="field"><label style="text-align:center;">CHA</label><input type="number" id="abil-cha" value="16"></div>
-        </div>
+        <p class="hint">Base from class. <strong>L9 and L16</strong> grant +1 to <strong>all</strong> stats automatically. Other levels (L3, L6, L12, L14, L18, L20): pick exactly 2 stats per level to gain +1 each. Use <strong>Bonus</strong> for gear / boons / consumables.</p>
+        <div id="abil-grid-wrapper"></div>
       </div>
 
       <div class="nav-buttons">
@@ -662,7 +1215,22 @@
       <div class="panel">
         <h2>Equip your gear</h2>
         <p class="hint">Click a slot to pick what's equipped. Empty slots will hurt your build score.</p>
+        <div id="gear-warnings"></div>
         <div class="slot-grid" id="gear-grid"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Enchantments</h2>
+        <p class="hint">11 enchantment slots: <strong>4 Offense</strong>, <strong>4 Defense</strong>, <strong>1 Utility</strong>, <strong>1 Combat</strong>, <strong>1 Bonus</strong>.</p>
+        <div id="ench-offense-grid"></div>
+        <div id="ench-defense-grid"></div>
+        <div id="ench-other-grid"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Overloads</h2>
+        <p class="hint">2 overload slots — direct percent buffs (e.g. +5% Power). Each overload can only be used once.</p>
+        <div class="slot-grid" id="overload-grid"></div>
       </div>
 
       <div class="panel">
@@ -681,38 +1249,30 @@
     <div class="step-panel" data-panel="4">
       <div class="panel">
         <h2>Pick your companions</h2>
-        <p class="hint">Click the big slot to set your <strong>summoned</strong> companion (the one fighting with you), and 4 active companions for player bonuses. Your top 12 in the rest of your stable contribute to bolster.</p>
-        <div style="display:grid;grid-template-columns:1.5fr 4fr;gap:1rem;align-items:center;margin-bottom:0.75rem;">
-          <div class="comp-slot summoned" id="comp-summoned" data-summoned="1">+ Summoned</div>
-          <div class="comp-grid" id="active-comps">
-            <div class="comp-slot" data-comp="0">+ Active 1</div>
-            <div class="comp-slot" data-comp="1">+ Active 2</div>
-            <div class="comp-slot" data-comp="2">+ Active 3</div>
-            <div class="comp-slot" data-comp="3">+ Active 4</div>
-          </div>
+        <p class="hint">Top row = summoned-companion loadout: <strong>Enchantment</strong>, <strong>Enhancement</strong>, and 3 <strong>Equipment</strong> pieces. Below: pick your <strong>Summoned</strong> companion plus 5 active companions (typed by power category).</p>
+        <div id="comp-loadout-row" class="comp-loadout">
+          <div class="comp-loadout-chip" id="comp-enchant-chip">+ Enchantment</div>
+          <div class="comp-loadout-chip" id="comp-enh-chip">+ Enhancement</div>
+          <div class="comp-loadout-chip" data-summoned-equip="Neck">+ Equipment</div>
+          <div class="comp-loadout-chip" data-summoned-equip="Waist">+ Equipment</div>
+          <div class="comp-loadout-chip" data-summoned-equip="Ring">+ Equipment</div>
         </div>
+        <div id="comp-pick-rows"></div>
       </div>
 
       <div class="panel">
-        <h2>Mount</h2>
-        <p class="hint">Equip your active mount. The other 9 in your stable contribute insignia bonuses.</p>
-        <div class="row-2">
-          <div class="field">
-            <label>Active Mount</label>
-            <select id="f-mount">
-              <option value="">— Pick a mount —</option>
-              <option>Crimson Crystal Horse</option>
-              <option>Bigby's Hand</option>
-              <option>Phantom Panther</option>
-              <option>Eclipse Lion</option>
-              <option>Twice-Pale Alder</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Mount Bolster</label>
-            <input type="text" value="125% (10 Celestial mounts)" disabled style="color:var(--gold);">
-          </div>
+        <h2>Mount stable</h2>
+        <p class="hint">5 mount slots. Each holds a <strong>mount</strong>, a <strong>collar</strong>, and the mount's <strong>insignias</strong>. Each mount has ONE assigned <strong>Insignia Bonus</strong> — activate it by slotting the right combination of insignia categories on that mount.</p>
+        <div style="margin-bottom:0.6rem;">
+          <button class="btn btn-ghost" id="find-bonus-btn" style="font-size:0.85rem;">🔍 Find an Insignia Bonus</button>
         </div>
+        <!-- Active combat + equip power loadout (drawn from stable mounts) -->
+        <div class="active-power-row">
+          <div class="comp-loadout-chip" id="active-combat-chip">+ Active Combat Power</div>
+          <div class="comp-loadout-chip" id="active-equip-chip">+ Active Equip Power</div>
+        </div>
+        <div id="stable-grid"></div>
+        <div id="insignia-summary"></div>
       </div>
 
       <div class="nav-buttons">
@@ -725,8 +1285,14 @@
     <div class="step-panel" data-panel="5">
       <div class="panel">
         <h2>Boons</h2>
-        <p class="hint">Toggle on the campaign boons you've completed.</p>
-        <div class="toggle-list" id="boon-list"></div>
+        <p class="hint">Allocate campaign boon points (5-tier ladder + Master). Click +/− on each row.</p>
+        <div id="boon-list"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Guild boons</h2>
+        <p class="hint">Pick one active boon per category (Offense / Defense / Utility). Whatever your guild's stronghold has unlocked.</p>
+        <div id="guild-boon-list"></div>
       </div>
 
       <div class="panel">
@@ -800,82 +1366,1305 @@
       <!-- generated -->
     </div>
     <div>
-      <button class="btn btn-secondary" onclick="alert('Detailed stats panel — would show all 18 stats with rating, percent, cap progress, and source breakdown.')">⚙ Detailed Stats</button>
+      <button class="btn btn-secondary" id="open-detailed-stats">⚙ Detailed Stats</button>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
+  <!-- ===== Searchable picker modal ===== -->
+  <div class="picker-overlay" id="picker-overlay">
+    <div class="picker-modal">
+      <div class="picker-header">
+        <h3 id="picker-title">Pick</h3>
+        <input type="text" id="picker-search" placeholder="Type to filter…" autocomplete="off">
+        <button class="picker-close" id="picker-close">✕</button>
+      </div>
+      <div class="picker-list" id="picker-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== Detailed Stats modal ===== -->
+  <div class="dstats-overlay" id="dstats-overlay">
+    <div class="dstats-modal">
+      <div class="dstats-header">
+        <h2>Detailed Stats</h2>
+        <button class="dstats-close" id="dstats-close">✕ Close</button>
+      </div>
+      <div class="dstats-body" id="dstats-body">
+        <!-- Populated by openDetailedStats() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Engine + reference data (Phase 3 wiring) -->
+  <script src="../data/classes.js"></script>
+  <script src="../data/races.js"></script>
+  <script src="../data/gear.js"></script>
+  <script src="../data/artifacts.js"></script>
+  <script src="../data/companion-gear.js"></script>
+  <script src="../data/enchants.js"></script>
+  <script src="../data/overloads.js"></script>
+  <script src="../data/kits.js"></script>
+  <script src="../data/companions.js"></script>
+  <script src="../data/companion-powers.js"></script>
+  <script src="../data/companion-enhancements.js"></script>
+  <script src="../data/mounts.js"></script>
+  <script src="../data/mount-collars.js"></script>
+  <script src="../data/mount-combat-powers.js"></script>
+  <script src="../data/mount-equip-powers.js"></script>
+  <script src="../data/mount-insignias.js"></script>
+  <script src="../data/mount-insignia-bonuses.js"></script>
+  <script src="../data/campaign-boons.js"></script>
+  <script src="../data/guild-boons.js"></script>
+  <script src="../data/buffs.js"></script>
+  <script src="toon-forge-stats.js"></script>
+  <script src="toon-forge-engine.js"></script>
+
   <script>
     /* =====================================================
-       State + tiny mock model. Data isn't real — just enough
-       for the UX to feel alive.
+       State + engine wiring. The prototype's gear/artifact
+       pickers still hold placeholder strings — engine numbers
+       will reflect race + paragon + boon choices, but rating-
+       driven stats stay near zero until pickers are wired.
        ===================================================== */
     const state = {
       step: 1,
       role: null,
       class: null,
       paragon: "", race: "", il: "", name: "",
-      abil: { str:14, con:16, dex:18, int:22, wis:14, cha:16 },
+      abil: { str:10, con:10, dex:10, int:10, wis:10, cha:10 },  // computed totals
+      abilLevels: {  // booleans: true = +1 picked at this level for this stat
+        str: { 3:false, 6:false, 12:false, 14:false, 18:false, 20:false },
+        con: { 3:false, 6:false, 12:false, 14:false, 18:false, 20:false },
+        dex: { 3:false, 6:false, 12:false, 14:false, 18:false, 20:false },
+        int: { 3:false, 6:false, 12:false, 14:false, 18:false, 20:false },
+        wis: { 3:false, 6:false, 12:false, 14:false, 18:false, 20:false },
+        cha: { 3:false, 6:false, 12:false, 14:false, 18:false, 20:false }
+      },
+      abilBase:  { str:10, con:10, dex:10, int:10, wis:10, cha:10 },  // class base only
+      raceChoices: [],  // user picks from choiceBonuses, e.g. ["CON","CHA"]
       gear: {},
+      kits: {},  // gear-slot label → kit name (reinforcement kit per gear piece)
+      // Enchantments — 11 typed slots: 4 offense, 4 defense, 1 utility, 1 combat, 1 bonus
+      enchants: {
+        offense: [null, null, null, null],
+        defense: [null, null, null, null],
+        utility: null,
+        combat: null,
+        bonus: null
+      },
+      overloads: [null, null],  // 2 overload slots
       artifacts: {},
       summoned: null,
-      activeComps: [null, null, null, null],
-      mount: "",
-      boons: new Set(),
-      buffs: new Set(),
+      activeComps: [null, null, null, null, null],   // 5 typed slots: Off / Def / Uni / Uni / Util
+      summonedEnh: null,                             // enhancement (rune) on summoned companion
+      summonedEnchant: null,                         // companion enchantment (slotType: "companion")
+      // Companion equipment lives on the summoned companion only.
+      summonedGear: { Neck: null, Waist: null, Ring: null },
+      // 5-slot stable. Each slot: { mount, collar, insignias: [name|null, ...] }.
+      // The insignias array length matches the picked mount's insigniaSlots.
+      stable: [
+        { mount: "", collar: "", insignias: [], desiredBonus: null },
+        { mount: "", collar: "", insignias: [], desiredBonus: null },
+        { mount: "", collar: "", insignias: [], desiredBonus: null },
+        { mount: "", collar: "", insignias: [], desiredBonus: null },
+        { mount: "", collar: "", insignias: [], desiredBonus: null }
+      ],
+      activeCombatPower: null,   // id from mount_combat_powers.json — drawn from stable mounts
+      activeEquipPower:  null,   // id from mount_equip_powers.json — drawn from stable mounts
+      boons: new Map(),  // key: "tier1:1" / "master:3" → { tier, boonId, points or ranks }
+      guildBoonPicks: { Offense: null, Defense: null, Utility: null },  // 1 pick per category
+      // Set<buffName>; grouped buffs auto-deconflict.
+      // Defaults are applied for buffs every player has by default in normal
+      // play (campfire / VIP / invocation blessing). User can uncheck them.
+      buffs: new Set(["Campfire", "VIP Rank 3 Bonus", "Invocation Blessing"]),
       simMag: 100,
     };
 
+    /* ===== State → Engine adapter =====
+       Translates the prototype's `state` object into the input shape
+       expected by TOON_FORGE_ENGINE.computeStats(...).
+
+       Today only class / paragon / race / TIL get fully resolved.
+       Gear, artifacts, companion gear, and boons stay stubbed because
+       the prototype's pickers still hold placeholder strings — wiring
+       them to GEAR_DATA / ARTIFACTS_DATA is Phase 5. */
+    function findClass(name) {
+      if (!name || typeof CLASSES_DATA === "undefined") return null;
+      for (var i = 0; i < CLASSES_DATA.length; i++) {
+        if (CLASSES_DATA[i].name === name) return CLASSES_DATA[i];
+      }
+      return null;
+    }
+    function findParagon(className, paragonName) {
+      var cls = findClass(className);
+      if (!cls || !paragonName) return null;
+      for (var i = 0; i < cls.paragonPaths.length; i++) {
+        if (cls.paragonPaths[i].name === paragonName) return cls.paragonPaths[i];
+      }
+      return null;
+    }
+    function findRace(name) {
+      if (!name || typeof RACES_DATA === "undefined") return null;
+      for (var i = 0; i < RACES_DATA.length; i++) {
+        if (RACES_DATA[i].name === name) return RACES_DATA[i];
+      }
+      return null;
+    }
+
+    /* ===== Dynamic dropdown population =====
+       Replaces the hardcoded options in the HTML with real data. */
+    function populateParagons(className) {
+      const sel = document.getElementById("f-paragon");
+      if (!sel) return;
+      const cls = findClass(className);
+      sel.innerHTML = '<option value="">— Pick a path —</option>';
+      if (!cls) return;
+      cls.paragonPaths.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.name;
+        const roles = (p.roles || []).join(" / ");
+        opt.textContent = p.name + (roles ? " (" + roles + ")" : "");
+        sel.appendChild(opt);
+      });
+      // Reset selection when class changes
+      sel.value = "";
+      state.paragon = "";
+    }
+    // Render an ability-score bonus entry. Array stat means "choose one of"
+    // (not "all of these"). Length 6 = any ability score.
+    function describeBonus(b) {
+      if (Array.isArray(b.stat)) {
+        if (b.stat.length === 6) return "+" + b.amount + " any";
+        return "+" + b.amount + " (" + b.stat.join(" or ") + ")";
+      }
+      return "+" + b.amount + " " + b.stat;
+    }
+    function describeRaceBonuses(r) {
+      const parts = [];
+      for (const b of (r.fixedBonuses || [])) parts.push(describeBonus(b));
+
+      // Collapse a list of same-amount single-stat choice entries into
+      // "+N (choose A or B)" — e.g. Aasimar choice [+2 CON, +2 CHA] →
+      // "+2 (choose: CON or CHA)".
+      const choices = r.choiceBonuses || [];
+      if (choices.length) {
+        const sameAmt = choices.every(c => c.amount === choices[0].amount);
+        const allSingle = choices.every(c => !Array.isArray(c.stat));
+        if (sameAmt && allSingle && choices.length > 1) {
+          parts.push("+" + choices[0].amount + " (choose: " + choices.map(c => c.stat).join(" or ") + ")");
+        } else {
+          for (const b of choices) parts.push(describeBonus(b));
+        }
+      }
+      return parts.join(", ");
+    }
+    function populateRaces() {
+      const sel = document.getElementById("f-race");
+      if (!sel || typeof RACES_DATA === "undefined") return;
+      sel.innerHTML = '<option value="">— Pick a race —</option>';
+      RACES_DATA.slice().sort((a,b) => a.name.localeCompare(b.name)).forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r.name;
+        const bonuses = describeRaceBonuses(r);
+        opt.textContent = r.name + (bonuses ? " — " + bonuses : "") + (r.premium ? " [Premium]" : "");
+        sel.appendChild(opt);
+      });
+    }
+    /* ===== Generic searchable picker =====
+       openPicker({ title, items, render(item) → {name,meta,desc}, onPick(item|null), allowNone }) */
+    let _pickerState = null;
+
+    function openPicker(cfg) {
+      _pickerState = cfg;
+      document.getElementById("picker-title").textContent = cfg.title || "Pick";
+      const search = document.getElementById("picker-search");
+      search.value = "";
+      renderPickerList("");
+      document.getElementById("picker-overlay").classList.add("open");
+      setTimeout(() => search.focus(), 30);
+    }
+    function closePicker() {
+      document.getElementById("picker-overlay").classList.remove("open");
+      _pickerState = null;
+    }
+    function renderPickerList(filter) {
+      if (!_pickerState) return;
+      const list = document.getElementById("picker-list");
+      const f = (filter || "").toLowerCase().trim();
+      const items = _pickerState.items.filter(it => {
+        if (!f) return true;
+        const r = _pickerState.render(it);
+        return (r.name + " " + (r.meta || "") + " " + (r.desc || "")).toLowerCase().includes(f);
+      });
+      let html = "";
+      if (_pickerState.allowNone !== false) {
+        html += `<div class="picker-item empty" data-pick-none="1">— None —</div>`;
+      }
+      if (!items.length && f) {
+        html += `<div class="picker-empty">No matches for "${f}"</div>`;
+      }
+      for (let i = 0; i < items.length; i++) {
+        const r = _pickerState.render(items[i]);
+        html += `<div class="picker-item" data-pick="${i}">
+          <div class="picker-item-name">${r.name}</div>
+          ${r.meta ? `<div class="picker-item-meta">${r.meta}</div>` : ""}
+          ${r.desc ? `<div class="picker-item-desc">${r.desc}</div>` : ""}
+        </div>`;
+      }
+      list.innerHTML = html;
+      list.querySelectorAll("[data-pick]").forEach(el => {
+        el.addEventListener("click", () => {
+          const it = items[+el.dataset.pick];
+          _pickerState.onPick(it);
+          closePicker();
+        });
+      });
+      list.querySelectorAll("[data-pick-none]").forEach(el => {
+        el.addEventListener("click", () => {
+          _pickerState.onPick(null);
+          closePicker();
+        });
+      });
+    }
+    document.getElementById("picker-close").addEventListener("click", closePicker);
+    document.getElementById("picker-overlay").addEventListener("click", (e) => {
+      if (e.target.id === "picker-overlay") closePicker();
+    });
+    document.getElementById("picker-search").addEventListener("input", e => renderPickerList(e.target.value));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && document.getElementById("picker-overlay").classList.contains("open")) closePicker();
+    });
+
+    /* ===== Reinforcement kit helpers ===== */
+    // Map prototype slot label ("Ring 1"/"Ring 2") to the canonical
+    // appliesTo entry ("Ring") for filtering.
+    function gearLabelToCanonicalSlot(label) {
+      if (!label) return label;
+      if (label.startsWith("Ring")) return "Ring";
+      return label;
+    }
+    function findKitByName(name) {
+      if (!name || typeof KITS_DATA === "undefined") return null;
+      return KITS_DATA.find(k => k.name === name) || null;
+    }
+    function kitsForGearSlot(slotLabel) {
+      if (typeof KITS_DATA === "undefined") return [];
+      const canonical = gearLabelToCanonicalSlot(slotLabel);
+      return KITS_DATA.filter(k => (k.appliesTo || []).includes(canonical))
+        .sort((a,b) => (b.item_level || 0) - (a.item_level || 0) || a.name.localeCompare(b.name));
+    }
+    function renderKitPick(k) {
+      const r = k.ratingStats || {};
+      const p = k.percentStats || {};
+      const parts = [];
+      for (const [s,v] of Object.entries(r)) if (v) parts.push(`+${v} ${s}`);
+      for (const [s,v] of Object.entries(p)) if (v) parts.push(`+${v}% ${s}`);
+      return {
+        name: k.name,
+        meta: `IL ${k.item_level || "?"} · ${(k.appliesTo || []).join("/")}`,
+        desc: parts.join(", ")
+      };
+    }
+
+    /* ===== Enchant + Overload helpers ===== */
+    function findEnchantByName(name) {
+      if (!name || typeof ENCHANTS_DATA === "undefined") return null;
+      return ENCHANTS_DATA.find(e => e.name === name) || null;
+    }
+    function getEnchantList() {
+      if (typeof ENCHANTS_DATA === "undefined") return [];
+      return ENCHANTS_DATA.slice().sort((a,b) => (b.item_level||0)-(a.item_level||0) || a.name.localeCompare(b.name));
+    }
+    function describeEnchant(e) {
+      // Universal enchants reveal their effects per sub-slot. Show all three.
+      if (e.universal) {
+        const parts = [];
+        for (const sub of ["offense","defense","utility"]) {
+          const obj = e.universal[sub] || {};
+          const stats = Object.entries(obj).map(([s,v]) => `+${v} ${s}`).join(", ");
+          if (stats) parts.push(`${sub[0].toUpperCase()+sub.slice(1)}: ${stats}`);
+        }
+        return parts.join(" · ");
+      }
+      const r = e.ratingStats || {};
+      const p = e.percentStats || {};
+      const parts = [];
+      for (const [k,v] of Object.entries(r)) parts.push(`+${v} ${k}`);
+      for (const [k,v] of Object.entries(p)) parts.push(`+${v}% ${k}`);
+      return parts.join(", ");
+    }
+    function renderEnchantPick(e) {
+      return {
+        name: e.name,
+        meta: `IL ${e.item_level || "?"} · ${e.slotType || "?"}`,
+        desc: describeEnchant(e)
+      };
+    }
+    function findOverloadByName(name) {
+      if (!name || typeof OVERLOADS_DATA === "undefined") return null;
+      return OVERLOADS_DATA.find(o => o.name === name) || null;
+    }
+    function getOverloadList() {
+      if (typeof OVERLOADS_DATA === "undefined") return [];
+      return OVERLOADS_DATA.slice().sort((a,b) => a.name.localeCompare(b.name));
+    }
+    function renderOverloadPick(o) {
+      const p = o.percentStats || {};
+      const stats = Object.entries(p).map(([k,v]) => `+${v}% ${k}`).join(", ");
+      const enemy = o.enemyType ? ` · vs ${o.enemyType}` : "";
+      return {
+        name: o.name,
+        meta: `Overload${enemy}`,
+        desc: stats
+      };
+    }
+
+    /* ===== Companion gear helpers ===== */
+    function findCompGearByName(name, slotType) {
+      if (!name || typeof COMPANION_GEAR_DATA === "undefined") return null;
+      return COMPANION_GEAR_DATA.find(it => it.name === name && it.slot === slotType) || null;
+    }
+    function compGearOptionsForSlot(slotType) {
+      if (typeof COMPANION_GEAR_DATA === "undefined") return [];
+      return COMPANION_GEAR_DATA
+        .filter(it => it.slot === slotType)
+        .sort((a,b) => (b.item_level || 0) - (a.item_level || 0) || a.name.localeCompare(b.name));
+    }
+    function renderCompGear(item) {
+      const stats = item.ratingStats
+        ? Object.entries(item.ratingStats).map(([s,v]) => `+${v} ${s}`).join(", ")
+        : "";
+      return {
+        name: item.name,
+        meta: `IL ${item.item_level || "?"} · ${item.tier || "?"}`,
+        desc: stats
+      };
+    }
+
+    /* ===== Companion enhancement helpers ===== */
+    function findEnhancementByName(name) {
+      if (!name || typeof COMPANION_ENHANCEMENTS_DATA === "undefined") return null;
+      return COMPANION_ENHANCEMENTS_DATA.find(e => e.name === name) || null;
+    }
+    function getEnhancementList() {
+      if (typeof COMPANION_ENHANCEMENTS_DATA === "undefined") return [];
+      return COMPANION_ENHANCEMENTS_DATA.slice().sort((a,b) => a.name.localeCompare(b.name));
+    }
+    function renderEnhancement(e) {
+      const isPct = e.type === "percent";
+      const v = e.value || 0;
+      return {
+        name: e.name,
+        meta: `IL ${e.item_level || "?"}`,
+        desc: `+${v}${isPct ? "%" : ""} ${e.stat}${e.notes ? " — " + e.notes : ""}`
+      };
+    }
+
+    /* Description builders for each picker. */
+    function describeCompanionPower(power) {
+      if (!power) return "";
+      const stats = (power.stats || []).map(s => {
+        const v = s.value;
+        const isPercent = (typeof v === "number" && v <= 50);
+        return `${v}${isPercent ? "%" : ""} ${s.stat}`;
+      }).join(", ");
+      const slots = Array.isArray(power.slot) ? "[" + power.slot.join("/") + "]" : "";
+      return [slots, power.name, stats].filter(Boolean).join(" · ");
+    }
+    function renderCompanion(c) {
+      const power = findCompanionPower(c.powerRef);
+      return {
+        name: c.name,
+        meta: power ? `IL ${power.item_level || "?"} · ${(power.slot || []).join("/")} (active)` : "(active)",
+        desc: power ? describeCompanionPower(power) : ""
+      };
+    }
+    // Summoned slot uses a different field — companion.summonedBuff —
+    // because the summon's effect on the party is unrelated to the
+    // power's active-slot stats.
+    function renderSummonedCompanion(c) {
+      const sb = c.summonedBuff;
+      if (!sb) {
+        return {
+          name: c.name,
+          meta: "summon · party bonus unknown",
+          desc: "No summoned-buff data captured for this companion yet."
+        };
+      }
+      return {
+        name: c.name,
+        meta: `summon · ${sb.scope || "self"}${sb.range ? " · " + sb.range + "'" : ""}`,
+        desc: sb.buff || ""
+      };
+    }
+    function renderMount(m) {
+      const slots = (m.insigniaSlots || []).map(s =>
+        (s.allowed || []).join("/").replace("*", "Universal")
+      );
+      return {
+        name: m.name,
+        meta: `${slots.length} insignia slot${slots.length === 1 ? "" : "s"}`,
+        desc: slots.length ? "Slots: " + slots.join(" · ") : ""
+      };
+    }
+    function renderCollar(c) {
+      const stats = (c.stats || []).map(s => `+${s.value} ${s.stat}`).join(", ");
+      return { name: c.name, meta: c.tier || "", desc: stats };
+    }
+    function renderInsignia(i) {
+      const stats = (i.stats || []).map(s => {
+        const isPct = s.type === "percent";
+        return `+${s.value}${isPct ? "%" : ""} ${s.stat}`;
+      }).join(", ");
+      return {
+        name: i.name,
+        meta: `${i.category || "?"} · IL ${i.item_level || "?"}`,
+        desc: stats
+      };
+    }
+
+    /* ===== Mount stable helpers ===== */
+    function findMountByName(name) {
+      if (!name || typeof MOUNTS_DATA === "undefined") return null;
+      return MOUNTS_DATA.find(m => m.name === name) || null;
+    }
+    function findCollarByName(name) {
+      if (!name || typeof MOUNT_COLLARS_DATA === "undefined") return null;
+      return MOUNT_COLLARS_DATA.find(c => c.name === name) || null;
+    }
+    function findCombatPowerById(id) {
+      if (typeof MOUNT_COMBAT_POWERS_DATA === "undefined" || !id) return null;
+      return MOUNT_COMBAT_POWERS_DATA.find(p => p.id === id) || null;
+    }
+    function findEquipPowerById(id) {
+      if (typeof MOUNT_EQUIP_POWERS_DATA === "undefined" || !id) return null;
+      return MOUNT_EQUIP_POWERS_DATA.find(p => p.id === id) || null;
+    }
+    function getAllCombatPowers() {
+      if (typeof MOUNT_COMBAT_POWERS_DATA === "undefined") return [];
+      return MOUNT_COMBAT_POWERS_DATA.slice().sort((a,b) => a.name.localeCompare(b.name));
+    }
+    function getAllEquipPowers() {
+      if (typeof MOUNT_EQUIP_POWERS_DATA === "undefined") return [];
+      return MOUNT_EQUIP_POWERS_DATA.slice().sort((a,b) => a.name.localeCompare(b.name));
+    }
+    function renderCombatPower(p) {
+      const cdr = p.rechargeTimeSeconds ? `${p.rechargeTimeSeconds}s recharge` : "";
+      const mag = p.magnitude ? `mag ${p.magnitude}` : "";
+      const meta = [`IL ${p.item_level || "?"}`, mag, cdr].filter(Boolean).join(" · ");
+      const bonuses = (p.equipBonuses || []).map(b =>
+        `${b.amount > 0 ? "+" : ""}${b.amount}% ${b.stat}${b.scope === "enemy" ? " (enemy)" : ""}`
+      ).join(", ");
+      return { name: p.name, meta, desc: bonuses };
+    }
+    function renderEquipPower(p) {
+      const stats = (p.stats || []).map(s => {
+        const isPct = s.type === "percent";
+        return `+${s.value}${isPct ? "%" : ""} ${s.stat}`;
+      }).join(", ");
+      return {
+        name: p.name,
+        meta: `IL ${p.item_level || "?"}`,
+        desc: stats || (p.notes ? p.notes.slice(0, 100) : "")
+      };
+    }
+    function findInsigniaByName(name) {
+      if (!name || typeof MOUNT_INSIGNIAS_DATA === "undefined") return null;
+      return MOUNT_INSIGNIAS_DATA.find(i => i.name === name) || null;
+    }
+    function findBonusById(id) {
+      if (typeof MOUNT_INSIGNIA_BONUSES_DATA === "undefined") return null;
+      return MOUNT_INSIGNIA_BONUSES_DATA.find(b => b.id === id) || null;
+    }
+    // Returns true if the multiset of `slotted` categories matches `required`.
+    function bonusActive(required, slotted) {
+      if (!required || !required.length) return false;
+      const a = required.slice().sort().join("|");
+      const b = (slotted || []).filter(Boolean).sort().join("|");
+      return a === b;
+    }
+    // Resolves a stable row's slotted insignia categories.
+    function slottedCategoriesForRow(stableSlot) {
+      return (stableSlot.insignias || []).map(name => {
+        const ins = findInsigniaByName(name);
+        return ins ? ins.category : null;
+      });
+    }
+    // For a bonus, returns mount names that CAN unlock it (any mount whose
+    // insigniaSlots can accommodate the bonus's requiredInsignias).
+    function mountsThatGrantBonus(bonusId) {
+      if (typeof MOUNTS_DATA === "undefined") return [];
+      const bonus = findBonusById(bonusId);
+      if (!bonus) return [];
+      return MOUNTS_DATA.filter(m => canMountFitBonus(m, bonus.requiredInsignias)).map(m => m.name);
+    }
+
+    // Can a mount accommodate a bonus's required insignia categories?
+    // Each required category must land in a slot that allows it
+    // (specific match) or that allows "*" (universal). Greedy with
+    // specific-before-universal priority is sufficient for the small
+    // 4-slot, 4-required problem in NW.
+    function canMountFitBonus(mount, required) {
+      if (!mount || !required || !required.length) return false;
+      const slots = (mount.insigniaSlots || []).map(s => ({
+        allowed: s.allowed || [],
+        used: false
+      }));
+      if (slots.length < required.length) return false;
+      for (const cat of required) {
+        // Prefer a slot that specifically allows this category
+        let slot = slots.find(s => !s.used && s.allowed.includes(cat) && !s.allowed.includes("*"));
+        if (!slot) slot = slots.find(s => !s.used && s.allowed.includes(cat));
+        if (!slot) slot = slots.find(s => !s.used && s.allowed.includes("*"));
+        if (!slot) return false;
+        slot.used = true;
+      }
+      return true;
+    }
+
+    // Returns sorted array of bonuses this mount CAN unlock.
+    function bonusesAvailableForMount(mount) {
+      if (!mount || typeof MOUNT_INSIGNIA_BONUSES_DATA === "undefined") return [];
+      return MOUNT_INSIGNIA_BONUSES_DATA
+        .filter(b => canMountFitBonus(mount, b.requiredInsignias))
+        .sort((a,b) => a.name.localeCompare(b.name));
+    }
+    // Insignia options matching one slot's allowed types.
+    // mountSlot.allowed is an array like ["Regal"], ["*"], or ["Regal","Barbed"].
+    // "*" means any type.
+    function insigniaOptionsForSlot(allowed) {
+      if (typeof MOUNT_INSIGNIAS_DATA === "undefined") return [];
+      const wildcard = (allowed || []).includes("*");
+      return MOUNT_INSIGNIAS_DATA
+        .filter(i => wildcard || (allowed || []).includes(i.category))
+        .sort((a,b) => a.name.localeCompare(b.name));
+    }
+    function getCollarList() {
+      if (typeof MOUNT_COLLARS_DATA === "undefined") return [];
+      return MOUNT_COLLARS_DATA.slice().sort((a,b) => a.name.localeCompare(b.name));
+    }
+    function getMountList() {
+      if (typeof MOUNTS_DATA === "undefined") return [];
+      return MOUNTS_DATA.slice().sort((a,b) => a.name.localeCompare(b.name));
+    }
+
+    // Sum insignias by type across all 5 stable mounts.
+    function tallyInsigniaTypes() {
+      const counts = {};
+      for (const slot of state.stable) {
+        for (const insName of (slot.insignias || [])) {
+          if (!insName) continue;
+          const ins = findInsigniaByName(insName);
+          if (!ins || !ins.category) continue;
+          counts[ins.category] = (counts[ins.category] || 0) + 1;
+        }
+      }
+      return counts;
+    }
+
+    // (Old populateMounts() removed — mount dropdown no longer exists;
+    //  the new 5-slot stable replaces it.)
+    function populateMounts() { /* no-op */ }
+    function getCompanionList() {
+      if (typeof COMPANIONS_DATA === "undefined") return [];
+      return COMPANIONS_DATA.map(c => c.name).sort();
+    }
+    function findCompanionPower(powerId) {
+      if (typeof COMPANION_POWERS_DATA === "undefined" || !powerId) return null;
+      return COMPANION_POWERS_DATA.find(p => p.id === powerId) || null;
+    }
+    // Returns the slot types (array) a companion's power fits into.
+    // E.g. a companion with power.slot = ["Defense"] fits "Defense" slots
+    // and any "Universal" slot. Companions with multi-slot powers fit any
+    // listed slot.
+    function getCompanionSlotTypes(companionName) {
+      if (typeof COMPANIONS_DATA === "undefined") return [];
+      const c = COMPANIONS_DATA.find(x => x.name === companionName);
+      if (!c) return [];
+      const power = findCompanionPower(c.powerRef);
+      if (!power || !Array.isArray(power.slot)) return [];
+      return power.slot;
+    }
+    // Returns sorted companion names that can fit the given slot type.
+    // "Universal" accepts any.
+    function companionsForSlotType(slotType) {
+      if (typeof COMPANIONS_DATA === "undefined") return [];
+      return COMPANIONS_DATA
+        .filter(c => {
+          if (slotType === "Universal") return true;
+          const power = findCompanionPower(c.powerRef);
+          if (!power || !Array.isArray(power.slot)) return false;
+          return power.slot.includes(slotType);
+        })
+        .map(c => c.name)
+        .sort();
+    }
+
+    function findGearByName(name, slotType) {
+      if (!name || typeof GEAR_DATA === "undefined") return null;
+      for (const item of GEAR_DATA) {
+        if (item.name === name && item.slot === slotType) return item;
+      }
+      return null;
+    }
+    function gearOptionsForSlot(slotType, className) {
+      if (typeof GEAR_DATA === "undefined") return [];
+      return GEAR_DATA
+        .filter(item => item.slot === slotType)
+        .filter(item => !className || !item.allowedClasses || item.allowedClasses.indexOf(className) !== -1)
+        .sort((a, b) => (b.item_level || 0) - (a.item_level || 0) || a.name.localeCompare(b.name));
+    }
+    /* ===== Class base ability scores =====
+       Verified from NW Hub character editor 2026-05-08:
+         Wizard: STR 8 / CON 10 / DEX 12 / INT 18 / WIS 14 / CHA 12 (sum 74)
+       Other classes' bases are TBD (need in-game verification);
+       fall back to 10 across the board for now. */
+    const CLASS_BASE_SCORES = {
+      "Wizard":    { str: 8,  con: 10, dex: 12, int: 18, wis: 14, cha: 12 },
+      // TODO verify in-game per class:
+      "Barbarian": null, "Bard": null, "Cleric": null, "Fighter": null,
+      "Paladin":   null, "Ranger": null, "Rogue": null, "Warlock": null
+    };
+
+    /* ===== Ability score grid =====
+       Replaces simple inputs with the NW-Hub-style allocation table.
+       Per-stat total = base + L9 +1 + L16 +1 + (sum of picked levels) + bonus. */
+    const ABIL_KEYS = ["str","con","dex","int","wis","cha"];
+    const ABIL_PICK_LEVELS = [3, 6, 12, 14, 18, 20];
+
+    function applyClassBaseScores(className) {
+      const base = CLASS_BASE_SCORES[className] || { str:10, con:10, dex:10, int:10, wis:10, cha:10 };
+      state.abilBase = { ...base };
+      for (const k of ABIL_KEYS) {
+        state.abilLevels[k] = { 3:false, 6:false, 12:false, 14:false, 18:false, 20:false };
+      }
+      recomputeAbilityTotals();
+      renderAbilityGrid();
+    }
+
+    // Sum ability score bonuses from a percentStats-like dict like {STR: 2, INT: 1}.
+    // Handles both upper-case (STR) and lower-case (str) keys.
+    function addAbilityBonus(out, src) {
+      if (!src) return;
+      for (const rawKey in src) {
+        const k = rawKey.toLowerCase();
+        if (!ABIL_KEYS.includes(k)) continue;
+        out[k] = (out[k] || 0) + (+src[rawKey] || 0);
+      }
+    }
+
+    // Auto-bonus: sum abilityBonuses across all equipped sources. The grid
+    // displays this in the Bonus column (read-only).
+    function getAutoAbilityBonus() {
+      const bonus = { str:0, con:0, dex:0, int:0, wis:0, cha:0 };
+      // Gear
+      if (typeof GEAR_SLOTS !== "undefined") {
+        for (const slotEntry of GEAR_SLOTS) {
+          const itemName = state.gear[slotEntry.label];
+          if (!itemName) continue;
+          const item = findGearByName(itemName, slotEntry.slot);
+          if (item) addAbilityBonus(bonus, item.abilityBonuses);
+        }
+      }
+      // Artifacts (primary + secondary)
+      const primary = findArtifactByName(state.artifacts["Primary"]);
+      if (primary) addAbilityBonus(bonus, primary.abilityBonuses);
+      for (let i = 1; i <= 3; i++) {
+        const a = findArtifactByName(state.artifacts["Secondary " + i]);
+        if (a) addAbilityBonus(bonus, a.abilityBonuses);
+      }
+      return bonus;
+    }
+
+    // Race contribution to ability scores (fixed + chosen).
+    function getRaceAbilityBonus() {
+      const bonus = { str:0, con:0, dex:0, int:0, wis:0, cha:0 };
+      const race = findRace(state.race);
+      if (!race) return bonus;
+      // Fixed bonuses with single-stat keys add directly. Array stats (e.g.
+      // Human "+3 any" or Dragonborn "+2 any") are handled via the choice
+      // picker — they should be in raceChoices, not auto-applied.
+      for (const b of (race.fixedBonuses || [])) {
+        if (Array.isArray(b.stat)) continue;  // user picks via raceChoices
+        bonus[b.stat.toLowerCase()] = (bonus[b.stat.toLowerCase()] || 0) + b.amount;
+      }
+      // raceChoices stores selected stat names with implied amount from the choice slot.
+      // Each entry: { stat: "CON", amount: 2 }
+      for (const choice of state.raceChoices) {
+        const k = (choice.stat || "").toLowerCase();
+        if (ABIL_KEYS.includes(k)) bonus[k] = (bonus[k] || 0) + (choice.amount || 0);
+      }
+      return bonus;
+    }
+
+    function recomputeAbilityTotals() {
+      const autoBonus = getAutoAbilityBonus();
+      const raceBonus = getRaceAbilityBonus();
+      for (const k of ABIL_KEYS) {
+        let total = (state.abilBase[k] || 10);
+        total += raceBonus[k];
+        total += 2;  // L9 + L16 universal
+        for (const lvl of ABIL_PICK_LEVELS) {
+          if (state.abilLevels[k][lvl]) total += 1;
+        }
+        total += autoBonus[k];
+        state.abil[k] = Math.max(8, Math.min(40, total));
+      }
+    }
+
+    function picksAtLevel(level) {
+      let n = 0;
+      for (const k of ABIL_KEYS) if (state.abilLevels[k][level]) n++;
+      return n;
+    }
+
+    function totalLevelPicksUsed() {
+      let n = 0;
+      for (const lvl of ABIL_PICK_LEVELS) n += picksAtLevel(lvl);
+      return n;
+    }
+
+    function renderAbilityGrid() {
+      const wrap = document.getElementById("abil-grid-wrapper");
+      if (!wrap) return;
+      const autoBonus = getAutoAbilityBonus();
+      const raceBonus = getRaceAbilityBonus();
+
+      // Race choice picker (only when race has choiceBonuses)
+      const race = findRace(state.race);
+      const choiceHtml = renderRaceChoicePicker(race);
+
+      const headers = ["", "Base", "Race", "L3", "L6", "L9 ALL", "L12", "L14", "L16 ALL", "L18", "L20", "Gear/Bonus", "Total"];
+      let html = choiceHtml;
+      html += '<table class="abil-grid"><thead><tr>';
+      for (const h of headers) {
+        const cls = (h === "L9 ALL" || h === "L16 ALL") ? ' class="col-all"' : "";
+        html += `<th${cls}>${h}</th>`;
+      }
+      html += '</tr></thead><tbody>';
+
+      for (const k of ABIL_KEYS) {
+        const lbl = k.toUpperCase();
+        const raceVal = raceBonus[k];
+        const gearVal = autoBonus[k];
+        html += `<tr>
+          <td class="row-label">${lbl}</td>
+          <td class="cell-base">${state.abilBase[k] || 10}</td>
+          <td class="cell-base" style="color:${raceVal>0?'var(--gold)':'var(--text-dim)'}">${raceVal>0 ? '+'+raceVal : '—'}</td>`;
+        for (const lvl of [3, 6]) {
+          const on = state.abilLevels[k][lvl];
+          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}">${on ? "+1" : ""}</td>`;
+        }
+        html += `<td class="cell-all">+1</td>`;
+        for (const lvl of [12, 14]) {
+          const on = state.abilLevels[k][lvl];
+          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}">${on ? "+1" : ""}</td>`;
+        }
+        html += `<td class="cell-all">+1</td>`;
+        for (const lvl of [18, 20]) {
+          const on = state.abilLevels[k][lvl];
+          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}">${on ? "+1" : ""}</td>`;
+        }
+        // Bonus column = auto from gear (read-only)
+        html += `<td class="cell-base" style="color:${gearVal>0?'var(--gold)':'var(--text-dim)'}">${gearVal>0 ? '+'+gearVal : '—'}</td>`;
+        html += `<td class="cell-total">${state.abil[k]}</td>`;
+        html += `</tr>`;
+      }
+      html += '</tbody></table>';
+
+      const used = totalLevelPicksUsed();
+      const max = ABIL_PICK_LEVELS.length * 2;
+      html += `<div class="abil-summary">Level allocations: <strong>${used}</strong> / ${max} picked
+        ${state.class ? ` · base from <strong>${state.class}</strong>` : ""}
+        ${state.race ? ` · race <strong>${state.race}</strong>` : ""}
+        · Gear/Bonus column auto-fills from equipped gear &amp; artifacts</div>`;
+
+      wrap.innerHTML = html;
+
+      // Click handlers for L-pick cells
+      wrap.querySelectorAll("td.cell-pick").forEach(td => {
+        td.addEventListener("click", () => {
+          const k = td.dataset.abil;
+          const lvl = +td.dataset.level;
+          const currentlyOn = state.abilLevels[k][lvl];
+          if (!currentlyOn && picksAtLevel(lvl) >= 2) {
+            toast(`L${lvl} already has 2 picks — uncheck one first`);
+            return;
+          }
+          state.abilLevels[k][lvl] = !currentlyOn;
+          recomputeAbilityTotals();
+          renderAbilityGrid();
+          rerenderAll();
+        });
+      });
+
+      // Race-choice picker handlers
+      wrap.querySelectorAll("button[data-race-pick]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const slot  = +btn.dataset.raceSlot;
+          const stat  = btn.dataset.racePick;
+          const amt   = +btn.dataset.raceAmt;
+          state.raceChoices[slot] = { stat, amount: amt };
+          recomputeAbilityTotals();
+          renderAbilityGrid();
+          rerenderAll();
+        });
+      });
+    }
+
+    /* Render the picker UI for race choice bonuses (e.g. Aasimar
+       "+2 to choose: CON or CHA", Human "+3 to any"). */
+    function renderRaceChoicePicker(race) {
+      if (!race) return "";
+      const slots = [];
+      for (const b of (race.fixedBonuses || [])) {
+        if (Array.isArray(b.stat)) slots.push({ options: b.stat, amount: b.amount, label: `+${b.amount} (any ability)` });
+      }
+      const choices = race.choiceBonuses || [];
+      if (choices.length) {
+        const sameAmt = choices.every(c => c.amount === choices[0].amount);
+        const allSingle = choices.every(c => !Array.isArray(c.stat));
+        if (sameAmt && allSingle) {
+          slots.push({
+            options: choices.map(c => c.stat),
+            amount: choices[0].amount,
+            label: `+${choices[0].amount} (choose 1 of ${choices.map(c => c.stat).join(" or ")})`
+          });
+        } else {
+          for (const c of choices) {
+            slots.push({
+              options: Array.isArray(c.stat) ? c.stat : [c.stat],
+              amount: c.amount,
+              label: `+${c.amount}`
+            });
+          }
+        }
+      }
+      while (state.raceChoices.length > slots.length) state.raceChoices.pop();
+      while (state.raceChoices.length < slots.length) state.raceChoices.push({});
+      if (!slots.length) return "";
+
+      const allPicked = state.raceChoices.every(c => c && c.stat);
+
+      let html = `<div class="race-choice-callout ${allPicked ? "complete" : "needs-pick"}">
+        <div class="race-choice-header">
+          ${allPicked ? "✓" : "⚠"} <strong>${race.name}</strong> ability score choice
+          <span class="race-choice-status">${allPicked ? "applied" : "needs your pick"}</span>
+        </div>`;
+      slots.forEach((slot, idx) => {
+        const picked = state.raceChoices[idx]?.stat;
+        html += `<div class="race-choice-row">
+          <div class="race-choice-label">${slot.label}${picked ? ` → <span style="color:var(--amber);">${picked}</span>` : ""}</div>
+          <div class="race-choice-options">`;
+        for (const opt of slot.options) {
+          const on = picked === opt;
+          html += `<button data-race-pick="${opt}" data-race-slot="${idx}" data-race-amt="${slot.amount}"
+            class="race-choice-btn ${on ? "on" : ""}">${opt}</button>`;
+        }
+        html += `</div></div>`;
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    /* ===== Auto Total Item Level =====
+       Sums item_level of every equipped gear piece. Updates state.il
+       and the input field whenever gear changes. The user can still
+       type into the field; their value persists until the next gear
+       change overwrites it. */
+    function computeTILFromGear() {
+      if (!state.gear) return 0;
+      let sum = 0;
+      if (typeof GEAR_SLOTS !== "undefined") {
+        for (const slotEntry of GEAR_SLOTS) {
+          const itemName = state.gear[slotEntry.label];
+          if (!itemName) continue;
+          const item = findGearByName(itemName, slotEntry.slot);
+          if (item && item.item_level) sum += item.item_level;
+        }
+      }
+      return sum;
+    }
+    function applyAutoTIL() {
+      const til = computeTILFromGear();
+      if (til <= 0) return;
+      state.il = String(til);
+      const f = document.getElementById("f-il");
+      if (f) f.value = til;
+    }
+
+    function findArtifactByName(name) {
+      if (!name || typeof ARTIFACTS_DATA === "undefined") return null;
+      for (const a of ARTIFACTS_DATA) {
+        if (a.name === name) return a;
+      }
+      return null;
+    }
+    function artifactOptions(className) {
+      if (typeof ARTIFACTS_DATA === "undefined") return [];
+      return ARTIFACTS_DATA
+        .filter(a => !className || !a.allowedClasses || a.allowedClasses.indexOf(className) !== -1)
+        .sort((a, b) => (b.item_level || 0) - (a.item_level || 0) || a.name.localeCompare(b.name));
+    }
+
+    function buildEngineCharacter(s) {
+      // Resolve gear: state.gear is { "Head": "name string", ... };
+      // engine wants { "Head": gearObject }.
+      const gear = {};
+      if (typeof GEAR_SLOTS !== "undefined") {
+        for (const slotEntry of GEAR_SLOTS) {
+          const itemName = s.gear[slotEntry.label];
+          if (!itemName) continue;
+          const item = findGearByName(itemName, slotEntry.slot);
+          if (item) gear[slotEntry.label] = item;
+        }
+      }
+      // Dedup rings: in-game you only benefit from one of two identical rings.
+      if (gear["Ring 1"] && gear["Ring 2"] && gear["Ring 1"].name === gear["Ring 2"].name) {
+        delete gear["Ring 2"];
+      }
+      // Resolve artifacts: state.artifacts is { "Primary": "name", "Secondary 1": "name", ... }
+      const artifacts = { primary: null, secondary: [] };
+      if (s.artifacts) {
+        const primary = findArtifactByName(s.artifacts["Primary"]);
+        if (primary) artifacts.primary = primary;
+        for (let i = 1; i <= 3; i++) {
+          const sa = findArtifactByName(s.artifacts["Secondary " + i]);
+          if (sa) artifacts.secondary.push(sa);
+        }
+      }
+      // Resolve boons: state.boons is a Map<"tier1:id"/"master:id", {tier, boonId, points|ranks}>
+      // Engine wants: { tier1: [{boon, points}], ..., master: [{boon, ranks}] }
+      const campaignBoons = { tier1: [], tier2: [], tier3: [], tier4: [], tier5: [], master: [] };
+      for (const [key, v] of s.boons) {
+        const boon = findBoonByKey(key);
+        if (!boon) continue;
+        if (v.tier === "master") {
+          campaignBoons.master.push({ boon, ranks: v.ranks || 0 });
+        } else {
+          campaignBoons[v.tier].push({ boon, points: v.points || 0 });
+        }
+      }
+
+      // Effects fed through the buffs[] channel — each entry has
+      // percentStats / ratingStats that aggregatePercents/aggregateRatings
+      // can ingest. Sources: summoned companion's party buff, all 6
+      // enhancement runes (1 summoned + 5 active).
+      const buffs = [];
+
+      const summonedComp = (typeof COMPANIONS_DATA !== "undefined" && s.summoned)
+        ? COMPANIONS_DATA.find(c => c.name === s.summoned)
+        : null;
+      if (summonedComp && summonedComp.summonedBuff && summonedComp.summonedBuff.stat) {
+        const sb = summonedComp.summonedBuff;
+        buffs.push({
+          source: "Summoned: " + summonedComp.name,
+          percentStats: { [sb.stat]: sb.value || 0 }
+        });
+      }
+
+      // Helper: turn a companion enhancement into a buffs[] entry.
+      function enhToBuff(label, name) {
+        if (!name) return;
+        const e = findEnhancementByName(name);
+        if (!e || !e.stat) return;
+        const entry = { source: label + ": " + e.name };
+        if (e.type === "percent") entry.percentStats = { [e.stat]: e.value || 0 };
+        else                      entry.ratingStats  = { [e.stat]: e.value || 0 };
+        buffs.push(entry);
+      }
+      enhToBuff("Enhancement (summoned)", s.summonedEnh);
+
+      // Active buffs (consumables / scrolls / event food / etc.)
+      for (const buffName of (s.buffs || [])) {
+        const b = findBuffByName(buffName);
+        if (!b) continue;
+        buffs.push({
+          source: `Buff: ${b.name}`,
+          ratingStats: b.ratingStats || {},
+          percentStats: b.percentStats || {}
+        });
+        // Ability bonuses from buffs (e.g. Campfire +1 to all stats) flow
+        // through abilityBonuses — already aggregated by getAutoAbilityBonus,
+        // but only for gear+artifact sources. Skipping for now to avoid
+        // double-routing; revisit when we add a unified ability-bonus channel.
+      }
+
+      // Guild boons — 1 pick per category (Offense / Defense / Utility).
+      for (const cat of ["Offense", "Defense", "Utility"]) {
+        const name = (s.guildBoonPicks || {})[cat];
+        if (!name) continue;
+        const b = findGuildBoon(cat, name);
+        if (!b || !b.stat) continue;
+        const entry = { source: `Guild ${cat}: ${b.name}` };
+        if (b.statType === "percent") entry.percentStats = { [b.stat]: b.amount || 0 };
+        else                          entry.ratingStats  = { [b.stat]: b.amount || 0 };
+        buffs.push(entry);
+      }
+
+      // Active mount equip power — passive stats from your stable's chosen equip power.
+      if (s.activeEquipPower) {
+        const ep = findEquipPowerById(s.activeEquipPower);
+        if (ep) {
+          const ratingStats = {};
+          const percentStats = {};
+          for (const st of (ep.stats || [])) {
+            const tgt = st.type === "percent" ? percentStats : ratingStats;
+            tgt[st.stat] = (tgt[st.stat] || 0) + (st.value || 0);
+          }
+          buffs.push({
+            source: "Mount Equip Power: " + ep.name,
+            ratingStats, percentStats
+          });
+        }
+      }
+
+      // Companion enchantment (slotType: "companion") on the summoned comp.
+      if (s.summonedEnchant) {
+        const ce = findEnchantByName(s.summonedEnchant);
+        if (ce) {
+          buffs.push({
+            source: "Comp Enchantment: " + ce.name,
+            ratingStats: ce.ratingStats || {},
+            percentStats: ce.percentStats || {}
+          });
+        }
+      }
+
+      // Companion gear → buffs[] (rating contributions).
+      // Only the summoned companion has gear in NW.
+      function compGearToBuff(label, gearObj) {
+        if (!gearObj) return;
+        for (const slot of ["Neck", "Waist", "Ring"]) {
+          const itemName = gearObj[slot];
+          if (!itemName) continue;
+          const it = findCompGearByName(itemName, slot);
+          if (!it) continue;
+          buffs.push({
+            source: `${label}: ${slot} — ${it.name}`,
+            ratingStats: it.ratingStats || {}
+          });
+        }
+      }
+      compGearToBuff("Comp Gear (summoned)", s.summonedGear);
+
+      // Enchantments — 11 typed slots. Universal enchants in
+      // offense/defense/utility slots use their respective sub-effect.
+      // Combat/Bonus enchants use their direct percentStats/ratingStats.
+      function pushEnchant(slotType, slotLabel, name) {
+        if (!name) return;
+        const e = findEnchantByName(name);
+        if (!e) return;
+        const entry = { source: `Enchant ${slotLabel}: ${e.name}` };
+        if (e.universal && (slotType === "offense" || slotType === "defense" || slotType === "utility")) {
+          entry.ratingStats = e.universal[slotType] || {};
+        } else {
+          entry.ratingStats = e.ratingStats || {};
+          entry.percentStats = e.percentStats || {};
+        }
+        buffs.push(entry);
+      }
+      const ench = s.enchants || {};
+      (ench.offense || []).forEach((n, i) => pushEnchant("offense", `Offense ${i+1}`, n));
+      (ench.defense || []).forEach((n, i) => pushEnchant("defense", `Defense ${i+1}`, n));
+      pushEnchant("utility", "Utility", ench.utility);
+      pushEnchant("combat",  "Combat",  ench.combat);
+      pushEnchant("bonus",   "Bonus",   ench.bonus);
+
+      // Reinforcement kits — one per applicable gear slot. Add their
+      // ratingStats / percentStats through buffs[].
+      for (const slotLabel in (s.kits || {})) {
+        const kitName = s.kits[slotLabel];
+        if (!kitName) continue;
+        const k = findKitByName(kitName);
+        if (!k) continue;
+        buffs.push({
+          source: `Kit ${slotLabel}: ${k.name}`,
+          ratingStats: k.ratingStats || {},
+          percentStats: k.percentStats || {}
+        });
+      }
+
+      // Overloads
+      for (let i = 0; i < (s.overloads || []).length; i++) {
+        const name = s.overloads[i];
+        if (!name) continue;
+        const o = findOverloadByName(name);
+        if (!o) continue;
+        buffs.push({
+          source: `Overload ${i + 1}: ${o.name}`,
+          ratingStats: o.ratingStats || {},
+          percentStats: o.percentStats || {}
+        });
+      }
+
+      return {
+        totalItemLevel: Number(s.il) || 0,
+        class:    s.class    || "",
+        paragon:  s.paragon  || "",
+        paragonDef: findParagon(s.class, s.paragon),
+        role:     s.role     || "",
+        race:     findRace(s.race),
+        abilityScores: s.abil,
+        gear,
+        artifacts,
+        companionGear: {},  // TODO: companion gear UI
+        campaignBoons,
+        guildBoons:    [],
+        buffs
+      };
+    }
+
     // Slot { label: shown to user; slot: matches the slot field in gear.json }.
     // Two ring slots share the same data slot ("Ring") but are independent picks.
+    // Order matches the visual layout (column-major, 6 rows × 2 columns).
+    // CSS uses grid-auto-flow:column so items fill top-to-bottom in
+    // column 1 first, then column 2.
     const GEAR_SLOTS = [
+      // Column 1 (combat / armor)
       { label: "Head",      slot: "Head"      },
       { label: "Armor",     slot: "Armor"     },
       { label: "Arms",      slot: "Arms"      },
-      { label: "Pant",      slot: "Pant"      },
-      { label: "Feet",      slot: "Feet"      },
-      { label: "Neck",      slot: "Neck"      },
-      { label: "Waist",     slot: "Waist"     },
-      { label: "Shirt",     slot: "Shirt"     },
-      { label: "Ring 1",    slot: "Ring"      },
-      { label: "Ring 2",    slot: "Ring"      },
       { label: "Main Hand", slot: "Main Hand" },
       { label: "Off Hand",  slot: "Off Hand"  },
+      { label: "Feet",      slot: "Feet"      },
+      // Column 2 (accessories / cloth)
+      { label: "Neck",      slot: "Neck"      },
+      { label: "Ring 1",    slot: "Ring"      },
+      { label: "Ring 2",    slot: "Ring"      },
+      { label: "Waist",     slot: "Waist"     },
+      { label: "Shirt",     slot: "Shirt"     },
+      { label: "Pant",      slot: "Pant"      },
     ];
     const GEAR_OPTIONS = ["— None —", "Mythic Vivified ★", "Legendary Voninblod", "Epic Mountain of Flame", "Epic Lionheart"];
     const ARTIFACT_SLOTS = ["Primary","Secondary 1","Secondary 2","Secondary 3"];
     const ARTIFACT_OPTIONS = ["— None —", "Lantern of Revelation", "Sigil of the Devoted", "Black Ice Beholder", "Tarokka Deck", "Shard of Orcus"];
     const COMPANIONS = ["Phasespider","Lysaera","Soradiel","Tutor","Festive Tiger","Coldlight Walker","Celeste","Harper Bard","Riotous Rothé"];
-    const BOONS = [
-      {n:"Avernus", e:"+5% Power"}, {n:"Sharandar", e:"+5% Crit Sev"}, {n:"Vallenhas", e:"+250 CR"}, {n:"Northdark", e:"+5% Combat Adv"},
-      {n:"Dragonbone Vale", e:"+250 CR"}, {n:"Demonweb Pits", e:"+5% Crit Strike"}, {n:"Mountain of Flame", e:"+5% Power"}, {n:"Vecna's Lair", e:"+250 CR"},
-    ];
-    const BUFFS = [
-      {n:"Watermelon Sorbet", e:"+9% Power, +6% Accuracy"}, {n:"Yooj", e:"+9% Crit Sev"},
-      {n:"Honeyed Bread", e:"+20k Max HP, +4k Defense"}, {n:"Scroll of Fate", e:"+5% all stats 60min"},
-      {n:"Dragon Slaying Rank 5", e:"+8% damage vs Dragons"}, {n:"VIP Tier 5", e:"+5% Crit Sev / +5% all"},
-    ];
+    /* ===== Boon helpers (read from CAMPAIGN_BOONS_DATA) =====
+       boonKey is "tier1:<id>" / "tier2:<id>" / ... / "master:<id>". */
+    const TIER_KEYS = ["tier1","tier2","tier3","tier4","tier5"];
+    function tierJsonKey(tier) { return "Tier" + tier.slice(4); }   // "tier1" → "Tier1"
 
-    /* ===== Build Score (mock formula) =====
-       Each completed thing nudges score. Maxes at 100. */
+    function getTierBoons(tier) {
+      if (typeof CAMPAIGN_BOONS_DATA === "undefined") return [];
+      if (tier === "master") return CAMPAIGN_BOONS_DATA.master || [];
+      const t = CAMPAIGN_BOONS_DATA.tiers && CAMPAIGN_BOONS_DATA.tiers[tierJsonKey(tier)];
+      return t || [];
+    }
+    function findBoonByKey(key) {
+      const [tier, idStr] = key.split(":");
+      const id = +idStr;
+      return getTierBoons(tier).find(b => b.id === id) || null;
+    }
+    function masterPointsSpent(boon, ranks) {
+      if (!boon || !ranks) return 0;
+      // Each rank costs totalCost / maxRanks (3/3, 6/3, 9/3, ...)
+      return Math.round((boon.totalCost / boon.maxRanks) * ranks);
+    }
+    function totalBoonPoints() {
+      let total = 0;
+      for (const [key, v] of state.boons) {
+        if (v.tier === "master") {
+          const b = findBoonByKey(key);
+          total += masterPointsSpent(b, v.ranks || 0);
+        } else {
+          total += (v.points || 0);   // tier 1-5: 1 point per allocated point
+        }
+      }
+      return total;
+    }
+    /* ===== Buffs (consumables / scrolls / event food / etc.) =====
+       state.buffs is now a Set<buffName>. Pickers toggle buffs;
+       grouped buffs (single exclusiveGroup) auto-clear others in group. */
+    function findBuffByName(name) {
+      if (!name || typeof BUFFS_DATA === "undefined") return null;
+      return BUFFS_DATA.find(b => b.name === name) || null;
+    }
+    // Belt Item, Battle Belt, Battle Horn, and Companion Bell all use
+    // the single belt slot in-game — merge them under "Belt Item".
+    function displayGroupOf(buff) {
+      const g = buff.exclusiveGroup || "None";
+      if (g === "Battle Belt" || g === "Battle Horn" || g === "Companion Bell") return "Belt Item";
+      return g;
+    }
+    function describeBuff(b) {
+      const parts = [];
+      for (const [k,v] of Object.entries(b.ratingStats || {})) parts.push(`+${v} ${k}`);
+      for (const [k,v] of Object.entries(b.percentStats || {})) parts.push(`+${v}% ${k}`);
+      for (const [k,v] of Object.entries(b.abilityBonuses || {})) parts.push(`+${v} ${k}`);
+      if (b.damagePct) parts.push(`+${b.damagePct}% dmg vs ${b.enemyType || "?"}`);
+      return parts.join(", ") || (b.notes || "").slice(0, 120);
+    }
+
+    /* ===== Build Score (engine-driven + completion bonus) =====
+       Score = completion (up to 50) + engine stat coverage (up to 50).
+       Caps at 100. */
+
+    // Cached engine result so we don't recompute it on every render call.
+    let _engineResult = null;
+    let _engineCacheKey = "";
+
+    function getEngineResult() {
+      const key = JSON.stringify({
+        il: state.il, cls: state.class, par: state.paragon, race: state.race,
+        role: state.role, gear: state.gear, art: state.artifacts, abil: state.abil,
+        sum: state.summoned, sumEnh: state.summonedEnh, sumEnch: state.summonedEnchant,
+        sumG: state.summonedGear,
+        stable: state.stable, mcp: state.activeCombatPower, mep: state.activeEquipPower,
+        ench: state.enchants, ovr: state.overloads, kits: state.kits,
+        gld: state.guildBoonPicks,
+        boons: [...state.boons], buffs: [...state.buffs]
+      });
+      if (key === _engineCacheKey && _engineResult) return _engineResult;
+      _engineCacheKey = key;
+      _engineResult = TOON_FORGE_ENGINE.computeStats(buildEngineCharacter(state));
+      return _engineResult;
+    }
+
+    // Stats that matter most per role (mekaniks.html priorities).
+    const ROLE_PRIORITY_STATS = {
+      dps:  ["Power", "Combat Advantage", "Critical Severity", "Critical Strike", "Accuracy"],
+      tank: ["Awareness", "Defense", "Critical Avoidance", "Deflect", "Deflect Severity"],
+      heal: ["Power", "Outgoing Healing", "Forte", "Awareness", "Defense"]
+    };
+
+    function engineStatCoverage() {
+      const r = getEngineResult();
+      const role = state.role || "dps";
+      const priority = ROLE_PRIORITY_STATS[role];
+      let total = 0, count = 0;
+      for (const name of priority) {
+        const s = r.stats[name];
+        if (!s || typeof s.cap !== "number") continue;
+        total += Math.min(1, s.finalPct / s.cap);
+        count++;
+      }
+      return count > 0 ? total / count : 0;  // 0..1
+    }
+
     function computeScore() {
-      let s = 20;  // baseline for opening the tool
-      if (state.role)  s += 8;
-      if (state.class) s += 8;
-      if (state.paragon) s += 4;
-      if (state.race)    s += 4;
-      if (Number(state.il) > 0) s += 6;
+      // ---- Completion component (0..50) ----
+      let completion = 0;
+      if (state.role)              completion += 6;
+      if (state.class)             completion += 6;
+      if (state.paragon)           completion += 4;
+      if (state.race)              completion += 4;
+      if (Number(state.il) > 0)    completion += 4;
       const gearFilled = Object.values(state.gear).filter(v => v && v !== "— None —").length;
-      s += Math.min(20, gearFilled * 2);   // up to 20 from gear
+      completion += Math.min(12, gearFilled);
       const artFilled = Object.values(state.artifacts).filter(v => v && v !== "— None —").length;
-      s += Math.min(8, artFilled * 2);     // up to 8
-      if (state.summoned) s += 4;
-      s += state.activeComps.filter(c => c).length * 2; // up to 8
-      if (state.mount) s += 4;
-      s += Math.min(8, state.boons.size);
-      s += Math.min(4, state.buffs.size);
-      return Math.min(100, s);
+      completion += Math.min(4, artFilled);
+      if (state.summoned)          completion += 2;
+      if (state.stable.some(s => s.mount)) completion += 2;
+      completion += Math.min(4, state.boons.size);
+      completion += Math.min(2, state.buffs.size);
+
+      // ---- Engine stat coverage component (0..50) ----
+      const engineScore = engineStatCoverage() * 50;
+
+      return Math.min(100, Math.round(completion + engineScore));
     }
 
     function scoreTier(s) {
@@ -887,116 +2676,883 @@
       return            ["Optimal",         "BiS or close to it"];
     }
 
-    /* ===== Quick stats (vary by role; mock numbers) ===== */
+    /* ===== Quick stats (engine-driven) =====
+       5 tiles next to the gauge, role-specific. */
+    const ROLE_QUICK_STATS = {
+      dps:  ["Power", "Combat Advantage", "Critical Strike", "Critical Severity", "Accuracy"],
+      tank: ["Defense", "Awareness", "Critical Avoidance", "Deflect", "Maximum Hit Points"],
+      heal: ["Power", "Outgoing Healing", "Forte", "Recharge Speed", "Action Point Gain"]
+    };
+
+    // Friendlier short labels for the tiny tiles.
+    const QUICK_STAT_LABELS = {
+      "Combat Advantage":   "Combat Adv",
+      "Critical Strike":    "Crit Strike",
+      "Critical Severity":  "Crit Sev",
+      "Critical Avoidance": "Crit Avoid",
+      "Outgoing Healing":   "Out. Healing",
+      "Maximum Hit Points": "Max HP",
+      "Recharge Speed":     "Recharge",
+      "Action Point Gain":  "AP Gain"
+    };
+
     function quickStats() {
+      const r = getEngineResult();
       const role = state.role || "dps";
-      const fill = (computeScore() - 20) / 80; // 0..1 ish
-      const f = (max) => Math.round(max * (0.4 + 0.6 * fill));
-      const sets = {
-        dps:  [["Power", 100, "%"], ["Combat Adv", 100, "%"], ["Crit Strike", 90, "%"], ["Crit Sev", 120, "%"], ["Accuracy", 80, "%"]],
-        tank: [["Defense", 110, "%"], ["Awareness", 80, "%"], ["Crit Avoid", 75, "%"], ["Deflect", 80, "%"], ["Max HP", 600, "k"]],
-        heal: [["Power", 100, "%"], ["Out. Healing", 110, "%"], ["Forte", 90, "%"], ["Recharge", 70, "%"], ["AP Gain", 60, "%"]],
-      };
-      return sets[role].map(([n, max, suffix]) => ({
-        name: n,
-        val: f(max),
-        suffix,
-        cap: f(max) >= max * 0.95,
-        pct: Math.min(100, (f(max) / max) * 100),
-      }));
+      const names = ROLE_QUICK_STATS[role];
+      return names.map(name => {
+        const s = r.stats[name];
+        const def = (typeof TOON_FORGE_STAT_BY_NAME !== "undefined") ? TOON_FORGE_STAT_BY_NAME[name] : null;
+        const label = QUICK_STAT_LABELS[name] || name;
+
+        if (!s || !def) {
+          return { name: label, val: 0, suffix: "%", cap: false, pct: 0 };
+        }
+
+        // Flat stats (Maximum Hit Points, Class Resource Max)
+        if (def.kind === "flat") {
+          const k = Math.round((s.flat || 0) / 1000);
+          return {
+            name: label,
+            val: k,
+            suffix: "k",
+            cap: false,
+            pct: Math.min(100, k / 8)   // visual scale: 800k HP → 100% bar
+          };
+        }
+
+        // Percent-style stats
+        const val = Math.round(s.finalPct);
+        const capNum = (typeof def.cap === "number") ? def.cap : null;
+        const capReached = capNum !== null && s.capReached;
+        const pct = (capNum !== null)
+          ? Math.min(100, (s.finalPct / capNum) * 100)
+          : Math.min(100, s.finalPct);   // uncapped: treat % directly
+        return { name: label, val, suffix: "%", cap: capReached, pct };
+      });
+    }
+
+    /* ===== Detailed Stats modal ===== */
+    const DSTATS_CATEGORIES = ["Offensive", "Defensive", "Control", "Special", "Utility", "Healing"];
+
+    function formatStatRow(def, s) {
+      const isFlat = def.kind === "flat";
+      const capReached = !isFlat && s.capReached;
+      let valueLabel, detailLabel, barWidth, barUncapped = false;
+
+      if (isFlat) {
+        valueLabel = (s.flat || 0).toLocaleString() + (def.name === "Maximum Hit Points" ? " HP" : "");
+        detailLabel = "flat";
+        barWidth = Math.min(100, (s.flat || 0) / 8000);  // visual scale
+        barUncapped = true;
+      } else if (typeof def.cap === "number") {
+        valueLabel = s.finalPct.toFixed(1) + "%";
+        detailLabel = `cap ${def.cap}% — rating ${s.ratingContribPct.toFixed(1)}% + bonus ${s.percentTotal.toFixed(1)}%`;
+        barWidth = Math.min(100, (s.finalPct / def.cap) * 100);
+      } else {
+        valueLabel = s.finalPct.toFixed(1) + "%";
+        detailLabel = `no cap — rating ${s.ratingContribPct.toFixed(1)}% + bonus ${s.percentTotal.toFixed(1)}%`;
+        barWidth = Math.min(100, s.finalPct);
+        barUncapped = true;
+      }
+
+      const contributors = s.contributors && s.contributors.length
+        ? `<div class="dstat-contributors">${
+            s.contributors.slice().sort((a,b) => Math.abs(b.amount) - Math.abs(a.amount))
+              .map(c => `${c.source}: ${c.type === "rating" ? "+" + c.amount + " rating" : (c.amount >= 0 ? "+" : "") + c.amount + "%"}`)
+              .join(" • ")
+          }</div>`
+        : "";
+
+      return `
+        <div class="dstat-row ${capReached ? "cap-reached" : ""}">
+          <div class="dstat-name">${def.name}</div>
+          <div class="dstat-detail">${valueLabel} <span style="opacity:0.6">— ${detailLabel}</span></div>
+          <div class="dstat-bar ${barUncapped ? "uncapped" : ""}"><div style="width:${barWidth}%;"></div></div>
+          ${contributors}
+        </div>`;
+    }
+
+    function openDetailedStats() {
+      const r = getEngineResult();
+      const body = document.getElementById("dstats-body");
+      let html = "";
+
+      // Warnings block
+      if (r.warnings && r.warnings.length) {
+        html += `<div class="dstats-warnings"><strong>Warnings (${r.warnings.length}):</strong><ul>${
+          r.warnings.map(w => `<li>${w}</li>`).join("")
+        }</ul></div>`;
+      }
+
+      // TIL header line
+      html += `<div style="font-size:0.85rem;color:var(--text-mute);margin-bottom:0.7rem;">
+        Total Item Level: <strong style="color:var(--amber)">${(r.totalItemLevel || 0).toLocaleString()}</strong>
+        ${state.class ? " · Class: <strong>" + state.class + "</strong>" : ""}
+        ${state.paragon ? " · Paragon: <strong>" + state.paragon + "</strong>" : ""}
+        ${state.race ? " · Race: <strong>" + state.race + "</strong>" : ""}
+      </div>`;
+
+      // Group stats by category
+      for (const cat of DSTATS_CATEGORIES) {
+        const stats = TOON_FORGE_STATS.filter(d => d.category === cat);
+        if (!stats.length) continue;
+        html += `<div class="dstats-section">
+          <div class="dstats-section-title">${cat}</div>`;
+        for (const def of stats) {
+          const s = r.stats[def.name];
+          if (!s) continue;
+          html += formatStatRow(def, s);
+        }
+        html += `</div>`;
+      }
+
+      body.innerHTML = html;
+      document.getElementById("dstats-overlay").classList.add("open");
+    }
+
+    function closeDetailedStats() {
+      document.getElementById("dstats-overlay").classList.remove("open");
     }
 
     /* ===== Render functions ===== */
+    function renderGearWarnings() {
+      const el = document.getElementById("gear-warnings");
+      if (!el) return;
+      const warnings = [];
+      // Duplicate rings — allowed in-game but only one is counted
+      const r1 = state.gear["Ring 1"], r2 = state.gear["Ring 2"];
+      if (r1 && r2 && r1 === r2) {
+        warnings.push("⚠ Ring 1 and Ring 2 are the same item (" + r1 + "). In-game you only benefit from one — engine counts it once.");
+      }
+      el.innerHTML = warnings.map(w => `<div class="gear-warning">${w}</div>`).join("");
+      el.style.display = warnings.length ? "block" : "none";
+    }
+
     function renderGear() {
       const g = document.getElementById("gear-grid");
       g.innerHTML = GEAR_SLOTS.map(s => {
         const v = state.gear[s.label] || "";
-        const filled = v && v !== "— None —";
+        const filled = !!v;
+        const kitName = state.kits[s.label] || "";
+        const kitOptions = kitsForGearSlot(s.label);
+        const opts = gearOptionsForSlot(s.slot, state.class);
+        const optionsHtml = '<option value="">— None —</option>' +
+          opts.map(item => {
+            const tier = item.item_level ? " (IL " + item.item_level + ")" : "";
+            return `<option value="${item.name.replace(/"/g,'&quot;')}" ${v === item.name ? "selected" : ""}>${item.name}${tier}</option>`;
+          }).join("");
+        // Reinforcement kit chip — only shown when the slot has applicable kits
+        const kitChip = kitOptions.length
+          ? `<div class="gear-kit-chip ${kitName ? "filled" : ""}" data-gear-kit="${s.label}">
+               ${kitName ? "🔧 " + kitName : "+ Reinforcement Kit"}
+             </div>`
+          : "";
         return `
           <div class="slot ${filled ? "filled" : ""}">
-            <div class="slot-label">${s.label}</div>
+            <div class="slot-label">${s.label}${opts.length === 0 ? " — no items" : ""}</div>
             <select data-gear="${s.label}" data-slot-type="${s.slot}">
-              ${GEAR_OPTIONS.map(o => `<option value="${o === "— None —" ? "" : o}" ${v === o ? "selected" : ""}>${o}</option>`).join("")}
+              ${optionsHtml}
             </select>
+            ${kitChip}
           </div>`;
       }).join("");
       g.querySelectorAll("select").forEach(sel => {
         sel.addEventListener("change", e => {
           state.gear[sel.dataset.gear] = e.target.value;
+          applyAutoTIL();
+          recomputeAbilityTotals();
+          renderAbilityGrid();
           renderGear();
+          renderGearWarnings();
           rerenderAll();
           toast(e.target.value ? `Equipped ${e.target.value} (${sel.dataset.gear})` : `Cleared ${sel.dataset.gear}`);
+        });
+      });
+      g.querySelectorAll("[data-gear-kit]").forEach(el => {
+        el.addEventListener("click", () => {
+          const slotLabel = el.dataset.gearKit;
+          openPicker({
+            title: `Reinforcement kit for ${slotLabel}`,
+            items: kitsForGearSlot(slotLabel),
+            render: renderKitPick,
+            onPick: (k) => {
+              state.kits[slotLabel] = k ? k.name : null;
+              renderGear(); rerenderAll();
+            }
+          });
+        });
+      });
+      renderGearWarnings();
+    }
+
+    /* ===== Enchantment slot rendering ===== */
+    // Returns enchants that can fit a given slot type:
+    //   offense / defense / utility → "Universal" enchants only
+    //   combat → slotType === "Combat"
+    //   bonus  → slotType === "Bonus"
+    function enchantsForSlotType(slotType) {
+      if (typeof ENCHANTS_DATA === "undefined") return [];
+      if (slotType === "offense" || slotType === "defense" || slotType === "utility") {
+        return ENCHANTS_DATA.filter(e => e.slotType === "Universal")
+          .sort((a,b) => (b.item_level||0)-(a.item_level||0) || a.name.localeCompare(b.name));
+      }
+      const want = slotType[0].toUpperCase() + slotType.slice(1);  // "Combat" / "Bonus"
+      return ENCHANTS_DATA.filter(e => e.slotType === want)
+        .sort((a,b) => (b.item_level||0)-(a.item_level||0) || a.name.localeCompare(b.name));
+    }
+    // Description tailored to which slot it's going into (Universal varies by slot).
+    function renderEnchantPickFor(slotType) {
+      return function(e) {
+        let desc = "";
+        if (e.universal && (slotType === "offense" || slotType === "defense" || slotType === "utility")) {
+          const stats = Object.entries(e.universal[slotType] || {})
+            .map(([s,v]) => `+${v} ${s}`).join(", ");
+          desc = `In ${slotType} slot: ${stats}`;
+        } else {
+          const r = e.ratingStats || {};
+          const p = e.percentStats || {};
+          const parts = [];
+          for (const [k,v] of Object.entries(r)) parts.push(`+${v} ${k}`);
+          for (const [k,v] of Object.entries(p)) parts.push(`+${v}% ${k}`);
+          desc = parts.join(", ");
+        }
+        return {
+          name: e.name,
+          meta: `IL ${e.item_level || "?"} · ${e.slotType}`,
+          desc
+        };
+      };
+    }
+
+    function renderEnchantments() {
+      const off = document.getElementById("ench-offense-grid");
+      const def = document.getElementById("ench-defense-grid");
+      const oth = document.getElementById("ench-other-grid");
+      if (!off) return;
+
+      function chip(slotType, name, idx) {
+        const filled = !!name;
+        return `<div class="ench-chip ${filled?"filled":""}" data-ench-type="${slotType}"${idx!==undefined?` data-ench-idx="${idx}"`:""}>
+          <div class="ench-chip-label">${slotType[0].toUpperCase()+slotType.slice(1)}${idx!==undefined?` ${idx+1}`:""}</div>
+          <div class="ench-chip-name">${filled ? name : "+ pick"}</div>
+        </div>`;
+      }
+
+      off.innerHTML = '<div class="ench-row">' +
+        state.enchants.offense.map((n,i) => chip("offense", n, i)).join("") + '</div>';
+      def.innerHTML = '<div class="ench-row">' +
+        state.enchants.defense.map((n,i) => chip("defense", n, i)).join("") + '</div>';
+      oth.innerHTML = '<div class="ench-row">' +
+        chip("utility", state.enchants.utility) +
+        chip("combat", state.enchants.combat) +
+        chip("bonus", state.enchants.bonus) +
+        '</div>';
+
+      [off, def, oth].forEach(grid => {
+        grid.querySelectorAll("[data-ench-type]").forEach(el => {
+          el.addEventListener("click", () => {
+            const t = el.dataset.enchType;
+            const idx = el.dataset.enchIdx !== undefined ? +el.dataset.enchIdx : null;
+            openPicker({
+              title: `${t[0].toUpperCase()+t.slice(1)} enchantment` + (idx !== null ? ` (slot ${idx + 1})` : ""),
+              items: enchantsForSlotType(t),
+              render: renderEnchantPickFor(t),
+              onPick: (e) => {
+                if (idx === null) state.enchants[t] = e ? e.name : null;
+                else              state.enchants[t][idx] = e ? e.name : null;
+                renderEnchantments(); rerenderAll();
+              }
+            });
+          });
+        });
+      });
+    }
+
+    function renderOverloads() {
+      const wrap = document.getElementById("overload-grid");
+      if (!wrap) return;
+      let html = "";
+      for (let i = 0; i < state.overloads.length; i++) {
+        const v = state.overloads[i];
+        html += `<div class="slot ${v ? "filled" : ""}" style="cursor:pointer;" data-overload="${i}">
+          <div class="slot-label">Overload ${i + 1}</div>
+          <div style="padding:0.4rem 0.5rem;font-size:0.85rem;color:${v?'var(--gold)':'var(--text-mute)'};">
+            ${v ? "🔥 " + v : "+ pick overload"}
+          </div>
+        </div>`;
+      }
+      wrap.innerHTML = html;
+      wrap.querySelectorAll("[data-overload]").forEach(el => {
+        el.addEventListener("click", () => {
+          const i = +el.dataset.overload;
+          // Filter out overloads already chosen elsewhere (unique-equip).
+          const picked = new Set(state.overloads.filter((x, idx) => x && idx !== i));
+          openPicker({
+            title: `Overload ${i + 1}`,
+            items: getOverloadList().filter(o => !picked.has(o.name)),
+            render: renderOverloadPick,
+            onPick: (o) => {
+              state.overloads[i] = o ? o.name : null;
+              renderOverloads(); rerenderAll();
+            }
+          });
         });
       });
     }
     function renderArtifacts() {
       const g = document.getElementById("artifact-grid");
+      const opts = artifactOptions(state.class);
+      // Names already picked in any slot — used to filter other slots'
+      // dropdowns since you can't equip duplicate artifacts in-game.
+      const pickedNames = new Set(
+        ARTIFACT_SLOTS.map(s => state.artifacts[s]).filter(Boolean)
+      );
       g.innerHTML = ARTIFACT_SLOTS.map(slot => {
         const v = state.artifacts[slot] || "";
-        const filled = v && v !== "— None —";
+        const filled = !!v;
+        // For this slot, exclude artifacts picked elsewhere (keep current pick).
+        const allowed = opts.filter(item => item.name === v || !pickedNames.has(item.name));
+        const optionsHtml = '<option value="">— None —</option>' +
+          allowed.map(item => {
+            const tier = item.item_level ? " (IL " + item.item_level + ")" : "";
+            return `<option value="${item.name.replace(/"/g,'&quot;')}" ${v === item.name ? "selected" : ""}>${item.name}${tier}</option>`;
+          }).join("");
         return `
           <div class="slot ${filled ? "filled" : ""}">
             <div class="slot-label">${slot}</div>
             <select data-art="${slot}">
-              ${ARTIFACT_OPTIONS.map(o => `<option value="${o === "— None —" ? "" : o}" ${v === o ? "selected" : ""}>${o}</option>`).join("")}
+              ${optionsHtml}
             </select>
           </div>`;
       }).join("");
       g.querySelectorAll("select").forEach(sel => {
         sel.addEventListener("change", e => {
           state.artifacts[sel.dataset.art] = e.target.value;
-          renderArtifacts();
+          recomputeAbilityTotals();
+          renderAbilityGrid();
+          renderArtifacts();   // re-filter other dropdowns to exclude the new pick
           rerenderAll();
           toast(e.target.value ? `Slotted ${e.target.value} (${sel.dataset.art})` : `Cleared ${sel.dataset.art}`);
         });
       });
     }
 
+    /* ===== Guild boons ===== */
+    function getGuildBoonsByCategory(cat) {
+      if (typeof GUILD_BOONS_DATA === "undefined") return [];
+      return (GUILD_BOONS_DATA[cat] || []).slice();
+    }
+    function findGuildBoon(cat, name) {
+      return getGuildBoonsByCategory(cat).find(b => b.name === name) || null;
+    }
+    function renderGuildBoonPick(b) {
+      const isPct = b.statType === "percent";
+      const flat = b.statType === "flat";
+      const v = b.amount;
+      const desc = flat
+        ? `${v > 0 ? "+" : ""}${v} ${b.stat}`
+        : `${v > 0 ? "+" : ""}${v}${isPct ? "%" : ""} ${b.stat}`;
+      return { name: b.name, meta: `IL ${b.item_level || "?"}`, desc };
+    }
+    function renderGuildBoons() {
+      const wrap = document.getElementById("guild-boon-list");
+      if (!wrap) return;
+      let html = "";
+      for (const cat of ["Offense", "Defense", "Utility"]) {
+        const list = getGuildBoonsByCategory(cat);
+        const picked = state.guildBoonPicks[cat];
+        const b = picked ? findGuildBoon(cat, picked) : null;
+        const display = b ? renderGuildBoonPick(b).desc : "no pick yet";
+        html += `<div class="boon-row ${b ? "has-pts" : ""}" style="cursor:pointer;" data-guild-cat="${cat}">
+          <div class="boon-row-info">
+            <div class="boon-row-name">${cat} — ${b ? b.name : "(none)"}</div>
+            <div class="boon-row-effect">${display} · ${list.length} options</div>
+          </div>
+          <div class="boon-counter"><span style="font-size:0.78rem;color:var(--text-dim);">click to pick</span></div>
+        </div>`;
+      }
+      wrap.innerHTML = html;
+      wrap.querySelectorAll("[data-guild-cat]").forEach(el => {
+        el.addEventListener("click", () => {
+          const cat = el.dataset.guildCat;
+          openPicker({
+            title: `Guild boon — ${cat}`,
+            items: getGuildBoonsByCategory(cat),
+            render: renderGuildBoonPick,
+            onPick: (b) => {
+              state.guildBoonPicks[cat] = b ? b.name : null;
+              renderGuildBoons(); rerenderAll();
+            }
+          });
+        });
+      });
+    }
+
     function renderBoons() {
       const el = document.getElementById("boon-list");
-      el.innerHTML = BOONS.map((b,i) => `
-        <div class="toggle ${state.boons.has(i) ? "on" : ""}" data-boon="${i}">
-          <span class="check"></span>
-          <span class="name">${b.n}</span>
-          <span class="effect">${b.e}</span>
-        </div>`).join("");
-      el.querySelectorAll(".toggle").forEach(t => {
-        t.addEventListener("click", () => {
-          const i = +t.dataset.boon;
-          state.boons.has(i) ? state.boons.delete(i) : state.boons.add(i);
+      const budget = (typeof CAMPAIGN_BOONS_DATA !== "undefined") ? CAMPAIGN_BOONS_DATA.budget : 120;
+      const spent = totalBoonPoints();
+
+      let html = `<div class="boon-budget">
+        <span><strong>${spent}</strong> / ${budget}</span> pts spent
+      </div>`;
+
+      // Tier 1-5
+      for (const tier of TIER_KEYS) {
+        const list = getTierBoons(tier);
+        if (!list.length) continue;
+        html += `<div class="boon-tier"><div class="boon-tier-header">${tierJsonKey(tier)} — ${list.length} boons</div>`;
+        for (const b of list) {
+          const key = `${tier}:${b.id}`;
+          const v = state.boons.get(key);
+          const cur = (v && v.points) || 0;
+          const max = b.maxPoints;
+          const effect = `+${b.perPoint}% ${b.stat} per pt (max +${(max * b.perPoint).toFixed(2)}%)`;
+          html += `<div class="boon-row ${cur > 0 ? "has-pts" : ""}">
+            <div class="boon-row-info">
+              <div class="boon-row-name">${b.name}</div>
+              <div class="boon-row-effect">${effect}</div>
+            </div>
+            <div class="boon-counter">
+              <button class="boon-btn" data-boon-action="dec" data-key="${key}" data-tier="${tier}">−</button>
+              <div class="boon-count">${cur}/${max}</div>
+              <button class="boon-btn" data-boon-action="inc" data-key="${key}" data-tier="${tier}">+</button>
+            </div>
+          </div>`;
+        }
+        html += `</div>`;
+      }
+
+      // Master tier (rank counter, varying cost)
+      const masterList = getTierBoons("master");
+      if (masterList.length) {
+        html += `<div class="boon-tier"><div class="boon-tier-header">Master — ${masterList.length} boons (varying cost per rank)</div>`;
+        for (const b of masterList) {
+          const key = `master:${b.id}`;
+          const v = state.boons.get(key);
+          const cur = (v && v.ranks) || 0;
+          const max = b.maxRanks || 3;
+          const perRankCost = Math.round((b.totalCost || 0) / max);
+          const effSummary = (b.perRankEffects || [])
+            .filter(e => e.type === "percent" && e.scope !== "enemy")
+            .map(e => `+${e.amount}% ${e.stat}/rank`)
+            .join(", ") || "specials";
+          html += `<div class="boon-row ${cur > 0 ? "has-pts" : ""}">
+            <div class="boon-row-info">
+              <div class="boon-row-name">${b.name}</div>
+              <div class="boon-row-effect">${effSummary} · ${perRankCost} pts/rank · trigger: ${b.trigger || "?"}</div>
+            </div>
+            <div class="boon-counter">
+              <button class="boon-btn" data-boon-action="dec" data-key="${key}" data-tier="master">−</button>
+              <div class="boon-count">${cur}/${max}</div>
+              <button class="boon-btn" data-boon-action="inc" data-key="${key}" data-tier="master">+</button>
+            </div>
+          </div>`;
+        }
+        html += `</div>`;
+      }
+
+      el.innerHTML = html;
+
+      el.querySelectorAll("[data-boon-action]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.key;
+          const tier = btn.dataset.tier;
+          const action = btn.dataset.boonAction;
+          const b = findBoonByKey(key);
+          if (!b) return;
+          const isMaster = tier === "master";
+          const max = isMaster ? (b.maxRanks || 3) : b.maxPoints;
+          const cur = state.boons.get(key);
+          const curN = cur ? (isMaster ? (cur.ranks || 0) : (cur.points || 0)) : 0;
+          if (action === "inc") {
+            if (curN >= max) return;
+            const next = curN + 1;
+            if (isMaster) state.boons.set(key, { tier, boonId: b.id, ranks: next });
+            else          state.boons.set(key, { tier, boonId: b.id, points: next });
+          } else {
+            if (curN <= 0) return;
+            const next = curN - 1;
+            if (next === 0) state.boons.delete(key);
+            else if (isMaster) state.boons.set(key, { tier, boonId: b.id, ranks: next });
+            else state.boons.set(key, { tier, boonId: b.id, points: next });
+          }
           renderBoons(); rerenderAll();
         });
       });
     }
     function renderBuffs() {
       const el = document.getElementById("buff-list");
-      el.innerHTML = BUFFS.map((b,i) => `
-        <div class="toggle ${state.buffs.has(i) ? "on" : ""}" data-buff="${i}">
-          <span class="check"></span>
-          <span class="name">${b.n}</span>
-          <span class="effect">${b.e}</span>
-        </div>`).join("");
-      el.querySelectorAll(".toggle").forEach(t => {
-        t.addEventListener("click", () => {
-          const i = +t.dataset.buff;
-          state.buffs.has(i) ? state.buffs.delete(i) : state.buffs.add(i);
+      if (!el) return;
+      if (typeof BUFFS_DATA === "undefined") { el.innerHTML = "<p>No buff data loaded.</p>"; return; }
+
+      // Group buffs by exclusiveGroup, with Belt Item / Battle Belt merged
+      // and Ancient/Misc dropped entirely.
+      const SKIP_GROUPS = new Set(["Ancient/Misc"]);
+      const groups = {};
+      for (const b of BUFFS_DATA) {
+        const raw = b.exclusiveGroup || "None";
+        if (SKIP_GROUPS.has(raw)) continue;
+        const g = displayGroupOf(b);
+        (groups[g] = groups[g] || []).push(b);
+      }
+      // "Other" is rendered as default-on toggles below, not a picker.
+      const groupOrder = ["Event Food", "Stronghold Food", "Elixir", "Potion", "Scroll", "Belt Item"];
+      const orderedSingle = groupOrder.filter(g => groups[g]);
+      const otherGroups = Object.keys(groups).filter(g =>
+        !groupOrder.includes(g) && g !== "None" && g !== "Other");
+
+      let html = "";
+
+      // Single-pick groups → one picker row each
+      for (const g of [...orderedSingle, ...otherGroups]) {
+        const list = groups[g];
+        // Find which buff (if any) from this group is active
+        let active = null;
+        for (const name of state.buffs) {
+          const b = findBuffByName(name);
+          if (b && displayGroupOf(b) === g) { active = b; break; }
+        }
+        const desc = active ? describeBuff(active) : `${list.length} options · pick one`;
+        html += `<div class="boon-row ${active ? "has-pts" : ""}" data-buff-group-pick="${g}" style="cursor:pointer;">
+          <div class="boon-row-info">
+            <div class="boon-row-name">${g} — ${active ? active.name : "(none)"}</div>
+            <div class="boon-row-effect">${desc}</div>
+          </div>
+          <div class="boon-counter"><span style="font-size:0.75rem;color:var(--text-dim);">click to pick</span></div>
+        </div>`;
+      }
+
+      // Default-on buffs from the "Other" group + Diamond Blessing (the
+      // only "None"-group entry that matters for the builder). All shown
+      // as toggles, defaults pre-checked.
+      const alwaysOnList = (groups["Other"] || []).slice();
+      const diamondBlessing = (groups["None"] || []).find(b => b.name === "Diamond Blessing");
+      const toggleList = [...alwaysOnList, ...(diamondBlessing ? [diamondBlessing] : [])]
+        .sort((a,b) => a.name.localeCompare(b.name));
+      if (toggleList.length) {
+        html += `<div class="boon-tier" style="margin-top:0.8rem;">
+          <div class="boon-tier-header">Always-on <span style="color:var(--text-dim);font-weight:400;font-size:0.7rem;text-transform:none;letter-spacing:0;">(passive · uncheck if not applicable)</span></div>`;
+        for (const b of toggleList) {
+          const on = state.buffs.has(b.name);
+          const desc = describeBuff(b);
+          html += `<div class="boon-row ${on ? "has-pts" : ""}" data-buff-stack="${b.name.replace(/"/g,'&quot;')}" style="cursor:pointer;">
+            <div class="boon-row-info">
+              <div class="boon-row-name">${b.name}</div>
+              <div class="boon-row-effect">${desc}</div>
+            </div>
+            <div class="boon-counter"><span style="font-size:0.75rem;color:${on?'var(--gold)':'var(--text-dim)'};">${on?'✓ on':'+ add'}</span></div>
+          </div>`;
+        }
+        html += `</div>`;
+      }
+      el.innerHTML = html;
+
+      // Single-pick group → opens picker for that category
+      el.querySelectorAll("[data-buff-group-pick]").forEach(row => {
+        row.addEventListener("click", () => {
+          const g = row.dataset.buffGroupPick;
+          const items = (groups[g] || []).slice().sort((a,b) => a.name.localeCompare(b.name));
+          openPicker({
+            title: `${g} — pick one`,
+            items,
+            render: (b) => ({
+              name: b.name,
+              meta: b.duration_s ? `${b.duration_s}s` : "",
+              desc: describeBuff(b)
+            }),
+            onPick: (b) => {
+              // Clear any existing buff from this group (covers merged Belt Item + Battle Belt)
+              for (const other of [...state.buffs]) {
+                const ob = findBuffByName(other);
+                if (ob && displayGroupOf(ob) === g) state.buffs.delete(other);
+              }
+              if (b) state.buffs.add(b.name);
+              renderBuffs(); rerenderAll();
+            }
+          });
+        });
+      });
+      // Stackable buffs → toggle directly
+      el.querySelectorAll("[data-buff-stack]").forEach(row => {
+        row.addEventListener("click", () => {
+          const name = row.dataset.buffStack;
+          if (state.buffs.has(name)) state.buffs.delete(name);
+          else state.buffs.add(name);
           renderBuffs(); rerenderAll();
         });
       });
     }
 
-    function renderCompanions() {
-      // Summoned
-      const sum = document.getElementById("comp-summoned");
-      sum.textContent = state.summoned ? "★ " + state.summoned : "+ Summoned";
-      sum.classList.toggle("filled", !!state.summoned);
-      // Actives
-      document.querySelectorAll("#active-comps .comp-slot").forEach((s, i) => {
-        const c = state.activeComps[i];
-        s.textContent = c || `+ Active ${i+1}`;
-        s.classList.toggle("filled", !!c);
+    /* ===== Mount stable render =====
+       5 rows. Each row has: mount picker, collar picker, then a row
+       of insignia pickers based on the mount's insigniaSlots layout. */
+    function renderStable() {
+      const wrap = document.getElementById("stable-grid");
+      if (!wrap) return;
+      let html = "";
+      for (let i = 0; i < 5; i++) {
+        const slot = state.stable[i];
+        const mount = findMountByName(slot.mount);
+        const insigniaSlots = (mount && mount.insigniaSlots) || [];
+        const bonus = mount ? findBonusById(mount.bonusRef) : null;
+
+        html += `<div class="stable-row" data-stable-idx="${i}">
+          <div class="stable-row-header">Slot ${i + 1}</div>
+          <div class="stable-row-pickers">
+            <div class="stable-collar comp-slot ${slot.collar ? "filled" : ""}" data-stable="collar" data-idx="${i}">
+              ${slot.collar ? "🔗 " + slot.collar : "+ Collar"}
+            </div>
+            <div class="stable-mount comp-slot ${slot.mount ? "filled" : ""}" data-stable="mount" data-idx="${i}">
+              ${slot.mount ? "🐎 " + slot.mount : "+ Mount"}
+            </div>`;
+        if (insigniaSlots.length) {
+          html += `<div class="stable-insignias">`;
+          insigniaSlots.forEach((ins, idx) => {
+            const cur = (slot.insignias || [])[idx] || "";
+            const allowedLabel = (ins.allowed || []).join("/").replace("*", "Universal");
+            html += `<div class="stable-ins comp-slot ${cur ? "filled" : ""}"
+              data-stable="insignia" data-idx="${i}" data-ins-idx="${idx}">
+              ${cur ? "💎 " + cur : "+ " + allowedLabel}
+            </div>`;
+          });
+          html += `</div>`;
+        } else if (slot.mount) {
+          html += `<div class="stable-insignias-empty">no insignia slots</div>`;
+        }
+        html += `</div>`;
+
+        // Bonus picker row (only when a mount is selected)
+        if (mount) {
+          const desiredBonus = slot.desiredBonus ? findBonusById(slot.desiredBonus) : null;
+          const slotted = slottedCategoriesForRow(slot);
+          const active = desiredBonus && bonusActive(desiredBonus.requiredInsignias, slotted);
+          html += `<div class="stable-bonus-row">
+            <div class="stable-bonus-pick comp-slot ${desiredBonus ? "filled" : ""}" data-stable="bonus" data-idx="${i}">
+              ${desiredBonus ? "🏆 " + desiredBonus.name : "+ Pick desired Insignia Bonus"}
+            </div>`;
+          if (desiredBonus) {
+            html += `<div class="stable-bonus ${active ? "active" : ""}">
+              <span class="stable-bonus-status">${active ? "✓ ACTIVE" : "○ inactive"}</span>
+              requires ${(desiredBonus.requiredInsignias || []).join(" + ")}
+              ${desiredBonus.effectText ? `<div class="stable-bonus-effect">${desiredBonus.effectText}</div>` : ""}
+            </div>`;
+          }
+          html += `</div>`;
+        }
+        html += `</div>`;
+      }
+      wrap.innerHTML = html;
+
+      // Wire click handlers — open searchable picker modals
+      wrap.querySelectorAll("[data-stable='mount']").forEach(el => {
+        el.addEventListener("click", () => pickMount(+el.dataset.idx));
+      });
+      wrap.querySelectorAll("[data-stable='collar']").forEach(el => {
+        el.addEventListener("click", () => pickCollar(+el.dataset.idx));
+      });
+      wrap.querySelectorAll("[data-stable='insignia']").forEach(el => {
+        el.addEventListener("click", () => pickInsignia(+el.dataset.idx, +el.dataset.insIdx));
+      });
+      wrap.querySelectorAll("[data-stable='bonus']").forEach(el => {
+        el.addEventListener("click", () => pickBonusForMount(+el.dataset.idx));
+      });
+
+      renderInsigniaSummary();
+      renderActivePowerChips();
+    }
+
+    function renderActivePowerChips() {
+      const cb = document.getElementById("active-combat-chip");
+      const eq = document.getElementById("active-equip-chip");
+      if (cb) {
+        const p = findCombatPowerById(state.activeCombatPower);
+        cb.textContent = p ? "⚔ " + p.name : "+ Active Combat Power";
+        cb.classList.toggle("filled", !!p);
+      }
+      if (eq) {
+        const p = findEquipPowerById(state.activeEquipPower);
+        eq.textContent = p ? "✦ " + p.name : "+ Active Equip Power";
+        eq.classList.toggle("filled", !!p);
+      }
+    }
+
+    function pickMount(idx) {
+      openPicker({
+        title: `Stable slot ${idx + 1} — Mount`,
+        items: getMountList(),
+        render: renderMount,
+        onPick: (m) => {
+          state.stable[idx].mount = m ? m.name : "";
+          // Resize insignias array to match the picked mount's slot count
+          const slotCount = m && m.insigniaSlots ? m.insigniaSlots.length : 0;
+          const cur = state.stable[idx].insignias || [];
+          cur.length = slotCount;
+          for (let k = 0; k < slotCount; k++) if (cur[k] === undefined) cur[k] = null;
+          state.stable[idx].insignias = cur;
+          // Reset desired bonus — it may not be valid on the new mount
+          state.stable[idx].desiredBonus = null;
+          renderStable(); rerenderAll();
+        }
       });
     }
+    function pickCollar(idx) {
+      openPicker({
+        title: `Stable slot ${idx + 1} — Collar`,
+        items: getCollarList(),
+        render: renderCollar,
+        onPick: (c) => {
+          state.stable[idx].collar = c ? c.name : "";
+          renderStable(); rerenderAll();
+        }
+      });
+    }
+    function pickBonusForMount(idx) {
+      const mount = findMountByName(state.stable[idx].mount);
+      if (!mount) return;
+      const items = bonusesAvailableForMount(mount);
+      if (!items.length) {
+        toast(`No insignia bonuses match ${mount.name}'s slot layout`);
+        return;
+      }
+      openPicker({
+        title: `Insignia Bonus for ${mount.name} — ${items.length} available`,
+        items,
+        render: (b) => ({
+          name: b.name,
+          meta: `Requires ${(b.requiredInsignias || []).join(" + ")}`,
+          desc: b.effectText || "(no effect text)"
+        }),
+        onPick: (b) => {
+          state.stable[idx].desiredBonus = b ? b.id : null;
+          renderStable(); rerenderAll();
+        }
+      });
+    }
+    function pickInsignia(idx, insIdx) {
+      const mount = findMountByName(state.stable[idx].mount);
+      if (!mount) return;
+      const allowed = (mount.insigniaSlots[insIdx] || {}).allowed || [];
+      const allowedLabel = allowed.join("/").replace("*", "Universal");
+      openPicker({
+        title: `Insignia · ${allowedLabel}`,
+        items: insigniaOptionsForSlot(allowed),
+        render: renderInsignia,
+        onPick: (ins) => {
+          state.stable[idx].insignias[insIdx] = ins ? ins.name : null;
+          renderStable(); rerenderAll();
+        }
+      });
+    }
+
+    // Tally + show insignia type counts and any unlocked bonuses.
+    function renderInsigniaSummary() {
+      const wrap = document.getElementById("insignia-summary");
+      if (!wrap) return;
+      const counts = tallyInsigniaTypes();
+      const types = Object.keys(counts).sort();
+      let html = "";
+      if (types.length) {
+        html += `<div class="insignia-summary-line">Insignia types: ` +
+          types.map(t => `<span class="insignia-pill insignia-${t.toLowerCase()}">${t} ×${counts[t]}</span>`).join(" ") +
+          `</div>`;
+      } else {
+        html += `<div class="insignia-summary-line" style="color:var(--text-dim);">No insignias slotted yet.</div>`;
+      }
+      wrap.innerHTML = html;
+    }
+
+    function renderCompanions() {
+      // ---- Top loadout row ----
+      const enchantChip = document.getElementById("comp-enchant-chip");
+      if (enchantChip) {
+        const v = state.summonedEnchant;
+        enchantChip.textContent = v ? "✨ " + v : "+ Enchantment";
+        enchantChip.classList.toggle("filled", !!v);
+      }
+      const enhChip = document.getElementById("comp-enh-chip");
+      if (enhChip) {
+        const v = state.summonedEnh;
+        enhChip.textContent = v ? "🔮 " + v : "+ Enhancement";
+        enhChip.classList.toggle("filled", !!v);
+      }
+      ["Neck", "Waist", "Ring"].forEach(slot => {
+        const el = document.querySelector(`[data-summoned-equip="${slot}"]`);
+        if (!el) return;
+        const v = state.summonedGear[slot];
+        el.textContent = v ? "💍 " + v : "+ Equipment";
+        el.classList.toggle("filled", !!v);
+      });
+      // ---- Bottom: 6 even rows (Summoned + 5 typed actives) ----
+      renderCompPickRows();
+    }
+
+    function renderCompPickRows() {
+      const wrap = document.getElementById("comp-pick-rows");
+      if (!wrap) return;
+      const rows = [
+        { type: "summoned", label: "Summoned", value: state.summoned },
+        ...ACTIVE_SLOT_TYPES.map((t, i) => ({ type: "active", label: t, idx: i, value: state.activeComps[i] }))
+      ];
+      let html = "";
+      for (const r of rows) {
+        const filled = !!r.value;
+        const text = filled
+          ? (r.type === "summoned" ? "★ " : `${r.label}: `) + r.value
+          : `+ ${r.label}`;
+        html += `<div class="comp-row-active">
+          <div class="comp-slot ${filled ? "filled" : ""} ${r.type === "summoned" ? "summoned" : ""}"
+               data-pick-row="${r.type}"${r.idx !== undefined ? ` data-idx="${r.idx}"` : ""}>
+            ${text}
+          </div>
+        </div>`;
+      }
+      wrap.innerHTML = html;
+
+      wrap.querySelectorAll("[data-pick-row]").forEach(el => {
+        el.addEventListener("click", () => {
+          if (el.dataset.pickRow === "summoned") {
+            if (typeof COMPANIONS_DATA === "undefined") return;
+            openPicker({
+              title: "Summoned companion (party buff)",
+              items: COMPANIONS_DATA.slice().sort((a,b) => {
+                if (!!a.summonedBuff !== !!b.summonedBuff) return a.summonedBuff ? -1 : 1;
+                return a.name.localeCompare(b.name);
+              }),
+              render: renderSummonedCompanion,
+              onPick: (c) => {
+                state.summoned = c ? c.name : null;
+                renderCompanions(); rerenderAll();
+                toast(state.summoned ? `Summoned: ${state.summoned}` : "Cleared summoned");
+              }
+            });
+          } else {
+            const i = +el.dataset.idx;
+            const slotType = ACTIVE_SLOT_TYPES[i];
+            if (typeof COMPANIONS_DATA === "undefined") return;
+            const items = COMPANIONS_DATA.filter(c => {
+              if (slotType === "Universal") return true;
+              const p = findCompanionPower(c.powerRef);
+              return p && Array.isArray(p.slot) && p.slot.includes(slotType);
+            }).sort((a,b) => a.name.localeCompare(b.name));
+            openPicker({
+              title: `${slotType} companion`,
+              items,
+              render: renderCompanion,
+              onPick: (c) => {
+                state.activeComps[i] = c ? c.name : null;
+                renderCompanions(); rerenderAll();
+              }
+            });
+          }
+        });
+      });
+    }
+
+    const ACTIVE_SLOT_TYPES = ["Offense", "Defense", "Universal", "Universal", "Utility"];
+    // (Old renderActiveCompRows removed — the new layout is rendered by
+    //  renderCompPickRows which lists summoned + 5 active rows evenly.)
 
     function renderQuickStats() {
       const el = document.getElementById("quick-stats");
@@ -1023,7 +3579,7 @@
         1: !!state.role && !!state.class,
         2: !!state.paragon && !!state.race && !!state.il,
         3: Object.values(state.gear).some(v => v && v !== "— None —"),
-        4: !!state.summoned || !!state.mount,
+        4: !!state.summoned || state.stable.some(s => s.mount),
         5: state.boons.size > 0 || state.buffs.size > 0,
         6: false,
       };
@@ -1078,7 +3634,8 @@
       lines.push(`<strong>Artifacts:</strong> ${artFilled} / 4 slotted`);
       if (state.summoned) lines.push(`<strong>Summoned companion:</strong> ${state.summoned}`);
       lines.push(`<strong>Active companions:</strong> ${state.activeComps.filter(c=>c).length} / 4`);
-      if (state.mount)   lines.push(`<strong>Mount:</strong> ${state.mount}`);
+      const mountedCount = state.stable.filter(s => s.mount).length;
+      if (mountedCount) lines.push(`<strong>Stable mounts:</strong> ${mountedCount} / 5`);
       lines.push(`<strong>Boons enabled:</strong> ${state.boons.size}`);
       lines.push(`<strong>Buffs enabled:</strong> ${state.buffs.size}`);
       lines.push(`<strong>Build Score:</strong> <span style="color:var(--amber);font-weight:700;">${computeScore()} / 100</span>`);
@@ -1140,10 +3697,16 @@
         document.querySelectorAll(".pick-card").forEach(x => x.classList.remove("active"));
         c.classList.add("active");
         state.class = c.dataset.class;
+        populateParagons(state.class);   // refresh paragon dropdown for the new class
+        applyClassBaseScores(state.class);  // reset ability scores to class base
+        renderGear();                    // refresh gear options (class filter changes)
+        renderArtifacts();               // refresh artifact options
         rerenderAll();
         toast(`Class set: ${state.class}`);
       });
     });
+    // (Ability scores now use the allocation grid — see renderAbilityGrid.
+    //  Click handlers are attached inside that function on each render.)
     // Step click
     document.querySelectorAll(".step").forEach(s => {
       s.addEventListener("click", () => gotoStep(+s.dataset.step));
@@ -1158,34 +3721,144 @@
     });
     // Form fields
     document.getElementById("f-paragon").addEventListener("change", e => { state.paragon = e.target.value; rerenderAll(); });
-    document.getElementById("f-race").addEventListener("change",    e => { state.race    = e.target.value; rerenderAll(); });
+    document.getElementById("f-race").addEventListener("change",    e => {
+      state.race = e.target.value;
+      state.raceChoices = [];   // reset picks when race changes
+      recomputeAbilityTotals();
+      renderAbilityGrid();
+      rerenderAll();
+    });
     document.getElementById("f-il").addEventListener("input",       e => { state.il      = e.target.value; rerenderAll(); });
     document.getElementById("f-name").addEventListener("input",     e => { state.name    = e.target.value; rerenderAll(); });
-    document.getElementById("f-mount").addEventListener("change",   e => { state.mount   = e.target.value; rerenderAll(); toast(e.target.value ? `Mount: ${e.target.value}` : "Mount cleared"); });
+    // (f-mount listener removed — replaced by 5-slot stable picker, see renderStable.)
     document.getElementById("sim-mag").addEventListener("input",    () => renderSim());
     document.getElementById("sim-type").addEventListener("change",  () => renderSim());
 
-    // Companion slots — cycle a placeholder name on click
-    document.getElementById("comp-summoned").addEventListener("click", () => {
-      const next = COMPANIONS[Math.floor(Math.random() * COMPANIONS.length)];
-      state.summoned = state.summoned === next ? null : next;
-      renderCompanions(); rerenderAll();
-      toast(state.summoned ? `Summoned: ${state.summoned}` : "Cleared summoned");
+    // (Summoned + active companion picker handlers are wired inside
+    //  renderCompPickRows() since those tiles are rebuilt on every render.)
+
+    // Top loadout row: companion enchantment, enhancement, equipment ×3.
+    // Companion enchantment = enchants.json with slotType === "companion".
+    document.getElementById("comp-enchant-chip").addEventListener("click", () => {
+      if (typeof ENCHANTS_DATA === "undefined") return;
+      const items = ENCHANTS_DATA.filter(e => e.slotType === "companion")
+        .sort((a,b) => (b.item_level||0)-(a.item_level||0) || a.name.localeCompare(b.name));
+      openPicker({
+        title: "Companion enchantment",
+        items,
+        render: renderEnchantPick,
+        onPick: (e) => {
+          state.summonedEnchant = e ? e.name : null;
+          renderCompanions(); rerenderAll();
+        }
+      });
     });
-    document.querySelectorAll("#active-comps .comp-slot").forEach((s, i) => {
-      s.addEventListener("click", () => {
-        const next = COMPANIONS[Math.floor(Math.random() * COMPANIONS.length)];
-        state.activeComps[i] = state.activeComps[i] === next ? null : next;
-        renderCompanions(); rerenderAll();
+    document.getElementById("comp-enh-chip").addEventListener("click", () => {
+      openPicker({
+        title: "Companion enhancement (rune)",
+        items: getEnhancementList(),
+        render: renderEnhancement,
+        onPick: (e) => {
+          state.summonedEnh = e ? e.name : null;
+          renderCompanions(); rerenderAll();
+        }
+      });
+    });
+    document.querySelectorAll("[data-summoned-equip]").forEach(el => {
+      el.addEventListener("click", () => {
+        const slot = el.dataset.summonedEquip;
+        openPicker({
+          title: `Summoned companion equipment — ${slot}`,
+          items: compGearOptionsForSlot(slot),
+          render: renderCompGear,
+          onPick: (item) => {
+            state.summonedGear[slot] = item ? item.name : null;
+            renderCompanions(); rerenderAll();
+          }
+        });
       });
     });
 
+    // Active combat / equip power pickers — all powers, independent of stable.
+    document.getElementById("active-combat-chip").addEventListener("click", () => {
+      const items = getAllCombatPowers();
+      openPicker({
+        title: `Active Combat Power — ${items.length} total`,
+        items,
+        render: renderCombatPower,
+        onPick: (p) => {
+          state.activeCombatPower = p ? p.id : null;
+          renderActivePowerChips(); rerenderAll();
+        }
+      });
+    });
+    document.getElementById("active-equip-chip").addEventListener("click", () => {
+      const items = getAllEquipPowers();
+      openPicker({
+        title: `Active Equip Power — ${items.length} total`,
+        items,
+        render: renderEquipPower,
+        onPick: (p) => {
+          state.activeEquipPower = p ? p.id : null;
+          renderActivePowerChips(); rerenderAll();
+        }
+      });
+    });
+
+    // Find-a-Bonus browser
+    document.getElementById("find-bonus-btn").addEventListener("click", () => {
+      if (typeof MOUNT_INSIGNIA_BONUSES_DATA === "undefined") return;
+      openPicker({
+        title: "Find an Insignia Bonus",
+        items: MOUNT_INSIGNIA_BONUSES_DATA.slice().sort((a,b) => a.name.localeCompare(b.name)),
+        render: (b) => {
+          const mounts = mountsThatGrantBonus(b.id);
+          const mountList = mounts.length
+            ? `Granted by: ${mounts.slice(0, 5).join(", ")}${mounts.length > 5 ? ` (+${mounts.length - 5} more)` : ""}`
+            : `No mount currently grants this bonus.`;
+          return {
+            name: b.name,
+            meta: `Requires ${(b.requiredInsignias || []).join(" + ")}`,
+            desc: `${b.effectText || "(no effect text)"} — ${mountList}`
+          };
+        },
+        allowNone: false,
+        onPick: (b) => {
+          if (!b) return;
+          const mounts = mountsThatGrantBonus(b.id);
+          if (mounts.length) {
+            toast(`${b.name} → equip ${mounts[0]} (or one of ${mounts.length} mounts) and slot ${b.requiredInsignias.join(" + ")}`);
+          } else {
+            toast(`No mount in our data grants ${b.name}`);
+          }
+        }
+      });
+    });
+
+    // Detailed Stats modal open/close
+    document.getElementById("open-detailed-stats").addEventListener("click", openDetailedStats);
+    document.getElementById("dstats-close").addEventListener("click", closeDetailedStats);
+    document.getElementById("dstats-overlay").addEventListener("click", (e) => {
+      if (e.target.id === "dstats-overlay") closeDetailedStats();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeDetailedStats();
+    });
+
     /* ===== Initial render ===== */
+    populateRaces();
+    populateParagons(null);   // empty until a class is picked
+    recomputeAbilityTotals();
+    renderAbilityGrid();
     renderGear();
     renderArtifacts();
+    renderEnchantments();
+    renderOverloads();
     renderBoons();
+    renderGuildBoons();
     renderBuffs();
     renderCompanions();
+    renderStable();
     rerenderAll();
   </script>
 </body>

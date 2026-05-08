@@ -36,6 +36,10 @@ FILE_MAP = {
     "campaign_boons.json":          ("campaign-boons.js",          "CAMPAIGN_BOONS_DATA"),
     "guild_boons.json":             ("guild-boons.js",             "GUILD_BOONS_DATA"),
     "companion_gear.json":          ("companion-gear.js",          "COMPANION_GEAR_DATA"),
+    "gear.json":                    ("gear.js",                    "GEAR_DATA"),
+    "enchants.json":                ("enchants.js",                "ENCHANTS_DATA"),
+    "overloads.json":               ("overloads.js",               "OVERLOADS_DATA"),
+    "kits.json":                    ("kits.js",                    "KITS_DATA"),
 }
 
 def build_header(source_name):

@@ -68,8 +68,10 @@ const TOON_FORGE_STAT_NAMES = TOON_FORGE_STATS.map(function(s) { return s.name; 
 const TOON_FORGE_BONUS_STATS = [
   "Gold Bonus",
   "Glory Bonus",
-  "Stamina",       // distinct from Stamina Regeneration
-  "magnitude",     // damage-formula side; not a stat percentage
+  "Stamina",          // distinct from Stamina Regeneration
+  "magnitude",        // damage-formula side; not a stat percentage
+  "Physical Damage",  // damage-formula side (Phase 4); not a stat panel entry
+  "Magical Damage",   // damage-formula side (Phase 4)
 ];
 
 // Per-paragon display labels for the class resource. The internal
