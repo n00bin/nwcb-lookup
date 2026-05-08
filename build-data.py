@@ -30,6 +30,7 @@ FILE_MAP = {
     "companion_powers.json":        ("companion-powers.js",        "COMPANION_POWERS_DATA"),
     "companion_enhancements.json":  ("companion-enhancements.js",  "COMPANION_ENHANCEMENTS_DATA"),
     "buffs.json":                   ("buffs.js",                   "BUFFS_DATA"),
+    "artifacts.json":               ("artifacts.js",               "ARTIFACTS_DATA"),
 }
 
 def build_header(source_name):
