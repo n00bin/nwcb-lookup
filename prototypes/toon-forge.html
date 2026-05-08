@@ -827,7 +827,22 @@
       simMag: 100,
     };
 
-    const GEAR_SLOTS = ["Head","Chest","Arms","Legs","Feet","Neck","Belt","Shirt","Pants","Main Hand","Off Hand","Tools"];
+    // Slot { label: shown to user; slot: matches the slot field in gear.json }.
+    // Two ring slots share the same data slot ("Ring") but are independent picks.
+    const GEAR_SLOTS = [
+      { label: "Head",      slot: "Head"      },
+      { label: "Armor",     slot: "Armor"     },
+      { label: "Arms",      slot: "Arms"      },
+      { label: "Pant",      slot: "Pant"      },
+      { label: "Feet",      slot: "Feet"      },
+      { label: "Neck",      slot: "Neck"      },
+      { label: "Waist",     slot: "Waist"     },
+      { label: "Shirt",     slot: "Shirt"     },
+      { label: "Ring 1",    slot: "Ring"      },
+      { label: "Ring 2",    slot: "Ring"      },
+      { label: "Main Hand", slot: "Main Hand" },
+      { label: "Off Hand",  slot: "Off Hand"  },
+    ];
     const GEAR_OPTIONS = ["— None —", "Mythic Vivified ★", "Legendary Voninblod", "Epic Mountain of Flame", "Epic Lionheart"];
     const ARTIFACT_SLOTS = ["Primary","Secondary 1","Secondary 2","Secondary 3"];
     const ARTIFACT_OPTIONS = ["— None —", "Lantern of Revelation", "Sigil of the Devoted", "Black Ice Beholder", "Tarokka Deck", "Shard of Orcus"];
@@ -894,13 +909,13 @@
     /* ===== Render functions ===== */
     function renderGear() {
       const g = document.getElementById("gear-grid");
-      g.innerHTML = GEAR_SLOTS.map(slot => {
-        const v = state.gear[slot] || "";
+      g.innerHTML = GEAR_SLOTS.map(s => {
+        const v = state.gear[s.label] || "";
         const filled = v && v !== "— None —";
         return `
           <div class="slot ${filled ? "filled" : ""}">
-            <div class="slot-label">${slot}</div>
-            <select data-gear="${slot}">
+            <div class="slot-label">${s.label}</div>
+            <select data-gear="${s.label}" data-slot-type="${s.slot}">
               ${GEAR_OPTIONS.map(o => `<option value="${o === "— None —" ? "" : o}" ${v === o ? "selected" : ""}>${o}</option>`).join("")}
             </select>
           </div>`;
