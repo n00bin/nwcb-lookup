@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Editor (Prototype) — NWCB</title>
+  <style>
+    /* ------- Theme (cribbed from main site so it feels familiar) ------- */
+    :root {
+      --bg-primary:   #0d1117;
+      --bg-surface:   #161b22;
+      --bg-elevated:  #21262d;
+      --bg-hover:     #30363d;
+      --border:       #30363d;
+      --border-acc:   #58a6ff;
+      --text:         #c9d1d9;
+      --text-mute:    #8b949e;
+      --text-dim:     #6e7681;
+      --accent:       #58a6ff;
+      --highlight:    #f0883e;
+      --pos:          #3fb950;
+      --neg:          #f85149;
+      --rar-common:   #a8a8a8;
+      --rar-uncommon: #3fb950;
+      --rar-rare:     #58a6ff;
+      --rar-epic:     #a371f7;
+      --rar-legend:   #d29922;
+      --rar-mythic:   #f85149;
+      --rar-celest:   #f178ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text);
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .topbar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .topbar h1 { margin: 0; font-size: 1.05rem; color: var(--highlight); }
+    .topbar .badge {
+      background: rgba(240,136,62,0.15);
+      color: var(--highlight);
+      border: 1px solid rgba(240,136,62,0.4);
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .topbar .small { color: var(--text-mute); font-size: 0.78rem; }
+
+    /* ------- 3-column layout ------- */
+    .grid {
+      display: grid;
+      grid-template-columns: 220px 1fr 320px;
+      gap: 1px;
+      background: var(--border);
+      min-height: calc(100vh - 38px);
+    }
+    .col { background: var(--bg-primary); padding: 1rem; overflow-y: auto; }
+    .col-left  { background: var(--bg-surface); }
+    .col-right { background: var(--bg-surface); }
+
+    /* ------- Section headers ------- */
+    .sec {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--highlight);
+      padding: 0.85rem 0 0.35rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.6rem;
+    }
+    .sec:first-child { padding-top: 0; }
+
+    /* ------- Character list (left) ------- */
+    .char-card {
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 0.4rem;
+      cursor: pointer;
+      background: var(--bg-elevated);
+    }
+    .char-card.active { border-color: var(--accent); background: var(--bg-hover); }
+    .char-card .name { font-weight: 600; }
+    .char-card .meta { color: var(--text-mute); font-size: 0.78rem; }
+    .btn {
+      background: var(--accent); color: #fff; border: 0; padding: 0.5rem;
+      border-radius: 6px; cursor: pointer; font-weight: 600;
+      width: 100%; font-size: 0.85rem;
+    }
+    .btn:hover { background: #4895e8; }
+    .btn-sec { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
+    .btn-sec:hover { background: var(--bg-hover); }
+
+    /* ------- Form rows (center) ------- */
+    .row { display: grid; grid-template-columns: 130px 1fr; gap: 0.5rem; align-items: center; margin-bottom: 0.45rem; }
+    .row label { color: var(--text-mute); font-size: 0.85rem; }
+    .row input, .row select {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.35rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    .row input[type="number"] { width: 90px; }
+
+    .gear-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .gear-slot {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.65rem;
+      display: flex; flex-direction: column; gap: 0.15rem;
+    }
+    .gear-slot .label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-mute); letter-spacing: 0.05em; }
+    .gear-slot select { background: var(--bg-primary); border: 1px solid var(--border); color: var(--text); padding: 0.25rem; border-radius: 3px; font-size: 0.8rem; }
+
+    .collapsible {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+    .collapsible-head {
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-elevated);
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; font-size: 0.85rem; font-weight: 600;
+    }
+    .collapsible-head:hover { background: var(--bg-hover); }
+    .collapsible-head .arrow { color: var(--text-mute); font-size: 0.7rem; transition: transform 0.15s; }
+    .collapsible.open .arrow { transform: rotate(90deg); }
+    .collapsible-body { padding: 0.6rem 0.75rem; display: none; }
+    .collapsible.open .collapsible-body { display: block; }
+
+    /* ------- Right panel: live stats ------- */
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      padding: 0.25rem 0;
+      font-size: 0.82rem;
+      align-items: center;
+    }
+    .stat-row .name { color: var(--text-mute); }
+    .stat-row .val { font-family: monospace; font-weight: 600; min-width: 60px; text-align: right; }
+    .bar {
+      grid-column: 1 / 3;
+      height: 4px;
+      background: var(--bg-elevated);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 0.05rem;
+      margin-bottom: 0.4rem;
+    }
+    .bar-fill { height: 100%; background: var(--accent); transition: width 0.2s; }
+    .bar-fill.cap { background: var(--pos); }
+    .bar-fill.over { background: var(--highlight); }
+
+    .magnitude-calc {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .scenario-row {
+      display: grid;
+      grid-template-columns: 30px 30px 30px 1fr 60px;
+      gap: 0.4rem;
+      padding: 0.2rem 0;
+      font-size: 0.78rem;
+      font-family: monospace;
+      border-bottom: 1px dashed rgba(255,255,255,0.05);
+      align-items: center;
+    }
+    .scenario-row:last-child { border-bottom: none; }
+    .tag { font-size: 0.64rem; padding: 0.05rem 0.3rem; border-radius: 2px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+    .tag-crit { background: rgba(240,136,62,0.2); color: var(--highlight); }
+    .tag-flank { background: rgba(63,185,80,0.2); color: var(--pos); }
+    .tag-defl { background: rgba(248,81,73,0.2); color: var(--neg); }
+    .tag-blank { background: var(--bg-primary); color: var(--text-dim); border: 1px solid var(--border); }
+    .scenario-row .dmg { text-align: right; color: var(--text); }
+    .scenario-row.expected { background: rgba(88,166,255,0.08); border-radius: 4px; padding: 0.3rem 0.4rem; margin-top: 0.3rem; font-weight: 700; }
+
+    .footer-note {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Character Editor</h1>
+    <span class="badge">Prototype</span>
+    <span class="small">Standalone mockup — not wired to the real site data</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- ===================== LEFT: Character list ===================== -->
+    <div class="col col-left">
+      <div class="sec">Characters</div>
+      <div class="char-card active">
+        <div class="name">Zoryn</div>
+        <div class="meta">Wizard · Arcanist · DPS</div>
+      </div>
+      <div class="char-card">
+        <div class="name">Brenna</div>
+        <div class="meta">Cleric · Devout · Healer</div>
+      </div>
+      <div class="char-card">
+        <div class="name">Korr</div>
+        <div class="meta">Fighter · Vanguard · Tank</div>
+      </div>
+      <button class="btn" style="margin-top:0.5rem;">+ New Character</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin-top:0.4rem;">
+        <button class="btn btn-sec">Export</button>
+        <button class="btn btn-sec">Import</button>
+      </div>
+
+      <div class="sec">Active</div>
+      <div style="font-size:0.85rem;line-height:1.6;">
+        <div><strong>Zoryn</strong></div>
+        <div style="color:var(--text-mute);">Item Level: <span style="color:var(--accent);font-family:monospace;">44,632</span></div>
+        <div style="color:var(--text-mute);">DPS Score: <span style="color:var(--highlight);font-family:monospace;">8,456</span></div>
+        <div style="color:var(--text-mute);">Saved: today</div>
+      </div>
+    </div>
+
+    <!-- ===================== CENTER: Builder form ===================== -->
+    <div class="col">
+      <div class="sec">Profile</div>
+      <div class="row"><label>Name</label><input value="Zoryn"></div>
+      <div class="row"><label>Class</label><select><option>Wizard</option><option>Cleric</option><option>Fighter</option><option>Rogue</option><option>Warlock</option></select></div>
+      <div class="row"><label>Paragon Path</label><select><option>Arcanist (DPS)</option><option>Thaumaturge (DPS)</option></select></div>
+      <div class="row"><label>Race</label><select><option>Tiefling</option><option>Half-Elf</option><option>Dragonborn</option></select></div>
+      <div class="row"><label>Item Level</label><input type="number" id="il" value="44632"></div>
+
+      <div class="sec">Ability Scores</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:0.3rem;">
+        <div class="gear-slot"><div class="label">STR</div><input type="number" value="14" style="background:var(--bg-primary);border:1px solid var(--border);color:var(--text);padding:0.25rem;border-radius:3px;"></div>
+        <div class="gear-slot"><div class="label">CON</div><input type="number" value="16"></div>
+        <div class="gear-slot"><div class="label">DEX</div><input type="number" value="18"></div>
+        <div class="gear-slot"><div class="label">INT</div><input type="number" value="22"></div>
+        <div class="gear-slot"><div class="label">WIS</div><input type="number" value="14"></div>
+        <div class="gear-slot"><div class="label">CHA</div><input type="number" value="16"></div>
+      </div>
+
+      <div class="sec">Gear & Equipment</div>
+      <div class="gear-grid">
+        <div class="gear-slot"><div class="label">Head</div><select><option>—</option><option>Mythic Vivified Head</option></select></div>
+        <div class="gear-slot"><div class="label">Chest</div><select><option>—</option><option>Mythic Vivified Chest</option></select></div>
+        <div class="gear-slot"><div class="label">Arms</div><select><option>—</option><option>Mythic Vivified Arms</option></select></div>
+        <div class="gear-slot"><div class="label">Legs</div><select><option>—</option><option>Mythic Vivified Legs</option></select></div>
+        <div class="gear-slot"><div class="label">Feet</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Neck</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Belt</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Shirt</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Pants</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Main Hand</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Off Hand</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Tools</div><select><option>—</option></select></div>
+      </div>
+
+      <div class="sec">Artifacts</div>
+      <div class="gear-grid">
+        <div class="gear-slot"><div class="label">Primary</div><select><option>—</option><option>Lantern of Revelation</option><option>Sigil of the Devoted</option></select></div>
+        <div class="gear-slot"><div class="label">Secondary 1</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Secondary 2</div><select><option>—</option></select></div>
+        <div class="gear-slot"><div class="label">Secondary 3</div><select><option>—</option></select></div>
+      </div>
+
+      <div class="collapsible open">
+        <div class="collapsible-head" onclick="this.parentElement.classList.toggle('open')">
+          <span>Companions <span style="color:var(--text-mute);font-weight:400;">— Summoned + 4 Active + 12 Stable</span></span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapsible-body">
+          <div class="row"><label>Summoned</label><select><option>Phasespider</option><option>Lysaera</option></select></div>
+          <div style="color:var(--text-mute);font-size:0.8rem;margin-top:0.3rem;">→ Active companion gear, enhancement, rank ★, item level inputs would go here</div>
+        </div>
+      </div>
+
+      <div class="collapsible">
+        <div class="collapsible-head" onclick="this.parentElement.classList.toggle('open')">
+          <span>Mounts & Insignia Bonuses</span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapsible-body">
+          <div class="row"><label>Active Mount</label><select><option>Crimson Crystal Horse</option></select></div>
+          <div style="color:var(--text-mute);font-size:0.8rem;">→ Equipped insignias + active bonuses from rest of stable</div>
+        </div>
+      </div>
+
+      <div class="collapsible">
+        <div class="collapsible-head" onclick="this.parentElement.classList.toggle('open')">
+          <span>Boons (Stronghold + Guild + Master)</span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapsible-body">
+          <div style="color:var(--text-mute);font-size:0.8rem;">130 boon points — campaign tier table</div>
+        </div>
+      </div>
+
+      <div class="collapsible">
+        <div class="collapsible-head" onclick="this.parentElement.classList.toggle('open')">
+          <span>Optional Buffs <span style="color:var(--text-mute);font-weight:400;">— food, scrolls, potions, masterworks</span></span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapsible-body">
+          <div style="color:var(--text-mute);font-size:0.8rem;">VIP Tier 5, Watermelon Sorbet, Yooj, Squash Soup, Mooncake, Honeyed Bread, Scroll of Fate, etc.</div>
+        </div>
+      </div>
+
+      <div class="collapsible">
+        <div class="collapsible-head" onclick="this.parentElement.classList.toggle('open')">
+          <span>External Buffs <span style="color:var(--text-mute);font-weight:400;">— party member contributions</span></span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapsible-body">
+          <div style="color:var(--text-mute);font-size:0.8rem;">Tank shouts, healer auras, party companion buffs, mount equip auras</div>
+        </div>
+      </div>
+
+      <div class="collapsible">
+        <div class="collapsible-head" onclick="this.parentElement.classList.toggle('open')">
+          <span>Manual Stat Adjustments</span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapsible-body">
+          <div style="color:var(--text-mute);font-size:0.8rem;">Override individual stat ratings or percentages for what-if testing</div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        This is a wireframe. The real version would aggregate all sources above into the live stat panel on the right
+        and feed the magnitude calculator. Inputs are non-functional in this mockup.
+      </div>
+    </div>
+
+    <!-- ===================== RIGHT: Live stats ===================== -->
+    <div class="col col-right">
+      <div class="sec">Stats <span style="font-weight:400;color:var(--text-mute);font-size:0.7rem;">(live)</span></div>
+
+      <div class="stat-row"><span class="name">Power</span><span class="val">+82.4%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:68.6%;"></div></div>
+
+      <div class="stat-row"><span class="name">Combat Advantage</span><span class="val">+95.2%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:79.3%;"></div></div>
+
+      <div class="stat-row"><span class="name">Critical Strike</span><span class="val">+90.0%</span></div>
+      <div class="bar"><div class="bar-fill cap" style="width:100%;"></div></div>
+
+      <div class="stat-row"><span class="name">Critical Severity</span><span class="val">+118.7%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:98.9%;"></div></div>
+
+      <div class="stat-row"><span class="name">Accuracy</span><span class="val">+62.1%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:69.0%;"></div></div>
+
+      <div class="sec">Defensive</div>
+      <div class="stat-row"><span class="name">Defense</span><span class="val">+78.3%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:65.3%;"></div></div>
+
+      <div class="stat-row"><span class="name">Awareness</span><span class="val">+55.0%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:61.1%;"></div></div>
+
+      <div class="stat-row"><span class="name">Critical Avoidance</span><span class="val">+45.0%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:50.0%;"></div></div>
+
+      <div class="sec">Other</div>
+      <div class="stat-row"><span class="name">Forte</span><span class="val">+72.5%</span></div>
+      <div class="stat-row"><span class="name">Action Point Gain</span><span class="val">+12.5%</span></div>
+      <div class="stat-row"><span class="name">Recharge Speed</span><span class="val">+18.0%</span></div>
+      <div class="stat-row"><span class="name">Movement Speed</span><span class="val">+24.0%</span></div>
+      <div class="stat-row"><span class="name">Stamina Regeneration</span><span class="val">+15.0%</span></div>
+      <div class="stat-row"><span class="name">Max HP</span><span class="val">462,840</span></div>
+
+      <div class="sec">Magnitude Calculator</div>
+      <div class="magnitude-calc">
+        <div class="row" style="margin-bottom:0.4rem;">
+          <label>Magnitude</label>
+          <input type="number" value="100" style="width:80px;">
+        </div>
+        <div style="display:flex;gap:0.3rem;margin-bottom:0.5rem;">
+          <button class="btn btn-sec" style="flex:1;font-size:0.75rem;padding:0.3rem;">Magical</button>
+          <button class="btn btn-sec" style="flex:1;font-size:0.75rem;padding:0.3rem;">Physical</button>
+        </div>
+        <div style="font-size:0.78rem;color:var(--text-mute);margin-bottom:0.4rem;">
+          Base: <span style="font-family:monospace;color:var(--text);">5,355</span> ·
+          ×Power: <span style="font-family:monospace;">1.824</span> ·
+          ×CA-up: <span style="font-family:monospace;">1.475</span>
+        </div>
+        <div style="font-size:0.7rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;">All hit scenarios</div>
+        <div class="scenario-row">
+          <span class="tag tag-blank">—</span>
+          <span class="tag tag-blank">—</span>
+          <span class="tag tag-blank">—</span>
+          <span style="color:var(--text-mute);">base hit</span>
+          <span class="dmg">606</span>
+        </div>
+        <div class="scenario-row">
+          <span class="tag tag-blank">—</span>
+          <span class="tag tag-flank">FL</span>
+          <span class="tag tag-blank">—</span>
+          <span style="color:var(--text-mute);">flank only</span>
+          <span class="dmg">878</span>
+        </div>
+        <div class="scenario-row">
+          <span class="tag tag-crit">CR</span>
+          <span class="tag tag-blank">—</span>
+          <span class="tag tag-blank">—</span>
+          <span style="color:var(--text-mute);">crit only</span>
+          <span class="dmg">915</span>
+        </div>
+        <div class="scenario-row">
+          <span class="tag tag-crit">CR</span>
+          <span class="tag tag-flank">FL</span>
+          <span class="tag tag-blank">—</span>
+          <span style="color:var(--text-mute);">crit + flank</span>
+          <span class="dmg">1,327</span>
+        </div>
+        <div class="scenario-row">
+          <span class="tag tag-blank">—</span>
+          <span class="tag tag-blank">—</span>
+          <span class="tag tag-defl">DF</span>
+          <span style="color:var(--text-mute);">deflected</span>
+          <span class="dmg">418</span>
+        </div>
+        <div class="scenario-row expected">
+          <span class="tag tag-blank">E</span>
+          <span class="tag tag-blank">[V]</span>
+          <span class="tag tag-blank"></span>
+          <span>Expected (weighted)</span>
+          <span class="dmg" style="color:var(--accent);">856</span>
+        </div>
+        <div class="footer-note">Rotation Sim & Build Optimizer would plug in here</div>
+      </div>
+
+      <div class="footer-note" style="text-align:center;margin-top:0.8rem;">
+        Stats are mock data — final version aggregates from gear/companions/mounts/boons/buffs above
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Just enough JS to make the prototype feel alive
+    document.querySelectorAll('.char-card').forEach(c => {
+      c.addEventListener('click', () => {
+        document.querySelectorAll('.char-card').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

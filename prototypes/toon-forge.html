@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toon Forge (Prototype) — NWCB</title>
+  <style>
+    /* ===== Theme: amber-first, our own identity ===== */
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --elevated:  #1d2530;
+      --hover:     #2a3340;
+      --border:    #2a3441;
+      --text:      #e6edf3;
+      --text-mute: #8b949e;
+      --text-dim:  #5d6571;
+      --amber:     #f0883e;
+      --amber-glow:rgba(240,136,62,0.18);
+      --gold:      #d29922;
+      --pos:       #3fb950;
+      --neg:       #f85149;
+      --dps:       #f0883e;
+      --tank:      #58a6ff;
+      --heal:      #d2a8ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* ===== Hero header ===== */
+    .hero {
+      background: linear-gradient(135deg, rgba(240,136,62,0.12), rgba(240,136,62,0.02));
+      border-bottom: 1px solid rgba(240,136,62,0.3);
+      padding: 1.4rem 2rem 1rem;
+    }
+    .hero h1 {
+      font-family: Georgia, serif;
+      font-size: 2.1rem;
+      margin: 0;
+      color: var(--amber);
+      letter-spacing: 0.02em;
+      font-weight: 700;
+    }
+    .hero h1 .accent {
+      color: var(--text);
+      font-weight: 400;
+      font-style: italic;
+      margin-left: 0.4rem;
+    }
+    .hero p {
+      margin: 0.3rem 0 0;
+      color: var(--text-mute);
+      font-size: 0.95rem;
+      max-width: 700px;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(240,136,62,0.15);
+      color: var(--amber);
+      border: 1px solid rgba(240,136,62,0.4);
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    .save-status {
+      float: right;
+      color: var(--text-mute);
+      font-size: 0.78rem;
+      margin-top: 0.6rem;
+    }
+    .save-status.saved { color: var(--pos); }
+
+    /* ===== Step strip ===== */
+    .steps {
+      display: flex;
+      gap: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      overflow-x: auto;
+    }
+    .step {
+      padding: 1rem 1.2rem;
+      cursor: pointer;
+      color: var(--text-mute);
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-bottom: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .step:hover { color: var(--text); }
+    .step.active { color: var(--amber); border-bottom-color: var(--amber); }
+    .step .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      font-family: Georgia, serif;
+      transition: all 0.2s;
+    }
+    .step.active .num { background: var(--amber); color: #000; border-color: var(--amber); }
+    .step.done .num   { background: var(--pos);   color: #000; border-color: var(--pos); }
+    .step.done .num::before { content: "✓"; }
+    .step.done .num   { font-size: 0; }
+    .step.done .num::before { font-size: 0.85rem; }
+
+    /* ===== Page layout ===== */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 6rem;
+    }
+    .step-panel { display: none; animation: fadeIn 0.25s ease-out; }
+    .step-panel.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .panel h2 {
+      font-family: Georgia, serif;
+      margin: 0 0 0.4rem;
+      color: var(--amber);
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+    .panel .hint {
+      color: var(--text-mute);
+      font-size: 0.88rem;
+      margin: 0 0 1.25rem;
+      font-style: italic;
+    }
+
+    /* ===== Role tiles ===== */
+    .role-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem; }
+    .role-card {
+      background: var(--elevated);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .role-card:hover { transform: translateY(-2px); }
+    .role-card .icon {
+      font-size: 2.4rem;
+      margin-bottom: 0.4rem;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    }
+    .role-card .name {
+      font-family: Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .role-card .blurb { color: var(--text-mute); font-size: 0.8rem; line-height: 1.45; }
+    .role-card.dps  { --c: var(--dps); }
+    .role-card.tank { --c: var(--tank); }
+    .role-card.heal { --c: var(--heal); }
+    .role-card.active {
+      border-color: var(--c);
+      background: linear-gradient(135deg, rgba(0,0,0,0), color-mix(in srgb, var(--c) 10%, transparent));
+      box-shadow: 0 6px 20px color-mix(in srgb, var(--c) 12%, transparent);
+    }
+    .role-card.active .name { color: var(--c); }
+
+    /* ===== Class grid ===== */
+    .class-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+    .pick-card {
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 0.55rem;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.15s;
+    }
+    .pick-card:hover { background: var(--hover); }
+    .pick-card.active {
+      border-color: var(--amber);
+      background: rgba(240,136,62,0.1);
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    /* ===== Form fields ===== */
+    .field { margin-bottom: 1rem; }
+    .field label {
+      display: block;
+      color: var(--text-mute);
+      font-size: 0.82rem;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    .field label .hint-icon {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--elevated);
+      color: var(--text-dim);
+      text-align: center;
+      font-size: 0.65rem;
+      line-height: 14px;
+      cursor: help;
+      margin-left: 0.3rem;
+    }
+    .field input, .field select {
+      width: 100%;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--amber); }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .row-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; }
+
+    /* ===== Slot grids (gear/artifacts) ===== */
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+    .slot {
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.7rem;
+    }
+    .slot .slot-label {
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      color: var(--text-mute);
+      letter-spacing: 0.07em;
+      margin-bottom: 0.3rem;
+      font-weight: 700;
+    }
+    .slot select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.4rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-family: inherit;
+    }
+    .slot.filled { border-color: rgba(240,136,62,0.4); background: rgba(240,136,62,0.04); }
+
+    /* ===== Companions / Mounts mini-grid ===== */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+    .comp-slot {
+      aspect-ratio: 1;
+      background: var(--elevated);
+      border: 1.5px dashed var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      text-align: center;
+      padding: 0.4rem;
+    }
+    .comp-slot:hover { border-color: var(--amber); }
+    .comp-slot.filled {
+      border-style: solid;
+      border-color: rgba(240,136,62,0.5);
+      background: rgba(240,136,62,0.08);
+      color: var(--amber);
+      font-weight: 600;
+    }
+    .comp-slot.summoned {
+      border-color: var(--amber);
+      background: rgba(240,136,62,0.12);
+      box-shadow: 0 0 12px rgba(240,136,62,0.2);
+    }
+
+    /* ===== Buff toggle list ===== */
+    .toggle-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+    .toggle {
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.15s;
+    }
+    .toggle:hover { background: var(--hover); }
+    .toggle.on { border-color: var(--amber); background: rgba(240,136,62,0.08); color: var(--amber); }
+    .toggle .check {
+      width: 16px; height: 16px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .toggle.on .check { background: var(--amber); border-color: var(--amber); }
+    .toggle.on .check::after { content: "✓"; color: #000; font-size: 0.8rem; font-weight: 700; }
+    .toggle .name { flex: 1; font-size: 0.88rem; }
+    .toggle .effect { color: var(--text-mute); font-size: 0.78rem; font-style: italic; }
+    .toggle.on .effect { color: var(--gold); font-style: normal; }
+
+    /* ===== Action buttons ===== */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.7rem;
+      margin-top: 0.5rem;
+    }
+    .btn {
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: var(--amber); color: #000; border-color: var(--amber); }
+    .btn-primary:hover { background: #ff9a4d; transform: translateY(-1px); }
+    .btn-ghost   { background: transparent; color: var(--text-mute); border-color: var(--border); }
+    .btn-ghost:hover { color: var(--text); }
+    .btn-secondary { background: var(--elevated); color: var(--text); border-color: var(--border); }
+    .btn-secondary:hover { background: var(--hover); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ===== Sticky footer: Build Score ===== */
+    .footer-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, var(--surface) 90%, rgba(22,27,34,0.92));
+      border-top: 2px solid var(--amber);
+      padding: 0.85rem 2rem;
+      display: grid;
+      grid-template-columns: 280px 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+      z-index: 100;
+    }
+    .score-box { display: flex; align-items: center; gap: 0.8rem; }
+    .gauge {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      background: conic-gradient(var(--amber) 0%, var(--amber) calc(var(--p, 0) * 1%), var(--elevated) calc(var(--p, 0) * 1%), var(--elevated) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: background 0.4s;
+    }
+    .gauge::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      background: var(--surface);
+    }
+    .gauge .num {
+      position: relative;
+      font-family: Georgia, serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--amber);
+      z-index: 1;
+    }
+    .score-label { font-family: Georgia, serif; }
+    .score-label .title {
+      font-size: 0.72rem;
+      color: var(--text-mute);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .score-label .value {
+      font-size: 1.1rem;
+      color: var(--amber);
+      font-weight: 700;
+    }
+    .score-label .desc { font-size: 0.78rem; color: var(--text-mute); }
+
+    .quick-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.4rem; }
+    .quick-stat { text-align: center; padding: 0.3rem; }
+    .quick-stat .label {
+      font-size: 0.66rem;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.15rem;
+    }
+    .quick-stat .val {
+      font-family: Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      transition: color 0.3s;
+    }
+    .quick-stat .val.cap { color: var(--pos); }
+    .mini-bar {
+      height: 3px;
+      background: var(--elevated);
+      border-radius: 2px;
+      margin-top: 0.2rem;
+      overflow: hidden;
+    }
+    .mini-bar > div { height: 100%; background: var(--amber); transition: width 0.3s; }
+    .mini-bar > div.cap { background: var(--pos); }
+
+    /* ===== Tooltips ===== */
+    [data-tip] { position: relative; }
+    [data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--elevated);
+      border: 1px solid var(--amber);
+      color: var(--text);
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      white-space: nowrap;
+      z-index: 200;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    /* ===== Sim hit-table for step 6 ===== */
+    .sim-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+    }
+    .sim-table th, .sim-table td {
+      padding: 0.5rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .sim-table th {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-mute);
+      background: var(--elevated);
+    }
+    .sim-table td.dmg {
+      font-family: Georgia, serif;
+      font-weight: 700;
+      text-align: right;
+      color: var(--amber);
+    }
+    .sim-table tr.expected { background: rgba(240,136,62,0.08); }
+    .sim-table tr.expected td.dmg { color: var(--gold); font-size: 1.05em; }
+    .tag {
+      display: inline-block;
+      font-size: 0.66rem;
+      padding: 0.06rem 0.4rem;
+      border-radius: 3px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .tag-cr { background: rgba(240,136,62,0.2); color: var(--amber); }
+    .tag-fl { background: rgba(63,185,80,0.2); color: var(--pos); }
+    .tag-df { background: rgba(248,81,73,0.2); color: var(--neg); }
+
+    .toast {
+      position: fixed;
+      bottom: 130px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--elevated);
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <span class="save-status" id="save-status">Auto-saved · just now</span>
+    <h1>Toon Forge<span class="accent">— build your character, see what hits</span><span class="badge">Prototype</span></h1>
+    <p>A friendly character builder for Neverwinter PS5. Pick your role, deck out your gear, and watch the build come together — no spreadsheet skills required.</p>
+  </div>
+
+  <div class="steps" id="steps">
+    <div class="step active" data-step="1"><span class="num">1</span> Role &amp; Class</div>
+    <div class="step"        data-step="2"><span class="num">2</span> Build Identity</div>
+    <div class="step"        data-step="3"><span class="num">3</span> Gear &amp; Artifacts</div>
+    <div class="step"        data-step="4"><span class="num">4</span> Companions &amp; Mounts</div>
+    <div class="step"        data-step="5"><span class="num">5</span> Boons &amp; Buffs</div>
+    <div class="step"        data-step="6"><span class="num">6</span> Test &amp; Tune</div>
+  </div>
+
+  <div class="page">
+
+    <!-- ============ Step 1: Role & Class ============ -->
+    <div class="step-panel active" data-panel="1">
+      <div class="panel">
+        <h2>What does your toon do?</h2>
+        <p class="hint">Pick the role you want to play in groups. We'll tune the suggestions and stat priorities to match.</p>
+        <div class="role-grid" id="role-grid">
+          <div class="role-card dps"  data-role="dps">
+            <div class="icon" style="color:var(--dps);">⚔</div>
+            <div class="name">DPS</div>
+            <div class="blurb">Deal damage. The squishy glass cannon path.</div>
+          </div>
+          <div class="role-card tank" data-role="tank">
+            <div class="icon" style="color:var(--tank);">🛡</div>
+            <div class="name">Tank</div>
+            <div class="blurb">Hold aggro and eat hits. Make healers' lives easy.</div>
+          </div>
+          <div class="role-card heal" data-role="heal">
+            <div class="icon" style="color:var(--heal);">✚</div>
+            <div class="name">Healer</div>
+            <div class="blurb">Keep your party alive. Buff their damage too.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Pick your class</h2>
+        <p class="hint">Each class has 2 paragon paths — we'll filter to ones that fit your role above.</p>
+        <div class="class-grid" id="class-grid">
+          <div class="pick-card" data-class="Barbarian">Barbarian</div>
+          <div class="pick-card" data-class="Bard">Bard</div>
+          <div class="pick-card" data-class="Cleric">Cleric</div>
+          <div class="pick-card" data-class="Fighter">Fighter</div>
+          <div class="pick-card" data-class="Paladin">Paladin</div>
+          <div class="pick-card" data-class="Ranger">Ranger</div>
+          <div class="pick-card" data-class="Rogue">Rogue</div>
+          <div class="pick-card" data-class="Warlock">Warlock</div>
+          <div class="pick-card" data-class="Wizard">Wizard</div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-ghost" disabled>← Back</button>
+        <button class="btn btn-primary" data-go="next">Next: Build Identity →</button>
+      </div>
+    </div>
+
+    <!-- ============ Step 2: Build Identity ============ -->
+    <div class="step-panel" data-panel="2">
+      <div class="panel">
+        <h2>Tell us about your toon</h2>
+        <p class="hint">Pick your paragon path, race, and current item level so we can dial in suggestions.</p>
+
+        <div class="row-2">
+          <div class="field">
+            <label>Paragon Path
+              <span class="hint-icon" data-tip="Determines where your Forte stat is distributed">?</span>
+            </label>
+            <select id="f-paragon">
+              <option value="">— Pick a path —</option>
+              <option>Arcanist (DPS)</option>
+              <option>Thaumaturge (DPS)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Race</label>
+            <select id="f-race">
+              <option value="">— Pick a race —</option>
+              <option>Tiefling — +2 INT, +2 CHA</option>
+              <option>Half-Elf</option>
+              <option>Dragonborn</option>
+              <option>Wood Elf</option>
+              <option>Drow</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Item Level
+            <span class="hint-icon" data-tip="Total IL across all your gear. Find this on the Character sheet in-game.">?</span>
+          </label>
+          <input type="number" id="f-il" placeholder="e.g. 44,632">
+        </div>
+
+        <div class="field">
+          <label>Toon Name <span style="color:var(--text-dim);font-weight:400;">(optional)</span></label>
+          <input type="text" id="f-name" placeholder="Zoryn">
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Ability scores</h2>
+        <p class="hint">From the Character sheet → Stats screen.</p>
+        <div class="row-6">
+          <div class="field"><label style="text-align:center;">STR</label><input type="number" id="abil-str" value="14"></div>
+          <div class="field"><label style="text-align:center;">CON</label><input type="number" id="abil-con" value="16"></div>
+          <div class="field"><label style="text-align:center;">DEX</label><input type="number" id="abil-dex" value="18"></div>
+          <div class="field"><label style="text-align:center;">INT</label><input type="number" id="abil-int" value="22"></div>
+          <div class="field"><label style="text-align:center;">WIS</label><input type="number" id="abil-wis" value="14"></div>
+          <div class="field"><label style="text-align:center;">CHA</label><input type="number" id="abil-cha" value="16"></div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-ghost" data-go="back">← Back</button>
+        <button class="btn btn-primary" data-go="next">Next: Gear →</button>
+      </div>
+    </div>
+
+    <!-- ============ Step 3: Gear & Artifacts ============ -->
+    <div class="step-panel" data-panel="3">
+      <div class="panel">
+        <h2>Equip your gear</h2>
+        <p class="hint">Click a slot to pick what's equipped. Empty slots will hurt your build score.</p>
+        <div class="slot-grid" id="gear-grid"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Artifacts</h2>
+        <p class="hint">Your Primary artifact's combat power is the active one — pick wisely.</p>
+        <div class="slot-grid" id="artifact-grid" style="grid-template-columns:repeat(2,1fr);"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-ghost" data-go="back">← Back</button>
+        <button class="btn btn-primary" data-go="next">Next: Companions →</button>
+      </div>
+    </div>
+
+    <!-- ============ Step 4: Companions & Mounts ============ -->
+    <div class="step-panel" data-panel="4">
+      <div class="panel">
+        <h2>Pick your companions</h2>
+        <p class="hint">Click the big slot to set your <strong>summoned</strong> companion (the one fighting with you), and 4 active companions for player bonuses. Your top 12 in the rest of your stable contribute to bolster.</p>
+        <div style="display:grid;grid-template-columns:1.5fr 4fr;gap:1rem;align-items:center;margin-bottom:0.75rem;">
+          <div class="comp-slot summoned" id="comp-summoned" data-summoned="1">+ Summoned</div>
+          <div class="comp-grid" id="active-comps">
+            <div class="comp-slot" data-comp="0">+ Active 1</div>
+            <div class="comp-slot" data-comp="1">+ Active 2</div>
+            <div class="comp-slot" data-comp="2">+ Active 3</div>
+            <div class="comp-slot" data-comp="3">+ Active 4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Mount</h2>
+        <p class="hint">Equip your active mount. The other 9 in your stable contribute insignia bonuses.</p>
+        <div class="row-2">
+          <div class="field">
+            <label>Active Mount</label>
+            <select id="f-mount">
+              <option value="">— Pick a mount —</option>
+              <option>Crimson Crystal Horse</option>
+              <option>Bigby's Hand</option>
+              <option>Phantom Panther</option>
+              <option>Eclipse Lion</option>
+              <option>Twice-Pale Alder</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Mount Bolster</label>
+            <input type="text" value="125% (10 Celestial mounts)" disabled style="color:var(--gold);">
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-ghost" data-go="back">← Back</button>
+        <button class="btn btn-primary" data-go="next">Next: Boons &amp; Buffs →</button>
+      </div>
+    </div>
+
+    <!-- ============ Step 5: Boons & Buffs ============ -->
+    <div class="step-panel" data-panel="5">
+      <div class="panel">
+        <h2>Boons</h2>
+        <p class="hint">Toggle on the campaign boons you've completed.</p>
+        <div class="toggle-list" id="boon-list"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Optional buffs</h2>
+        <p class="hint">Food, scrolls, potions you'd run during a fight.</p>
+        <div class="toggle-list" id="buff-list"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-ghost" data-go="back">← Back</button>
+        <button class="btn btn-primary" data-go="next">Next: Test &amp; Tune →</button>
+      </div>
+    </div>
+
+    <!-- ============ Step 6: Test & Tune ============ -->
+    <div class="step-panel" data-panel="6">
+      <div class="panel">
+        <h2>Run the math</h2>
+        <p class="hint">Pick a sample power magnitude and we'll show what every hit scenario looks like with your current build.</p>
+        <div class="row-2">
+          <div class="field">
+            <label>Sample power magnitude</label>
+            <input type="number" id="sim-mag" value="100">
+          </div>
+          <div class="field">
+            <label>Damage type</label>
+            <select id="sim-type">
+              <option>Magical</option>
+              <option>Physical</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="sim-table">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Tags</th>
+              <th>Probability</th>
+              <th style="text-align:right;">Damage</th>
+            </tr>
+          </thead>
+          <tbody id="sim-body"></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h2>Build summary</h2>
+        <div id="summary" style="color:var(--text-mute);font-size:0.9rem;line-height:1.85;"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-ghost" data-go="back">← Back</button>
+        <button class="btn btn-primary" onclick="alert('In the real version this would save the character and let you compare vs other builds.')">💾 Save build</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Sticky bottom: Build Score ===== -->
+  <div class="footer-bar">
+    <div class="score-box">
+      <div class="gauge" id="gauge" style="--p:30;"><span class="num" id="gauge-num">30</span></div>
+      <div class="score-label">
+        <div class="title">Build Score</div>
+        <div class="value" id="score-tier">Just Started</div>
+        <div class="desc" id="score-desc">Pick a role to get started</div>
+      </div>
+    </div>
+    <div class="quick-stats" id="quick-stats">
+      <!-- generated -->
+    </div>
+    <div>
+      <button class="btn btn-secondary" onclick="alert('Detailed stats panel — would show all 18 stats with rating, percent, cap progress, and source breakdown.')">⚙ Detailed Stats</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* =====================================================
+       State + tiny mock model. Data isn't real — just enough
+       for the UX to feel alive.
+       ===================================================== */
+    const state = {
+      step: 1,
+      role: null,
+      class: null,
+      paragon: "", race: "", il: "", name: "",
+      abil: { str:14, con:16, dex:18, int:22, wis:14, cha:16 },
+      gear: {},
+      artifacts: {},
+      summoned: null,
+      activeComps: [null, null, null, null],
+      mount: "",
+      boons: new Set(),
+      buffs: new Set(),
+      simMag: 100,
+    };
+
+    const GEAR_SLOTS = ["Head","Chest","Arms","Legs","Feet","Neck","Belt","Shirt","Pants","Main Hand","Off Hand","Tools"];
+    const GEAR_OPTIONS = ["— None —", "Mythic Vivified ★", "Legendary Voninblod", "Epic Mountain of Flame", "Epic Lionheart"];
+    const ARTIFACT_SLOTS = ["Primary","Secondary 1","Secondary 2","Secondary 3"];
+    const ARTIFACT_OPTIONS = ["— None —", "Lantern of Revelation", "Sigil of the Devoted", "Black Ice Beholder", "Tarokka Deck", "Shard of Orcus"];
+    const COMPANIONS = ["Phasespider","Lysaera","Soradiel","Tutor","Festive Tiger","Coldlight Walker","Celeste","Harper Bard","Riotous Rothé"];
+    const BOONS = [
+      {n:"Avernus", e:"+5% Power"}, {n:"Sharandar", e:"+5% Crit Sev"}, {n:"Vallenhas", e:"+250 CR"}, {n:"Northdark", e:"+5% Combat Adv"},
+      {n:"Dragonbone Vale", e:"+250 CR"}, {n:"Demonweb Pits", e:"+5% Crit Strike"}, {n:"Mountain of Flame", e:"+5% Power"}, {n:"Vecna's Lair", e:"+250 CR"},
+    ];
+    const BUFFS = [
+      {n:"Watermelon Sorbet", e:"+9% Power, +6% Accuracy"}, {n:"Yooj", e:"+9% Crit Sev"},
+      {n:"Honeyed Bread", e:"+20k Max HP, +4k Defense"}, {n:"Scroll of Fate", e:"+5% all stats 60min"},
+      {n:"Dragon Slaying Rank 5", e:"+8% damage vs Dragons"}, {n:"VIP Tier 5", e:"+5% Crit Sev / +5% all"},
+    ];
+
+    /* ===== Build Score (mock formula) =====
+       Each completed thing nudges score. Maxes at 100. */
+    function computeScore() {
+      let s = 20;  // baseline for opening the tool
+      if (state.role)  s += 8;
+      if (state.class) s += 8;
+      if (state.paragon) s += 4;
+      if (state.race)    s += 4;
+      if (Number(state.il) > 0) s += 6;
+      const gearFilled = Object.values(state.gear).filter(v => v && v !== "— None —").length;
+      s += Math.min(20, gearFilled * 2);   // up to 20 from gear
+      const artFilled = Object.values(state.artifacts).filter(v => v && v !== "— None —").length;
+      s += Math.min(8, artFilled * 2);     // up to 8
+      if (state.summoned) s += 4;
+      s += state.activeComps.filter(c => c).length * 2; // up to 8
+      if (state.mount) s += 4;
+      s += Math.min(8, state.boons.size);
+      s += Math.min(4, state.buffs.size);
+      return Math.min(100, s);
+    }
+
+    function scoreTier(s) {
+      if (s < 30)  return ["Just Started", "Pick a role to get started"];
+      if (s < 50)  return ["Rough Sketch",  "Keep building — gear is the biggest gap"];
+      if (s < 70)  return ["Coming Along",  "Solid foundation, fill in the missing slots"];
+      if (s < 85)  return ["Solid Build",   "Caps are looking good"];
+      if (s < 95)  return ["End-Game",      "All caps reached, fine-tuning territory"];
+      return            ["Optimal",         "BiS or close to it"];
+    }
+
+    /* ===== Quick stats (vary by role; mock numbers) ===== */
+    function quickStats() {
+      const role = state.role || "dps";
+      const fill = (computeScore() - 20) / 80; // 0..1 ish
+      const f = (max) => Math.round(max * (0.4 + 0.6 * fill));
+      const sets = {
+        dps:  [["Power", 100, "%"], ["Combat Adv", 100, "%"], ["Crit Strike", 90, "%"], ["Crit Sev", 120, "%"], ["Accuracy", 80, "%"]],
+        tank: [["Defense", 110, "%"], ["Awareness", 80, "%"], ["Crit Avoid", 75, "%"], ["Deflect", 80, "%"], ["Max HP", 600, "k"]],
+        heal: [["Power", 100, "%"], ["Out. Healing", 110, "%"], ["Forte", 90, "%"], ["Recharge", 70, "%"], ["AP Gain", 60, "%"]],
+      };
+      return sets[role].map(([n, max, suffix]) => ({
+        name: n,
+        val: f(max),
+        suffix,
+        cap: f(max) >= max * 0.95,
+        pct: Math.min(100, (f(max) / max) * 100),
+      }));
+    }
+
+    /* ===== Render functions ===== */
+    function renderGear() {
+      const g = document.getElementById("gear-grid");
+      g.innerHTML = GEAR_SLOTS.map(slot => {
+        const v = state.gear[slot] || "";
+        const filled = v && v !== "— None —";
+        return `
+          <div class="slot ${filled ? "filled" : ""}">
+            <div class="slot-label">${slot}</div>
+            <select data-gear="${slot}">
+              ${GEAR_OPTIONS.map(o => `<option value="${o === "— None —" ? "" : o}" ${v === o ? "selected" : ""}>${o}</option>`).join("")}
+            </select>
+          </div>`;
+      }).join("");
+      g.querySelectorAll("select").forEach(sel => {
+        sel.addEventListener("change", e => {
+          state.gear[sel.dataset.gear] = e.target.value;
+          renderGear();
+          rerenderAll();
+          toast(e.target.value ? `Equipped ${e.target.value} (${sel.dataset.gear})` : `Cleared ${sel.dataset.gear}`);
+        });
+      });
+    }
+    function renderArtifacts() {
+      const g = document.getElementById("artifact-grid");
+      g.innerHTML = ARTIFACT_SLOTS.map(slot => {
+        const v = state.artifacts[slot] || "";
+        const filled = v && v !== "— None —";
+        return `
+          <div class="slot ${filled ? "filled" : ""}">
+            <div class="slot-label">${slot}</div>
+            <select data-art="${slot}">
+              ${ARTIFACT_OPTIONS.map(o => `<option value="${o === "— None —" ? "" : o}" ${v === o ? "selected" : ""}>${o}</option>`).join("")}
+            </select>
+          </div>`;
+      }).join("");
+      g.querySelectorAll("select").forEach(sel => {
+        sel.addEventListener("change", e => {
+          state.artifacts[sel.dataset.art] = e.target.value;
+          renderArtifacts();
+          rerenderAll();
+          toast(e.target.value ? `Slotted ${e.target.value} (${sel.dataset.art})` : `Cleared ${sel.dataset.art}`);
+        });
+      });
+    }
+
+    function renderBoons() {
+      const el = document.getElementById("boon-list");
+      el.innerHTML = BOONS.map((b,i) => `
+        <div class="toggle ${state.boons.has(i) ? "on" : ""}" data-boon="${i}">
+          <span class="check"></span>
+          <span class="name">${b.n}</span>
+          <span class="effect">${b.e}</span>
+        </div>`).join("");
+      el.querySelectorAll(".toggle").forEach(t => {
+        t.addEventListener("click", () => {
+          const i = +t.dataset.boon;
+          state.boons.has(i) ? state.boons.delete(i) : state.boons.add(i);
+          renderBoons(); rerenderAll();
+        });
+      });
+    }
+    function renderBuffs() {
+      const el = document.getElementById("buff-list");
+      el.innerHTML = BUFFS.map((b,i) => `
+        <div class="toggle ${state.buffs.has(i) ? "on" : ""}" data-buff="${i}">
+          <span class="check"></span>
+          <span class="name">${b.n}</span>
+          <span class="effect">${b.e}</span>
+        </div>`).join("");
+      el.querySelectorAll(".toggle").forEach(t => {
+        t.addEventListener("click", () => {
+          const i = +t.dataset.buff;
+          state.buffs.has(i) ? state.buffs.delete(i) : state.buffs.add(i);
+          renderBuffs(); rerenderAll();
+        });
+      });
+    }
+
+    function renderCompanions() {
+      // Summoned
+      const sum = document.getElementById("comp-summoned");
+      sum.textContent = state.summoned ? "★ " + state.summoned : "+ Summoned";
+      sum.classList.toggle("filled", !!state.summoned);
+      // Actives
+      document.querySelectorAll("#active-comps .comp-slot").forEach((s, i) => {
+        const c = state.activeComps[i];
+        s.textContent = c || `+ Active ${i+1}`;
+        s.classList.toggle("filled", !!c);
+      });
+    }
+
+    function renderQuickStats() {
+      const el = document.getElementById("quick-stats");
+      el.innerHTML = quickStats().map(s => `
+        <div class="quick-stat">
+          <div class="label">${s.name}</div>
+          <div class="val ${s.cap ? "cap" : ""}">${s.val}${s.suffix}</div>
+          <div class="mini-bar"><div class="${s.cap ? "cap" : ""}" style="width:${s.pct}%;"></div></div>
+        </div>`).join("");
+    }
+
+    function renderScore() {
+      const s = computeScore();
+      const [tier, desc] = scoreTier(s);
+      const gauge = document.getElementById("gauge");
+      gauge.style.setProperty("--p", s);
+      document.getElementById("gauge-num").textContent = s;
+      document.getElementById("score-tier").textContent = tier;
+      document.getElementById("score-desc").textContent = desc;
+    }
+
+    function renderStepDoneStates() {
+      const stepFilled = {
+        1: !!state.role && !!state.class,
+        2: !!state.paragon && !!state.race && !!state.il,
+        3: Object.values(state.gear).some(v => v && v !== "— None —"),
+        4: !!state.summoned || !!state.mount,
+        5: state.boons.size > 0 || state.buffs.size > 0,
+        6: false,
+      };
+      document.querySelectorAll(".step").forEach(s => {
+        const n = +s.dataset.step;
+        s.classList.toggle("done", stepFilled[n] && n !== state.step);
+      });
+    }
+
+    function renderSim() {
+      const mag = +document.getElementById("sim-mag").value || 100;
+      const fillFactor = (computeScore() - 20) / 80;
+      const base = Math.round(mag * 6 * (1 + fillFactor));
+      const flank = Math.round(base * 1.45);
+      const crit = Math.round(base * 1.51);
+      const both = Math.round(base * 2.18);
+      const defl = Math.round(base * 0.69);
+      const expected = Math.round(base * (1 + fillFactor * 0.41));
+      const rows = [
+        {sc:"Base hit", tags:["—","—","—"], p:"22%", d:base},
+        {sc:"Flank only", tags:["—","FL","—"], p:"30%", d:flank},
+        {sc:"Crit only", tags:["CR","—","—"], p:"18%", d:crit},
+        {sc:"Crit + Flank", tags:["CR","FL","—"], p:"22%", d:both},
+        {sc:"Deflected", tags:["—","—","DF"], p:"8%", d:defl},
+      ];
+      document.getElementById("sim-body").innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.sc}</td>
+          <td>${r.tags.map((t,i) => t === "—" ? `<span class="tag" style="background:transparent;color:var(--text-dim);">—</span>` : `<span class="tag tag-${t.toLowerCase()}">${t}</span>`).join(" ")}</td>
+          <td>${r.p}</td>
+          <td class="dmg">${r.d.toLocaleString()}</td>
+        </tr>`).join("") + `
+        <tr class="expected">
+          <td><strong>Expected (weighted)</strong></td>
+          <td>—</td>
+          <td>100%</td>
+          <td class="dmg">${expected.toLocaleString()}</td>
+        </tr>`;
+    }
+
+    function renderSummary() {
+      const lines = [];
+      if (state.name)    lines.push(`<strong>Name:</strong> ${state.name}`);
+      if (state.role)    lines.push(`<strong>Role:</strong> ${state.role.toUpperCase()}`);
+      if (state.class)   lines.push(`<strong>Class:</strong> ${state.class}`);
+      if (state.paragon) lines.push(`<strong>Paragon:</strong> ${state.paragon}`);
+      if (state.race)    lines.push(`<strong>Race:</strong> ${state.race}`);
+      if (state.il)      lines.push(`<strong>Item Level:</strong> ${Number(state.il).toLocaleString()}`);
+      const gearFilled = Object.values(state.gear).filter(v => v && v !== "— None —").length;
+      lines.push(`<strong>Gear filled:</strong> ${gearFilled} / 12 slots`);
+      const artFilled = Object.values(state.artifacts).filter(v => v && v !== "— None —").length;
+      lines.push(`<strong>Artifacts:</strong> ${artFilled} / 4 slotted`);
+      if (state.summoned) lines.push(`<strong>Summoned companion:</strong> ${state.summoned}`);
+      lines.push(`<strong>Active companions:</strong> ${state.activeComps.filter(c=>c).length} / 4`);
+      if (state.mount)   lines.push(`<strong>Mount:</strong> ${state.mount}`);
+      lines.push(`<strong>Boons enabled:</strong> ${state.boons.size}`);
+      lines.push(`<strong>Buffs enabled:</strong> ${state.buffs.size}`);
+      lines.push(`<strong>Build Score:</strong> <span style="color:var(--amber);font-weight:700;">${computeScore()} / 100</span>`);
+      document.getElementById("summary").innerHTML = lines.join("<br>");
+    }
+
+    function rerenderAll() {
+      renderQuickStats();
+      renderScore();
+      renderStepDoneStates();
+      if (state.step === 6) { renderSim(); renderSummary(); }
+      flashSaved();
+    }
+
+    let saveTO;
+    function flashSaved() {
+      clearTimeout(saveTO);
+      const el = document.getElementById("save-status");
+      el.textContent = "Saving…";
+      el.classList.remove("saved");
+      saveTO = setTimeout(() => {
+        el.textContent = "Auto-saved · just now";
+        el.classList.add("saved");
+      }, 350);
+    }
+
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._to);
+      toast._to = setTimeout(() => t.classList.remove("show"), 1800);
+    }
+
+    /* ===== Step nav ===== */
+    function gotoStep(n) {
+      state.step = n;
+      document.querySelectorAll(".step").forEach(s => s.classList.toggle("active", +s.dataset.step === n));
+      document.querySelectorAll(".step-panel").forEach(p => p.classList.toggle("active", +p.dataset.panel === n));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      renderStepDoneStates();
+      if (n === 6) { renderSim(); renderSummary(); }
+    }
+
+    /* ===== Wire everything up ===== */
+    // Role
+    document.querySelectorAll(".role-card").forEach(c => {
+      c.addEventListener("click", () => {
+        document.querySelectorAll(".role-card").forEach(x => x.classList.remove("active"));
+        c.classList.add("active");
+        state.role = c.dataset.role;
+        rerenderAll();
+        toast(`Role set: ${state.role.toUpperCase()}`);
+      });
+    });
+    // Class
+    document.querySelectorAll(".pick-card").forEach(c => {
+      c.addEventListener("click", () => {
+        document.querySelectorAll(".pick-card").forEach(x => x.classList.remove("active"));
+        c.classList.add("active");
+        state.class = c.dataset.class;
+        rerenderAll();
+        toast(`Class set: ${state.class}`);
+      });
+    });
+    // Step click
+    document.querySelectorAll(".step").forEach(s => {
+      s.addEventListener("click", () => gotoStep(+s.dataset.step));
+    });
+    // Next/Back
+    document.querySelectorAll("[data-go]").forEach(b => {
+      b.addEventListener("click", () => {
+        const dir = b.dataset.go;
+        const next = state.step + (dir === "next" ? 1 : -1);
+        if (next >= 1 && next <= 6) gotoStep(next);
+      });
+    });
+    // Form fields
+    document.getElementById("f-paragon").addEventListener("change", e => { state.paragon = e.target.value; rerenderAll(); });
+    document.getElementById("f-race").addEventListener("change",    e => { state.race    = e.target.value; rerenderAll(); });
+    document.getElementById("f-il").addEventListener("input",       e => { state.il      = e.target.value; rerenderAll(); });
+    document.getElementById("f-name").addEventListener("input",     e => { state.name    = e.target.value; rerenderAll(); });
+    document.getElementById("f-mount").addEventListener("change",   e => { state.mount   = e.target.value; rerenderAll(); toast(e.target.value ? `Mount: ${e.target.value}` : "Mount cleared"); });
+    document.getElementById("sim-mag").addEventListener("input",    () => renderSim());
+    document.getElementById("sim-type").addEventListener("change",  () => renderSim());
+
+    // Companion slots — cycle a placeholder name on click
+    document.getElementById("comp-summoned").addEventListener("click", () => {
+      const next = COMPANIONS[Math.floor(Math.random() * COMPANIONS.length)];
+      state.summoned = state.summoned === next ? null : next;
+      renderCompanions(); rerenderAll();
+      toast(state.summoned ? `Summoned: ${state.summoned}` : "Cleared summoned");
+    });
+    document.querySelectorAll("#active-comps .comp-slot").forEach((s, i) => {
+      s.addEventListener("click", () => {
+        const next = COMPANIONS[Math.floor(Math.random() * COMPANIONS.length)];
+        state.activeComps[i] = state.activeComps[i] === next ? null : next;
+        renderCompanions(); rerenderAll();
+      });
+    });
+
+    /* ===== Initial render ===== */
+    renderGear();
+    renderArtifacts();
+    renderBoons();
+    renderBuffs();
+    renderCompanions();
+    rerenderAll();
+  </script>
+</body>
+</html>
