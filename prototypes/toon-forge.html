@@ -1518,7 +1518,7 @@
 
       <div class="panel">
         <h2>Where to spend next</h2>
-        <p class="hint">Marginal damage gain from adding <strong>+1%</strong> to each role-relevant stat. Top of the list is your best return on investment right now.</p>
+        <p class="hint" id="advisor-hint">Marginal damage gain from adding <strong>+1%</strong> to each role-relevant stat. Top of the list is your best return on investment right now.</p>
         <div id="stat-advisor"></div>
       </div>
 
@@ -2421,16 +2421,14 @@
         .sort((a, b) => (b.item_level || 0) - (a.item_level || 0) || a.name.localeCompare(b.name));
     }
     /* ===== Class base ability scores =====
-       Verified from NW Hub character editor 2026-05-08:
-         Wizard: STR 8 / CON 10 / DEX 12 / INT 18 / WIS 14 / CHA 12 (sum 74)
-       Other classes' bases are TBD (need in-game verification);
-       fall back to 10 across the board for now. */
-    const CLASS_BASE_SCORES = {
-      "Wizard":    { str: 8,  con: 10, dex: 12, int: 18, wis: 14, cha: 12 },
-      // TODO verify in-game per class:
-      "Barbarian": null, "Bard": null, "Cleric": null, "Fighter": null,
-      "Paladin":   null, "Ranger": null, "Rogue": null, "Warlock": null
-    };
+       Pulled from CLASSES_DATA (sourced from NW Hub character editor).
+       Falls back to 10/10/10/10/10/10 if the class isn't found. */
+    function classBaseScores(className) {
+      if (!className) return { str: 10, con: 10, dex: 10, int: 10, wis: 10, cha: 10 };
+      const cls = findClass(className);
+      if (cls && cls.baseAbilityScores) return cls.baseAbilityScores;
+      return { str: 10, con: 10, dex: 10, int: 10, wis: 10, cha: 10 };
+    }
 
     /* ===== Ability score grid =====
        Replaces simple inputs with the NW-Hub-style allocation table.
@@ -2439,7 +2437,7 @@
     const ABIL_PICK_LEVELS = [3, 6, 12, 14, 18, 20];
 
     function applyClassBaseScores(className) {
-      const base = CLASS_BASE_SCORES[className] || { str:10, con:10, dex:10, int:10, wis:10, cha:10 };
+      const base = classBaseScores(className);
       state.abilBase = { ...base };
       for (const k of ABIL_KEYS) {
         state.abilLevels[k] = { 3:false, 6:false, 12:false, 14:false, 18:false, 20:false };
@@ -4073,6 +4071,7 @@
       const roleKey = (state.role || "dps").toLowerCase();
       const roleMult = ROLE_MULT[roleKey] || 1.20;
       const isHealer = (roleKey === "heal");
+      const isTank   = (roleKey === "tank");
 
       // Engine percentages → decimals
       const stat = (n) => ((r.stats[n] && r.stats[n].finalPct) || 0) / 100;
@@ -4082,18 +4081,31 @@
       const critStrike = stat("Critical Strike");
       const accuracy   = stat("Accuracy");
       const outgoing   = stat("Outgoing Healing");
+      // Tank-specific defensive stats
+      const defense    = stat("Defense");
+      const awareness  = stat("Awareness");
+      const critAvoid  = stat("Critical Avoidance");
+      const deflect    = stat("Deflect");
+      const deflectSev = stat("Deflect Severity");
+      const maxHP      = (r.stats["Maximum Hit Points"] && r.stats["Maximum Hit Points"].flat) || 0;
 
       const e = getEnemyStats();
 
       // Update the table column header + panel title/hint for the current mode.
       const lastTh = document.querySelector(".sim-table thead th:last-child");
-      if (lastTh) lastTh.textContent = isHealer ? "Heal Output" : "Damage";
+      if (lastTh) lastTh.textContent = isHealer ? "Heal Output" : (isTank ? "Damage Taken" : "Damage");
       const titleEl = document.getElementById("sim-title");
       const hintEl = document.getElementById("sim-hint");
-      if (titleEl) titleEl.textContent = isHealer ? "Run the heal math" : "Run the math";
+      if (titleEl) {
+        titleEl.textContent = isHealer ? "Run the heal math"
+                            : isTank   ? "Run the survival math"
+                            :            "Run the math";
+      }
       if (hintEl) {
         hintEl.innerHTML = isHealer
           ? `Pick a power magnitude. Healing math: <strong>(mag/100) × (TIL/10) × 1.10 × (1+Power) × (1+Outgoing Healing)</strong>, then × (1+CritSev/2) on a crit. NW halves Critical Severity for heals.`
+          : isTank
+          ? `How much damage you'd take from one boss hit. Universal boss: <strong>90% Power, 90% CA (always on you), 90% CritSev, 50% crit chance</strong>. Your Awareness, Defense, Crit Avoid, Deflect, and Deflect Severity all reduce incoming damage.`
           : `Pick a power magnitude. The math uses the universal NW PvE enemy: <strong>50% Defense</strong>, <strong>50% Deflect</strong>, <strong>90% Deflect Severity</strong>, and 0% Awareness / Crit Avoid / Accuracy. Your Accuracy counters their Deflect Severity.`;
       }
 
@@ -4103,12 +4115,61 @@
         : 0;
 
       // -------------------------------------------------------
+      // TANK MODE: incoming damage from a boss hit.
+      //   Boss universal stats: 90% Power, 90% CA (always on tank),
+      //   90% CritSev, 50% Crit chance, 0% Accuracy.
+      //   Damage Taken = base × (1 + 0.9) × (1 + max(0, 0.9 − Awareness))
+      //                × (1 + max(0, 0.9 − CritAvoid)) on crit
+      //                / (1 + Defense)
+      //                / (1 + DeflectSev) when you deflect
+      // -------------------------------------------------------
+      let rows, expected;
+      if (isTank) {
+        const ENEMY_POWER     = 0.90;
+        const ENEMY_CA        = 0.90;
+        const ENEMY_CRIT_SEV  = 0.90;
+        const ENEMY_CRIT      = 0.50;
+
+        const incoming = baseVal * (1 + ENEMY_POWER) * (1 + Math.max(0, ENEMY_CA - awareness));
+        const critMult   = 1 + Math.max(0, ENEMY_CRIT_SEV - critAvoid);
+        const defenseDiv = 1 + defense;
+        const deflectDiv = 1 + deflectSev;   // enemy Accuracy is 0%
+
+        const taken = (crit, defl) => {
+          let d = incoming;
+          if (crit) d *= critMult;
+          d /= defenseDiv;
+          if (defl) d /= deflectDiv;
+          return Math.round(d);
+        };
+
+        const dStandard = taken(false, false);
+        const dCrit     = taken(true,  false);
+        const dDefl     = taken(false, true);
+        const dCritDefl = taken(true,  true);
+
+        const pCritT = ENEMY_CRIT;             // 50% boss crit
+        const pDeflT = Math.max(0, Math.min(1, deflect));   // your deflect chance
+        const pStd   = (1 - pCritT) * (1 - pDeflT);
+        const pCo    = pCritT       * (1 - pDeflT);
+        const pDf    = (1 - pCritT) * pDeflT;
+        const pCD    = pCritT       * pDeflT;
+
+        expected = Math.round(pStd * dStandard + pCo * dCrit + pDf * dDefl + pCD * dCritDefl);
+
+        rows = [
+          { sc: "Standard hit",   tags: ["—","—"],   p: pStd, d: dStandard },
+          { sc: "Crit",           tags: ["CR","—"],  p: pCo,  d: dCrit     },
+          { sc: "Deflected",      tags: ["—","DF"],  p: pDf,  d: dDefl     },
+          { sc: "Crit + Deflect", tags: ["CR","DF"], p: pCD,  d: dCritDefl },
+        ];
+      }
+      // -------------------------------------------------------
       // HEALER MODE: Heal = base × (1 + Power) × (1 + OH)
       //              × (1 + CritSev/2) on crit  [crit sev is halved on heals]
       // No flank, no enemy defense, no deflect (heals land on allies).
       // -------------------------------------------------------
-      let rows, expected;
-      if (isHealer) {
+      else if (isHealer) {
         const healMult = (1 + power) * (1 + outgoing);
         // Mekaniks: Critical Severity is HALVED for healing. So a +60%
         // CritSev character gets +30% bonus on a crit-heal.
@@ -4209,11 +4270,24 @@
 
       // ===== Stat priority advisor =====
       // For each role-relevant stat, compute expected output with +1% added,
-      // and show the delta as % gain. DPS uses damage formula, Healer uses
-      // healing formula. Cap-reached stats are flagged.
+      // and show the delta as % gain. Tank uses survival (damage-taken
+      // reduction), Healer uses healing, DPS uses damage. Cap-reached
+      // stats are flagged.
+      // Mode-aware hint above the advisor list
+      const advisorHint = document.getElementById("advisor-hint");
+      if (advisorHint) {
+        advisorHint.innerHTML = isTank
+          ? `Marginal <strong>damage-taken reduction</strong> from adding <strong>+1%</strong> to each defensive stat. Top of the list is your best survival investment right now.`
+          : isHealer
+          ? `Marginal <strong>healing gain</strong> from adding <strong>+1%</strong> to each role-relevant stat. Top of the list is your best return on investment right now.`
+          : `Marginal <strong>damage gain</strong> from adding <strong>+1%</strong> to each role-relevant stat. Top of the list is your best return on investment right now.`;
+      }
+
       const advisor = document.getElementById("stat-advisor");
       if (advisor) {
-        const priority = isHealer
+        const priority = isTank
+          ? ["Awareness", "Defense", "Critical Avoidance", "Deflect", "Deflect Severity"]
+          : isHealer
           ? ["Power", "Outgoing Healing", "Critical Severity", "Critical Strike"]
           : ["Power", "Combat Advantage", "Critical Severity", "Critical Strike", "Accuracy"];
 
@@ -4254,8 +4328,32 @@
           const pC = Math.max(0, Math.min(1, cst));
           return (1 - pC) * baseH + pC * crit;
         }
+        // Tank-mode: incoming damage from boss. Lower is better, so the
+        // advisor returns NEGATIVE damage so the sort still ranks "best
+        // reduction first". gain = (probe - base) / base × 100, but for
+        // tank we want LESS damage taken → gain stays positive when it
+        // reduces. We invert below by negating.
+        function expectedTaken(aw, def, ca2, dfl, dflSev) {
+          const incoming = advisorBaseVal * 1.9 * (1 + Math.max(0, 0.9 - aw));
+          const critM   = 1 + Math.max(0, 0.9 - ca2);
+          const defenseDiv = 1 + def;
+          const deflectDiv = 1 + dflSev;
+          const t = (crit, defl) => {
+            let d = incoming;
+            if (crit) d *= critM;
+            d /= defenseDiv;
+            if (defl) d /= deflectDiv;
+            return d;
+          };
+          const pC = 0.50;
+          const pD = Math.max(0, Math.min(1, dfl));
+          return (1-pC)*(1-pD)*t(false,false) + pC*(1-pD)*t(true,false) +
+                 (1-pC)*pD*t(false,true)     + pC*pD*t(true,true);
+        }
 
-        const baseExpected = isHealer
+        const baseExpected = isTank
+          ? expectedTaken(awareness, defense, critAvoid, deflect, deflectSev)
+          : isHealer
           ? expectedHeal(power, outgoing, critSev, critStrike)
           : expectedDmg(power, ca, critSev, critStrike, accuracy);
 
@@ -4269,22 +4367,29 @@
           let probeBaseline = baseExpected;
 
           if (!capped) {
-            const bumps = { power, ca, outgoing, critSev, critStrike, accuracy };
-            // Crit-pair partner injection (works for both modes)
+            const bumps = {
+              power, ca, outgoing, critSev, critStrike, accuracy,
+              awareness, defense, critAvoid, deflect, deflectSev
+            };
+            // Crit-pair partner injection (works for DPS/heal modes)
             if (name === "Critical Severity" && critStrike < ASSUMED_CRIT_CHANCE) {
               bumps.critStrike = ASSUMED_CRIT_CHANCE;
             } else if (name === "Critical Strike" && critSev < ASSUMED_CRIT_SEV) {
               bumps.critSev = ASSUMED_CRIT_SEV;
             }
 
-            const recomputeBase = () => isHealer
+            const recomputeBase = () => isTank
+              ? expectedTaken(bumps.awareness, bumps.defense, bumps.critAvoid, bumps.deflect, bumps.deflectSev)
+              : isHealer
               ? expectedHeal(bumps.power, bumps.outgoing, bumps.critSev, bumps.critStrike)
               : expectedDmg(bumps.power, bumps.ca, bumps.critSev, bumps.critStrike, bumps.accuracy);
             probeBaseline = recomputeBase();
 
             const map = {
               "Power":"power", "Combat Advantage":"ca", "Outgoing Healing":"outgoing",
-              "Critical Severity":"critSev", "Critical Strike":"critStrike", "Accuracy":"accuracy"
+              "Critical Severity":"critSev", "Critical Strike":"critStrike", "Accuracy":"accuracy",
+              "Awareness":"awareness", "Defense":"defense", "Critical Avoidance":"critAvoid",
+              "Deflect":"deflect", "Deflect Severity":"deflectSev"
             };
             const key = map[name];
             if (key) {
@@ -4292,7 +4397,15 @@
               probe = recomputeBase();
             }
           }
-          const gain = probeBaseline > 0 ? ((probe - probeBaseline) / probeBaseline) * 100 : 0;
+          // For Tank, lower damage = better, so invert sign: positive gain
+          // means "less damage taken".
+          let gain;
+          if (probeBaseline > 0) {
+            gain = ((probe - probeBaseline) / probeBaseline) * 100;
+            if (isTank) gain = -gain;
+          } else {
+            gain = 0;
+          }
           return { name, cur, cap, capped, gain };
         }).sort((a, b) => b.gain - a.gain);
 
@@ -4312,8 +4425,16 @@
           if (row.capped) {
             advice = `<span class="advisor-advice good">✓ Capped — adding more is wasted. Invest elsewhere.</span>`;
           } else if (row.gain > 0) {
-            const outputName = isHealer ? "expected heal" : "expected damage";
-            advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">+${row.gain.toFixed(2)}%</strong> ${outputName} per cast</span>`;
+            const outputName = isTank
+              ? "less damage taken per hit"
+              : (isHealer ? "expected heal per cast" : "expected damage per hit");
+            advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">−${row.gain.toFixed(2)}%</strong>&nbsp;${outputName.startsWith('less') ? outputName : '+' + row.gain.toFixed(2) + '% ' + outputName}</span>`;
+            // If tank, the gain is already shown as % reduction; rewrite cleanly.
+            if (isTank) {
+              advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">−${row.gain.toFixed(2)}%</strong> damage taken per hit</span>`;
+            } else {
+              advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">+${row.gain.toFixed(2)}%</strong> ${outputName}</span>`;
+            }
           } else {
             advice = `<span class="advisor-advice dim">No effect at the current setup (e.g. stat doesn't fire vs this enemy).</span>`;
           }
