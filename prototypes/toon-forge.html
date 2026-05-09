@@ -1031,6 +1031,72 @@
       font-style: normal;
     }
 
+    /* ===== Stat priority advisor (Step 6) ===== */
+    .advisor-row {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      padding: 0.7rem 0.85rem;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      margin-bottom: 0.5rem;
+    }
+    .advisor-row.top-pick {
+      border-color: var(--amber);
+      background: rgba(240,136,62,0.05);
+    }
+    .advisor-rank {
+      flex: 0 0 auto;
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+    .advisor-row .advisor-rank {
+      font-family: ui-monospace, monospace;
+      font-weight: 700;
+      color: var(--text-dim);
+    }
+    .advisor-row.top-pick .advisor-rank,
+    .advisor-row:nth-child(2) .advisor-rank,
+    .advisor-row:nth-child(3) .advisor-rank { font-size: 1.3rem; }
+    .advisor-info { flex: 1 1 auto; min-width: 0; }
+    .advisor-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      font-family: Georgia, serif;
+      margin-bottom: 0.35rem;
+    }
+    .advisor-row.top-pick .advisor-name { color: var(--amber); }
+    .advisor-bar {
+      height: 6px;
+      background: var(--bg);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 0.25rem;
+    }
+    .advisor-bar > div {
+      height: 100%;
+      background: var(--amber);
+      transition: width 0.3s;
+    }
+    .advisor-row.top-pick .advisor-bar > div { background: var(--amber); }
+    .advisor-progress {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-family: ui-monospace, monospace;
+      margin-bottom: 0.3rem;
+    }
+    .advisor-advice {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-mute);
+      line-height: 1.45;
+    }
+    .advisor-advice.good { color: var(--pos); }
+    .advisor-advice.dim { color: var(--text-dim); font-style: italic; }
+    .advisor-advice strong { color: var(--text); }
+
     /* ===== Sim hit-table for step 6 ===== */
     .sim-table {
       width: 100%;
@@ -1311,11 +1377,17 @@
     <div class="step-panel" data-panel="6">
       <div class="panel">
         <h2>Run the math</h2>
-        <p class="hint">Pick a power magnitude. We'll show every hit scenario — flank, crit, deflect, the whole table.</p>
+        <p class="hint">Pick a power magnitude and a target. We'll show every hit scenario — flank, crit, deflect, the whole table.</p>
         <div class="row-2">
           <div class="field">
-            <label>Sample power magnitude</label>
-            <input type="number" id="sim-mag" value="100">
+            <label>Sample power magnitude
+              <span class="hint-icon" data-tip="Type a number, or click 'Pick a power' to fill from your class's actual abilities.">?</span>
+            </label>
+            <div style="display:flex;gap:0.4rem;">
+              <input type="number" id="sim-mag" value="800" style="flex:1;">
+              <button class="btn btn-ghost" id="sim-pick-power" type="button" style="font-size:0.78rem;white-space:nowrap;">📜 Pick a power</button>
+            </div>
+            <div id="sim-power-current" style="font-size:0.75rem;color:var(--text-dim);margin-top:0.25rem;"></div>
           </div>
           <div class="field">
             <label>Damage type</label>
@@ -1323,6 +1395,20 @@
               <option>Magical</option>
               <option>Physical</option>
             </select>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label>Target</label>
+            <select id="sim-enemy">
+              <option value="dummy">Test Dummy (no defenses)</option>
+              <option value="pve" selected>Standard PvE Enemy</option>
+              <option value="boss">Boss</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Enemy HP <span class="hint-icon" data-tip="Used for hits-to-kill estimate. Defaults are rough; type your own to match real fights.">?</span></label>
+            <input type="number" id="sim-hp" value="1000000">
           </div>
         </div>
 
@@ -1337,6 +1423,14 @@
           </thead>
           <tbody id="sim-body"></tbody>
         </table>
+
+        <div id="ttk-summary" style="margin-top:0.6rem;font-size:0.88rem;color:var(--text-mute);"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Where to spend next</h2>
+        <p class="hint">Marginal damage gain from adding <strong>+1%</strong> to each role-relevant stat. Top of the list is your best return on investment right now.</p>
+        <div id="stat-advisor"></div>
       </div>
 
       <div class="panel">
@@ -1406,6 +1500,7 @@
   <script src="../data/enchants.js"></script>
   <script src="../data/overloads.js"></script>
   <script src="../data/kits.js"></script>
+  <script src="../data/powers.js"></script>
   <script src="../data/companions.js"></script>
   <script src="../data/companion-powers.js"></script>
   <script src="../data/companion-enhancements.js"></script>
@@ -3624,28 +3719,121 @@
       });
     }
 
+    /* ===== Damage simulator =====
+       Canonical NW formula (mekaniks.html):
+         Base damage  = (Magnitude / 100) × (TIL / 10) × roleMultiplier
+         Final damage = Base
+                      × (1 + Power %)
+                      × (1 + max(0, CritSev% − enemyCritAvoid%))   if crit
+                      × (1 + max(0, CA%      − enemyAwareness%))   if flanking
+                      / (1 + enemyDeflectSev% − Accuracy%)         if deflected
+                      / (1 + enemyDefense%)
+       Default target = test dummy (all enemy stats 0).
+       Default flank uptime = 70%; crit chance = your CritStrike % cap.
+    */
+    const ROLE_MULT = { dps: 1.20, heal: 1.10, tank: 1.00 };
+
+    // Enemy presets per docs/enemy_pips.md. PvE/Boss apply the universal
+    // "Defenses Ignored: -15%" modifier (effectively -15% defense → ×1.176
+    // damage). Universal enemy stats: Awareness 0%, Crit Avoid 0%, Accuracy 0%
+    // — so our CA, CritSev, and Accuracy all apply fully.
+    function getEnemyStats() {
+      const sel = document.getElementById("sim-enemy");
+      const preset = sel ? sel.value : "pve";
+      // All PvE enemies have effectively 0% defense baseline; the -15%
+      // "Defenses Ignored" makes the divisor 0.85 → outgoing damage ×1.176.
+      const defensesIgnored = preset === "dummy" ? 0 : -0.15;
+      return {
+        preset,
+        awareness: 0, critAvoid: 0, accuracy: 0,
+        defense: defensesIgnored,    // -15% PvE/Boss; 0 for dummy
+        deflect: 0, deflectSev: 0    // PvE doesn't deflect player attacks
+      };
+    }
+    // Default HP per preset (rough — user can override).
+    const ENEMY_HP_DEFAULTS = { dummy: 1, pve: 1000000, boss: 100000000 };
+
     function renderSim() {
-      const mag = +document.getElementById("sim-mag").value || 100;
-      const fillFactor = (computeScore() - 20) / 80;
-      const base = Math.round(mag * 6 * (1 + fillFactor));
-      const flank = Math.round(base * 1.45);
-      const crit = Math.round(base * 1.51);
-      const both = Math.round(base * 2.18);
-      const defl = Math.round(base * 0.69);
-      const expected = Math.round(base * (1 + fillFactor * 0.41));
+      const magInput = document.getElementById("sim-mag");
+      const body = document.getElementById("sim-body");
+      if (!magInput || !body) return;
+
+      const mag = +magInput.value || 100;
+      const r = getEngineResult();
+      const TIL = r.totalItemLevel || 0;
+      const roleKey = (state.role || "dps").toLowerCase();
+      const roleMult = ROLE_MULT[roleKey] || 1.20;
+
+      // Engine percentages → decimals
+      const stat = (n) => ((r.stats[n] && r.stats[n].finalPct) || 0) / 100;
+      const power      = stat("Power");
+      const ca         = stat("Combat Advantage");
+      const critSev    = stat("Critical Severity");
+      const critStrike = stat("Critical Strike");
+      const accuracy   = stat("Accuracy");
+
+      const e = getEnemyStats();
+
+      // Base before per-hit multipliers
+      const baseDmg = TIL > 0
+        ? (mag / 100) * (TIL / 10) * roleMult
+        : 0;
+
+      // Per-scenario multipliers
+      const powerMult     = 1 + power;
+      const flankBonus    = 1 + Math.max(0, ca       - e.awareness);
+      const critBonus     = 1 + Math.max(0, critSev  - e.critAvoid);
+      const deflectDivide = 1 + Math.max(0, e.deflectSev - accuracy);
+      const defenseDivide = 1 + e.defense;
+
+      const dmg = (flank, crit, defl) => {
+        let d = baseDmg * powerMult;
+        if (flank) d *= flankBonus;
+        if (crit)  d *= critBonus;
+        if (defl)  d /= deflectDivide;
+        d /= defenseDivide;
+        return Math.round(d);
+      };
+
+      // Probabilities — option 5 will expose these as user sliders
+      const FLANK_UPTIME = 0.70;            // assumption for now
+      const pCrit    = Math.max(0, Math.min(1, critStrike));   // your CritStrike %
+      const pDeflect = Math.max(0, Math.min(1, e.deflect));    // enemy Deflect chance
+      // Among non-deflected hits, partition by flank/crit:
+      const nonDefl  = 1 - pDeflect;
+      const pBase    = nonDefl * (1 - FLANK_UPTIME) * (1 - pCrit);
+      const pFlank   = nonDefl *      FLANK_UPTIME  * (1 - pCrit);
+      const pCritOnly= nonDefl * (1 - FLANK_UPTIME) *      pCrit;
+      const pBoth    = nonDefl *      FLANK_UPTIME  *      pCrit;
+      const pDefl    = pDeflect;
+
+      const dBase  = dmg(false, false, false);
+      const dFlank = dmg(true,  false, false);
+      const dCrit  = dmg(false, true,  false);
+      const dBoth  = dmg(true,  true,  false);
+      const dDefl  = dmg(false, false, true);
+
+      const expected = Math.round(
+        pBase * dBase + pFlank * dFlank + pCritOnly * dCrit + pBoth * dBoth + pDefl * dDefl
+      );
+
       const rows = [
-        {sc:"Base hit", tags:["—","—","—"], p:"22%", d:base},
-        {sc:"Flank only", tags:["—","FL","—"], p:"30%", d:flank},
-        {sc:"Crit only", tags:["CR","—","—"], p:"18%", d:crit},
-        {sc:"Crit + Flank", tags:["CR","FL","—"], p:"22%", d:both},
-        {sc:"Deflected", tags:["—","—","DF"], p:"8%", d:defl},
+        { sc: "Base hit",     tags: ["—","—","—"],  p: pBase,    d: dBase  },
+        { sc: "Flank only",   tags: ["—","FL","—"], p: pFlank,   d: dFlank },
+        { sc: "Crit only",    tags: ["CR","—","—"], p: pCritOnly,d: dCrit  },
+        { sc: "Crit + Flank", tags: ["CR","FL","—"],p: pBoth,    d: dBoth  },
+        { sc: "Deflected",    tags: ["—","—","DF"], p: pDefl,    d: dDefl  },
       ];
-      document.getElementById("sim-body").innerHTML = rows.map(r => `
+
+      const fmtPct = (x) => (x * 100).toFixed(1) + "%";
+      body.innerHTML = rows.map(row => `
         <tr>
-          <td>${r.sc}</td>
-          <td>${r.tags.map((t,i) => t === "—" ? `<span class="tag" style="background:transparent;color:var(--text-dim);">—</span>` : `<span class="tag tag-${t.toLowerCase()}">${t}</span>`).join(" ")}</td>
-          <td>${r.p}</td>
-          <td class="dmg">${r.d.toLocaleString()}</td>
+          <td>${row.sc}</td>
+          <td>${row.tags.map(t => t === "—"
+              ? `<span class="tag" style="background:transparent;color:var(--text-dim);">—</span>`
+              : `<span class="tag tag-${t.toLowerCase()}">${t}</span>`).join(" ")}</td>
+          <td>${fmtPct(row.p)}</td>
+          <td class="dmg">${row.d.toLocaleString()}</td>
         </tr>`).join("") + `
         <tr class="expected">
           <td><strong>Expected (weighted)</strong></td>
@@ -3653,6 +3841,135 @@
           <td>100%</td>
           <td class="dmg">${expected.toLocaleString()}</td>
         </tr>`;
+
+      // If TIL is 0 (no gear yet), show a hint above the table
+      const wrap = body.parentElement;
+      let warn = wrap.querySelector(".sim-warn");
+      if (TIL === 0) {
+        if (!warn) {
+          warn = document.createElement("div");
+          warn.className = "sim-warn";
+          warn.style.cssText = "padding:0.5rem 0.7rem;background:rgba(210,153,34,0.08);border:1px solid var(--gold);border-radius:6px;color:var(--gold);font-size:0.82rem;margin-bottom:0.5rem;";
+          warn.textContent = "Total Item Level is 0 — equip some gear in step 3 to get real numbers.";
+          wrap.insertBefore(warn, wrap.firstChild);
+        }
+      } else if (warn) {
+        warn.remove();
+      }
+
+      // ===== Stat priority advisor =====
+      // For each role-relevant stat, compute expected damage with +1% added,
+      // and show the delta as % gain. Cap-reached stats are flagged.
+      const advisor = document.getElementById("stat-advisor");
+      if (advisor) {
+        const role = (state.role || "dps").toLowerCase();
+        // For DPS we use the offensive priority list
+        const priority = (role === "heal")
+          ? ["Power", "Outgoing Healing", "Critical Severity", "Critical Strike", "Forte"]
+          : ["Power", "Combat Advantage", "Critical Severity", "Critical Strike", "Accuracy"];
+
+        // Reusable per-scenario calculator (matches the table's math)
+        function expectedFor(power, ca, critSev, critStrike, accuracy) {
+          const pm = 1 + power;
+          const fb = 1 + Math.max(0, ca - e.awareness);
+          const cb = 1 + Math.max(0, critSev - e.critAvoid);
+          const dd = 1 + Math.max(0, e.deflectSev - accuracy);
+          const def = 1 + e.defense;
+          const calc = (flank, crit, defl) => {
+            let d = baseDmg * pm;
+            if (flank) d *= fb;
+            if (crit)  d *= cb;
+            if (defl)  d /= dd;
+            d /= def;
+            return d;
+          };
+          const pC = Math.max(0, Math.min(1, critStrike));
+          const pD = Math.max(0, Math.min(1, e.deflect));
+          const nD = 1 - pD;
+          return (
+            nD*(1-FLANK_UPTIME)*(1-pC)*calc(false,false,false) +
+            nD*FLANK_UPTIME*(1-pC)    *calc(true, false,false) +
+            nD*(1-FLANK_UPTIME)*pC    *calc(false,true, false) +
+            nD*FLANK_UPTIME*pC        *calc(true, true, false) +
+            pD                        *calc(false,false,true)
+          );
+        }
+        const baseExpected = expectedFor(power, ca, critSev, critStrike, accuracy);
+
+        const rows = priority.map(name => {
+          const s = r.stats[name];
+          const cap = (s && typeof s.cap === "number") ? s.cap : null;
+          const cur = s ? s.finalPct : 0;
+          const capped = cap !== null && cur >= cap - 0.05;
+          // Probe expected damage with +1% to this stat
+          let probe = baseExpected;
+          if (!capped) {
+            const bumps = { power, ca, critSev, critStrike, accuracy };
+            const map = { "Power":"power", "Combat Advantage":"ca", "Critical Severity":"critSev",
+                          "Critical Strike":"critStrike", "Accuracy":"accuracy" };
+            const key = map[name];
+            if (key) {
+              bumps[key] += 0.01;
+              probe = expectedFor(bumps.power, bumps.ca, bumps.critSev, bumps.critStrike, bumps.accuracy);
+            }
+          }
+          const gain = baseExpected > 0 ? ((probe - baseExpected) / baseExpected) * 100 : 0;
+          return { name, cur, cap, capped, gain };
+        }).sort((a, b) => b.gain - a.gain);
+
+        advisor.innerHTML = rows.map((row, i) => {
+          const isFirst = i === 0 && row.gain > 0 && !row.capped;
+          // Progress bar (skip for uncapped stats)
+          let bar = "";
+          if (typeof row.cap === "number") {
+            const pct = Math.min(100, (row.cur / row.cap) * 100);
+            bar = `<div class="advisor-bar"><div style="width:${pct}%;"></div></div>
+              <div class="advisor-progress">${row.cur.toFixed(0)}% of ${row.cap}% cap · ${(row.cap - row.cur).toFixed(0)}% headroom</div>`;
+          } else {
+            bar = `<div class="advisor-progress">no cap · ${row.cur.toFixed(0)}% currently</div>`;
+          }
+          // Plain-English advice
+          let advice = "";
+          if (row.capped) {
+            advice = `<span class="advisor-advice good">✓ Capped — adding more is wasted. Invest elsewhere.</span>`;
+          } else if (row.gain > 0) {
+            advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">+${row.gain.toFixed(2)}%</strong> expected damage per hit</span>`;
+          } else {
+            advice = `<span class="advisor-advice dim">No effect at the current setup (e.g. stat doesn't fire vs this enemy).</span>`;
+          }
+          // Medal for top pick
+          const medal = isFirst ? "🥇" : (i === 1 ? "🥈" : (i === 2 ? "🥉" : `${i + 1}`));
+          return `<div class="advisor-row ${isFirst ? "top-pick" : ""}">
+            <div class="advisor-rank">${medal}</div>
+            <div class="advisor-info">
+              <div class="advisor-name">${row.name}</div>
+              ${bar}
+              ${advice}
+            </div>
+          </div>`;
+        }).join("");
+      }
+
+      // Hits-to-kill / time-to-kill estimate
+      const hpInput = document.getElementById("sim-hp");
+      const ttkEl   = document.getElementById("ttk-summary");
+      if (ttkEl) {
+        const hp = +(hpInput && hpInput.value) || 0;
+        if (hp > 0 && expected > 0) {
+          const hitsToKill = hp / expected;
+          // Rough time estimate: assume one cast every 1.5s (typical encounter cooldown).
+          const seconds = hitsToKill * 1.5;
+          const enemyLabel = e.preset === "dummy" ? "Test Dummy" : (e.preset === "boss" ? "Boss" : "PvE Enemy");
+          ttkEl.innerHTML = `
+            Against <strong>${enemyLabel}</strong> (HP ${hp.toLocaleString()}):
+            <strong style="color:var(--amber);">${hitsToKill < 100 ? hitsToKill.toFixed(1) : Math.round(hitsToKill).toLocaleString()}</strong> hits to kill
+            · ~<strong style="color:var(--amber);">${seconds < 60 ? seconds.toFixed(1) + 's' : (seconds/60).toFixed(1) + 'm'}</strong>
+            <span style="color:var(--text-dim);font-size:0.78rem;">at 1 cast / 1.5s</span>
+          `;
+        } else {
+          ttkEl.innerHTML = `<span style="color:var(--text-dim);">Set HP and equip gear to see hits-to-kill.</span>`;
+        }
+      }
     }
 
     function renderSummary() {
@@ -3768,6 +4085,57 @@
     // (f-mount listener removed — replaced by 5-slot stable picker, see renderStable.)
     document.getElementById("sim-mag").addEventListener("input",    () => renderSim());
     document.getElementById("sim-type").addEventListener("change",  () => renderSim());
+    // Power picker — opens a filtered list of the player's class powers
+    // and fills in the magnitude. Only includes powers with damage > 0.
+    document.getElementById("sim-pick-power").addEventListener("click", () => {
+      if (typeof POWERS_DATA === "undefined") {
+        toast("Power data not loaded.");
+        return;
+      }
+      const items = POWERS_DATA.filter(p => {
+        if (state.class && p.class !== state.class) return false;
+        if (state.paragon && p.paragon && p.paragon !== state.paragon) return false;
+        const m = p.magnitude;
+        if (!m) return false;
+        return (m.damage || 0) > 0;
+      }).sort((a, b) => {
+        // Group by slotType, then by magnitude desc
+        const order = ["At-Will", "Encounter", "Daily", "Class Feature", "Mechanic", "Tactical"];
+        const ia = order.indexOf(a.slotType), ib = order.indexOf(b.slotType);
+        if (ia !== ib) return ia - ib;
+        return (b.magnitude.damage || 0) - (a.magnitude.damage || 0);
+      });
+      if (!items.length) {
+        toast(state.class
+          ? `No damaging powers in our data for ${state.class}${state.paragon ? "/"+state.paragon : ""}. Currently only Warlock/SoulWeaver is in the dataset.`
+          : "Pick a class first to filter the power list.");
+        return;
+      }
+      openPicker({
+        title: `${state.class || "?"} powers — pick a magnitude`,
+        items,
+        render: (p) => ({
+          name: p.name,
+          meta: `${p.slotType} · mag ${p.magnitude.damage}${p.cooldown ? ' · ' + p.cooldown + 's' : ''}`,
+          desc: (p.description || "").slice(0, 140)
+        }),
+        allowNone: false,
+        onPick: (p) => {
+          if (!p) return;
+          document.getElementById("sim-mag").value = p.magnitude.damage;
+          const cur = document.getElementById("sim-power-current");
+          if (cur) cur.textContent = `Loaded: ${p.name} (${p.slotType}, mag ${p.magnitude.damage})`;
+          renderSim();
+        }
+      });
+    });
+    // Auto-update HP when preset changes; user can still override after.
+    document.getElementById("sim-enemy").addEventListener("change", e => {
+      const def = ENEMY_HP_DEFAULTS[e.target.value] || 1;
+      document.getElementById("sim-hp").value = def;
+      renderSim();
+    });
+    document.getElementById("sim-hp").addEventListener("input", () => renderSim());
 
     // (Summoned + active companion picker handlers are wired inside
     //  renderCompPickRows() since those tiles are rebuilt on every render.)
