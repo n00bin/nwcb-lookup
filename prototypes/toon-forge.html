@@ -1011,6 +1011,200 @@
     }
     .dstats-warnings ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
 
+    /* ===== Mobile responsive ===== */
+    @media (max-width: 768px) {
+      body { font-size: 14px; }
+      .hero { padding: 1.2rem 1rem; }
+      .hero h1 { font-size: 1.4rem; }
+
+      /* Step nav: horizontal scroll instead of squeezing */
+      .steps {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        gap: 0.6rem;
+      }
+      .step { flex: 0 0 auto; font-size: 0.78rem; padding-bottom: 0.5rem; }
+      .step .num { width: 22px; height: 22px; font-size: 0.7rem; }
+
+      /* Forms */
+      .row-2 { grid-template-columns: 1fr; gap: 0.6rem; }
+      .row-6 { grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+
+      /* Role + class grids */
+      .role-grid { grid-template-columns: 1fr; }
+      .class-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Slot grids — collapse to 1 col */
+      .slot-grid { grid-template-columns: 1fr !important; }
+      #gear-grid { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; }
+
+      /* Companion loadout row + comp picker rows */
+      .comp-loadout { grid-template-columns: repeat(2, 1fr); }
+      .comp-row { grid-template-columns: 1fr; }
+      .comp-row .comp-slot { min-height: 48px; }
+      .comp-row-active .comp-slot { min-height: 48px; }
+
+      /* Ability grid → vertical stack of cards on mobile (no scroll). */
+      .abil-grid { display: block; }
+      .abil-grid thead { display: none; }
+      .abil-grid tbody { display: block; }
+      .abil-grid tr {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-template-areas:
+          "name name total"
+          "picks picks picks"
+          "meta meta meta";
+        gap: 0.4rem 0.6rem;
+        background: var(--elevated);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 0.55rem;
+        padding: 0.55rem 0.7rem;
+        align-items: center;
+      }
+      .abil-grid td {
+        display: block;
+        border: none;
+        padding: 0;
+        background: transparent;
+      }
+      .abil-grid td.row-label {
+        grid-area: name;
+        font-size: 1.05rem;
+        text-align: left;
+        background: transparent;
+      }
+      .abil-grid td.cell-total {
+        grid-area: total;
+        font-size: 1.1rem;
+        background: transparent;
+        text-align: right;
+      }
+      .abil-grid td.cell-total::before {
+        content: "Total ";
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        font-family: -apple-system, "Segoe UI", sans-serif;
+        font-weight: 500;
+        margin-right: 0.3rem;
+        letter-spacing: 0.05em;
+      }
+      .abil-grid td.cell-base:nth-of-type(2) {
+        grid-area: meta;
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        background: transparent;
+        text-align: left;
+      }
+      .abil-grid td.cell-base:nth-of-type(2)::before {
+        content: "Base ";
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        margin-right: 0.3rem;
+      }
+      /* Race column (3rd cell) */
+      .abil-grid td.cell-base:nth-of-type(3) {
+        grid-area: meta;
+        font-size: 0.78rem;
+        background: transparent;
+        text-align: right;
+      }
+      .abil-grid td.cell-base:nth-of-type(3)::before {
+        content: "Race ";
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        margin-right: 0.3rem;
+      }
+      /* Pick + universal cells in a tight row */
+      .abil-grid td.cell-pick, .abil-grid td.cell-all {
+        display: inline-flex;
+        align-items: center; justify-content: center;
+        min-width: 38px;
+        margin-right: 0.25rem;
+        margin-top: 0.2rem;
+        padding: 0.3rem 0.4rem;
+        font-size: 0.72rem;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        background: var(--bg);
+      }
+      .abil-grid td.cell-pick.on { background: var(--amber-glow); }
+      .abil-grid td.cell-all { background: rgba(210,153,34,0.10); border-color: rgba(210,153,34,0.3); }
+      .abil-grid td.cell-pick::before,
+      .abil-grid td.cell-all::before {
+        content: attr(data-label);
+        margin-right: 0.25rem;
+        font-size: 0.65rem;
+        color: var(--text-dim);
+      }
+      /* Bonus column (last cell-base before total) */
+      .abil-grid td.cell-base:nth-last-of-type(2) {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 0.2rem;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.72rem;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        background: var(--bg);
+      }
+      .abil-grid td.cell-base:nth-last-of-type(2)::before {
+        content: "Gear ";
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        margin-right: 0.25rem;
+      }
+
+      /* Stable rows: pickers wrap nicely */
+      .stable-row-pickers { gap: 0.35rem; }
+      .stable-mount, .stable-collar { min-width: 130px; }
+
+      /* Footer bar — stack vertically */
+      .footer-bar {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.6rem 0.8rem;
+      }
+      .quick-stats { grid-template-columns: repeat(2, 1fr); width: 100%; }
+      .score-box { flex: 1 0 100%; }
+      .footer-bar > div:last-child { flex: 1 0 100%; }
+
+      /* Picker + Detailed Stats modals — near fullscreen */
+      .picker-overlay, .dstats-overlay {
+        padding: 0.5rem;
+      }
+      .picker-modal, .dstats-modal {
+        max-width: 100%;
+      }
+      .picker-list { max-height: 75vh; }
+      .picker-header { flex-wrap: wrap; }
+      .picker-header h3 { flex: 1 0 100%; margin-bottom: 0.4rem; }
+
+      /* Detailed Stats row: stack the 3-col grid on mobile */
+      .dstat-row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+      .dstat-detail { font-size: 0.72rem; }
+
+      /* Race choice picker — wider buttons on mobile */
+      .race-choice-row { flex-direction: column; align-items: flex-start; }
+      .race-choice-label { min-width: 0; }
+
+      /* Ability advisor */
+      .advisor-row { padding: 0.55rem 0.65rem; }
+      .advisor-name { font-size: 0.92rem; }
+    }
+
+    /* Very small screens (< 400px) */
+    @media (max-width: 400px) {
+      .row-6 { grid-template-columns: repeat(2, 1fr); }
+      .class-grid { grid-template-columns: 1fr; }
+      .comp-loadout { grid-template-columns: 1fr; }
+    }
+
     /* ===== Tooltips ===== */
     [data-tip] { position: relative; }
     [data-tip]:hover::after {
@@ -1424,7 +1618,8 @@
 
       <div class="nav-buttons">
         <button class="btn btn-ghost" data-go="back">← Back</button>
-        <button class="btn btn-primary" onclick="alert('In the real version this would save the character and let you compare vs other builds.')">💾 Save build</button>
+        <button class="btn btn-secondary" id="open-builds">📁 My Builds</button>
+        <button class="btn btn-primary" id="share-build">🔗 Share link</button>
       </div>
     </div>
 
@@ -1449,6 +1644,19 @@
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <!-- ===== My Builds modal (save / load / delete) ===== -->
+  <div class="picker-overlay" id="builds-overlay">
+    <div class="picker-modal">
+      <div class="picker-header">
+        <h3>My Builds</h3>
+        <button class="picker-close" id="builds-close">✕</button>
+      </div>
+      <div class="picker-list" id="builds-list">
+        <!-- populated by openBuildsModal() -->
+      </div>
+    </div>
+  </div>
 
   <!-- ===== Searchable picker modal ===== -->
   <div class="picker-overlay" id="picker-overlay">
@@ -1565,6 +1773,207 @@
       buffs: new Set(["Campfire", "VIP Rank 3 Bonus"]),
       simMag: 100,
     };
+
+    /* ===== Save / Load / Share =====
+       Serializes the entire build state to JSON. Stored locally via
+       localStorage (multi-slot). Sharable via URL hash (#b=<base64>). */
+    const BUILDS_KEY = "toon-forge:builds";
+
+    function serializeBuild(name) {
+      return {
+        v: 1,                              // schema version
+        name: name || state.name || "Unnamed Build",
+        savedAt: Date.now(),
+        s: {
+          role: state.role, class: state.class, paragon: state.paragon,
+          race: state.race, raceChoices: state.raceChoices,
+          il: state.il, name: state.name,
+          abil: state.abil, abilBase: state.abilBase, abilLevels: state.abilLevels,
+          gear: state.gear, kits: state.kits,
+          artifacts: state.artifacts,
+          enchants: state.enchants, overloads: state.overloads,
+          summoned: state.summoned, summonedEnh: state.summonedEnh,
+          summonedEnchant: state.summonedEnchant,
+          summonedGear: state.summonedGear,
+          activeComps: state.activeComps,
+          stable: state.stable,
+          activeCombatPower: state.activeCombatPower,
+          activeEquipPower: state.activeEquipPower,
+          boons: [...state.boons],
+          masterOrder: state.masterOrder,
+          guildBoonPicks: state.guildBoonPicks,
+          buffs: [...state.buffs]
+        }
+      };
+    }
+    function applyBuild(saved) {
+      if (!saved || !saved.s) return false;
+      const s = saved.s;
+      Object.assign(state, s);
+      // Restore Map and Set from arrays
+      state.boons = new Map(s.boons || []);
+      state.buffs = new Set(s.buffs || []);
+      // Re-render every section
+      populateParagons(state.class || null);
+      recomputeAbilityTotals();
+      renderAbilityGrid();
+      renderGear();
+      renderArtifacts();
+      renderEnchantments();
+      renderOverloads();
+      renderBoons();
+      renderGuildBoons();
+      renderBuffs();
+      renderCompanions();
+      renderStable();
+      // Sync visible inputs that are direct DOM
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.value = v; };
+      setVal("f-paragon", state.paragon);
+      setVal("f-race", state.race);
+      setVal("f-il", state.il);
+      setVal("f-name", state.name);
+      // Active class card highlight
+      document.querySelectorAll(".pick-card").forEach(c => {
+        c.classList.toggle("active", c.dataset.class === state.class);
+      });
+      // Active role tile highlight
+      document.querySelectorAll(".role-card").forEach(c => {
+        c.classList.toggle("active", c.dataset.role === state.role);
+      });
+      rerenderAll();
+      return true;
+    }
+    function getBuildsList() {
+      try {
+        const raw = localStorage.getItem(BUILDS_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) { return []; }
+    }
+    function saveBuildsList(arr) {
+      try { localStorage.setItem(BUILDS_KEY, JSON.stringify(arr)); } catch (e) {}
+    }
+    // URL-safe base64 (UTF-8 safe).
+    function b64encode(str) {
+      return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+    }
+    function b64decode(b) {
+      const s = b.replace(/-/g,"+").replace(/_/g,"/");
+      const pad = (4 - s.length % 4) % 4;
+      return decodeURIComponent(escape(atob(s + "=".repeat(pad))));
+    }
+    function makeShareLink() {
+      const built = serializeBuild(state.name || "Shared Build");
+      const json = JSON.stringify(built);
+      const hash = "b=" + b64encode(json);
+      const base = location.origin + location.pathname;
+      return base + "#" + hash;
+    }
+    function loadFromUrlHash() {
+      const h = location.hash || "";
+      const m = h.match(/(?:^#|&)b=([^&]+)/);
+      if (!m) return false;
+      try {
+        const json = b64decode(m[1]);
+        const saved = JSON.parse(json);
+        applyBuild(saved);
+        toast(`Loaded "${saved.name || 'shared build'}" from link`);
+        return true;
+      } catch (e) {
+        console.warn("Failed to load build from URL", e);
+        return false;
+      }
+    }
+
+    function openBuildsModal() {
+      const wrap = document.getElementById("builds-list");
+      const builds = getBuildsList();
+      const fmt = (ts) => {
+        const d = new Date(ts);
+        return d.toLocaleDateString() + " " + d.toLocaleTimeString().slice(0, 5);
+      };
+      let html = `
+        <div style="margin-bottom:0.7rem;display:flex;gap:0.4rem;align-items:center;">
+          <input type="text" id="build-save-name" placeholder="Build name (e.g. Wizard DPS — main)"
+            style="flex:1;padding:0.5rem 0.7rem;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;"
+            value="${(state.name || '').replace(/"/g,'&quot;')}">
+          <button class="btn btn-primary" id="build-save-now" type="button">💾 Save current</button>
+        </div>`;
+      if (!builds.length) {
+        html += `<div class="picker-empty">No saved builds yet. Save one above to come back to it later.</div>`;
+      } else {
+        html += builds.slice().reverse().map((b, idx) => {
+          const realIdx = builds.length - 1 - idx;   // reverse index
+          return `<div class="picker-item" data-build-load="${realIdx}">
+            <div class="picker-item-name">${b.name || 'Untitled'}</div>
+            <div class="picker-item-meta">${b.s.class || '?'}${b.s.paragon ? ' / ' + b.s.paragon : ''} · ${b.s.role || '?'} · saved ${fmt(b.savedAt)}</div>
+            <div style="margin-top:0.4rem;display:flex;gap:0.4rem;">
+              <button class="btn btn-ghost" data-build-load-btn="${realIdx}" type="button" style="font-size:0.78rem;">Load</button>
+              <button class="btn btn-ghost" data-build-share="${realIdx}" type="button" style="font-size:0.78rem;">Copy link</button>
+              <button class="btn btn-ghost" data-build-delete="${realIdx}" type="button" style="font-size:0.78rem;color:var(--neg);">Delete</button>
+            </div>
+          </div>`;
+        }).join("");
+      }
+      wrap.innerHTML = html;
+
+      // Save current
+      document.getElementById("build-save-now").addEventListener("click", () => {
+        const name = (document.getElementById("build-save-name").value || "").trim() || "Unnamed Build";
+        const built = serializeBuild(name);
+        const list = getBuildsList();
+        list.push(built);
+        // Cap at 20 saved builds (oldest dropped)
+        while (list.length > 20) list.shift();
+        saveBuildsList(list);
+        toast(`Saved "${name}"`);
+        openBuildsModal();   // refresh
+      });
+      // Load (whole row)
+      wrap.querySelectorAll("[data-build-load], [data-build-load-btn]").forEach(el => {
+        el.addEventListener("click", (ev) => {
+          if (ev.target.dataset.buildShare !== undefined ||
+              ev.target.dataset.buildDelete !== undefined ||
+              ev.target.dataset.buildLoadBtn !== undefined && el.dataset.buildLoad !== undefined) {
+            // Avoid double-firing when clicking the inner button
+          }
+          const idx = +(el.dataset.buildLoad ?? el.dataset.buildLoadBtn);
+          if (Number.isNaN(idx)) return;
+          const list = getBuildsList();
+          const saved = list[idx];
+          if (saved && applyBuild(saved)) {
+            toast(`Loaded "${saved.name}"`);
+            document.getElementById("builds-overlay").classList.remove("open");
+          }
+        });
+      });
+      // Copy share link for a saved build
+      wrap.querySelectorAll("[data-build-share]").forEach(btn => {
+        btn.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          const idx = +btn.dataset.buildShare;
+          const list = getBuildsList();
+          const saved = list[idx];
+          if (!saved) return;
+          const json = JSON.stringify(saved);
+          const url = location.origin + location.pathname + "#b=" + b64encode(json);
+          navigator.clipboard.writeText(url).then(() => toast("Share link copied to clipboard"));
+        });
+      });
+      // Delete
+      wrap.querySelectorAll("[data-build-delete]").forEach(btn => {
+        btn.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          const idx = +btn.dataset.buildDelete;
+          const list = getBuildsList();
+          if (!confirm(`Delete "${list[idx]?.name || 'this build'}"?`)) return;
+          list.splice(idx, 1);
+          saveBuildsList(list);
+          openBuildsModal();
+        });
+      });
+
+      document.getElementById("builds-overlay").classList.add("open");
+    }
 
     /* ===== State → Engine adapter =====
        Translates the prototype's `state` object into the input shape
@@ -2239,17 +2648,17 @@
           <td class="cell-base" style="color:${raceVal>0?'var(--gold)':'var(--text-dim)'}">${raceVal>0 ? '+'+raceVal : '—'}</td>`;
         for (const lvl of [3, 6]) {
           const on = state.abilLevels[k][lvl];
-          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}">${on ? "+1" : ""}</td>`;
+          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}" data-label="L${lvl}">${on ? "+1" : ""}</td>`;
         }
-        html += `<td class="cell-all">+1</td>`;
+        html += `<td class="cell-all" data-label="L9">+1</td>`;
         for (const lvl of [12, 14]) {
           const on = state.abilLevels[k][lvl];
-          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}">${on ? "+1" : ""}</td>`;
+          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}" data-label="L${lvl}">${on ? "+1" : ""}</td>`;
         }
-        html += `<td class="cell-all">+1</td>`;
+        html += `<td class="cell-all" data-label="L16">+1</td>`;
         for (const lvl of [18, 20]) {
           const on = state.abilLevels[k][lvl];
-          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}">${on ? "+1" : ""}</td>`;
+          html += `<td class="cell-pick ${on?"on":""}" data-abil="${k}" data-level="${lvl}" data-label="L${lvl}">${on ? "+1" : ""}</td>`;
         }
         // Bonus column = auto from gear (read-only)
         html += `<td class="cell-base" style="color:${gearVal>0?'var(--gold)':'var(--text-dim)'}">${gearVal>0 ? '+'+gearVal : '—'}</td>`;
@@ -4231,6 +4640,24 @@
       if (e.key === "Escape") closeDetailedStats();
     });
 
+    // ===== Save / Share button handlers =====
+    document.getElementById("share-build").addEventListener("click", () => {
+      const url = makeShareLink();
+      navigator.clipboard.writeText(url).then(
+        () => toast("Share link copied to clipboard! Paste in browser to load."),
+        () => toast("Couldn't access clipboard — link: " + url.slice(0, 60) + "...")
+      );
+    });
+    document.getElementById("open-builds").addEventListener("click", openBuildsModal);
+    document.getElementById("builds-close").addEventListener("click", () => {
+      document.getElementById("builds-overlay").classList.remove("open");
+    });
+    document.getElementById("builds-overlay").addEventListener("click", (e) => {
+      if (e.target.id === "builds-overlay") {
+        document.getElementById("builds-overlay").classList.remove("open");
+      }
+    });
+
     /* ===== Initial render ===== */
     populateRaces();
     populateParagons(null);   // empty until a class is picked
@@ -4246,6 +4673,11 @@
     renderCompanions();
     renderStable();
     rerenderAll();
+
+    // If the URL has a #b=... share-link payload, load it now.
+    if (location.hash && /b=/.test(location.hash)) {
+      loadFromUrlHash();
+    }
   </script>
 </body>
 </html>
