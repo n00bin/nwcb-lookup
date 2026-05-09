@@ -1160,19 +1160,33 @@
     }
     .advisor-rank {
       flex: 0 0 auto;
-      width: 30px; height: 30px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.15rem;
-      line-height: 1;
-    }
-    .advisor-row .advisor-rank {
       font-family: ui-monospace, monospace;
       font-weight: 700;
-      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text-mute);
     }
-    .advisor-row.top-pick .advisor-rank,
-    .advisor-row:nth-child(2) .advisor-rank,
-    .advisor-row:nth-child(3) .advisor-rank { font-size: 1.3rem; }
+    .advisor-rank.rank-gold {
+      background: linear-gradient(135deg, #f5c542, #d29922);
+      color: #1a1300;
+      border-color: #d29922;
+      box-shadow: 0 0 8px rgba(210,153,34,0.35);
+    }
+    .advisor-rank.rank-silver {
+      background: linear-gradient(135deg, #d8d8d8, #9c9c9c);
+      color: #1a1a1a;
+      border-color: #9c9c9c;
+    }
+    .advisor-rank.rank-bronze {
+      background: linear-gradient(135deg, #cd7f32, #8b5a2b);
+      color: #1a0d00;
+      border-color: #8b5a2b;
+    }
     .advisor-info { flex: 1 1 auto; min-width: 0; }
     .advisor-name {
       font-weight: 700;
@@ -1210,6 +1224,23 @@
     .advisor-advice.good { color: var(--pos); }
     .advisor-advice.dim { color: var(--text-dim); font-style: italic; }
     .advisor-advice strong { color: var(--text); }
+
+    .advisor-empty {
+      padding: 1.2rem 1rem;
+      text-align: center;
+      background: var(--elevated);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      color: var(--text-mute);
+    }
+    .advisor-empty-title {
+      font-family: Georgia, serif;
+      color: var(--amber);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .advisor-empty-body { font-size: 0.85rem; line-height: 1.5; }
 
     /* ===== Sim hit-table for step 6 ===== */
     .sim-table {
@@ -1512,6 +1543,18 @@
           </div>
         </div>
 
+        <div class="field" id="sim-flank-field">
+          <label>Flank uptime
+            <span class="hint-icon" data-tip="What % of your hits land while flanking the enemy. In a group with a tank, ~95% (tank creates CA). Solo, usually ~5%. Affects how much Combat Advantage actually matters.">?</span>
+            <span style="float:right;color:var(--amber);font-weight:600;" id="sim-flank-display">70%</span>
+          </label>
+          <div style="display:flex;gap:0.4rem;align-items:center;">
+            <button class="btn btn-ghost" type="button" data-flank-preset="0.05" style="font-size:0.75rem;padding:0.3rem 0.55rem;">Solo (5%)</button>
+            <input type="range" id="sim-flank" min="0" max="100" value="70" style="flex:1;">
+            <button class="btn btn-ghost" type="button" data-flank-preset="0.95" style="font-size:0.75rem;padding:0.3rem 0.55rem;">Group (95%)</button>
+          </div>
+        </div>
+
         <table class="sim-table">
           <thead>
             <tr>
@@ -1529,6 +1572,9 @@
         <h2>Where to spend next</h2>
         <p class="hint" id="advisor-hint">Marginal damage gain from adding <strong>+1%</strong> to each role-relevant stat. Top of the list is your best return on investment right now.</p>
         <div id="stat-advisor"></div>
+        <p style="font-size:0.72rem;color:var(--text-dim);margin-top:0.7rem;line-height:1.5;">
+          Single-cast view against a standard PvE enemy (50% Defense, 50% Deflect, 90% Deflect Severity, 0% Awareness/CritAvoid/Accuracy). Doesn't model proc-on-crit boons, set bonuses with synergistic triggers, rotation cooldowns, or specific dungeon-tier defenses. Use as directional advice; for endgame theorycrafting, validate with parser data.
+        </p>
       </div>
 
       <div class="panel">
@@ -1680,6 +1726,7 @@
       ],
       activeCombatPower: null,   // id from mount_combat_powers.json — drawn from stable mounts
       activeEquipPower:  null,   // id from mount_equip_powers.json — drawn from stable mounts
+      flankUptime: 0.70,  // % of hits with Combat Advantage active (0..1)
       boons: new Map(),  // key: "tier1:1" / "master:3" → { tier, boonId, points or ranks }
       // Order in which master boons were first ranked (by boonId).
       // Determines each boon's cost slot: slot N → N pts/rank to fully rank.
@@ -4100,6 +4147,10 @@
 
       const e = getEnemyStats();
 
+      // Hide the flank slider in healer mode — heals don't have flank.
+      const flankField = document.getElementById("sim-flank-field");
+      if (flankField) flankField.style.display = isHealer ? "none" : "";
+
       // Update the table column header + panel title/hint for the current mode.
       const lastTh = document.querySelector(".sim-table thead th:last-child");
       if (lastTh) lastTh.textContent = isHealer ? "Heal Output" : (isTank ? "Damage Taken" : "Damage");
@@ -4216,7 +4267,7 @@
           return Math.round(d);
         };
 
-        const FLANK_UPTIME = 0.70;
+        const FLANK_UPTIME = Math.max(0, Math.min(1, state.flankUptime || 0));
         const pCrit    = Math.max(0, Math.min(1, critStrike));
         const pDeflect = Math.max(0, Math.min(1, e.deflect));
         const nonDefl  = 1 - pDeflect;
@@ -4293,18 +4344,24 @@
       }
 
       const advisor = document.getElementById("stat-advisor");
-      if (advisor) {
+      if (advisor && TIL <= 0) {
+        advisor.innerHTML = `<div class="advisor-empty">
+          <div class="advisor-empty-title">Pick some gear first</div>
+          <div class="advisor-empty-body">The advisor uses your real character to recommend stats. Equip a few items in step 3 to fill in your Item Level — then we'll show what to invest in next.</div>
+        </div>`;
+      } else if (advisor) {
         const priority = isTank
           ? ["Awareness", "Defense", "Critical Avoidance", "Deflect", "Deflect Severity"]
           : isHealer
           ? ["Power", "Outgoing Healing", "Critical Severity", "Critical Strike"]
           : ["Power", "Combat Advantage", "Critical Severity", "Critical Strike", "Accuracy"];
 
-        const advisorTIL = TIL > 0 ? TIL : 89000;
+        // No synthetic baseline — the advisor is useful only when the
+        // character has real numbers. If TIL is 0 (no gear picked yet),
+        // we show a "pick gear first" message instead of fake gains.
+        const advisorTIL = TIL;
         const advisorBaseVal = (mag / 100) * (advisorTIL / 10) * roleMult;
-        const ASSUMED_CRIT_CHANCE = 0.05;
-        const ASSUMED_CRIT_SEV    = 0.25;
-        const FLANK_UPTIME_ADV    = 0.70;
+        const FLANK_UPTIME_ADV = Math.max(0, Math.min(1, state.flankUptime || 0));
 
         // Damage-mode expected calc
         function expectedDmg(p, c, cs, cst, ac) {
@@ -4380,12 +4437,6 @@
               power, ca, outgoing, critSev, critStrike, accuracy,
               awareness, defense, critAvoid, deflect, deflectSev
             };
-            // Crit-pair partner injection (works for DPS/heal modes)
-            if (name === "Critical Severity" && critStrike < ASSUMED_CRIT_CHANCE) {
-              bumps.critStrike = ASSUMED_CRIT_CHANCE;
-            } else if (name === "Critical Strike" && critSev < ASSUMED_CRIT_SEV) {
-              bumps.critSev = ASSUMED_CRIT_SEV;
-            }
 
             const recomputeBase = () => isTank
               ? expectedTaken(bumps.awareness, bumps.defense, bumps.critAvoid, bumps.deflect, bumps.deflectSev)
@@ -4415,7 +4466,10 @@
           } else {
             gain = 0;
           }
-          return { name, cur, cap, capped, gain };
+          // Capture engine state for state-aware advice
+          const ratingTotal = s ? s.ratingTotal : 0;
+          const ratingContribPct = s ? s.ratingContribPct : 0;
+          return { name, cur, cap, capped, gain, ratingTotal, ratingContribPct };
         }).sort((a, b) => b.gain - a.gain);
 
         advisor.innerHTML = rows.map((row, i) => {
@@ -4429,28 +4483,52 @@
           } else {
             bar = `<div class="advisor-progress">no cap · ${row.cur.toFixed(0)}% currently</div>`;
           }
-          // Plain-English advice
+
+          // ===== State-aware advice =====
+          // Three states: total-capped / rating-capped (bonus only) / below rating cap.
+          // Use the same synthetic TIL the advisor uses for gain calc, so
+          // headroom numbers stay sensible at TIL=0.
+          const ratingCap = (row.cap === 120) ? 60 : (row.cap === 90) ? 50 : null;
+          const totalCapped = row.capped;
+          const ratingCapped = ratingCap !== null && row.ratingContribPct >= ratingCap - 0.05 && !totalCapped;
+          const ratingMaxAt = advisorTIL + ((row.cap === 120) ? 10000 : 0);
+          const ratingHeadroom = Math.max(0, ratingMaxAt - row.ratingTotal);
+          const bonusHeadroom = (row.cap !== null) ? Math.max(0, row.cap - row.cur) : 0;
+
+          // What does +1% give in human terms?
+          const gainLabel = isTank
+            ? `<strong style="color:var(--amber);">−${row.gain.toFixed(2)}%</strong> damage taken per hit`
+            : isHealer
+            ? `<strong style="color:var(--amber);">+${row.gain.toFixed(2)}%</strong> expected heal per cast`
+            : `<strong style="color:var(--amber);">+${row.gain.toFixed(2)}%</strong> expected damage per hit`;
+
           let advice = "";
-          if (row.capped) {
-            advice = `<span class="advisor-advice good">✓ Capped — adding more is wasted. Invest elsewhere.</span>`;
-          } else if (row.gain > 0) {
-            const outputName = isTank
-              ? "less damage taken per hit"
-              : (isHealer ? "expected heal per cast" : "expected damage per hit");
-            advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">−${row.gain.toFixed(2)}%</strong>&nbsp;${outputName.startsWith('less') ? outputName : '+' + row.gain.toFixed(2) + '% ' + outputName}</span>`;
-            // If tank, the gain is already shown as % reduction; rewrite cleanly.
-            if (isTank) {
-              advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">−${row.gain.toFixed(2)}%</strong> damage taken per hit</span>`;
-            } else {
-              advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">+${row.gain.toFixed(2)}%</strong> ${outputName}</span>`;
-            }
+          if (totalCapped) {
+            advice = `<span class="advisor-advice good">✓ Fully capped — invest elsewhere.</span>`;
+          } else if (row.gain <= 0.001) {
+            advice = `<span class="advisor-advice dim">No effect at the current setup.</span>`;
+          } else if (ratingCapped) {
+            advice = `<span class="advisor-advice">
+              <strong>Rating capped</strong> — gains only from boons / race / % gear.
+              <br>+1% bonus → ${gainLabel}
+              <span style="color:var(--text-dim);"> · ${bonusHeadroom.toFixed(0)}% headroom to total cap</span>
+            </span>`;
           } else {
-            advice = `<span class="advisor-advice dim">No effect at the current setup (e.g. stat doesn't fire vs this enemy).</span>`;
+            // Below rating cap — show rating-actionable advice
+            const ratingShown = Math.min(1000, ratingHeadroom);
+            advice = `<span class="advisor-advice">
+              <strong>+${ratingShown.toLocaleString()} rating</strong> → ${gainLabel}
+              <span style="color:var(--text-dim);"> · ${ratingHeadroom.toLocaleString()} rating headroom</span>
+            </span>`;
           }
-          // Medal for top pick
-          const medal = isFirst ? "🥇" : (i === 1 ? "🥈" : (i === 2 ? "🥉" : `${i + 1}`));
+
+          // Styled rank badge (gold/silver/bronze for top 3, plain for rest).
+          // Avoids medal-emoji font fallback issues on some browsers.
+          const rankClass = i === 0 ? "rank-gold"
+                          : i === 1 ? "rank-silver"
+                          : i === 2 ? "rank-bronze" : "";
           return `<div class="advisor-row ${isFirst ? "top-pick" : ""}">
-            <div class="advisor-rank">${medal}</div>
+            <div class="advisor-rank ${rankClass}">${i + 1}</div>
             <div class="advisor-info">
               <div class="advisor-name">${row.name}</div>
               ${bar}
@@ -4612,6 +4690,23 @@
     // (f-mount listener removed — replaced by 5-slot stable picker, see renderStable.)
     document.getElementById("sim-mag").addEventListener("input",    () => renderSim());
     document.getElementById("sim-type").addEventListener("change",  () => renderSim());
+
+    // Flank uptime slider + presets
+    const flankSlider = document.getElementById("sim-flank");
+    const flankDisplay = document.getElementById("sim-flank-display");
+    function setFlank(value01) {
+      const v = Math.max(0, Math.min(1, value01));
+      state.flankUptime = v;
+      if (flankSlider) flankSlider.value = Math.round(v * 100);
+      if (flankDisplay) flankDisplay.textContent = Math.round(v * 100) + "%";
+      renderSim();
+    }
+    if (flankSlider) {
+      flankSlider.addEventListener("input", e => setFlank(+e.target.value / 100));
+    }
+    document.querySelectorAll("[data-flank-preset]").forEach(btn => {
+      btn.addEventListener("click", () => setFlank(+btn.dataset.flankPreset));
+    });
     // Power picker — opens a filtered list of the player's class powers
     // and fills in the magnitude. Only includes powers with damage > 0.
     document.getElementById("sim-pick-power").addEventListener("click", () => {
