@@ -1481,8 +1481,8 @@
     <!-- ============ Step 6: Test & Tune ============ -->
     <div class="step-panel" data-panel="6">
       <div class="panel">
-        <h2>Run the math</h2>
-        <p class="hint">Pick a power magnitude. The math uses the universal NW PvE enemy: <strong>50% Defense</strong>, <strong>50% Deflect</strong>, <strong>90% Deflect Severity</strong>, and 0% Awareness / Crit Avoid / Accuracy. Your Accuracy counters their Deflect Severity.</p>
+        <h2 id="sim-title">Run the math</h2>
+        <p class="hint" id="sim-hint">Pick a power magnitude. The math uses the universal NW PvE enemy: <strong>50% Defense</strong>, <strong>50% Deflect</strong>, <strong>90% Deflect Severity</strong>, and 0% Awareness / Crit Avoid / Accuracy. Your Accuracy counters their Deflect Severity.</p>
         <div class="row-2">
           <div class="field">
             <label>Sample power magnitude
@@ -4072,6 +4072,7 @@
       const TIL = r.totalItemLevel || 0;
       const roleKey = (state.role || "dps").toLowerCase();
       const roleMult = ROLE_MULT[roleKey] || 1.20;
+      const isHealer = (roleKey === "heal");
 
       // Engine percentages → decimals
       const stat = (n) => ((r.stats[n] && r.stats[n].finalPct) || 0) / 100;
@@ -4080,59 +4081,99 @@
       const critSev    = stat("Critical Severity");
       const critStrike = stat("Critical Strike");
       const accuracy   = stat("Accuracy");
+      const outgoing   = stat("Outgoing Healing");
 
       const e = getEnemyStats();
 
+      // Update the table column header + panel title/hint for the current mode.
+      const lastTh = document.querySelector(".sim-table thead th:last-child");
+      if (lastTh) lastTh.textContent = isHealer ? "Heal Output" : "Damage";
+      const titleEl = document.getElementById("sim-title");
+      const hintEl = document.getElementById("sim-hint");
+      if (titleEl) titleEl.textContent = isHealer ? "Run the heal math" : "Run the math";
+      if (hintEl) {
+        hintEl.innerHTML = isHealer
+          ? `Pick a power magnitude. Healing math: <strong>(mag/100) × (TIL/10) × 1.10 × (1+Power) × (1+Outgoing Healing)</strong>, then × (1+CritSev/2) on a crit. NW halves Critical Severity for heals.`
+          : `Pick a power magnitude. The math uses the universal NW PvE enemy: <strong>50% Defense</strong>, <strong>50% Deflect</strong>, <strong>90% Deflect Severity</strong>, and 0% Awareness / Crit Avoid / Accuracy. Your Accuracy counters their Deflect Severity.`;
+      }
+
       // Base before per-hit multipliers
-      const baseDmg = TIL > 0
+      const baseVal = TIL > 0
         ? (mag / 100) * (TIL / 10) * roleMult
         : 0;
 
-      // Per-scenario multipliers
-      const powerMult     = 1 + power;
-      const flankBonus    = 1 + Math.max(0, ca       - e.awareness);
-      const critBonus     = 1 + Math.max(0, critSev  - e.critAvoid);
-      const deflectDivide = 1 + Math.max(0, e.deflectSev - accuracy);
-      const defenseDivide = 1 + e.defense;
+      // -------------------------------------------------------
+      // HEALER MODE: Heal = base × (1 + Power) × (1 + OH)
+      //              × (1 + CritSev/2) on crit  [crit sev is halved on heals]
+      // No flank, no enemy defense, no deflect (heals land on allies).
+      // -------------------------------------------------------
+      let rows, expected;
+      if (isHealer) {
+        const healMult = (1 + power) * (1 + outgoing);
+        // Mekaniks: Critical Severity is HALVED for healing. So a +60%
+        // CritSev character gets +30% bonus on a crit-heal.
+        const critHealMult = (1 + critSev / 2);
 
-      const dmg = (flank, crit, defl) => {
-        let d = baseDmg * powerMult;
-        if (flank) d *= flankBonus;
-        if (crit)  d *= critBonus;
-        if (defl)  d /= deflectDivide;
-        d /= defenseDivide;
-        return Math.round(d);
-      };
+        const baseHeal = Math.round(baseVal * healMult);
+        const critHeal = Math.round(baseVal * healMult * critHealMult);
 
-      // Probabilities — option 5 will expose these as user sliders
-      const FLANK_UPTIME = 0.70;            // assumption for now
-      const pCrit    = Math.max(0, Math.min(1, critStrike));   // your CritStrike %
-      const pDeflect = Math.max(0, Math.min(1, e.deflect));    // enemy Deflect chance
-      // Among non-deflected hits, partition by flank/crit:
-      const nonDefl  = 1 - pDeflect;
-      const pBase    = nonDefl * (1 - FLANK_UPTIME) * (1 - pCrit);
-      const pFlank   = nonDefl *      FLANK_UPTIME  * (1 - pCrit);
-      const pCritOnly= nonDefl * (1 - FLANK_UPTIME) *      pCrit;
-      const pBoth    = nonDefl *      FLANK_UPTIME  *      pCrit;
-      const pDefl    = pDeflect;
+        const pCritH = Math.max(0, Math.min(1, critStrike));
+        const pBaseH = 1 - pCritH;
 
-      const dBase  = dmg(false, false, false);
-      const dFlank = dmg(true,  false, false);
-      const dCrit  = dmg(false, true,  false);
-      const dBoth  = dmg(true,  true,  false);
-      const dDefl  = dmg(false, false, true);
+        expected = Math.round(pBaseH * baseHeal + pCritH * critHeal);
 
-      const expected = Math.round(
-        pBase * dBase + pFlank * dFlank + pCritOnly * dCrit + pBoth * dBoth + pDefl * dDefl
-      );
+        rows = [
+          { sc: "Base heal", tags: ["—"],     p: pBaseH, d: baseHeal },
+          { sc: "Crit heal", tags: ["CR"],    p: pCritH, d: critHeal },
+        ];
+      } else {
+        // -------------------------------------------------------
+        // DPS / TANK MODE: full damage formula
+        // -------------------------------------------------------
+        const baseDmg = baseVal;
+        const powerMult     = 1 + power;
+        const flankBonus    = 1 + Math.max(0, ca       - e.awareness);
+        const critBonus     = 1 + Math.max(0, critSev  - e.critAvoid);
+        const deflectDivide = 1 + Math.max(0, e.deflectSev - accuracy);
+        const defenseDivide = 1 + e.defense;
 
-      const rows = [
-        { sc: "Base hit",     tags: ["—","—","—"],  p: pBase,    d: dBase  },
-        { sc: "Flank only",   tags: ["—","FL","—"], p: pFlank,   d: dFlank },
-        { sc: "Crit only",    tags: ["CR","—","—"], p: pCritOnly,d: dCrit  },
-        { sc: "Crit + Flank", tags: ["CR","FL","—"],p: pBoth,    d: dBoth  },
-        { sc: "Deflected",    tags: ["—","—","DF"], p: pDefl,    d: dDefl  },
-      ];
+        const dmg = (flank, crit, defl) => {
+          let d = baseDmg * powerMult;
+          if (flank) d *= flankBonus;
+          if (crit)  d *= critBonus;
+          if (defl)  d /= deflectDivide;
+          d /= defenseDivide;
+          return Math.round(d);
+        };
+
+        const FLANK_UPTIME = 0.70;
+        const pCrit    = Math.max(0, Math.min(1, critStrike));
+        const pDeflect = Math.max(0, Math.min(1, e.deflect));
+        const nonDefl  = 1 - pDeflect;
+        const pBase    = nonDefl * (1 - FLANK_UPTIME) * (1 - pCrit);
+        const pFlank   = nonDefl *      FLANK_UPTIME  * (1 - pCrit);
+        const pCritOnly= nonDefl * (1 - FLANK_UPTIME) *      pCrit;
+        const pBoth    = nonDefl *      FLANK_UPTIME  *      pCrit;
+        const pDefl    = pDeflect;
+
+        const dBase  = dmg(false, false, false);
+        const dFlank = dmg(true,  false, false);
+        const dCrit  = dmg(false, true,  false);
+        const dBoth  = dmg(true,  true,  false);
+        const dDefl  = dmg(false, false, true);
+
+        expected = Math.round(
+          pBase * dBase + pFlank * dFlank + pCritOnly * dCrit + pBoth * dBoth + pDefl * dDefl
+        );
+
+        rows = [
+          { sc: "Base hit",     tags: ["—","—","—"],  p: pBase,    d: dBase  },
+          { sc: "Flank only",   tags: ["—","FL","—"], p: pFlank,   d: dFlank },
+          { sc: "Crit only",    tags: ["CR","—","—"], p: pCritOnly,d: dCrit  },
+          { sc: "Crit + Flank", tags: ["CR","FL","—"],p: pBoth,    d: dBoth  },
+          { sc: "Deflected",    tags: ["—","—","DF"], p: pDefl,    d: dDefl  },
+        ];
+      }
 
       const fmtPct = (x) => (x * 100).toFixed(1) + "%";
       body.innerHTML = rows.map(row => `
@@ -4167,81 +4208,88 @@
       }
 
       // ===== Stat priority advisor =====
-      // For each role-relevant stat, compute expected damage with +1% added,
-      // and show the delta as % gain. Cap-reached stats are flagged.
+      // For each role-relevant stat, compute expected output with +1% added,
+      // and show the delta as % gain. DPS uses damage formula, Healer uses
+      // healing formula. Cap-reached stats are flagged.
       const advisor = document.getElementById("stat-advisor");
       if (advisor) {
-        const role = (state.role || "dps").toLowerCase();
-        // For DPS we use the offensive priority list
-        const priority = (role === "heal")
-          ? ["Power", "Outgoing Healing", "Critical Severity", "Critical Strike", "Forte"]
+        const priority = isHealer
+          ? ["Power", "Outgoing Healing", "Critical Severity", "Critical Strike"]
           : ["Power", "Combat Advantage", "Critical Severity", "Critical Strike", "Accuracy"];
 
-        // Synthetic baseline so the advisor can rank stats even at TIL=0
-        // (no gear). Without this, baseDmg would be 0 and all gains would
-        // collapse to 0. We also nudge inter-dependent stats off zero so
-        // CritSev/CritStrike show their real coupled value.
         const advisorTIL = TIL > 0 ? TIL : 89000;
-        const advisorBaseDmg = (mag / 100) * (advisorTIL / 10) * roleMult;
-        const ASSUMED_CRIT_CHANCE = 0.05;   // for probing CritSev gain
-        const ASSUMED_CRIT_SEV    = 0.25;   // for probing CritStrike gain
+        const advisorBaseVal = (mag / 100) * (advisorTIL / 10) * roleMult;
+        const ASSUMED_CRIT_CHANCE = 0.05;
+        const ASSUMED_CRIT_SEV    = 0.25;
+        const FLANK_UPTIME_ADV    = 0.70;
 
-        function expectedFor(power, ca, critSev, critStrike, accuracy) {
-          const pm = 1 + power;
-          const fb = 1 + Math.max(0, ca - e.awareness);
-          const cb = 1 + Math.max(0, critSev - e.critAvoid);
-          const dd = 1 + Math.max(0, e.deflectSev - accuracy);
-          const def = 1 + e.defense;
-          const calc = (flank, crit, defl) => {
-            let d = advisorBaseDmg * pm;
-            if (flank) d *= fb;
-            if (crit)  d *= cb;
-            if (defl)  d /= dd;
+        // Damage-mode expected calc
+        function expectedDmg(p, c, cs, cst, ac) {
+          const pm = 1 + p, fb = 1 + Math.max(0, c - e.awareness),
+                cb = 1 + Math.max(0, cs - e.critAvoid),
+                dd = 1 + Math.max(0, e.deflectSev - ac),
+                def = 1 + e.defense;
+          const calc = (fl, cr, df) => {
+            let d = advisorBaseVal * pm;
+            if (fl) d *= fb; if (cr) d *= cb;
+            if (df) d /= dd;
             d /= def;
             return d;
           };
-          const pC = Math.max(0, Math.min(1, critStrike));
+          const pC = Math.max(0, Math.min(1, cst));
           const pD = Math.max(0, Math.min(1, e.deflect));
           const nD = 1 - pD;
           return (
-            nD*(1-FLANK_UPTIME)*(1-pC)*calc(false,false,false) +
-            nD*FLANK_UPTIME*(1-pC)    *calc(true, false,false) +
-            nD*(1-FLANK_UPTIME)*pC    *calc(false,true, false) +
-            nD*FLANK_UPTIME*pC        *calc(true, true, false) +
-            pD                        *calc(false,false,true)
+            nD*(1-FLANK_UPTIME_ADV)*(1-pC)*calc(false,false,false) +
+            nD*FLANK_UPTIME_ADV*(1-pC)    *calc(true, false,false) +
+            nD*(1-FLANK_UPTIME_ADV)*pC    *calc(false,true, false) +
+            nD*FLANK_UPTIME_ADV*pC        *calc(true, true, false) +
+            pD                            *calc(false,false,true)
           );
         }
-        const baseExpected = expectedFor(power, ca, critSev, critStrike, accuracy);
+        // Heal-mode expected calc — no enemy stats, no flank, CritSev halved.
+        function expectedHeal(p, oh, cs, cst) {
+          const baseH = advisorBaseVal * (1 + p) * (1 + oh);
+          const crit  = baseH * (1 + cs / 2);
+          const pC = Math.max(0, Math.min(1, cst));
+          return (1 - pC) * baseH + pC * crit;
+        }
+
+        const baseExpected = isHealer
+          ? expectedHeal(power, outgoing, critSev, critStrike)
+          : expectedDmg(power, ca, critSev, critStrike, accuracy);
 
         const rows = priority.map(name => {
           const s = r.stats[name];
           const cap = (s && typeof s.cap === "number") ? s.cap : null;
           const cur = s ? s.finalPct : 0;
           const capped = cap !== null && cur >= cap - 0.05;
-          // Probe expected damage with +1% to this stat. Crit pair stats
-          // (CritSev, CritStrike) are interdependent — at 0% partner the
-          // marginal gain is 0. Inject minimums for the partner so the
-          // advisor ranks them by their real "crit value", not zero.
+
           let probe = baseExpected;
           let probeBaseline = baseExpected;
+
           if (!capped) {
-            const bumps = { power, ca, critSev, critStrike, accuracy };
-            // Nudge partner stat for crit-pair probes
+            const bumps = { power, ca, outgoing, critSev, critStrike, accuracy };
+            // Crit-pair partner injection (works for both modes)
             if (name === "Critical Severity" && critStrike < ASSUMED_CRIT_CHANCE) {
               bumps.critStrike = ASSUMED_CRIT_CHANCE;
             } else if (name === "Critical Strike" && critSev < ASSUMED_CRIT_SEV) {
               bumps.critSev = ASSUMED_CRIT_SEV;
             }
-            // Recompute the baseline with the same partner adjustments so
-            // the % gain is fair (both pre/post share the partner).
-            probeBaseline = expectedFor(bumps.power, bumps.ca, bumps.critSev, bumps.critStrike, bumps.accuracy);
 
-            const map = { "Power":"power", "Combat Advantage":"ca", "Critical Severity":"critSev",
-                          "Critical Strike":"critStrike", "Accuracy":"accuracy" };
+            const recomputeBase = () => isHealer
+              ? expectedHeal(bumps.power, bumps.outgoing, bumps.critSev, bumps.critStrike)
+              : expectedDmg(bumps.power, bumps.ca, bumps.critSev, bumps.critStrike, bumps.accuracy);
+            probeBaseline = recomputeBase();
+
+            const map = {
+              "Power":"power", "Combat Advantage":"ca", "Outgoing Healing":"outgoing",
+              "Critical Severity":"critSev", "Critical Strike":"critStrike", "Accuracy":"accuracy"
+            };
             const key = map[name];
             if (key) {
               bumps[key] += 0.01;
-              probe = expectedFor(bumps.power, bumps.ca, bumps.critSev, bumps.critStrike, bumps.accuracy);
+              probe = recomputeBase();
             }
           }
           const gain = probeBaseline > 0 ? ((probe - probeBaseline) / probeBaseline) * 100 : 0;
@@ -4264,7 +4312,8 @@
           if (row.capped) {
             advice = `<span class="advisor-advice good">✓ Capped — adding more is wasted. Invest elsewhere.</span>`;
           } else if (row.gain > 0) {
-            advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">+${row.gain.toFixed(2)}%</strong> expected damage per hit</span>`;
+            const outputName = isHealer ? "expected heal" : "expected damage";
+            advice = `<span class="advisor-advice">Adding <strong>+1%</strong> here → <strong style="color:var(--amber);">+${row.gain.toFixed(2)}%</strong> ${outputName} per cast</span>`;
           } else {
             advice = `<span class="advisor-advice dim">No effect at the current setup (e.g. stat doesn't fire vs this enemy).</span>`;
           }
