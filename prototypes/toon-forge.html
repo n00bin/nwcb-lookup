@@ -3857,7 +3857,15 @@
           ? ["Power", "Outgoing Healing", "Critical Severity", "Critical Strike", "Forte"]
           : ["Power", "Combat Advantage", "Critical Severity", "Critical Strike", "Accuracy"];
 
-        // Reusable per-scenario calculator (matches the table's math)
+        // Synthetic baseline so the advisor can rank stats even at TIL=0
+        // (no gear). Without this, baseDmg would be 0 and all gains would
+        // collapse to 0. We also nudge inter-dependent stats off zero so
+        // CritSev/CritStrike show their real coupled value.
+        const advisorTIL = TIL > 0 ? TIL : 89000;
+        const advisorBaseDmg = (mag / 100) * (advisorTIL / 10) * roleMult;
+        const ASSUMED_CRIT_CHANCE = 0.05;   // for probing CritSev gain
+        const ASSUMED_CRIT_SEV    = 0.25;   // for probing CritStrike gain
+
         function expectedFor(power, ca, critSev, critStrike, accuracy) {
           const pm = 1 + power;
           const fb = 1 + Math.max(0, ca - e.awareness);
@@ -3865,7 +3873,7 @@
           const dd = 1 + Math.max(0, e.deflectSev - accuracy);
           const def = 1 + e.defense;
           const calc = (flank, crit, defl) => {
-            let d = baseDmg * pm;
+            let d = advisorBaseDmg * pm;
             if (flank) d *= fb;
             if (crit)  d *= cb;
             if (defl)  d /= dd;
@@ -3890,10 +3898,24 @@
           const cap = (s && typeof s.cap === "number") ? s.cap : null;
           const cur = s ? s.finalPct : 0;
           const capped = cap !== null && cur >= cap - 0.05;
-          // Probe expected damage with +1% to this stat
+          // Probe expected damage with +1% to this stat. Crit pair stats
+          // (CritSev, CritStrike) are interdependent — at 0% partner the
+          // marginal gain is 0. Inject minimums for the partner so the
+          // advisor ranks them by their real "crit value", not zero.
           let probe = baseExpected;
+          let probeBaseline = baseExpected;
           if (!capped) {
             const bumps = { power, ca, critSev, critStrike, accuracy };
+            // Nudge partner stat for crit-pair probes
+            if (name === "Critical Severity" && critStrike < ASSUMED_CRIT_CHANCE) {
+              bumps.critStrike = ASSUMED_CRIT_CHANCE;
+            } else if (name === "Critical Strike" && critSev < ASSUMED_CRIT_SEV) {
+              bumps.critSev = ASSUMED_CRIT_SEV;
+            }
+            // Recompute the baseline with the same partner adjustments so
+            // the % gain is fair (both pre/post share the partner).
+            probeBaseline = expectedFor(bumps.power, bumps.ca, bumps.critSev, bumps.critStrike, bumps.accuracy);
+
             const map = { "Power":"power", "Combat Advantage":"ca", "Critical Severity":"critSev",
                           "Critical Strike":"critStrike", "Accuracy":"accuracy" };
             const key = map[name];
@@ -3902,7 +3924,7 @@
               probe = expectedFor(bumps.power, bumps.ca, bumps.critSev, bumps.critStrike, bumps.accuracy);
             }
           }
-          const gain = baseExpected > 0 ? ((probe - baseExpected) / baseExpected) * 100 : 0;
+          const gain = probeBaseline > 0 ? ((probe - probeBaseline) / probeBaseline) * 100 : 0;
           return { name, cur, cap, capped, gain };
         }).sort((a, b) => b.gain - a.gain);
 
