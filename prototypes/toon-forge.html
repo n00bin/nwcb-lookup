@@ -1452,7 +1452,7 @@
           <label>Item Level
             <span class="hint-icon" data-tip="Auto-summed from gear when you equip pieces in step 3. You can also type it directly.">?</span>
           </label>
-          <input type="number" id="f-il" placeholder="auto-fills as you equip gear, or type manually">
+          <input type="number" id="f-il" placeholder="auto-computed from gear + artifacts + bolstered comp/mount IL" readonly style="background:var(--elevated);">
         </div>
 
         <div class="field">
@@ -1834,7 +1834,7 @@
         s: {
           role: state.role, class: state.class, paragon: state.paragon,
           race: state.race, raceChoices: state.raceChoices,
-          il: state.il, ilManual: state.ilManual, name: state.name,
+          il: state.il, name: state.name,
           abil: state.abil, abilBase: state.abilBase, abilLevels: state.abilLevels,
           gear: state.gear, kits: state.kits,
           artifacts: state.artifacts,
@@ -2831,26 +2831,25 @@
     }
 
     /* ===== Auto Total Item Level =====
-       Sums item_level of every equipped gear piece + equipped artifacts.
-       In NW, both contribute to the displayed Total Item Level. Updates
-       state.il and the input field whenever gear or artifacts change.
-       The user can still type into the field; their value persists until
-       the next gear/artifact change overwrites it. */
-    function computeTILFromBuild() {
+       NW formula (matches the parent project's compute_til):
+         TIL = gear_il + comp_bolster_il + mount_bolster_il
+       where:
+         gear_il          = sum(equipped gear IL) + sum(equipped artifact IL)
+         comp_bolster_il  = summoned_comp_IL × (1 + companionBolster%/100)
+         mount_bolster_il = active_mount_IL × (1 + mountBolster%/100)
+         summoned_comp_IL = rarity_IL + companion_gear + enchant + enhancement
+         active_mount_IL  = active_equip_power_IL + active_combat_power_IL
+    */
+    function computeGearArtifactIL() {
       let sum = 0;
-      // Equipped gear (12 slots; rings dedup)
       if (state.gear && typeof GEAR_SLOTS !== "undefined") {
-        const seen = new Set();
         for (const slotEntry of GEAR_SLOTS) {
           const itemName = state.gear[slotEntry.label];
           if (!itemName) continue;
-          // Two ring slots share a data slot; if both are the same item we
-          // still count IL from each (NW counts both equipped rings).
           const item = findGearByName(itemName, slotEntry.slot);
           if (item && item.item_level) sum += item.item_level;
         }
       }
-      // Equipped artifacts (1 primary + up to 3 secondary)
       if (state.artifacts) {
         const primary = findArtifactByName(state.artifacts["Primary"]);
         if (primary && primary.item_level) sum += primary.item_level;
@@ -2861,11 +2860,45 @@
       }
       return sum;
     }
+    function computeSummonedCompIL() {
+      if (!state.summoned) return 0;
+      let sum = 0;
+      // Base rarity IL — Mythic 750, Celestial 900, etc.
+      const rarityIL = COMPANION_RARITY_IL[state.companionRarity || "Mythic"] || 750;
+      sum += rarityIL;
+      // Companion gear (Neck / Waist / Ring)
+      if (state.summonedGear) {
+        for (const slot of ["Neck", "Waist", "Ring"]) {
+          const item = findCompGearByName(state.summonedGear[slot], slot);
+          if (item && item.item_level) sum += item.item_level;
+        }
+      }
+      // Companion enchant + enhancement
+      const ce = findEnchantByName(state.summonedEnchant);
+      if (ce && ce.item_level) sum += ce.item_level;
+      const ceh = findEnhancementByName(state.summonedEnh);
+      if (ceh && ceh.item_level) sum += ceh.item_level;
+      return sum;
+    }
+    function computeActiveMountIL() {
+      let sum = 0;
+      const ep = findEquipPowerById(state.activeEquipPower);
+      if (ep && ep.item_level) sum += ep.item_level;
+      const cp = findCombatPowerById(state.activeCombatPower);
+      if (cp && cp.item_level) sum += cp.item_level;
+      return sum;
+    }
+    function computeTILFromBuild() {
+      const gearIL = computeGearArtifactIL();
+      const summonedIL = computeSummonedCompIL();
+      const mountIL = computeActiveMountIL();
+      const cb = (state.companionBolster == null ? 100 : +state.companionBolster) / 100;
+      const mb = (state.mountBolster     == null ? 100 : +state.mountBolster)     / 100;
+      const compBolsterIL  = Math.round(summonedIL * (1 + cb));
+      const mountBolsterIL = Math.round(mountIL    * (1 + mb));
+      return gearIL + compBolsterIL + mountBolsterIL;
+    }
     function applyAutoTIL() {
-      // If the user has typed their own IL, respect it — auto-calc only
-      // covers gear + artifacts and misses companion/mount bolster IL
-      // contributions. Manual override sticks until cleared.
-      if (state.ilManual) return;
       const til = computeTILFromBuild();
       if (til <= 0) return;
       state.il = String(til);
@@ -4852,6 +4885,11 @@
     }
 
     function rerenderAll() {
+      // Recompute TIL first — every state change (gear, summoned comp,
+      // active mount, bolster, rarity) can affect it. The IL input
+      // value is updated in place, so users typing manually will see
+      // their value get re-derived from build state.
+      applyAutoTIL();
       renderQuickStats();
       renderScore();
       renderStepDoneStates();
@@ -4974,7 +5012,11 @@
       renderAbilityGrid();
       rerenderAll();
     });
-    document.getElementById("f-il").addEventListener("input",       e => { state.il      = e.target.value; state.ilManual = true; rerenderAll(); });
+    // The IL field is now a derived display — auto-recomputed inside
+    // rerenderAll(). Allow the user to peek/copy but don't let their
+    // edit drive recomputation, since the next state change would
+    // immediately overwrite it.
+    document.getElementById("f-il").addEventListener("input",       e => { state.il      = e.target.value; });
     document.getElementById("f-name").addEventListener("input",     e => { state.name    = e.target.value; rerenderAll(); });
     // (f-mount listener removed — replaced by 5-slot stable picker, see renderStable.)
     document.getElementById("sim-mag").addEventListener("input",    () => renderSim());
