@@ -1827,11 +1827,11 @@
       // 5-slot stable. Each slot: { mount, collar, insignias: [name|null, ...] }.
       // The insignias array length matches the picked mount's insigniaSlots.
       stable: [
-        { mount: "", collar: "", insignias: [], desiredBonus: null },
-        { mount: "", collar: "", insignias: [], desiredBonus: null },
-        { mount: "", collar: "", insignias: [], desiredBonus: null },
-        { mount: "", collar: "", insignias: [], desiredBonus: null },
-        { mount: "", collar: "", insignias: [], desiredBonus: null }
+        { mount: "", collar: "", insignias: [], desiredBonus: null, insigniaTier: "Mythic" },
+        { mount: "", collar: "", insignias: [], desiredBonus: null, insigniaTier: "Mythic" },
+        { mount: "", collar: "", insignias: [], desiredBonus: null, insigniaTier: "Mythic" },
+        { mount: "", collar: "", insignias: [], desiredBonus: null, insigniaTier: "Mythic" },
+        { mount: "", collar: "", insignias: [], desiredBonus: null, insigniaTier: "Mythic" }
       ],
       activeCombatPower: null,   // id from mount_combat_powers.json — drawn from stable mounts
       activeEquipPower:  null,   // id from mount_equip_powers.json — drawn from stable mounts
@@ -1962,6 +1962,12 @@
       }
       if (!state.mountCollection) {
         state.mountCollection = { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0, Mythic: 0, Celestial: 0 };
+      }
+      // Per-mount-slot insignia tier — fall back to the legacy global
+      // (state.insigniaRarity) for older saves.
+      const insFallback = state.insigniaRarity || "Mythic";
+      for (const slot of (state.stable || [])) {
+        if (slot && slot.insigniaTier == null) slot.insigniaTier = insFallback;
       }
       if (typeof applyCompCollectionToInputs  === "function") applyCompCollectionToInputs();
       if (typeof applyMountCollectionToInputs === "function") applyMountCollectionToInputs();
@@ -2450,8 +2456,12 @@
       const stats = (c.stats || []).map(s => `+${s.value} ${s.stat}`).join(", ");
       return { name: c.name, meta: c.tier || "", desc: stats };
     }
+    // Slot-aware: when the picker is open for a specific stable slot,
+    // pickInsignia sets _activeInsigniaTier so the picker meta + values
+    // reflect that slot's selected tier instead of the legacy global.
+    let _activeInsigniaTier = "Mythic";
     function renderInsignia(i) {
-      const tier = state.insigniaRarity || "Mythic";
+      const tier = _activeInsigniaTier || state.insigniaRarity || "Mythic";
       const tierIL = insigniaTierIL(tier);
       const mult = insigniaTierMultiplier(tier);
       const stats = (i.stats || []).map(s => {
@@ -2985,18 +2995,18 @@
       // Mount insignias and collars across all 5 stable slots.
       // Insignias and collars are equipped on mounts (not bolstered per
       // docs); their flat IL still rolls up into the character total.
-      // Insignia IL scales with the user-selected tier (Mythic baseline).
-      const insIL = insigniaTierIL(state.insigniaRarity || "Mythic");
+      // Insignia IL scales with the per-mount-slot tier (Mythic baseline).
       for (const slot of (state.stable || [])) {
         if (!slot) continue;
         if (slot.collar) {
           const c = findCollarByName(slot.collar);
           if (c && c.item_level) sum += c.item_level;
         }
+        const slotInsIL = insigniaTierIL(slot.insigniaTier || "Mythic");
         for (const insName of (slot.insignias || [])) {
           if (!insName) continue;
           const ins = findInsigniaByName(insName);
-          if (ins) sum += insIL;
+          if (ins) sum += slotInsIL;
         }
       }
       // Companion gear (Neck/Waist/Ring on the summoned), companion enchant,
@@ -3388,10 +3398,10 @@
         }
 
         // Insignias — each slotted insignia adds its own stats + CR.
-        // Stats and CR scale with the user-selected tier (Mythic = 1.0,
+        // Stats and CR scale with the per-mount-slot tier (Mythic = 1.0,
         // Celestial = 1.5, etc.).
-        const insMult = insigniaTierMultiplier(s.insigniaRarity || "Mythic");
-        const insTier = s.insigniaRarity || "Mythic";
+        const insTier = slot.insigniaTier || "Mythic";
+        const insMult = insigniaTierMultiplier(insTier);
         for (let iIdx = 0; iIdx < (slot.insignias || []).length; iIdx++) {
           const insName = slot.insignias[iIdx];
           if (!insName) continue;
@@ -4423,6 +4433,17 @@
             </div>`;
           });
           html += `</div>`;
+          // Per-slot insignia tier — applies to all 4 insignias on this mount.
+          const curTier = slot.insigniaTier || "Mythic";
+          const tierOpts = ["Uncommon","Rare","Epic","Legendary","Mythic","Celestial"]
+            .map(t => `<option value="${t}"${t === curTier ? " selected" : ""}>${t}</option>`).join("");
+          html += `<div class="stable-ins-tier" style="margin-top:0.4rem;display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;">
+            <span style="color:var(--text-mute);">Insignia tier (this mount's slots):</span>
+            <select data-stable="ins-tier" data-idx="${i}"
+                    style="font-size:0.78rem;padding:0.25rem 0.4rem;background:var(--elevated);color:var(--text);border:1px solid var(--border);border-radius:4px;">
+              ${tierOpts}
+            </select>
+          </div>`;
         } else if (slot.mount) {
           html += `<div class="stable-insignias-empty">no insignia slots</div>`;
         }
@@ -4459,6 +4480,15 @@
       });
       wrap.querySelectorAll("[data-stable='insignia']").forEach(el => {
         el.addEventListener("click", () => pickInsignia(+el.dataset.idx, +el.dataset.insIdx));
+      });
+      wrap.querySelectorAll("select[data-stable='ins-tier']").forEach(sel => {
+        sel.addEventListener("change", e => {
+          const i = +sel.dataset.idx;
+          if (state.stable[i]) {
+            state.stable[i].insigniaTier = e.target.value;
+          }
+          rerenderAll();
+        });
       });
       wrap.querySelectorAll("[data-stable='bonus']").forEach(el => {
         el.addEventListener("click", () => pickBonusForMount(+el.dataset.idx));
@@ -4540,8 +4570,10 @@
       if (!mount) return;
       const allowed = (mount.insigniaSlots[insIdx] || {}).allowed || [];
       const allowedLabel = allowed.join("/").replace("*", "Universal");
+      // Tell renderInsignia which slot's tier to display values at.
+      _activeInsigniaTier = state.stable[idx].insigniaTier || "Mythic";
       openPicker({
-        title: `Insignia · ${allowedLabel}`,
+        title: `Insignia · ${allowedLabel} · tier ${_activeInsigniaTier}`,
         items: insigniaOptionsForSlot(allowed),
         render: renderInsignia,
         onPick: (ins) => {
