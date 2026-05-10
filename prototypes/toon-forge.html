@@ -1528,18 +1528,27 @@
           <input type="range" id="mount-bolster" min="0" max="125" value="100" style="width:100%;">
         </div>
         <div class="field" style="margin-top:0.6rem;">
-          <label>All companion rarity
-            <span class="hint-icon" data-tip="The tier we assume your slotted companions (summoned + 5 active) are running at. The engine scales each companion's Combined Rating and per-stat percent boosts from the data's base rarity up to this tier.">?</span>
+          <label>Companion collection
+            <span class="hint-icon" data-tip="How many companions you own at each rarity. NW takes the top 10 by quality and sums each one's per-tier bolster contribution (Common 1% / Uncommon 2% / Rare 3.5% / Epic 5% / Legendary 7.5% / Mythic 10% / Celestial 12%) into your companion bolster %, capped at 120%. The slider above auto-updates from these counts.">?</span>
+            <span style="float:right;color:var(--text-mute);font-size:0.78rem;" id="comp-collection-summary">top 10: 0%</span>
           </label>
-          <select id="comp-rarity" style="width:100%;">
-            <option value="Common">Common (75 IL)</option>
-            <option value="Uncommon">Uncommon (150 IL)</option>
-            <option value="Rare">Rare (250 IL)</option>
-            <option value="Epic">Epic (375 IL)</option>
-            <option value="Legendary">Legendary (550 IL)</option>
-            <option value="Mythic" selected>Mythic (750 IL)</option>
-            <option value="Celestial">Celestial (900 IL)</option>
-          </select>
+          <div class="comp-collection-grid"
+               style="display:grid;grid-template-columns:repeat(7,1fr);gap:0.3rem;font-size:0.74rem;">
+            <div style="text-align:center;color:var(--text-mute);">Common</div>
+            <div style="text-align:center;color:var(--text-mute);">Uncom.</div>
+            <div style="text-align:center;color:var(--text-mute);">Rare</div>
+            <div style="text-align:center;color:var(--text-mute);">Epic</div>
+            <div style="text-align:center;color:var(--text-mute);">Legen.</div>
+            <div style="text-align:center;color:var(--text-mute);">Mythic</div>
+            <div style="text-align:center;color:var(--text-mute);">Celes.</div>
+            <input type="number" min="0" data-comp-tier="Common"    style="width:100%;text-align:center;">
+            <input type="number" min="0" data-comp-tier="Uncommon"  style="width:100%;text-align:center;">
+            <input type="number" min="0" data-comp-tier="Rare"      style="width:100%;text-align:center;">
+            <input type="number" min="0" data-comp-tier="Epic"      style="width:100%;text-align:center;">
+            <input type="number" min="0" data-comp-tier="Legendary" style="width:100%;text-align:center;">
+            <input type="number" min="0" data-comp-tier="Mythic"    style="width:100%;text-align:center;">
+            <input type="number" min="0" data-comp-tier="Celestial" style="width:100%;text-align:center;">
+          </div>
         </div>
         <div class="field" style="margin-top:0.6rem;">
           <label>All insignia tier
@@ -1822,6 +1831,10 @@
       companionRarity: "Mythic",
       summonedRarity: "Mythic",
       activeCompRarities: ["Mythic", "Mythic", "Mythic", "Mythic", "Mythic"],
+      // Companion collection by tier — counts how many companions you own
+      // at each rarity. NW takes the top 10 by quality and sums each one's
+      // per-tier bolster % into the total companion bolster (capped at 120).
+      compCollection: { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0, Mythic: 0, Celestial: 0 },
       // Tier we assume all 20 slotted insignias are at. Insignia data is
       // captured at Mythic base; the MOUNT_INSIGNIAS_TIER_SCALING table
       // gives per-tier IL and stat multiplier (Celestial = 1.5×, etc.).
@@ -1877,6 +1890,7 @@
           companionRarity: state.companionRarity,
           summonedRarity: state.summonedRarity,
           activeCompRarities: state.activeCompRarities,
+          compCollection: state.compCollection,
           insigniaRarity: state.insigniaRarity,
           boons: [...state.boons],
           masterOrder: state.masterOrder,
@@ -1923,6 +1937,13 @@
       if (!Array.isArray(state.activeCompRarities) || state.activeCompRarities.length !== 5) {
         state.activeCompRarities = [fallback, fallback, fallback, fallback, fallback];
       }
+      // Companion collection (counts by tier) drives the bolster %.
+      if (!state.compCollection) {
+        state.compCollection = { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0, Mythic: 0, Celestial: 0 };
+      }
+      // Push collection counts into the inputs and re-sync the bolster
+      // slider/display from the loaded values.
+      if (typeof applyCompCollectionToInputs === "function") applyCompCollectionToInputs();
       setVal("comp-bolster",  state.companionBolster);
       setVal("mount-bolster", state.mountBolster);
       setVal("comp-rarity",   state.companionRarity);
@@ -3080,6 +3101,33 @@
       "Mythic":    750,
       "Celestial": 900
     };
+    // Bolster % per companion tier (verified from mekaniks.html docs).
+    // Used to compute companion bolster % from a player's collection counts.
+    const COMP_BOLSTER_PCT_PER_TIER = {
+      "Common":    1,
+      "Uncommon":  2,
+      "Rare":      3.5,
+      "Epic":      5,
+      "Legendary": 7.5,
+      "Mythic":    10,
+      "Celestial": 12
+    };
+    // Sum the per-tier bolster contributions from the user's collection,
+    // counting only the top 10 highest-quality companions. Capped at 120%.
+    function compBolsterFromCollection(coll) {
+      const order = ["Celestial","Mythic","Legendary","Epic","Rare","Uncommon","Common"];
+      let need = 10;
+      let pct = 0;
+      for (const tier of order) {
+        if (need <= 0) break;
+        const have = +(coll && coll[tier]) || 0;
+        const take = Math.min(have, need);
+        pct += take * COMP_BOLSTER_PCT_PER_TIER[tier];
+        need -= take;
+      }
+      return Math.min(120, Math.round(pct * 10) / 10);
+    }
+
     function compRarityScale(targetRarity, basePower) {
       const targetIL = COMPANION_RARITY_IL[targetRarity] || COMPANION_RARITY_IL.Mythic;
       const baseIL = (basePower && basePower.item_level) || targetIL;
@@ -3613,6 +3661,7 @@
         gld: state.guildBoonPicks,
         cb: state.companionBolster, mb: state.mountBolster, cr: state.companionRarity, ir: state.insigniaRarity,
         sr: state.summonedRarity, acr: state.activeCompRarities,
+        cc: state.compCollection,
         boons: [...state.boons], buffs: [...state.buffs]
       });
       if (key === _engineCacheKey && _engineResult) return _engineResult;
@@ -5288,21 +5337,39 @@
     wireBolsterSlider("comp-bolster",  "comp-bolster-display",  "companionBolster");
     wireBolsterSlider("mount-bolster", "mount-bolster-display", "mountBolster");
 
-    // "All companion rarity" — bulk action that cascades to all 6 per-slot
-    // rarities (summoned + 5 active). Each slot can still be tweaked
-    // individually after via the per-row dropdowns.
-    const compRaritySel = document.getElementById("comp-rarity");
-    if (compRaritySel) {
-      compRaritySel.value = state.companionRarity || "Mythic";
-      compRaritySel.addEventListener("change", e => {
-        const v = e.target.value;
-        state.companionRarity = v;
-        state.summonedRarity = v;
-        state.activeCompRarities = [v, v, v, v, v];
-        renderCompPickRows();   // rebuild per-row dropdowns to reflect bulk
+    // Companion collection inputs (7 by tier) — drives the companion
+    // bolster slider via NW's "top 10 by quality" formula.
+    function syncCompBolsterFromCollection() {
+      const pct = compBolsterFromCollection(state.compCollection);
+      state.companionBolster = pct;
+      const slider = document.getElementById("comp-bolster");
+      const display = document.getElementById("comp-bolster-display");
+      if (slider) slider.value = pct;
+      if (display) display.textContent = pct + "%";
+      const summary = document.getElementById("comp-collection-summary");
+      if (summary) {
+        const total = Object.values(state.compCollection || {}).reduce((a,b) => a + (+b||0), 0);
+        const counted = Math.min(10, total);
+        summary.textContent = "top 10 of " + total + ": " + pct + "%";
+      }
+    }
+    function applyCompCollectionToInputs() {
+      document.querySelectorAll("input[data-comp-tier]").forEach(inp => {
+        const tier = inp.dataset.compTier;
+        inp.value = (state.compCollection && state.compCollection[tier]) || "";
+      });
+      syncCompBolsterFromCollection();
+    }
+    document.querySelectorAll("input[data-comp-tier]").forEach(inp => {
+      inp.addEventListener("input", e => {
+        const tier = inp.dataset.compTier;
+        if (!state.compCollection) state.compCollection = { Common:0,Uncommon:0,Rare:0,Epic:0,Legendary:0,Mythic:0,Celestial:0 };
+        state.compCollection[tier] = Math.max(0, +e.target.value || 0);
+        syncCompBolsterFromCollection();
         rerenderAll();
       });
-    }
+    });
+    applyCompCollectionToInputs();
     // Insignia tier dropdown — scales all slotted insignia IL + CR + stats
     const insRaritySel = document.getElementById("insignia-rarity");
     if (insRaritySel) {
