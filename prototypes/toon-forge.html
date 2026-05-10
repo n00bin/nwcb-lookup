@@ -2964,6 +2964,23 @@
           if (ins) sum += insIL;
         }
       }
+      // Companion gear (Neck/Waist/Ring on the summoned), companion enchant,
+      // companion enhancement — all equipped, all contribute flat IL.
+      if (state.summonedGear) {
+        for (const slot of ["Neck", "Waist", "Ring"]) {
+          const item = findCompGearByName(state.summonedGear[slot], slot);
+          if (item && item.item_level) sum += item.item_level;
+        }
+      }
+      const ce = findEnchantByName(state.summonedEnchant);
+      if (ce && ce.item_level) sum += ce.item_level;
+      const ceh = findEnhancementByName(state.summonedEnh);
+      if (ceh && ceh.item_level) sum += ceh.item_level;
+      // Active mount equip power + combat power — flat IL.
+      const ep = findEquipPowerById(state.activeEquipPower);
+      if (ep && ep.item_level) sum += ep.item_level;
+      const cp = findCombatPowerById(state.activeCombatPower);
+      if (cp && cp.item_level) sum += cp.item_level;
       return sum;
     }
     function computeSummonedCompIL() {
