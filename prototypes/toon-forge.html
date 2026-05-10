@@ -1450,9 +1450,13 @@
 
         <div class="field">
           <label>Item Level
-            <span class="hint-icon" data-tip="Auto-summed from gear when you equip pieces in step 3. You can also type it directly.">?</span>
+            <span class="hint-icon" data-tip="Auto-summed from every IL source the engine knows about. Click 'Show breakdown' to see each line item.">?</span>
+            <span style="float:right;">
+              <a href="#" id="il-breakdown-toggle" style="font-size:0.75rem;color:var(--amber);text-decoration:none;">▶ Show breakdown</a>
+            </span>
           </label>
           <input type="number" id="f-il" placeholder="auto-computed from gear + artifacts + bolstered comp/mount IL" readonly style="background:var(--elevated);">
+          <div id="il-breakdown" style="display:none;margin-top:0.5rem;padding:0.6rem 0.7rem;background:var(--elevated);border:1px solid var(--border);border-radius:5px;font-size:0.78rem;line-height:1.5;"></div>
         </div>
 
         <div class="field">
@@ -2944,27 +2948,41 @@
          summoned_comp_IL = rarity_IL + companion_gear + enchant + enhancement
          active_mount_IL  = active_equip_power_IL + active_combat_power_IL
     */
-    function computeGearArtifactIL() {
-      let sum = 0;
+    // Returns { total, parts: [{label, value, sources?:[{name, il}]}] }
+    // The parts list lets us show a TIL breakdown panel for debugging.
+    function computeGearArtifactILBreakdown() {
+      const parts = [];
+      const add = (label, value, sources) => {
+        if (value > 0) parts.push({ label, value, sources });
+      };
+      let cur, sources;
       // Equipped gear (12 slots; both rings count)
+      cur = 0; sources = [];
       if (state.gear && typeof GEAR_SLOTS !== "undefined") {
         for (const slotEntry of GEAR_SLOTS) {
           const itemName = state.gear[slotEntry.label];
           if (!itemName) continue;
           const item = findGearByName(itemName, slotEntry.slot);
-          if (item && item.item_level) sum += item.item_level;
+          if (item && item.item_level) {
+            cur += item.item_level;
+            sources.push({ name: `${slotEntry.label}: ${item.name}`, il: item.item_level });
+          }
         }
       }
-      // Equipped artifacts (1 primary + up to 3 secondary)
+      add("Equipped gear", cur, sources);
+      // Equipped artifacts
+      cur = 0; sources = [];
       if (state.artifacts) {
         const primary = findArtifactByName(state.artifacts["Primary"]);
-        if (primary && primary.item_level) sum += primary.item_level;
+        if (primary && primary.item_level) { cur += primary.item_level; sources.push({ name: `Primary: ${primary.name}`, il: primary.item_level }); }
         for (let i = 1; i <= 3; i++) {
           const a = findArtifactByName(state.artifacts["Secondary " + i]);
-          if (a && a.item_level) sum += a.item_level;
+          if (a && a.item_level) { cur += a.item_level; sources.push({ name: `Secondary ${i}: ${a.name}`, il: a.item_level }); }
         }
       }
-      // Enchantments — 11 slots (4 offense + 4 defense + utility + combat + bonus)
+      add("Artifacts", cur, sources);
+      // Enchantments
+      cur = 0; sources = [];
       if (state.enchants) {
         const ench = state.enchants;
         const list = [
@@ -2973,39 +2991,49 @@
         ];
         for (const name of list) {
           const e = findEnchantByName(name);
-          if (e && e.item_level) sum += e.item_level;
+          if (e && e.item_level) { cur += e.item_level; sources.push({ name: e.name, il: e.item_level }); }
         }
       }
-      // Overloads (2 slots)
+      add("Enchantments", cur, sources);
+      // Overloads
+      cur = 0; sources = [];
       for (const name of (state.overloads || [])) {
         const o = findOverloadByName(name);
-        if (o && o.item_level) sum += o.item_level;
+        if (o && o.item_level) { cur += o.item_level; sources.push({ name: o.name, il: o.item_level }); }
       }
-      // Reinforcement kits (per gear slot)
+      add("Overloads", cur, sources);
+      // Kits
+      cur = 0; sources = [];
       if (state.kits) {
         for (const slotLabel in state.kits) {
           const k = findKitByName(state.kits[slotLabel]);
-          if (k && k.item_level) sum += k.item_level;
+          if (k && k.item_level) { cur += k.item_level; sources.push({ name: `${slotLabel}: ${k.name}`, il: k.item_level }); }
         }
       }
-      // Guild boons (3 picks: Offense / Defense / Utility)
+      add("Reinforcement kits", cur, sources);
+      // Guild boons
+      cur = 0; sources = [];
       if (state.guildBoonPicks) {
         for (const cat of ["Offense", "Defense", "Utility"]) {
           const name = state.guildBoonPicks[cat];
           if (!name) continue;
           const b = findGuildBoon(cat, name);
-          if (b && b.item_level) sum += b.item_level;
+          if (b && b.item_level) { cur += b.item_level; sources.push({ name: `${cat}: ${b.name}`, il: b.item_level }); }
         }
       }
-      // Mount insignias and collars across all 5 stable slots.
-      // Insignias and collars are equipped on mounts (not bolstered per
-      // docs); their flat IL still rolls up into the character total.
-      // Each insignia's IL scales with its own individual tier.
-      for (const slot of (state.stable || [])) {
+      add("Guild boons", cur, sources);
+      // Mount insignias (per-slot tier) + collars
+      let insSum = 0, insSources = [];
+      let collarSum = 0, collarSources = [];
+      for (let stIdx = 0; stIdx < (state.stable || []).length; stIdx++) {
+        const slot = state.stable[stIdx];
         if (!slot) continue;
         if (slot.collar) {
           const c = findCollarByName(slot.collar);
-          if (c && c.item_level) sum += c.item_level;
+          if (c && c.item_level) {
+            collarSum += c.item_level;
+            collarSources.push({ name: `Mount ${stIdx+1}: ${c.name}`, il: c.item_level });
+          }
         }
         const slotTiers = Array.isArray(slot.insigniaTiers) ? slot.insigniaTiers : [];
         for (let iIdx = 0; iIdx < (slot.insignias || []).length; iIdx++) {
@@ -3013,36 +3041,55 @@
           if (!insName) continue;
           const ins = findInsigniaByName(insName);
           if (!ins) continue;
-          sum += insigniaTierIL(slotTiers[iIdx] || "Mythic");
+          const tier = slotTiers[iIdx] || "Mythic";
+          const il = insigniaTierIL(tier);
+          insSum += il;
+          insSources.push({ name: `Mount ${stIdx+1}: ${ins.name} (${tier})`, il });
         }
       }
-      // Companion gear (Neck/Waist/Ring on the summoned), companion enchant,
-      // companion enhancement — all equipped, all contribute flat IL.
+      add("Mount insignias", insSum, insSources);
+      add("Mount collars", collarSum, collarSources);
+      // Companion gear (Neck/Waist/Ring on summoned)
+      cur = 0; sources = [];
       if (state.summonedGear) {
         for (const slot of ["Neck", "Waist", "Ring"]) {
           const item = findCompGearByName(state.summonedGear[slot], slot);
-          if (item && item.item_level) sum += item.item_level;
+          if (item && item.item_level) { cur += item.item_level; sources.push({ name: `${slot}: ${item.name}`, il: item.item_level }); }
         }
       }
+      add("Companion gear", cur, sources);
+      // Companion enchant + enhancement
+      cur = 0; sources = [];
       const ce = findEnchantByName(state.summonedEnchant);
-      if (ce && ce.item_level) sum += ce.item_level;
+      if (ce && ce.item_level) { cur += ce.item_level; sources.push({ name: `Enchant: ${ce.name}`, il: ce.item_level }); }
       const ceh = findEnhancementByName(state.summonedEnh);
-      if (ceh && ceh.item_level) sum += ceh.item_level;
-      // Active mount equip power + combat power — flat IL.
+      if (ceh && ceh.item_level) { cur += ceh.item_level; sources.push({ name: `Enhancement: ${ceh.name}`, il: ceh.item_level }); }
+      add("Companion enchant + enhancement", cur, sources);
+      // Active mount powers
+      cur = 0; sources = [];
       const ep = findEquipPowerById(state.activeEquipPower);
-      if (ep && ep.item_level) sum += ep.item_level;
+      if (ep && ep.item_level) { cur += ep.item_level; sources.push({ name: `Equip Power: ${ep.name}`, il: ep.item_level }); }
       const cp = findCombatPowerById(state.activeCombatPower);
-      if (cp && cp.item_level) sum += cp.item_level;
-      // Active companions — each slotted active comp contributes its
-      // per-rarity companion IL to TIL (Obikin: ~750 IL per comp at
-      // Mythic, scales with rarity). Uses each slot's selected rarity.
+      if (cp && cp.item_level) { cur += cp.item_level; sources.push({ name: `Combat Power: ${cp.name}`, il: cp.item_level }); }
+      add("Active mount powers", cur, sources);
+      // Active companions (per-rarity)
+      cur = 0; sources = [];
       const activeRarities = Array.isArray(state.activeCompRarities) ? state.activeCompRarities : [];
       for (let i = 0; i < (state.activeComps || []).length; i++) {
-        if (!state.activeComps[i]) continue;
+        const compName = state.activeComps[i];
+        if (!compName) continue;
         const r = activeRarities[i] || state.companionRarity || "Mythic";
-        sum += COMPANION_RARITY_IL[r] || 0;
+        const il = COMPANION_RARITY_IL[r] || 0;
+        cur += il;
+        sources.push({ name: `${compName} (${r})`, il });
       }
-      return sum;
+      add("Active companions", cur, sources);
+
+      const total = parts.reduce((a, p) => a + p.value, 0);
+      return { total, parts };
+    }
+    function computeGearArtifactIL() {
+      return computeGearArtifactILBreakdown().total;
     }
     function computeSummonedCompIL() {
       if (!state.summoned) return 0;
@@ -3072,13 +3119,9 @@
       if (cp && cp.item_level) sum += cp.item_level;
       return sum;
     }
-    function computeTILFromBuild() {
-      const gearIL = computeGearArtifactIL();
-      // Auto-computed bolster IL contributions:
-      //   contribution = base_IL_for_rarity × (bolster_pct / 100)
-      // Companion side uses the SUMMONED comp's rarity (only the summoned
-      // contributes to the bolster IL number, per n00b's in-game tests).
-      // Mount side uses the global rarity until per-mount rarity exists.
+    function computeTILBreakdown() {
+      const gear = computeGearArtifactILBreakdown();
+      const parts = gear.parts.slice();
       const summonedR = state.summonedRarity || state.companionRarity || "Mythic";
       const mountR    = state.companionRarity || "Mythic";
       const cb = (state.companionBolster == null ? 100 : +state.companionBolster) / 100;
@@ -3087,7 +3130,13 @@
       const mountBase = MOUNT_BOLSTER_BASE_IL[mountR]   || MOUNT_BOLSTER_BASE_IL.Mythic;
       const compBolsterIL  = Math.round(compBase  * cb);
       const mountBolsterIL = Math.round(mountBase * mb);
-      return gearIL + compBolsterIL + mountBolsterIL;
+      if (compBolsterIL > 0)  parts.push({ label: `Comp bolster IL (${summonedR} × ${Math.round(cb*100)}%)`, value: compBolsterIL });
+      if (mountBolsterIL > 0) parts.push({ label: `Mount bolster IL (${mountR} × ${Math.round(mb*100)}%)`,   value: mountBolsterIL });
+      const total = parts.reduce((a, p) => a + p.value, 0);
+      return { total, parts };
+    }
+    function computeTILFromBuild() {
+      return computeTILBreakdown().total;
     }
     function applyAutoTIL() {
       const til = computeTILFromBuild();
@@ -3095,6 +3144,27 @@
       state.il = String(til);
       const f = document.getElementById("f-il");
       if (f) f.value = til;
+      renderILBreakdown();
+    }
+    function renderILBreakdown() {
+      const el = document.getElementById("il-breakdown");
+      if (!el || el.style.display === "none") return;
+      const { total, parts } = computeTILBreakdown();
+      let rows = parts.map(p => {
+        let row = `<div style="display:flex;justify-content:space-between;padding:0.15rem 0;">
+          <span>${p.label}</span><span style="font-family:Georgia,serif;color:var(--text);">${p.value.toLocaleString()}</span>
+        </div>`;
+        if (p.sources && p.sources.length) {
+          row += `<div style="padding-left:0.8rem;color:var(--text-mute);font-size:0.72rem;line-height:1.4;">` +
+            p.sources.map(s => `<div style="display:flex;justify-content:space-between;"><span>· ${s.name}</span><span>${s.il.toLocaleString()}</span></div>`).join("") +
+            `</div>`;
+        }
+        return row;
+      }).join("");
+      el.innerHTML = rows + `
+        <div style="margin-top:0.5rem;padding-top:0.4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-weight:700;">
+          <span>Total IL</span><span style="font-family:Georgia,serif;color:var(--amber);">${total.toLocaleString()}</span>
+        </div>`;
     }
 
     function findArtifactByName(name) {
@@ -5388,6 +5458,19 @@
     // edit drive recomputation, since the next state change would
     // immediately overwrite it.
     document.getElementById("f-il").addEventListener("input",       e => { state.il      = e.target.value; });
+    // IL breakdown panel toggle
+    const ilToggle = document.getElementById("il-breakdown-toggle");
+    if (ilToggle) {
+      ilToggle.addEventListener("click", e => {
+        e.preventDefault();
+        const panel = document.getElementById("il-breakdown");
+        if (!panel) return;
+        const open = panel.style.display !== "none";
+        panel.style.display = open ? "none" : "block";
+        ilToggle.textContent = open ? "▶ Show breakdown" : "▼ Hide breakdown";
+        if (!open) renderILBreakdown();
+      });
+    }
     document.getElementById("f-name").addEventListener("input",     e => { state.name    = e.target.value; rerenderAll(); });
     // (f-mount listener removed — replaced by 5-slot stable picker, see renderStable.)
     document.getElementById("sim-mag").addEventListener("input",    () => renderSim());
