@@ -3033,6 +3033,15 @@
       if (ep && ep.item_level) sum += ep.item_level;
       const cp = findCombatPowerById(state.activeCombatPower);
       if (cp && cp.item_level) sum += cp.item_level;
+      // Active companions — each slotted active comp contributes its
+      // per-rarity companion IL to TIL (Obikin: ~750 IL per comp at
+      // Mythic, scales with rarity). Uses each slot's selected rarity.
+      const activeRarities = Array.isArray(state.activeCompRarities) ? state.activeCompRarities : [];
+      for (let i = 0; i < (state.activeComps || []).length; i++) {
+        if (!state.activeComps[i]) continue;
+        const r = activeRarities[i] || state.companionRarity || "Mythic";
+        sum += COMPANION_RARITY_IL[r] || 0;
+      }
       return sum;
     }
     function computeSummonedCompIL() {
