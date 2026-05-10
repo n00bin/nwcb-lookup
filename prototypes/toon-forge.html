@@ -3605,11 +3605,16 @@
       for (const a of (artifacts.secondary || [])) countSetPieces(a);
 
       // Helper: ingest one item's equipBonuses for one source label.
+      // alwaysActive (default true): if false, this bonus is conditional
+      // (e.g., "+1.5% OH per teammate within 20'" or "on crit") and is
+      // skipped for the standing-around stat panel. Conditional bonuses
+      // can be toggled on in the damage simulator separately.
       function ingestEquipBonuses(label, item) {
         if (!item || !Array.isArray(item.equipBonuses)) return;
         for (const eb of item.equipBonuses) {
           if (!eb || !eb.stat || eb.amount == null) continue;
           if (eb.scope && eb.scope !== "self") continue;  // party/enemy buffs handled elsewhere
+          if (eb.alwaysActive === false) continue;        // conditional → skip standing-around
           if (eb.type === "Equip") {
             buffs.push({
               source: `${label} bonus: ${eb.name || eb.stat}`,
