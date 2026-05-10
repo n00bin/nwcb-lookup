@@ -1511,6 +1511,25 @@
     <!-- ============ Step 4: Companions & Mounts ============ -->
     <div class="step-panel" data-panel="4">
       <div class="panel">
+        <h2>Bolster</h2>
+        <p class="hint">Bolster is what your <strong>top 10 companions</strong> and <strong>top 10 mounts</strong> by quality contribute, even when they're not summoned. Higher quality = higher bolster %. 100% = your gear works as listed; 120%/125% = max (10 Celestial each). See <a href="../mekaniks.html#view-bolster" target="_blank">Mekaniks → Bolster</a> for the per-tier table.</p>
+        <div class="field">
+          <label>Companion bolster
+            <span class="hint-icon" data-tip="0–120%. Scales summoned companion's Enhancement power. Player bonus powers (the 5 active companion powers) are NOT affected by bolster.">?</span>
+            <span style="float:right;color:var(--amber);font-weight:600;" id="comp-bolster-display">100%</span>
+          </label>
+          <input type="range" id="comp-bolster" min="0" max="120" value="100" style="width:100%;">
+        </div>
+        <div class="field" style="margin-top:0.6rem;">
+          <label>Mount bolster
+            <span class="hint-icon" data-tip="0–125%. Scales mount Equip Power rating values and Combat Power magnitude. Insignia stats and Insignia Bonuses are NOT affected by bolster.">?</span>
+            <span style="float:right;color:var(--amber);font-weight:600;" id="mount-bolster-display">100%</span>
+          </label>
+          <input type="range" id="mount-bolster" min="0" max="125" value="100" style="width:100%;">
+        </div>
+      </div>
+
+      <div class="panel">
         <h2>Pick your companions</h2>
         <p class="hint">Top row dresses up your summoned companion — <strong>Enchantment</strong>, <strong>Enhancement</strong>, and 3 <strong>Equipment</strong> slots. Bottom: pick the summoned itself and 5 active companions, each one typed by what their power buffs.</p>
         <div id="comp-loadout-row" class="comp-loadout">
@@ -1764,6 +1783,10 @@
       ],
       activeCombatPower: null,   // id from mount_combat_powers.json — drawn from stable mounts
       activeEquipPower:  null,   // id from mount_equip_powers.json — drawn from stable mounts
+      // Bolster percentages (0–120 for comp, 0–125 for mount). 100 = baseline,
+      // i.e. data values apply as listed. See mekaniks.html "Bolster".
+      companionBolster: 100,
+      mountBolster: 100,
       flankUptime: 0.70,  // % of hits with Combat Advantage active (0..1)
       boons: new Map(),  // key: "tier1:1" / "master:3" → { tier, boonId, points or ranks }
       // Order in which master boons were first ranked (by boonId).
@@ -1804,6 +1827,8 @@
           stable: state.stable,
           activeCombatPower: state.activeCombatPower,
           activeEquipPower: state.activeEquipPower,
+          companionBolster: state.companionBolster,
+          mountBolster: state.mountBolster,
           boons: [...state.boons],
           masterOrder: state.masterOrder,
           guildBoonPicks: state.guildBoonPicks,
@@ -1837,6 +1862,15 @@
       setVal("f-race", state.race);
       setVal("f-il", state.il);
       setVal("f-name", state.name);
+      // Bolster sliders
+      if (state.companionBolster == null) state.companionBolster = 100;
+      if (state.mountBolster     == null) state.mountBolster     = 100;
+      setVal("comp-bolster",  state.companionBolster);
+      setVal("mount-bolster", state.mountBolster);
+      const cbd = document.getElementById("comp-bolster-display");
+      if (cbd) cbd.textContent = state.companionBolster + "%";
+      const mbd = document.getElementById("mount-bolster-display");
+      if (mbd) mbd.textContent = state.mountBolster + "%";
       // Active class card highlight
       document.querySelectorAll(".pick-card").forEach(c => {
         c.classList.toggle("active", c.dataset.class === state.class);
@@ -2805,6 +2839,29 @@
         .sort((a, b) => (b.item_level || 0) - (a.item_level || 0) || a.name.localeCompare(b.name));
     }
 
+    // ===== Combined Rating distribution =====
+    // CR is its own field on data entries (companion powers, mount equip
+    // powers, mount collars, mount insignias). The value adds equally to
+    // each of the 12 core stats as RATING. Sources are listed in
+    // mekaniks.html "Combined Rating".
+    const CR_CORE_STATS = [
+      "Power", "Critical Strike", "Critical Severity", "Combat Advantage",
+      "Accuracy", "Defense", "Awareness", "Critical Avoidance",
+      "Deflect", "Deflect Severity", "Outgoing Healing", "Incoming Healing"
+    ];
+    function expandCR(amount, multiplier) {
+      const m = (multiplier == null) ? 1 : multiplier;
+      const v = (amount || 0) * m;
+      if (v === 0) return null;
+      const out = {};
+      for (const stat of CR_CORE_STATS) out[stat] = v;
+      return out;
+    }
+    function findCompanionByName(name) {
+      if (!name || typeof COMPANIONS_DATA === "undefined") return null;
+      return COMPANIONS_DATA.find(c => c.name === name) || null;
+    }
+
     function buildEngineCharacter(s) {
       // Resolve gear: state.gear is { "Head": "name string", ... };
       // engine wants { "Head": gearObject }.
@@ -2862,13 +2919,16 @@
       }
 
       // Helper: turn a companion enhancement into a buffs[] entry.
+      // Companion bolster scales enhancement power per mekaniks docs.
+      const compBolster = ((s.companionBolster == null ? 100 : +s.companionBolster) || 0) / 100;
       function enhToBuff(label, name) {
         if (!name) return;
         const e = findEnhancementByName(name);
         if (!e || !e.stat) return;
+        const v = (e.value || 0) * compBolster;
         const entry = { source: label + ": " + e.name };
-        if (e.type === "percent") entry.percentStats = { [e.stat]: e.value || 0 };
-        else                      entry.ratingStats  = { [e.stat]: e.value || 0 };
+        if (e.type === "percent") entry.percentStats = { [e.stat]: v };
+        else                      entry.ratingStats  = { [e.stat]: v };
         buffs.push(entry);
       }
       enhToBuff("Enhancement (summoned)", s.summonedEnh);
@@ -2901,6 +2961,8 @@
       }
 
       // Active mount equip power — passive stats from your stable's chosen equip power.
+      // Bolster scales equip-power rating values (per mekaniks docs).
+      const mountBolster = ((s.mountBolster == null ? 100 : +s.mountBolster) || 0) / 100;
       if (s.activeEquipPower) {
         const ep = findEquipPowerById(s.activeEquipPower);
         if (ep) {
@@ -2908,11 +2970,121 @@
           const percentStats = {};
           for (const st of (ep.stats || [])) {
             const tgt = st.type === "percent" ? percentStats : ratingStats;
-            tgt[st.stat] = (tgt[st.stat] || 0) + (st.value || 0);
+            const scaled = (st.value || 0) * (st.type === "percent" ? 1 : mountBolster);
+            tgt[st.stat] = (tgt[st.stat] || 0) + scaled;
           }
           buffs.push({
             source: "Mount Equip Power: " + ep.name,
             ratingStats, percentStats
+          });
+          // Combined Rating from the equip power, distributed to all 12 core
+          // stats. Bolstered (per mekaniks docs).
+          const cr = expandCR(ep.combinedRating, mountBolster);
+          if (cr) {
+            buffs.push({
+              source: "Mount Equip CR: " + ep.name,
+              ratingStats: cr
+            });
+          }
+        }
+      }
+
+      // Mount stable contributions — collars, insignias, insignia bonuses.
+      // Insignias and bonuses are NOT bolstered (per mekaniks docs).
+      for (let stIdx = 0; stIdx < (s.stable || []).length; stIdx++) {
+        const slot = s.stable[stIdx];
+        if (!slot) continue;
+        const slotLabel = "Mount " + (stIdx + 1);
+
+        // Collar — has combinedRating + ratingStats + percentStats.
+        if (slot.collar) {
+          const collar = findCollarByName(slot.collar);
+          if (collar) {
+            buffs.push({
+              source: `${slotLabel} Collar: ${collar.name}`,
+              ratingStats: collar.ratingStats || {},
+              percentStats: collar.percentStats || {}
+            });
+            const ccr = expandCR(collar.combinedRating, 1);
+            if (ccr) {
+              buffs.push({
+                source: `${slotLabel} Collar CR: ${collar.name}`,
+                ratingStats: ccr
+              });
+            }
+          }
+        }
+
+        // Insignias — each slotted insignia adds its own stats + CR.
+        // Default tier = Mythic (the value as listed in the data).
+        for (let iIdx = 0; iIdx < (slot.insignias || []).length; iIdx++) {
+          const insName = slot.insignias[iIdx];
+          if (!insName) continue;
+          const ins = findInsigniaByName(insName);
+          if (!ins) continue;
+          const ratingStats = {};
+          const percentStats = {};
+          for (const st of (ins.stats || [])) {
+            const tgt = st.type === "percent" ? percentStats : ratingStats;
+            tgt[st.stat] = (tgt[st.stat] || 0) + (st.value || 0);
+          }
+          buffs.push({
+            source: `${slotLabel} Insignia: ${ins.name}`,
+            ratingStats, percentStats
+          });
+          const icr = expandCR(ins.combinedRating, 1);
+          if (icr) {
+            buffs.push({
+              source: `${slotLabel} Insignia CR: ${ins.name}`,
+              ratingStats: icr
+            });
+          }
+        }
+
+        // Insignia bonus — only counts when the slotted insignia categories
+        // satisfy the bonus's requirements. Bonus stats list ratings/percents.
+        if (slot.desiredBonus) {
+          const bonus = findBonusById(slot.desiredBonus);
+          if (bonus && bonusActive(bonus.requiredInsignias, slottedCategoriesForRow(slot))) {
+            const ratingStats = {};
+            const percentStats = {};
+            for (const st of (bonus.stats || [])) {
+              const tgt = st.type === "percent" ? percentStats : ratingStats;
+              tgt[st.stat] = (tgt[st.stat] || 0) + (st.value || 0);
+            }
+            buffs.push({
+              source: `${slotLabel} Insignia Bonus: ${bonus.name}`,
+              ratingStats, percentStats
+            });
+          }
+        }
+      }
+
+      // Summoned companion's bonus power — its CR distributes to the player.
+      // Per mekaniks: "Player bonus powers — NOT affected by bolster".
+      if (summonedComp && summonedComp.powerRef) {
+        const sumPower = findCompanionPower(summonedComp.powerRef);
+        const scr = sumPower ? expandCR(sumPower.combinedRating, 1) : null;
+        if (scr) {
+          buffs.push({
+            source: "Summoned CR: " + summonedComp.name,
+            ratingStats: scr
+          });
+        }
+      }
+
+      // Active (non-summoned) companions — each slotted companion's bonus
+      // power contributes its CR to the player. Not bolstered.
+      for (const compName of (s.activeComps || [])) {
+        if (!compName) continue;
+        const c = findCompanionByName(compName);
+        if (!c) continue;
+        const power = findCompanionPower(c.powerRef);
+        const acr = power ? expandCR(power.combinedRating, 1) : null;
+        if (acr) {
+          buffs.push({
+            source: "Active Comp CR: " + c.name,
+            ratingStats: acr
           });
         }
       }
@@ -4735,6 +4907,24 @@
     document.querySelectorAll("[data-flank-preset]").forEach(btn => {
       btn.addEventListener("click", () => setFlank(+btn.dataset.flankPreset));
     });
+
+    // Bolster sliders (companion + mount). Update state and rerender.
+    function wireBolsterSlider(sliderId, displayId, stateKey) {
+      const slider = document.getElementById(sliderId);
+      const display = document.getElementById(displayId);
+      if (!slider) return;
+      // Initial value from state
+      slider.value = state[stateKey];
+      if (display) display.textContent = state[stateKey] + "%";
+      slider.addEventListener("input", e => {
+        const v = Math.max(0, Math.min(+slider.max, +e.target.value));
+        state[stateKey] = v;
+        if (display) display.textContent = v + "%";
+        rerenderAll();
+      });
+    }
+    wireBolsterSlider("comp-bolster",  "comp-bolster-display",  "companionBolster");
+    wireBolsterSlider("mount-bolster", "mount-bolster-display", "mountBolster");
     // (Power picker removed — type magnitude directly. Sourcing reliable
     //  per-class power data is deferred until we have a sustainable
     //  pipeline for all 9 classes.)
