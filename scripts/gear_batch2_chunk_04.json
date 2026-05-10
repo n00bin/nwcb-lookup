@@ -1,0 +1,987 @@
+[
+  {
+    "name": "Voidtouched Tower Shield",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 3000,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Awareness": 2250, "Forte": 2250},
+    "combinedRating": 2700,
+    "set": "Peer Into the Void",
+    "setSize": 2,
+    "setPartners": ["Karysian Battleaxe", "Voidtouched Battleaxe", "Xarysian Tower Shield", "Voidtouched Tower Shield"],
+    "setBonus": "2 of Set: Gain 5% Overall Outgoing Healing and -5% Incoming Damage. When in Wildspace, your Movement Speed is increased by 12%. Every 2s in combat with a single opponent, you will gain a stack of Darklight. Every 2s in combat with 4 or more opponents, you will lose a stack of Darklight. Based on your role, each stack of Darklight will grant the following bonus: DPS: +0.6% Base Damage Boost, Tank: -0.6% Incoming Damage, Healer: +0.6% Overall Outgoing Healing. Max 10 Stacks. Stack bonuses are doubled in Wildspace.",
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Voidtouched Battleaxe",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 3000,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Critical Severity": 2250, "Defense": 2250},
+    "weaponDamage": 275,
+    "combinedRating": 2700,
+    "set": "Peer Into the Void",
+    "setSize": 2,
+    "setPartners": ["Karysian Battleaxe", "Voidtouched Battleaxe", "Xarysian Tower Shield", "Voidtouched Tower Shield"],
+    "setBonus": "2 of Set: Gain 5% Overall Outgoing Healing and -5% Incoming Damage. When in Wildspace, your Movement Speed is increased by 12%. Every 2s in combat with a single opponent, you will gain a stack of Darklight. Every 2s in combat with 4 or more opponents, you will lose a stack of Darklight. Based on your role, each stack of Darklight will grant the following bonus: DPS: +0.6% Base Damage Boost, Tank: -0.6% Incoming Damage, Healer: +0.6% Overall Outgoing Healing. Max 10 Stacks. Stack bonuses are doubled in Wildspace.",
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Meteoric Iron Tower Shield",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 2450,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Defense": 1838, "Awareness": 1838},
+    "combinedRating": 2205,
+    "set": "Meteoric Fury",
+    "setSize": 2,
+    "setPartners": ["Meteoric Iron Weapon", "Meteoric Iron Offhand"],
+    "setBonus": "2 of Set: Deal or heal up to 3% additional damage based on the difference in hit point percentage between the player and the target. You are granted the following, depending on your role: DPS: +2% Base Damage Boost, Tank: -4% Incoming Damage, Healer: +4% Overall Outgoing Healing. This effect does not stack. When in Wildspace, the role bonus is doubled, and your Movement Speed is increased by 10%.",
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Meteoric Iron Mace",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 2450,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Critical Strike": 1838, "Forte": 1838},
+    "combinedRating": 2205,
+    "set": "Meteoric Fury",
+    "setSize": 2,
+    "setPartners": ["Meteoric Iron Weapon", "Meteoric Iron Offhand"],
+    "setBonus": "2 of Set: Deal or heal up to 3% additional damage based on the difference in hit point percentage between the player and the target. You are granted the following, depending on your role: DPS: +2% Base Damage Boost, Tank: -4% Incoming Damage, Healer: +4% Overall Outgoing Healing. This effect does not stack. When in Wildspace, the role bonus is doubled, and your Movement Speed is increased by 10%.",
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Ultraviolet Elven Armet",
+    "slot": "Head",
+    "item_level": 2900,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Awareness": 2175, "Incoming Healing": 2175},
+    "combinedRating": 2610,
+    "equipBonuses": [{"name": "Warden's Stamina", "description": "For every 5 seconds you are in combat, you gain 0.4% Stamina Regeneration and 0.8% Awareness. Max 10 Stacks: 4% Stamina Regeneration and 8% Awareness."}],
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Ultraviolet Elven Breastplate",
+    "slot": "Armor",
+    "item_level": 2900,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 2175, "Critical Avoidance": 2175},
+    "combinedRating": 2610,
+    "equipBonuses": [{"name": "Rothe's Intimidation", "description": "Upon taking critical damage, you have a 25% chance to explode with fury, dealing damage and additional threat to enemies within 15'. You also gain -2.5% Incoming Damage for 5s. (10s cooldown)"}],
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Ultraviolet Elven Gauntlets",
+    "slot": "Arms",
+    "item_level": 2900,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Awareness": 2175, "Critical Avoidance": 2175},
+    "combinedRating": 2610,
+    "equipBonuses": [{"name": "Sudden Intuition", "description": "Whenever you are struck by Combat Advantage damage, you have a 20% chance to increase your Awareness and Deflect Severity by 7.5% for 8 seconds. (15 second cooldown)"}],
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Ultraviolet Elven Greaves",
+    "slot": "Feet",
+    "item_level": 2900,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 2175, "Awareness": 2175},
+    "combinedRating": 2610,
+    "equipBonuses": [{"name": "Survivor's Critical Resilience", "description": "Gain up to 5% Critical Avoidance and -2.5% Incoming Damage based on your missing health. The max bonus is achieved at 25% or less health."}],
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Ultraviolet Elven Helm",
+    "slot": "Head",
+    "item_level": 2900,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 2175, "Outgoing Healing": 2175},
+    "combinedRating": 2610,
+    "equipBonuses": [{"name": "Channeler's Focus", "description": "For every 5 seconds you are in combat, you gain 0.5% Outgoing Healing and 0.5% Power. Max 10 Stacks: 5% Outgoing Healing and 5% Power."}],
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Ultraviolet Elven Halfplate",
+    "slot": "Armor",
+    "item_level": 2900,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Forte": 2175, "Outgoing Healing": 2175},
+    "combinedRating": 2610,
+    "equipBonuses": [{"name": "Medic's Respite", "description": "Healing an ally with an Encounter power also heals you for 80,000 and grants Allies within 25' 1.5% Awareness and Incoming Healing for 5s."}],
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Ultraviolet Elven Gloves",
+    "slot": "Arms",
+    "item_level": 2900,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 2175, "Critical Severity": 2175},
+    "combinedRating": 2610,
+    "equipBonuses": [{"name": "Divine Inspiration", "description": "Your Divinity maximum increases by 25%. Gain 2.5% Forte."}],
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Ultraviolet Elven Sollerets",
+    "slot": "Feet",
+    "item_level": 2900,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Forte": 2175, "Outgoing Healing": 2175},
+    "combinedRating": 2610,
+    "equipBonuses": [{"name": "Galactic Muse", "description": "Your Divinity/Performance/Soulweave regenerates 20% faster while in Wildspace. In non-Wildspace, the regen bonus is 10%. Gain 2.5% Outgoing Healing."}],
+    "source": "The Imperial Citadel (Master)"
+  },
+  {
+    "name": "Radiant Elven Helm",
+    "slot": "Head",
+    "item_level": 2800,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Awareness": 2100, "Incoming Healing": 2100},
+    "combinedRating": 2520,
+    "equipBonuses": [{"name": "Warden's Stamina", "description": "For every 5 seconds you are in combat, you gain 0.5% Stamina Regeneration and 0.35% Awareness. Max Stacks: 7 (10 in Wildspace)."}],
+    "source": "The Imperial Citadel (Advanced)"
+  },
+  {
+    "name": "Radiant Elven Cuirass",
+    "slot": "Armor",
+    "item_level": 2800,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 2100, "Critical Avoidance": 2100},
+    "combinedRating": 2520,
+    "equipBonuses": [{"name": "Spelljammer's Critical Resilience", "description": "Upon taking critical damage in Wildspace, you have a 25% chance to gain -5% Incoming Damage for 5s. In non-Wildspace, gain -2.5% Incoming Damage for 5s. (10s cooldown)"}],
+    "source": "The Imperial Citadel (Advanced)"
+  },
+  {
+    "name": "Radiant Elven Guards",
+    "slot": "Arms",
+    "item_level": 2800,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Awareness": 2100, "Critical Avoidance": 2100},
+    "combinedRating": 2520,
+    "equipBonuses": [{"name": "Challenger's Alacrity", "description": "When in combat with only 1 enemy, your Recharge Speed is increased by 0.6% every 2 seconds. Every 2 seconds you are in combat with 4 or more enemies, lose 1 stack. Max 5 stacks: 3% Recharge Speed."}],
+    "source": "The Imperial Citadel (Advanced)"
+  },
+  {
+    "name": "Radiant Elven Sabatons",
+    "slot": "Feet",
+    "item_level": 2800,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 2100, "Awareness": 2100},
+    "combinedRating": 2520,
+    "equipBonuses": [{"name": "Spelljammer's Fortified Ally", "description": "-2% Incoming Damage and 2.5% Incoming Healing in Wildspace. -1% Incoming Damage and 2.5% Incoming Healing in non-Wildspace."}],
+    "source": "The Imperial Citadel (Advanced)"
+  },
+  {
+    "name": "Radiant Elven Spikes",
+    "slot": "Feet",
+    "item_level": 2800,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Forte": 2100, "Outgoing Healing": 2100},
+    "combinedRating": 2520,
+    "equipBonuses": [{"name": "Galactic Muse", "description": "Your Divinity/Performance/Soulweave regenerates 10% faster while in Wildspace. In non-Wildspace, the regen bonus is 5%. Gain 2.5% Outgoing Healing."}],
+    "source": "The Imperial Citadel (Advanced)"
+  },
+  {
+    "name": "Radiant Elven Mitts",
+    "slot": "Arms",
+    "item_level": 2800,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 2100, "Critical Severity": 2100},
+    "combinedRating": 2520,
+    "equipBonuses": [{"name": "Challenger's Alacrity", "description": "When in combat with only 1 enemy, your Recharge Speed is increased by 0.6% every 2 seconds. Every 2 seconds you are in combat with 4 or more enemies, lose 1 stack. Max 5 stacks: 3% Recharge Speed."}],
+    "source": "The Imperial Citadel (Advanced)"
+  },
+  {
+    "name": "Radiant Elven Coat",
+    "slot": "Armor",
+    "item_level": 2800,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Forte": 2100, "Outgoing Healing": 2100},
+    "combinedRating": 2520,
+    "equipBonuses": [{"name": "Survivor's Gift", "description": "Your current Hit Points increases your Outgoing Healing, up to a max of 6%, and your Power up to a max of 4,375. Currently: 6% Outgoing Healing and 4,375 Power."}],
+    "source": "The Imperial Citadel (Advanced)"
+  },
+  {
+    "name": "Radiant Elven Cower",
+    "slot": "Head",
+    "item_level": 2800,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 2100, "Outgoing Healing": 2100},
+    "combinedRating": 2520,
+    "equipBonuses": [{"name": "Wildspace Gladiator", "description": "For every 5 seconds you are in combat, you gain 1% Critical Strike. Max Stacks: 7 (13 in Wildspace)."}],
+    "source": "The Imperial Citadel (Advanced)"
+  },
+  {
+    "name": "Cosmic Corsair's Cap",
+    "slot": "Head",
+    "item_level": 2400,
+    "ratingStats": {"Combat Advantage": 1800, "Awareness": 900, "Control Bonus": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Rising Advantage", "description": "For every 5 seconds you are in combat, you gain 892 Power and Combat Advantage. Max 5 stacks: 4,462 Power and Combat Advantage."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Jerkin",
+    "slot": "Armor",
+    "item_level": 2400,
+    "ratingStats": {"Combat Advantage": 1800, "Critical Severity": 900, "Critical Avoidance": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Spelljammer's Might", "description": "Gain 3,350 Combat Advantage, and an additional 2.5% Power in Wildspace."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Sleeves",
+    "slot": "Arms",
+    "item_level": 2400,
+    "ratingStats": {"Combat Advantage": 900, "Critical Strike": 1800, "Defense": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Challenger's Strength", "description": "When in combat with only 1 enemy, your Power is increased by 1,340 every 2 seconds. Every 2 seconds you are in combat with 4 or more enemies, lose 1 stack. Max 5 stacks: 6,700 Power."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Boots",
+    "slot": "Feet",
+    "item_level": 2400,
+    "ratingStats": {"Critical Strike": 1800, "Critical Severity": 900, "Deflection": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Controlled Criticals", "description": "Gain a stack of 335 Critical Strike for 10 seconds when you strike an enemy, lose a stack when you are struck. Max 20 Stacks: 6,700 Critical Strike."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Coif",
+    "slot": "Head",
+    "item_level": 2400,
+    "ratingStats": {"Critical Severity": 900, "Deflection": 900, "Outgoing Healing": 1800},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Medic's Mercy", "description": "For every 5 seconds you are in combat, you gain 670 Outgoing Healing and 0.5% Forte. Max Stacks: 5 - 3,350 Outgoing Healing and 2.5% Forte."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Raiment",
+    "slot": "Armor",
+    "item_level": 2400,
+    "ratingStats": {"Critical Strike": 900, "Defense": 900, "Forte": 1800},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Spelljammer's Harmony", "description": "You gain 3,350 Outgoing Healing. While in Wildspace, teammates who are 25' or closer to you gain 1% Defense."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Cuffs",
+    "slot": "Arms",
+    "item_level": 2400,
+    "ratingStats": {"Critical Strike": 900, "Control Resistance": 900, "Outgoing Healing": 1800},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Challenger's Alacrity", "description": "When in combat with only 1 enemy, your Recharge Speed is increased by 0.2% every 2 seconds. Every 2 seconds you are in combat with 4 or more enemies, lose 1 stack. Max 10 stacks: 2% Recharge Speed."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Cackrows",
+    "slot": "Feet",
+    "item_level": 2400,
+    "ratingStats": {"Critical Strike": 1800, "Incoming Healing": 900, "Outgoing Healing": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Controlled Divinity", "description": "Gain a stack of 0.6% Divinity/Performance/Soulweave regeneration for 15 seconds when you heal an ally, lose a stack when you are struck. Max 10 Stacks: 6% Regen."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Helm",
+    "slot": "Head",
+    "item_level": 2400,
+    "ratingStats": {"Defense": 1800, "Critical Avoidance": 900, "Control Resistance": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Defender's Stamina", "description": "For every 5 seconds you are in combat, you gain 670 Defense and 1% Stamina Regeneration. Max Stacks: 5 - 3,350 Defense and 5% Stamina Regeneration."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Cuirass",
+    "slot": "Armor",
+    "item_level": 2400,
+    "ratingStats": {"Accuracy": 900, "Awareness": 1800, "Deflection": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Awakening Rush", "description": "Gain 3,350 Awareness, and an additional 2.5% Recharge Speed in Wildspace."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Guards",
+    "slot": "Arms",
+    "item_level": 2400,
+    "ratingStats": {"Defense": 900, "Critical Avoidance": 1800, "Deflect Severity": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Challenger's Aegis", "description": "When in combat with only 1 enemy, your Deflect is increased by 1,340 every 2 seconds. Every 2 seconds you are in combat with 4 or more enemies, lose 1 stack. Max 5 stacks: 6,700 Deflect."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Cosmic Corsair's Sabatons",
+    "slot": "Feet",
+    "item_level": 2400,
+    "ratingStats": {"Combat Advantage": 900, "Forte": 1800, "Incoming Healing": 900},
+    "combinedRating": 2160,
+    "equipBonuses": [{"name": "Overwhelming Parry", "description": "When in combat with only one enemy, gain 6,700 Deflect Severity. This bonus is divided by the total number of enemies you are in combat with."}],
+    "source": "Adventures in Wildspace Campaign"
+  },
+  {
+    "name": "Starforged Helm",
+    "slot": "Head",
+    "item_level": 2700,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 2025, "Critical Avoidance": 2025},
+    "combinedRating": 2430,
+    "equipBonuses": [{"name": "Boar's Determination", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 7.5% Awareness and 5% Stamina Regeneration for 10 seconds. (15 second cooldown)"}],
+    "source": "Defense of the Moondancer (Master)"
+  },
+  {
+    "name": "Starforged Cuirass",
+    "slot": "Armor",
+    "item_level": 2700,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 2025, "Awareness": 2025},
+    "combinedRating": 2430,
+    "equipBonuses": [{"name": "Rothe's Intimidation", "description": "Whenever you are damaged, you explode with fury, dealing 5,517 damage to enemies within 15', and generating additional threat. (10s cooldown)"}],
+    "source": "Defense of the Moondancer (Master)"
+  },
+  {
+    "name": "Starforged Guards",
+    "slot": "Arms",
+    "item_level": 2700,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Accuracy": 2025, "Awareness": 2025},
+    "combinedRating": 2430,
+    "equipBonuses": [{"name": "Sudden Intuition", "description": "Whenever you are struck by Combat Advantage damage, you have a 20% chance to increase your Awareness and Deflect Severity by 7% for 8 seconds. (15 second cooldown)"}],
+    "source": "Defense of the Moondancer (Master)"
+  },
+  {
+    "name": "Starforged Sabatons",
+    "slot": "Feet",
+    "item_level": 2700,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Awareness": 2025, "Incoming Healing": 2025},
+    "combinedRating": 2430,
+    "equipBonuses": [{"name": "Defender Guard", "description": "Gain 1% Base Damage Boost when struck. Stacks 5 times. When you strike an enemy, the stacks are consumed and you gain -1% Incoming Damage per stack consumed for 10 seconds. Stacks cannot be applied at the same time."}],
+    "source": "Defense of the Moondancer (Master)"
+  },
+  {
+    "name": "Starforged Spikes",
+    "slot": "Feet",
+    "item_level": 2700,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 2025, "Forte": 2025},
+    "combinedRating": 2430,
+    "equipBonuses": [{"name": "Divine Muse", "description": "Your Divinity/Performance/Soulweave regenerates 20% faster."}],
+    "source": "Defense of the Moondancer (Master)"
+  },
+  {
+    "name": "Starforged Mitts",
+    "slot": "Arms",
+    "item_level": 2700,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 2025, "Critical Severity": 2025},
+    "combinedRating": 2430,
+    "equipBonuses": [{"name": "Divine Inspiration", "description": "Your Divinity maximum increases by 25%."}],
+    "source": "Defense of the Moondancer (Master)"
+  },
+  {
+    "name": "Starforged Coat",
+    "slot": "Armor",
+    "item_level": 2700,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Forte": 2025, "Outgoing Healing": 2025},
+    "combinedRating": 2430,
+    "equipBonuses": [{"name": "Medic's Respite", "description": "Healing an ally with an Encounter power also heals you for 75,000 and grants Allies within 25' 1.5% Awareness for 5s."}],
+    "source": "Defense of the Moondancer (Master)"
+  },
+  {
+    "name": "Starforged Cover",
+    "slot": "Head",
+    "item_level": 2700,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Awareness": 2025, "Outgoing Healing": 2025},
+    "combinedRating": 2430,
+    "equipBonuses": [{"name": "Death Defying Medic", "description": "Gain 2000 Outgoing Healing for each enemy you are engaged in battle within 100'. (Max of 10 targets)"}],
+    "source": "Defense of the Moondancer (Master)"
+  },
+  {
+    "name": "Pulsar Armet",
+    "slot": "Head",
+    "item_level": 2600,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Accuracy": 1170, "Defense": 950, "Awareness": 780},
+    "combinedRating": 2340,
+    "equipBonuses": [{"name": "Renegade's Stamina", "description": "Whenever you Deflect an attack, gain 2% Stamina Regeneration for 10 seconds. Max 5 Stacks: 10% Stamina Regeneration."}],
+    "source": "Defense of the Moondancer (Advanced)"
+  },
+  {
+    "name": "Pulsar Breastplate",
+    "slot": "Armor",
+    "item_level": 2600,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Awareness": 1950, "Forte": 780, "Incoming Healing": 1170},
+    "combinedRating": 2340,
+    "equipBonuses": [{"name": "Critical Strike", "description": "Gain 1% Control Bonus when you strike an enemy. Stacks 5 times. When you are struck, the stacks are consumed and you gain -1% Incoming Damage per stack consumed for 10 seconds. Stacks cannot be applied at the same time."}],
+    "source": "Defense of the Moondancer (Advanced)"
+  },
+  {
+    "name": "Pulsar Gauntlets",
+    "slot": "Arms",
+    "item_level": 2600,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Awareness": 780, "Critical Avoidance": 1170, "Incoming Healing": 1950},
+    "combinedRating": 2340,
+    "equipBonuses": [{"name": "Death Defier's Haste", "description": "Gain 1% Recharge Speed for each enemy you are engaged in battle within 100'. Max 10 Stacks: 10% Recharge Speed."}],
+    "source": "Defense of the Moondancer (Advanced)"
+  },
+  {
+    "name": "Pulsar Greaves",
+    "slot": "Feet",
+    "item_level": 2600,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 780, "Critical Avoidance": 1950, "Deflection": 1170},
+    "combinedRating": 2340,
+    "equipBonuses": [{"name": "The Ol' Switcheroo", "description": "+7.5% Incoming Healing, -10000 Accuracy."}],
+    "source": "Defense of the Moondancer (Advanced)"
+  },
+  {
+    "name": "Pulsar Helm",
+    "slot": "Head",
+    "item_level": 2600,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 1170, "Defense": 780, "Outgoing Healing": 1950},
+    "combinedRating": 2340,
+    "equipBonuses": [{"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 1% Critical Strike, to the max of 12%."}],
+    "source": "Defense of the Moondancer (Advanced)"
+  },
+  {
+    "name": "Pulsar Half-Plate",
+    "slot": "Armor",
+    "item_level": 2600,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 1950, "Forte": 780, "Outgoing Healing": 1170},
+    "combinedRating": 2340,
+    "equipBonuses": [{"name": "Survivor's Gift", "description": "Your current Hit Points increases your Outgoing Healing, up to a maximum of 6%. Currently: 6%."}],
+    "source": "Defense of the Moondancer (Advanced)"
+  },
+  {
+    "name": "Pulsar Gloves",
+    "slot": "Arms",
+    "item_level": 2600,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Severity": 780, "Awareness": 1170, "Outgoing Healing": 1170},
+    "combinedRating": 2340,
+    "equipBonuses": [{"name": "Charged Rejuvenation", "description": "Whenever you are healed in combat, you have a 10% chance to gain 5% Recharge Speed for 10 seconds. (20 second cooldown)"}],
+    "source": "Defense of the Moondancer (Advanced)"
+  },
+  {
+    "name": "Pulsar Sollerets",
+    "slot": "Feet",
+    "item_level": 2600,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 1170, "Critical Severity": 1950, "Outgoing Healing": 780},
+    "combinedRating": 2340,
+    "equipBonuses": [{"name": "Self Sacrifice", "description": "+5% Outgoing Healing, -5% Awareness."}],
+    "source": "Defense of the Moondancer (Advanced)"
+  },
+  {
+    "name": "Astral Raider's Armet",
+    "slot": "Head",
+    "item_level": 2200,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Accuracy": 990, "Deflection": 990, "Deflect Severity": 1320},
+    "combinedRating": 1980,
+    "equipBonuses": [{"name": "The Ol' Switcheroo", "description": "+5% Incoming Healing, -7500 Accuracy."}],
+    "source": "Xarysian Invasions"
+  },
+  {
+    "name": "Astral Raider's Breastplate",
+    "slot": "Armor",
+    "item_level": 2200,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 990, "Control Resistance": 990, "Incoming Healing": 1320},
+    "combinedRating": 1980,
+    "equipBonuses": [{"name": "Death Defier's Haste", "description": "Gain 1% Recharge Speed for each enemy you are engaged in battle within 100'. Max 10 Stacks: 10% Recharge Speed."}],
+    "source": "Xarysian Invasions"
+  },
+  {
+    "name": "Astral Raider's Gauntlets",
+    "slot": "Arms",
+    "item_level": 2200,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 990, "Critical Avoidance": 1320, "Control Resistance": 990},
+    "combinedRating": 1980,
+    "equipBonuses": [{"name": "Scaled Disdain", "description": "Grants up to 20% bonus Damage when your total item level is being scaled down. Currently: 0% Damage (100%). Disabled in Thay Arena PvP."}],
+    "source": "Xarysian Invasions"
+  },
+  {
+    "name": "Astral Raider's Greaves",
+    "slot": "Feet",
+    "item_level": 2200,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 990, "Awareness": 990, "Critical Avoidance": 1320},
+    "combinedRating": 1980,
+    "equipBonuses": [{"name": "Scaled Disdain", "description": "Grants up to -20% Incoming Damage when your total item level is being scaled down. Currently: -0% Incoming Damage. Disabled in Thay Arena PvP."}],
+    "source": "Xarysian Invasions"
+  },
+  {
+    "name": "Astral Raider's Sollerets",
+    "slot": "Feet",
+    "item_level": 2200,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Accuracy": 1320, "Critical Strike": 990, "Defense": 990},
+    "combinedRating": 1980,
+    "equipBonuses": [{"name": "Scaled Disdain", "description": "Grants up to -20% Incoming Damage when your total item level is being scaled down. Currently: -0% Incoming Damage. Disabled in Thay Arena PvP."}],
+    "source": "Xarysian Invasions"
+  },
+  {
+    "name": "Astral Raider's Gloves",
+    "slot": "Arms",
+    "item_level": 2200,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Defense": 990, "Deflection": 990, "Outgoing Healing": 1320},
+    "combinedRating": 1980,
+    "equipBonuses": [{"name": "Scaled Disdain", "description": "Grants up to 20% bonus Damage when your total item level is being scaled down. Currently: 0 Damage (100%). Disabled in Thay Arena PvP."}],
+    "source": "Xarysian Invasions"
+  },
+  {
+    "name": "Astral Raider's Half-Plate",
+    "slot": "Armor",
+    "item_level": 2200,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Defense": 990, "Control Bonus": 990, "Incoming Healing": 990, "Outgoing Healing": 1320},
+    "combinedRating": 1980,
+    "equipBonuses": [{"name": "Death Defying Medic", "description": "Gain 1500 Outgoing Healing for each enemy you are engaged in battle within 100'. (Max of 10 targets)"}],
+    "source": "Xarysian Invasions"
+  },
+  {
+    "name": "Astral Raider's Crown",
+    "slot": "Head",
+    "item_level": 2200,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Defense": 990, "Critical Avoidance": 1320, "Outgoing Healing": 990},
+    "combinedRating": 1980,
+    "equipBonuses": [{"name": "Healer's Sacrifice", "description": "Increases Overall Outgoing Healing by 5%. Decreases Incoming Healing by 30%."}],
+    "source": "Xarysian Invasions"
+  },
+  {
+    "name": "Lolthian Helm",
+    "slot": "Head",
+    "item_level": 2050,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Critical Strike": 923, "Defense": 923, "Critical Avoidance": 1230},
+    "combinedRating": 1845,
+    "equipBonuses": [{"name": "Skirmisher's Might", "description": "Whenever you deal Combat Advantage damage with your powers, you have a 10% chance to gain 7500 Power for 10 seconds. (20 second cooldown)"}],
+    "source": "Seals Store"
+  },
+  {
+    "name": "Lolthian Cuirass",
+    "slot": "Armor",
+    "item_level": 2050,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 923, "Awareness": 1230, "Critical Avoidance": 923},
+    "combinedRating": 1845,
+    "equipBonuses": [{"name": "This or That", "description": "When not in a party, gain 5,000 Power. When in a party, gain 5,500 Deflect and Deflect Severity."}],
+    "source": "Seals Store"
+  },
+  {
+    "name": "Lolthian Guards",
+    "slot": "Arms",
+    "item_level": 2050,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Defense": 1538, "Deflect Severity": 1538},
+    "combinedRating": 1845,
+    "equipBonuses": [{"name": "Executioner's Ferocity", "description": "When you kill an enemy, your Critical Severity increases by 5% for 10 seconds."}],
+    "source": "Seals Store"
+  },
+  {
+    "name": "Lolthian Sabatons",
+    "slot": "Feet",
+    "item_level": 2050,
+    "allowedClasses": ["Paladin", "Barbarian", "Fighter"],
+    "ratingStats": {"Critical Strike": 923, "Defense": 923, "Awareness": 1230},
+    "combinedRating": 1845,
+    "equipBonuses": [{"name": "Elegant Reply", "description": "Whenever you Deflect an attack, you have a 30% chance to reflect 5% of the damage back to the attacker. This effect may only occur once every 10 seconds."}],
+    "source": "Seals Store"
+  },
+  {
+    "name": "Lolthian Cover",
+    "slot": "Head",
+    "item_level": 2050,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Severity": 923, "Defense": 923, "Outgoing Healing": 1230},
+    "combinedRating": 1845,
+    "equipBonuses": [{"name": "Skirmisher's Might", "description": "Whenever you deal Combat Advantage damage with your powers, you have a 10% chance to gain 7500 Power for 10 seconds. (20 second cooldown)"}],
+    "source": "Seals Store"
+  },
+  {
+    "name": "Lolthian Vest",
+    "slot": "Armor",
+    "item_level": 2050,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Severity": 1230, "Defense": 923, "Deflect Severity": 923},
+    "combinedRating": 1845,
+    "equipBonuses": [{"name": "This or That", "description": "When not in a party, gain 5,000 Forte. When in a party, gain 10,000 Outgoing Healing."}],
+    "source": "Seals Store"
+  },
+  {
+    "name": "Lolthian Mitts",
+    "slot": "Arms",
+    "item_level": 2050,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 1538, "Defense": 1538},
+    "combinedRating": 1845,
+    "equipBonuses": [{"name": "Executioner's Ferocity", "description": "When you kill an enemy, your Critical Severity increases by 5% for 10 seconds."}],
+    "source": "Seals Store"
+  },
+  {
+    "name": "Lolthian Spikes",
+    "slot": "Feet",
+    "item_level": 2050,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 1230, "Defense": 923, "Critical Avoidance": 923},
+    "combinedRating": 1845,
+    "equipBonuses": [{"name": "The Ol' Switcheroo", "description": "+5% Critical Strike, -7500 Combat Advantage."}],
+    "source": "Seals Store"
+  },
+  {
+    "name": "Shifting Void Shirt",
+    "slot": "Shirt",
+    "item_level": 2000,
+    "ratingStats": {"Combat Advantage": 1500, "Critical Severity": 750, "Critical Avoidance": 750},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Wildspace Predator", "description": "+4% Damage in Wildspace. +1% Damage in non-Wildspace."}],
+    "source": "The Imperial Citadel (Master/Advanced)"
+  },
+  {
+    "name": "Lightless Void Shirt",
+    "slot": "Shirt",
+    "item_level": 2000,
+    "ratingStats": {"Critical Severity": 750, "Deflection": 750, "Outgoing Healing": 1500},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Depleted Grace", "description": "When your Stamina is under 25%, your Forte is increased by 6,250."}],
+    "source": "The Imperial Citadel (Master/Advanced)"
+  },
+  {
+    "name": "Unfathomable Void Shirt",
+    "slot": "Shirt",
+    "item_level": 2000,
+    "ratingStats": {"Combat Advantage": 1500, "Critical Severity": 750, "Critical Avoidance": 750},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Lethal Tactics", "description": "When your Stamina is over 75%, your Critical Severity is increased by 6,250."}],
+    "source": "The Imperial Citadel (Master/Advanced)"
+  },
+  {
+    "name": "Blackened Void Shirt",
+    "slot": "Shirt",
+    "item_level": 2000,
+    "ratingStats": {"Combat Advantage": 1500, "Critical Severity": 750, "Critical Avoidance": 750},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Challenger's Strength", "description": "When in combat with only 1 enemy, your Power is increased by 1,250 every 2 seconds. Every 2 seconds you are in combat with 4 or more enemies, lose 1 stack. Max 5 stacks: 6,250 Power."}],
+    "source": "The Imperial Citadel (Master/Advanced)"
+  },
+  {
+    "name": "Endless Void Shirt",
+    "slot": "Shirt",
+    "item_level": 2000,
+    "ratingStats": {"Critical Severity": 750, "Deflection": 750, "Outgoing Healing": 1500},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Solitary Grace", "description": "When in combat with only one enemy, gain up to 7% Outgoing Healing. When your teammates are 25' or closer to you, their Forte is increased to you. This bonus is divided by the total number of enemies you are in combat with."}],
+    "source": "The Imperial Citadel (Master/Advanced)"
+  },
+  {
+    "name": "Abyssal Void Shirt",
+    "slot": "Shirt",
+    "item_level": 2000,
+    "ratingStats": {"Defense": 1500, "Critical Avoidance": 750, "Control Resistance": 750},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Depleted Attention", "description": "When your Stamina is under 25%, your Awareness is increased by 6,250."}],
+    "source": "The Imperial Citadel (Master/Advanced)"
+  },
+  {
+    "name": "Shifting Void Pants",
+    "slot": "Pants",
+    "item_level": 2000,
+    "ratingStats": {"Critical Strike": 1500, "Critical Severity": 750, "Deflection": 750},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Solitary Power", "description": "When in combat with only one enemy, gain 2.5% Power. This bonus is divided by the total number of enemies you are in combat with."}],
+    "source": "Vecath's Arena"
+  },
+  {
+    "name": "Lightless Void Pants",
+    "slot": "Pants",
+    "item_level": 2000,
+    "ratingStats": {"Critical Strike": 750, "Control Resistance": 750, "Outgoing Healing": 1500},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Charged Rejuvenation", "description": "Whenever you are healed in combat, gain 5% Recharge Speed for 10 seconds. (30 second cooldown)"}],
+    "source": "Vecath's Arena"
+  },
+  {
+    "name": "Unfathomable Void Pants",
+    "slot": "Pants",
+    "item_level": 2000,
+    "ratingStats": {"Critical Strike": 1500, "Critical Severity": 750, "Deflection": 750},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Precision Tactics", "description": "When your Stamina is over 75%, your Critical Strike is increased by 6,250."}],
+    "source": "Vecath's Arena"
+  },
+  {
+    "name": "Blackened Void Pants",
+    "slot": "Pants",
+    "item_level": 2000,
+    "ratingStats": {"Critical Strike": 1500, "Critical Severity": 750, "Deflection": 750},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Depleted Advantage", "description": "When your Stamina is under 25%, your Combat Advantage is increased by 6,250."}],
+    "source": "Vecath's Arena"
+  },
+  {
+    "name": "Endless Void Pants",
+    "slot": "Pants",
+    "item_level": 2000,
+    "ratingStats": {"Critical Strike": 750, "Control Resistance": 750, "Outgoing Healing": 1500},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Charged Rejuvenation", "description": "Whenever you are healed in combat, gain 5% Recharge Speed for 10 seconds. (30 second cooldown)"}],
+    "source": "Vecath's Arena"
+  },
+  {
+    "name": "Abyssal Void Pants",
+    "slot": "Pants",
+    "item_level": 2000,
+    "ratingStats": {"Accuracy": 750, "Awareness": 1500, "Deflection": 750},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1800,
+    "equipBonuses": [{"name": "Challenger's Resilience", "description": "When in combat with only 1 enemy, your Incoming Damage is decreased by 0.15% every 2 seconds. Every 2 seconds you are in combat with 4 or more enemies, lose 1 stack. Max 10 stacks: -1.5% Incoming Damage."}],
+    "source": "Vecath's Arena"
+  },
+  {
+    "name": "Shimmering Starwoven Shirt",
+    "slot": "Shirt",
+    "item_level": 1700,
+    "ratingStats": {"Combat Advantage": 1275, "Critical Strike": 1275},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Charged Fury", "description": "When your Stamina is over 75%, your Power is increased by 7500."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Vivid Starwoven Shirt",
+    "slot": "Shirt",
+    "item_level": 1700,
+    "ratingStats": {"Deflection": 1275, "Outgoing Healing": 1275},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Depleted Defiance", "description": "When your Stamina is under 15%, your Movement Speed is increased by 20%. This boost only applies during combat."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Luminous Starwoven Shirt",
+    "slot": "Shirt",
+    "item_level": 1700,
+    "ratingStats": {"Critical Strike": 1275, "Critical Severity": 1275},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Charged Fury", "description": "When your Stamina is over 75%, your Power is increased by 7500."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Illuminated Starwoven Shirt",
+    "slot": "Shirt",
+    "item_level": 1700,
+    "ratingStats": {"Accuracy": 1275, "Critical Strike": 1275},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Charged Fury", "description": "When your Stamina is over 75%, your Power is increased by 7500."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Brilliant Starwoven Shirt",
+    "slot": "Shirt",
+    "item_level": 1700,
+    "ratingStats": {"Critical Severity": 1275, "Outgoing Healing": 1275},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Charged Fury", "description": "When your Stamina is over 75%, your Power is increased by 7500."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Dazzling Starwoven Shirt",
+    "slot": "Shirt",
+    "item_level": 1700,
+    "ratingStats": {"Combat Advantage": 1275, "Deflection": 1275},
+    "percentStats": {"Movement Speed": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Depleted Defiance", "description": "When your Stamina is under 15%, your Movement Speed is increased by 20%. This boost only applies during combat."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Dazzling Starwoven Pants",
+    "slot": "Pants",
+    "item_level": 1700,
+    "ratingStats": {"Awareness": 1275, "Control Resistance": 1275},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Survivor's Rush", "description": "Gain Recharge Speed as your health decreases to a maximum of 5%. Currently: 0%."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Brilliant Starwoven Pants",
+    "slot": "Pants",
+    "item_level": 1700,
+    "ratingStats": {"Critical Avoidance": 1275, "Outgoing Healing": 1275},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Super Rejuvenation", "description": "Whenever you are healed in combat, you have a 10% chance to gain 2% Recharge Speed for 10s. (30 second cooldown)"}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Illuminated Starwoven Pants",
+    "slot": "Pants",
+    "item_level": 1700,
+    "ratingStats": {"Critical Severity": 1275, "Deflect Severity": 1275},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Charged Might", "description": "When your Stamina is over 75%, your Power is increased by 5%."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Luminous Starwoven Pants",
+    "slot": "Pants",
+    "item_level": 1700,
+    "ratingStats": {"Defense": 1275, "Incoming Healing": 1275},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Charged Might", "description": "When your Stamina is over 75%, your Power is increased by 5%."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Vivid Starwoven Pants",
+    "slot": "Pants",
+    "item_level": 1700,
+    "ratingStats": {"Awareness": 1275, "Control Bonus": 1275},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Super Rejuvenation", "description": "Whenever you are healed in combat, you have a 10% chance to gain 2% Recharge Speed for 10s. (30 second cooldown)"}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Shimmering Starwoven Pants",
+    "slot": "Pants",
+    "item_level": 1700,
+    "ratingStats": {"Accuracy": 1275, "Deflect Severity": 1275},
+    "percentStats": {"Stamina Regeneration": 1.5},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Charged Might", "description": "When your Stamina is over 75%, your Power is increased by 5%."}],
+    "source": "Xarysian Invasions / Heroic Encounters: Gabion and Remichi Regions"
+  },
+  {
+    "name": "Dazzling Flarefiber Shirt",
+    "slot": "Shirt",
+    "item_level": 1800,
+    "ratingStats": {"Awareness": 2700},
+    "percentStats": {"Action Point Gain": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Survivor's Remedy", "description": "Whenever you Deflect an attack, you have a 10% chance to restore 5% of your Maximum Hit Points. This effect may only occur once every 5 seconds."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Brilliant Flarefiber Shirt",
+    "slot": "Shirt",
+    "item_level": 1800,
+    "ratingStats": {"Defense": 2700},
+    "percentStats": {"Action Point Gain": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Graceful Harmony", "description": "You gain 1.5% Outgoing Healing for each player in your team. When your teammates are 20' or closer to you, their Forte is increased by 1.5%."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Illuminated Flarefiber Shirt",
+    "slot": "Shirt",
+    "item_level": 1800,
+    "ratingStats": {"Combat Advantage": 2700},
+    "percentStats": {"Action Point Gain": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Bloodletting", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Maximum Hit Points by 10% and gain 3.5% Damage for 10 seconds."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Luminous Flarefiber Shirt",
+    "slot": "Shirt",
+    "item_level": 1800,
+    "ratingStats": {"Critical Severity": 2700},
+    "percentStats": {"Action Point Gain": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Bloodletting", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Maximum Hit Points by 10% and gain 3.5% Damage for 10 seconds."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Vivid Flarefiber Shirt",
+    "slot": "Shirt",
+    "item_level": 1800,
+    "ratingStats": {"Critical Strike": 1350, "Incoming Healing": 1350},
+    "percentStats": {"Action Point Gain": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Graceful Harmony", "description": "You gain 1.5% Outgoing Healing for each player in your team. When your teammates are 20' or closer to you, their Forte is increased by 1.5%."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Shimmering Flarefiber Shirt",
+    "slot": "Shirt",
+    "item_level": 1800,
+    "ratingStats": {"Accuracy": 2700},
+    "percentStats": {"Action Point Gain": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Bloodletting", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Maximum Hit Points by 10% and gain 3.5% Damage for 10 seconds."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Shimmering Flarefiber Pants",
+    "slot": "Pants",
+    "item_level": 1800,
+    "ratingStats": {"Incoming Healing": 2700},
+    "percentStats": {"Recharge Speed": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Charged Mastery", "description": "When your Stamina is over 75%, your Combat Advantage is increased by 7500."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Vivid Flarefiber Pants",
+    "slot": "Pants",
+    "item_level": 1800,
+    "ratingStats": {"Critical Avoidance": 1350, "Deflect Severity": 1350},
+    "percentStats": {"Recharge Speed": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Butcher's Zeal", "description": "When you damage or heal your target for more than 15% of your Maximum Hit Points in a single blow, you gain 10 Action Points. Can only occur once every 5 seconds."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Luminous Flarefiber Pants",
+    "slot": "Pants",
+    "item_level": 1800,
+    "ratingStats": {"Critical Strike": 2700},
+    "percentStats": {"Recharge Speed": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Charged Mastery", "description": "When your Stamina is over 75%, your Combat Advantage is increased by 7500."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  },
+  {
+    "name": "Illuminated Flarefiber Pants",
+    "slot": "Pants",
+    "item_level": 1800,
+    "ratingStats": {"Deflect Severity": 2700},
+    "percentStats": {"Recharge Speed": 1.5},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Charged Mastery", "description": "When your Stamina is over 75%, your Combat Advantage is increased by 7500."}],
+    "source": "Defense of the Moondancer (Master/Advanced)"
+  }
+]

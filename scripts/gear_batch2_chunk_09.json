@@ -1,0 +1,754 @@
+[
+  {
+    "name": "Drow Assailant's Tights",
+    "slot": "Pants",
+    "item_level": 1450,
+    "ratingStats": {"Accuracy": 1088, "Deflection": 1088, "Recharge Speed": 1.5},
+    "combinedRating": 1305,
+    "equipBonuses": [{"name": "Charged Defiance", "description": "When your Stamina is over 75%, you take 3% less damage."}],
+    "source": "Northdark Reaches Seals Store"
+  },
+  {
+    "name": "Drow Mage's Tights",
+    "slot": "Pants",
+    "item_level": 1450,
+    "ratingStats": {"Accuracy": 1088, "Control Bonus": 1088, "Recharge Speed": 1.5},
+    "combinedRating": 1305,
+    "equipBonuses": [{"name": "Charged Defiance", "description": "When your Stamina is over 75%, you take 3% less damage."}],
+    "source": "Northdark Reaches Seals Store"
+  },
+  {
+    "name": "Nostalgic Mycelial Top",
+    "slot": "Shirt",
+    "item_level": 1550,
+    "ratingStats": {"Defense": 1162, "Awareness": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Butcher's Zeal", "description": "When you damage or heal your target for more than 15% of your Maximum Hit Points in a single blow, you gain 10 Action Points. Can only occur once every 5 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Distinct Mycelial Top",
+    "slot": "Shirt",
+    "item_level": 1550,
+    "ratingStats": {"Critical Strike": 1162, "Control Bonus": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Butcher's Zeal", "description": "When you damage or heal your target for more than 15% of your Maximum Hit Points in a single blow, you gain 10 Action Points. Can only occur once every 5 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Graceful Mycelial Top",
+    "slot": "Shirt",
+    "item_level": 1550,
+    "ratingStats": {"Critical Strike": 1162, "Incoming Healing": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Butcher's Zeal", "description": "When you damage or heal your target for more than 15% of your Maximum Hit Points in a single blow, you gain 10 Action Points. Can only occur once every 5 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Fabulous Mycelial Top",
+    "slot": "Shirt",
+    "item_level": 1550,
+    "ratingStats": {"Accuracy": 1162, "Forte": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Butcher's Zeal", "description": "When you damage or heal your target for more than 15% of your Maximum Hit Points in a single blow, you gain 10 Action Points. Can only occur once every 5 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Dashing Mycelial Top",
+    "slot": "Shirt",
+    "item_level": 1550,
+    "ratingStats": {"Combat Advantage": 1162, "Critical Severity": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Butcher's Zeal", "description": "When you damage or heal your target for more than 15% of your Maximum Hit Points in a single blow, you gain 10 Action Points. Can only occur once every 5 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Debonair Mycelial Top",
+    "slot": "Shirt",
+    "item_level": 1550,
+    "ratingStats": {"Combat Advantage": 1162, "Critical Avoidance": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Butcher's Zeal", "description": "When you damage or heal your target for more than 15% of your Maximum Hit Points in a single blow, you gain 10 Action Points. Can only occur once every 5 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Nostalgic Mycelial Bottoms",
+    "slot": "Pants",
+    "item_level": 1550,
+    "ratingStats": {"Defense": 1162, "Awareness": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Warden's Defense", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Defense for 10 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Distinct Mycelial Bottoms",
+    "slot": "Pants",
+    "item_level": 1550,
+    "ratingStats": {"Critical Severity": 1162, "Awareness": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Warden's Defense", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Defense for 10 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Graceful Mycelial Bottoms",
+    "slot": "Pants",
+    "item_level": 1550,
+    "ratingStats": {"Critical Strike": 1162, "Deflect Severity": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Warden's Defense", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Defense for 10 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Fabulous Mycelial Bottoms",
+    "slot": "Pants",
+    "item_level": 1550,
+    "ratingStats": {"Critical Avoidance": 1162, "Deflect Severity": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Warden's Defense", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Defense for 10 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Dashing Mycelial Bottoms",
+    "slot": "Pants",
+    "item_level": 1550,
+    "ratingStats": {"Defense": 1162, "Outgoing Healing": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Warden's Defense", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Defense for 10 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Debonair Mycelial Bottoms",
+    "slot": "Pants",
+    "item_level": 1550,
+    "ratingStats": {"Awareness": 1162, "Critical Avoidance": 1162, "Movement Speed": 1.5},
+    "combinedRating": 1393,
+    "equipBonuses": [{"name": "Warden's Defense", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Defense for 10 seconds."}],
+    "source": "Northdark Reaches Heroic Encounters"
+  },
+  {
+    "name": "Durgarn Thord Sword",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 1850,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Critical Severity": 1388, "Defense": 1388},
+    "combinedRating": 1665,
+    "set": "Scalebreaker's Wrath",
+    "setSize": 2,
+    "setPartners": ["Durgarn Thord Bulwark"],
+    "setBonus": "DPS: +1% Recharge Speed and Action Point Gain. Tank: +1% Stamina Regeneration and Action Point Gain. Healer: +1% Movement Speed and Action Point Gain. Once you reach 6 stacks of Scalebreaker's, they are consumed and you are empowered with Scalebreaker's Wrath for 30 seconds, granting the following, depending on your role: DPS: +7.5% Base Damage Boost. Tank: +7.5% Incoming Damage. Healer: +7.5% Overall Outgoing Healing. You may only have 1 stack of Scalebreaker's Wrath at a time and the duration is refreshed each time you reach 6 stacks of Scalebreaker's.",
+    "source": "The Crown of Keldegonn"
+  },
+  {
+    "name": "Durgarn Thord Bulwark",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 1850,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Awareness": 1388, "Forte": 1388},
+    "combinedRating": 1665,
+    "set": "Scalebreaker's Wrath",
+    "setSize": 2,
+    "setPartners": ["Durgarn Thord Sword"],
+    "source": "The Crown of Keldegonn"
+  },
+  {
+    "name": "Antique Mace of the Vale",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Combat Advantage": 1275, "Outgoing Healing": 1275},
+    "combinedRating": 1530,
+    "set": "Vale",
+    "setSize": 2,
+    "setPartners": ["Antique Shield of the Vale"],
+    "setBonus": "Adventurer's Might: When you use an encounter power, you have a 10% chance to receive a Boost based on your role by 4% for 10 seconds. DPS: Recharge Speed. Tank: Stamina Regeneration. Healer: Action Point Gain."
+  },
+  {
+    "name": "Antique Shield of the Vale",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Critical Strike": 1275, "Critical Avoidance": 1275},
+    "combinedRating": 1530,
+    "set": "Vale",
+    "setSize": 2,
+    "setPartners": ["Antique Mace of the Vale"]
+  },
+  {
+    "name": "Fortified Mace of the Vale",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Combat Advantage": 1350, "Outgoing Healing": 1350},
+    "combinedRating": 1620,
+    "set": "Fortified Vale",
+    "setSize": 2,
+    "setPartners": ["Fortified Shield of the Vale"],
+    "setBonus": "Adventurer's Might: DPS: +5% Power. Tank: +5% Awareness. Healer: +5% Outgoing Healing. When you use an encounter power, you have a 15% chance to increase a Boost based on your role by 7.5% for 10 seconds. DPS: Recharge Speed. Tank: Stamina Regeneration. Healer: Action Point Gain."
+  },
+  {
+    "name": "Fortified Shield of the Vale",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Critical Strike": 1350, "Critical Avoidance": 1350},
+    "combinedRating": 1620,
+    "set": "Fortified Vale",
+    "setSize": 2,
+    "setPartners": ["Fortified Mace of the Vale"]
+  },
+  {
+    "name": "Grand Alliance Mace",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Accuracy": 1275, "Combat Advantage": 1275},
+    "combinedRating": 1530,
+    "set": "Grand Alliance",
+    "setSize": 2,
+    "setPartners": ["Grand Alliance Bulwark"],
+    "setBonus": "Brute's Expertise: When you are 25' or closer to your target, a stat based on your role and Forte is increased by 3%. DPS: Power. Tank: Awareness. Healer: Outgoing Healing."
+  },
+  {
+    "name": "Grand Alliance Bulwark",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin"],
+    "ratingStats": {"Critical Severity": 1275, "Critical Avoidance": 1275},
+    "combinedRating": 1530,
+    "set": "Grand Alliance",
+    "setSize": 2,
+    "setPartners": ["Grand Alliance Mace"]
+  },
+  {
+    "name": "Crimson Scalebreaker's Ward Cuirass",
+    "slot": "Armor",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Defense": 810, "Awareness": 1060, "Control Resistance": 810},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Skirmisher's Versatility", "description": "Whenever you deal Combat Advantage damage with your powers, you have a 10% chance to increase one of the following stats by 8% for 10 seconds: Accuracy, Combat Advantage, Critical Avoidance, or Deflect Severity. (30 second cooldown)"}],
+    "source": "Dragonbone Vale Campaign Store"
+  },
+  {
+    "name": "Crimson Scalebreaker's Ward Guards",
+    "slot": "Arms",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Combat Advantage": 1080, "Defense": 810, "Forte": 810},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Herald's Cunning", "description": "When you have no teammates within 30' of you, your Stamina Regeneration and Control Resistance is increased by 5%."}],
+    "source": "Dragonbone Vale Campaign Store"
+  },
+  {
+    "name": "Crimson Scalebreaker's Ward Sabatons",
+    "slot": "Feet",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Critical Severity": 810, "Defense": 810, "Control Resistance": 1080},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Renegade's Footwork", "description": "Whenever you Deflect an attack, gain 1% Movement Speed and Recharge Speed for 10 seconds. Max 5 Stacks: 5% Movement Speed and Recharge Speed."}],
+    "source": "Dragonbone Vale Campaign Store"
+  },
+  {
+    "name": "Crimson Scalebreaker's Ward Helm",
+    "slot": "Head",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Defense": 810, "Critical Avoidance": 810, "Incoming Healing": 1080},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Executioner's Ferocity", "description": "When you kill an enemy, your Critical Severity increases by 5% for 10 seconds."}],
+    "source": "Dragonbone Vale Campaign Store"
+  },
+  {
+    "name": "Crimson Scalebreaker's Restoration Mitts",
+    "slot": "Arms",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Defense": 810, "Awareness": 1080, "Forte": 810},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Herald's Cunning", "description": "When you have no teammates within 30' of you, your Stamina Regeneration and Control Resistance is increased by 5%."}],
+    "source": "Dragonbone Vale Campaign Store"
+  },
+  {
+    "name": "Ancient Scalebreaker's Guards",
+    "slot": "Arms",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Combat Advantage": 1020, "Defense": 765, "Forte": 765},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Herald's Cunning", "description": "When you have no teammates within 30' of you, your Stamina Regeneration and Control Resistance is increased by 5%."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Ancient Scalebreaker's Cuirass",
+    "slot": "Armor",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Defense": 765, "Awareness": 1020, "Control Resistance": 765},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Skirmisher's Versatility", "description": "Whenever you deal Combat Advantage damage with your powers, you have a 10% chance to increase one of the following stats by 8% for 10 seconds: Accuracy, Combat Advantage, Critical Avoidance, or Deflect Severity. (30 second cooldown)"}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Crimson Scalebreaker's Restoration Pigaches",
+    "slot": "Feet",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 1000, "Defense": 810, "Critical Avoidance": 810},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Renegade's Footwork", "description": "Whenever you Deflect an attack, gain 1% Movement Speed and Recharge Speed for 10 seconds. Max 5 Stacks: 5% Movement Speed and Recharge Speed."}],
+    "source": "Dragonbone Vale Campaign Store"
+  },
+  {
+    "name": "Crimson Scalebreaker's Restoration Vest",
+    "slot": "Armor",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Severity": 810, "Defense": 810, "Outgoing Healing": 1080},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Skirmisher's Versatility", "description": "Whenever you deal Combat Advantage damage with your powers, you have a 10% chance to increase one of the following stats by 8% for 10 seconds: Accuracy, Combat Advantage, Critical Avoidance, or Deflect Severity. (30 second cooldown)"}],
+    "source": "Dragonbone Vale Campaign Store"
+  },
+  {
+    "name": "Crimson Scalebreaker's Restoration Cover",
+    "slot": "Head",
+    "item_level": 1800,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 810, "Critical Severity": 1080, "Defense": 810},
+    "combinedRating": 1620,
+    "equipBonuses": [{"name": "Executioner's Ferocity", "description": "When you kill an enemy, your Critical Severity increases by 5% for 10 seconds."}],
+    "source": "Dragonbone Vale Campaign Store"
+  },
+  {
+    "name": "Ancient Scalebreaker's Mitts",
+    "slot": "Arms",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Defense": 765, "Awareness": 1020, "Forte": 765},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Herald's Cunning", "description": "When you have no teammates within 30' of you, your Stamina Regeneration and Control Resistance is increased by 5%."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Ancient Scalebreaker's Sabatons",
+    "slot": "Feet",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Critical Severity": 765, "Defense": 765, "Control Resistance": 1020},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Renegade's Footwork", "description": "Whenever you Deflect an attack, gain 1% Movement Speed and Recharge Speed for 10 seconds. Max 5 Stacks: 5% Movement Speed and Recharge Speed."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Ancient Scalebreaker's Cover",
+    "slot": "Head",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 765, "Critical Severity": 1020, "Defense": 765},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Executioner's Ferocity", "description": "When you kill an enemy, your Critical Severity increases by 5% for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Ancient Scalebreaker's Helm",
+    "slot": "Head",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Defense": 765, "Critical Avoidance": 765, "Incoming Healing": 1020},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Executioner's Ferocity", "description": "When you kill an enemy, your Critical Severity increases by 5% for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Ancient Scalebreaker's Vest",
+    "slot": "Armor",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Severity": 765, "Defense": 765, "Outgoing Healing": 1020},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Skirmisher's Versatility", "description": "Whenever you deal Combat Advantage damage with your powers, you have a 10% chance to increase one of the following stats by 8% for 10 seconds: Accuracy, Combat Advantage, Critical Avoidance, or Deflect Severity. (30 second cooldown)"}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Ancient Scalebreaker's Pigaches",
+    "slot": "Feet",
+    "item_level": 1700,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Critical Strike": 1020, "Defense": 765, "Critical Avoidance": 765},
+    "combinedRating": 1530,
+    "equipBonuses": [{"name": "Renegade's Footwork", "description": "Whenever you Deflect an attack, gain 1% Movement Speed and Recharge Speed for 10 seconds. Max 5 Stacks: 5% Movement Speed and Recharge Speed."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Order Mercenary's Breastplate",
+    "slot": "Armor",
+    "item_level": 1600,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Defense": 720, "Control Resistance": 720, "Incoming Healing": 940},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Leader's Might", "description": "Gain 1500 Power for each player in your team."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Order Mercenary's Greaves",
+    "slot": "Feet",
+    "item_level": 1600,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Defense": 720, "Awareness": 960, "Critical Avoidance": 720},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Death Defier's Focus", "description": "Gain 500 Critical Strike for each enemy you are engaged in battle with. (Max of 15 targets)"}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Order Mercenary's Gauntlets",
+    "slot": "Arms",
+    "item_level": 1600,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Defense": 720, "Critical Avoidance": 960, "Control Resistance": 720},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Leader's Ward", "description": "Gain 500 Deflect Severity for each player in your team."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Order Mercenary's Armet",
+    "slot": "Head",
+    "item_level": 1600,
+    "allowedClasses": ["Paladin", "Fighter", "Barbarian"],
+    "ratingStats": {"Accuracy": 720, "Defense": 720, "Deflect Severity": 940},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Charged Precision", "description": "When your Stamina is over 75%, your Accuracy is increased by 7.5%."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Order Physician's Gloves",
+    "slot": "Arms",
+    "item_level": 1600,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Defense": 720, "Deflection": 720, "Outgoing Healing": 940},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Leader's Ward", "description": "Gain 500 Deflect Severity for each player in your team."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Order Physician's Breastplate",
+    "slot": "Armor",
+    "item_level": 1600,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Defense": 720, "Control Bonus": 960, "Incoming Healing": 720},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Leader's Might", "description": "Gain 1500 Power for each player in your team."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Order Physician's Sollerets",
+    "slot": "Feet",
+    "item_level": 1600,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Accuracy": 960, "Critical Strike": 720, "Defense": 720},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Death Defier's Focus", "description": "Gain 500 Critical Strike for each enemy you are engaged in battle with. (Max of 15 targets)"}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Order Physician's Helm",
+    "slot": "Head",
+    "item_level": 1600,
+    "allowedClasses": ["Paladin", "Cleric"],
+    "ratingStats": {"Defense": 720, "Critical Avoidance": 960, "Outgoing Healing": 720},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Charged Precision", "description": "When your Stamina is over 75%, your Accuracy is increased by 7.5%."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Wayseeker's Ring of Punishment",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Critical Severity": 4950, "Action Point Gain": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "At-Will Perk", "description": "Your At-Will Powers do 8% more damage."}]
+  },
+  {
+    "name": "Mightbreaker's Ring of Elegance",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Critical Strike": 4950, "Action Point Gain": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Scale Smasher", "description": "+10% Damage against Dragons."}]
+  },
+  {
+    "name": "Soothsayer's Ring of Absolution",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Forte": 4950, "Action Point Gain": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Enduring Critical", "description": "Your current Hit Points increases your Critical Strike, up to a maximum of 7%."}]
+  },
+  {
+    "name": "Soulfire Ring of Piety",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Outgoing Healing": 4950, "Action Point Gain": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Healing Preparation", "description": "When you stand still for 6 seconds, your Outgoing Healing is increased by 10% and AP Gain is increased by 5% for 6 seconds."}]
+  },
+  {
+    "name": "Stalwartneedle Ring of Bulwark",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Defense": 4950, "Action Point Gain": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Scale Defender", "description": "You take 10% less damage from Dragons."}]
+  },
+  {
+    "name": "Waywatcher's Ring of Advantage",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 3713, "Critical Severity": 1238, "Stamina Regeneration": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Sniper's Fury", "description": "Your Powers deal 4% more damage when you are 50' or further away from your target."}]
+  },
+  {
+    "name": "Wayseeker's Ring of Intellect",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 3713, "Critical Severity": 1238, "Stamina Regeneration": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Daily Perk", "description": "Your Daily Powers do 10% more damage."}]
+  },
+  {
+    "name": "Soulfire Ring of Penance",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Critical Strike": 3713, "Outgoing Healing": 1238, "Stamina Regeneration": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Fleeing Mouse", "description": "When you have been running for 2 seconds you reduce your threat every second as long as you continue running."}]
+  },
+  {
+    "name": "Soothsayer's Ring of Confession",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Critical Avoidance": 1238, "Outgoing Healing": 3713, "Stamina Regeneration": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Expert's Grace", "description": "Your Forte is increased by 5% when you are moving."}]
+  },
+  {
+    "name": "Waywatcher's Ring of Precision",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 4950, "Action Point Gain": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Encounter Perk", "description": "Your Encounter Powers do 5% more damage."}]
+  },
+  {
+    "name": "Mightbreaker's Ring of Clarity",
+    "slot": "Ring",
+    "item_level": 1650,
+    "ratingStats": {"Critical Strike": 3713, "Defense": 1238, "Stamina Regeneration": 1.5},
+    "combinedRating": 1320,
+    "equipBonuses": [{"name": "Brute's Fury", "description": "Your Powers do 4% more damage when you are 25' or closer to your target."}]
+  },
+  {
+    "name": "Medic's Ring of Mending",
+    "slot": "Ring",
+    "item_level": 1400,
+    "ratingStats": {"Control Bonus": 3150, "Incoming Healing": 1050, "Movement Speed": 1.5},
+    "combinedRating": 1120,
+    "equipBonuses": [{"name": "Thayan Bane", "description": "+5% Damage against Thayans"}]
+  },
+  {
+    "name": "Mercenary's Ring of Resistance",
+    "slot": "Ring",
+    "item_level": 1400,
+    "ratingStats": {"Accuracy": 3150, "Critical Avoidance": 1050, "Movement Speed": 1.5},
+    "combinedRating": 1120,
+    "equipBonuses": [{"name": "Thayan Bane", "description": "+5% Damage against Thayans"}]
+  },
+  {
+    "name": "Soldier's Ring of Advantage",
+    "slot": "Ring",
+    "item_level": 1400,
+    "ratingStats": {"Accuracy": 3150, "Combat Advantage": 1050, "Movement Speed": 1.5},
+    "combinedRating": 1120,
+    "equipBonuses": [{"name": "Cult Hunter", "description": "+5% Damage against Cultists"}]
+  },
+  {
+    "name": "Officer's Ring of Striking",
+    "slot": "Ring",
+    "item_level": 1400,
+    "ratingStats": {"Accuracy": 1050, "Critical Strike": 3150, "Movement Speed": 1.5},
+    "combinedRating": 1120,
+    "equipBonuses": [{"name": "Thayan Bane", "description": "+5% Damage against Thayans"}]
+  },
+  {
+    "name": "Corroded Ring of the Dragon Cultist",
+    "slot": "Ring",
+    "item_level": 1300,
+    "ratingStats": {"Critical Strike": 2925, "Control Resistance": 975, "Recharge Speed": 1.5},
+    "combinedRating": 1040,
+    "equipBonuses": [{"name": "Poisonous Strike", "description": "Your powers have a 3% chance to Poison their target."}],
+    "source": "Dragonbone Vale Heroic Encounters"
+  },
+  {
+    "name": "Punished Ring of the Dragon Cultist",
+    "slot": "Ring",
+    "item_level": 1300,
+    "ratingStats": {"Critical Severity": 2925, "Control Resistance": 975, "Recharge Speed": 1.5},
+    "combinedRating": 1040,
+    "equipBonuses": [{"name": "Poisonous Strike", "description": "Your powers have a 3% chance to Poison their target."}],
+    "source": "Dragonbone Vale Heroic Encounters"
+  },
+  {
+    "name": "Chained Ring of the Dragon Cultist",
+    "slot": "Ring",
+    "item_level": 1300,
+    "ratingStats": {"Critical Strike": 2925, "Critical Avoidance": 975, "Recharge Speed": 1.5},
+    "combinedRating": 1040,
+    "equipBonuses": [{"name": "Poisonous Strike", "description": "Your powers have a 3% chance to Poison their target."}],
+    "source": "Dragonbone Vale Heroic Encounters"
+  },
+  {
+    "name": "Scout's Ring of Striking",
+    "slot": "Ring",
+    "item_level": 1400,
+    "ratingStats": {"Combat Advantage": 1050, "Critical Strike": 3150, "Movement Speed": 1.5},
+    "combinedRating": 1120,
+    "equipBonuses": [{"name": "Cult Hunter", "description": "+5% Damage against Cultists"}]
+  },
+  {
+    "name": "Physician's Ring of Healing",
+    "slot": "Ring",
+    "item_level": 1400,
+    "ratingStats": {"Critical Strike": 1050, "Outgoing Healing": 3150, "Movement Speed": 1.5},
+    "combinedRating": 1120,
+    "equipBonuses": [{"name": "Cult Hunter", "description": "+5% Damage against Cultists"}]
+  },
+  {
+    "name": "Serrated Ring of the Dragon Cultist",
+    "slot": "Ring",
+    "item_level": 1300,
+    "ratingStats": {"Defense": 2925, "Control Bonus": 975, "Recharge Speed": 1.5},
+    "combinedRating": 1040,
+    "equipBonuses": [{"name": "Poisonous Daily", "description": "When you use a Daily power, your targets will be poisoned for 5 seconds. (30 second cooldown)"}],
+    "source": "Dragonbone Vale Heroic Encounters"
+  },
+  {
+    "name": "Spiked Ring of the Dragon Cultist",
+    "slot": "Ring",
+    "item_level": 1300,
+    "ratingStats": {"Combat Advantage": 2925, "Deflection": 975, "Recharge Speed": 1.5},
+    "combinedRating": 1040,
+    "equipBonuses": [{"name": "Poisonous Daily", "description": "When you use a Daily power, your targets will be poisoned for 5 seconds. (30 second cooldown)"}],
+    "source": "Dragonbone Vale Heroic Encounters"
+  },
+  {
+    "name": "Tainted Ring of the Dragon Cultist",
+    "slot": "Ring",
+    "item_level": 1300,
+    "ratingStats": {"Deflection": 975, "Outgoing Healing": 2925, "Recharge Speed": 1.5},
+    "combinedRating": 1040,
+    "equipBonuses": [{"name": "Poisonous Daily", "description": "When you use a Daily power, your targets will be poisoned for 5 seconds. (30 second cooldown)"}],
+    "source": "Dragonbone Vale Heroic Encounters"
+  },
+  {
+    "name": "Mighty Dwarven Limb Pattern",
+    "slot": "Pants",
+    "item_level": 1600,
+    "ratingStats": {"Control Resistance": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Critical Charge", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to gain 25 Action Points. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2,
+    "setPartners": ["Dwarven Limb Upper Piece", "Dwarven Limb Lower Piece"],
+    "setBonus": "2 of Set: +1500 Power, Critical Severity, Awareness."
+  },
+  {
+    "name": "Mighty Dwarven Body Pattern",
+    "slot": "Shirt",
+    "item_level": 1600,
+    "ratingStats": {"Accuracy": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Encounter Reprieve", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Encounter Power cooldowns by 1 second. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2
+  },
+  {
+    "name": "Valiant Dwarven Limb Pattern",
+    "slot": "Pants",
+    "item_level": 1600,
+    "ratingStats": {"Critical Avoidance": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Critical Charge", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to gain 25 Action Points. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2
+  },
+  {
+    "name": "Rugged Dwarven Body Pattern",
+    "slot": "Shirt",
+    "item_level": 1600,
+    "ratingStats": {"Awareness": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Encounter Reprieve", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Encounter Power cooldowns by 1 second. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2
+  },
+  {
+    "name": "Ruthless Dwarven Limb Pattern",
+    "slot": "Pants",
+    "item_level": 1600,
+    "ratingStats": {"Deflect Severity": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Critical Charge", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to gain 25 Action Points. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2
+  },
+  {
+    "name": "Vibrant Dwarven Body Pattern — Outgoing Healing",
+    "displayName": "Vibrant Dwarven Body Pattern",
+    "slot": "Shirt",
+    "item_level": 1600,
+    "ratingStats": {"Outgoing Healing": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Encounter Reprieve", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Encounter Power cooldowns by 1 second. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2,
+    "variant": "Outgoing Healing roll"
+  },
+  {
+    "name": "Vibrant Dwarven Limb Pattern",
+    "slot": "Pants",
+    "item_level": 1600,
+    "ratingStats": {"Incoming Healing": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Critical Charge", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to gain 25 Action Points. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2
+  },
+  {
+    "name": "Valiant Dwarven Body Pattern",
+    "slot": "Shirt",
+    "item_level": 1600,
+    "ratingStats": {"Defense": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Encounter Reprieve", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Encounter Power cooldowns by 1 second. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2
+  },
+  {
+    "name": "Rugged Dwarven Limb Pattern",
+    "slot": "Pants",
+    "item_level": 1600,
+    "ratingStats": {"Deflection": 2400, "Action Point Gain": 1.5},
+    "combinedRating": 1440,
+    "equipBonuses": [{"name": "Critical Charge", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to gain 25 Action Points. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2
+  }
+]

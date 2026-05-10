@@ -1,0 +1,730 @@
+[
+  {
+    "name": "Ruthless Dwarven Body Pattern",
+    "slot": "Pants",
+    "item_level": 1600,
+    "ratingStats": {"Combat Advantage": 2400, "Combined Rating": 1440},
+    "percentStats": {"Action Point Gain": 1.5},
+    "equipBonuses": [{"name": "Encounter Reprieve", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Encounter Power cooldowns by 1 second. This effect may only occur once every 5 seconds."}],
+    "set": "Dwarven Resilience",
+    "setSize": 2
+  },
+  {
+    "name": "Vale Trousers",
+    "slot": "Pants",
+    "item_level": 1400,
+    "ratingStats": {"Critical Severity": 1050, "Critical Avoidance": 1050, "Combined Rating": 1260},
+    "percentStats": {"Recharge Speed": 0.75, "Stamina Regeneration": 0.75},
+    "equipBonuses": [{"name": "Survivor's Haste", "description": "Gain Movement Speed as your health decreases to a maximum of 10%."}],
+    "source": "Dragonbone Vale Campaign"
+  },
+  {
+    "name": "Vale Tunic",
+    "slot": "Shirt",
+    "item_level": 1400,
+    "ratingStats": {"Combat Advantage": 1050, "Critical Severity": 1050, "Combined Rating": 1260},
+    "percentStats": {"Action Point Gain": 0.75, "Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Serpentine", "description": "When you are moving for 3 seconds, your damage is increased by 1%. This effect stacks up to 5 times and is removed if you stand still for longer than 5 seconds."}],
+    "source": "Dragonbone Vale Campaign"
+  },
+  {
+    "name": "War-Worn Pants of the Medic",
+    "slot": "Pants",
+    "item_level": 1400,
+    "ratingStats": {"Critical Avoidance": 1050, "Control Bonus": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Rush", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Recharge Speed for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Pants of the Mercenary",
+    "slot": "Pants",
+    "item_level": 1400,
+    "ratingStats": {"Awareness": 1050, "Control Resistance": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Rush", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Recharge Speed for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Pants of the Officer",
+    "slot": "Pants",
+    "item_level": 1400,
+    "ratingStats": {"Control Bonus": 1050, "Control Resistance": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Rush", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Recharge Speed for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Shirt of the Mercenary",
+    "slot": "Shirt",
+    "item_level": 1400,
+    "ratingStats": {"Defense": 1050, "Critical Avoidance": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Contender's Fortune", "description": "At the start of combat, a random stat is increased by 8% for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Shirt of the Medic",
+    "slot": "Shirt",
+    "item_level": 1400,
+    "ratingStats": {"Accuracy": 1050, "Critical Strike": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Contender's Fortune", "description": "At the start of combat, a random stat is increased by 8% for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Pants of the Soldier",
+    "slot": "Pants",
+    "item_level": 1400,
+    "ratingStats": {"Critical Severity": 1050, "Incoming Healing": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Rush", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Recharge Speed for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Pants of the Scout",
+    "slot": "Pants",
+    "item_level": 1400,
+    "ratingStats": {"Critical Severity": 1050, "Awareness": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Rush", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Recharge Speed for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Pants of the Physician",
+    "slot": "Pants",
+    "item_level": 1400,
+    "ratingStats": {"Critical Avoidance": 1050, "Deflection": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Rush", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 5% Recharge Speed for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Shirt of the Officer",
+    "slot": "Shirt",
+    "item_level": 1400,
+    "ratingStats": {"Accuracy": 1050, "Critical Severity": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Contender's Fortune", "description": "At the start of combat, a random stat is increased by 8% for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Shirt of the Physician",
+    "slot": "Shirt",
+    "item_level": 1400,
+    "ratingStats": {"Accuracy": 1050, "Combat Advantage": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Contender's Fortune", "description": "At the start of combat, a random stat is increased by 8% for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Shirt of the Scout",
+    "slot": "Shirt",
+    "item_level": 1400,
+    "ratingStats": {"Combat Advantage": 1050, "Critical Avoidance": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Contender's Fortune", "description": "At the start of combat, a random stat is increased by 8% for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "War-Worn Shirt of the Soldier",
+    "slot": "Shirt",
+    "item_level": 1400,
+    "ratingStats": {"Accuracy": 1050, "Awareness": 1050, "Combined Rating": 1260},
+    "percentStats": {"Movement Speed": 1.5},
+    "equipBonuses": [{"name": "Contender's Fortune", "description": "At the start of combat, a random stat is increased by 8% for 10 seconds."}],
+    "source": "Dragonbone Vale - Seals Store"
+  },
+  {
+    "name": "Serrated Tights of the Dragon Cult",
+    "slot": "Pants",
+    "item_level": 1300,
+    "ratingStats": {"Defense": 975, "Incoming Healing": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Daze", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you will Daze your attacker for 3 seconds. This effect may occur once every 60 seconds."}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Tainted Shirt of the Dragon Cult",
+    "slot": "Shirt",
+    "item_level": 1300,
+    "ratingStats": {"Awareness": 975, "Outgoing Healing": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5, "Outgoing Healing": 5, "Control Resistance": -25},
+    "equipBonuses": [{"name": "Occult Invigoration", "description": "+5% Outgoing Healing, -25% Control Resistance"}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Tainted Tights of the Dragon Cult",
+    "slot": "Pants",
+    "item_level": 1300,
+    "ratingStats": {"Accuracy": 975, "Control Bonus": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Daze", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you will Daze your attacker for 3 seconds. This effect may occur once every 60 seconds."}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Torn Shirt of the Dragon Cult",
+    "slot": "Shirt",
+    "item_level": 1300,
+    "ratingStats": {"Combat Advantage": 975, "Deflect Severity": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5, "Combat Advantage": 5, "Control Resistance": -25},
+    "equipBonuses": [{"name": "Occult Advantage", "description": "+5% Combat Advantage, -25% Control Resistance"}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Torn Tights of the Dragon Cult",
+    "slot": "Pants",
+    "item_level": 1300,
+    "ratingStats": {"Critical Avoidance": 975, "Deflection": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Daze", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you will Daze your attacker for 3 seconds. This effect may occur once every 60 seconds."}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Serrated Shirt of the Dragon Cult",
+    "slot": "Shirt",
+    "item_level": 1300,
+    "ratingStats": {"Deflect Severity": 975, "Incoming Healing": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5, "Outgoing Healing": 5, "Control Resistance": -25},
+    "equipBonuses": [{"name": "Occult Invigoration", "description": "+5% Outgoing Healing, -25% Control Resistance"}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Soiled Tights of the Dragon Cult",
+    "slot": "Pants",
+    "item_level": 1300,
+    "ratingStats": {"Combat Advantage": 975, "Control Bonus": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Daze", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you will Daze your attacker for 3 seconds. This effect may occur once every 60 seconds."}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Tarnished Tights of the Dragon Cult",
+    "slot": "Pants",
+    "item_level": 1300,
+    "ratingStats": {"Accuracy": 975, "Control Resistance": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Daze", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you will Daze your attacker for 3 seconds. This effect may occur once every 60 seconds."}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Soiled Shirt of the Dragon Cult",
+    "slot": "Shirt",
+    "item_level": 1300,
+    "ratingStats": {"Deflection": 975, "Incoming Healing": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5, "Outgoing Healing": 5, "Control Resistance": -25},
+    "equipBonuses": [{"name": "Occult Invigoration", "description": "+5% Outgoing Healing, -25% Control Resistance"}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Tarnished Shirt of the Dragon Cult",
+    "slot": "Shirt",
+    "item_level": 1300,
+    "ratingStats": {"Critical Strike": 975, "Incoming Healing": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5, "Combat Advantage": 5, "Control Resistance": -25},
+    "equipBonuses": [{"name": "Occult Advantage", "description": "+5% Combat Advantage, -25% Control Resistance"}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Corroded Tights of the Dragon Cult",
+    "slot": "Pants",
+    "item_level": 1300,
+    "ratingStats": {"Accuracy": 975, "Deflection": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5},
+    "equipBonuses": [{"name": "Warden's Daze", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you will Daze your attacker for 3 seconds. This effect may occur once every 60 seconds."}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Corroded Shirt of the Dragon Cult",
+    "slot": "Shirt",
+    "item_level": 1300,
+    "ratingStats": {"Accuracy": 975, "Critical Strike": 975, "Combined Rating": 1170},
+    "percentStats": {"Recharge Speed": 1.5, "Combat Advantage": 5, "Control Resistance": -25},
+    "equipBonuses": [{"name": "Occult Advantage", "description": "+5% Combat Advantage, -25% Control Resistance"}],
+    "source": "Dragonbone Vale Bosses"
+  },
+  {
+    "name": "Tiamat's Golden Sash",
+    "slot": "Belt",
+    "item_level": 1800,
+    "abilityBonuses": {"Strength": 3, "Constitution": 3},
+    "ratingStats": {"Deflection": 1350, "Incoming Healing": 1350, "Combined Rating": 1620},
+    "set": "Tiamat's Prized Possessions",
+    "setSize": 3,
+    "setPartners": ["Tiamat's Golden Necklace", "Tiamat's Arcane Globe"],
+    "source": "Rise of Tiamat (Master)"
+  },
+  {
+    "name": "Tiamat's Golden Necklace",
+    "slot": "Neck",
+    "item_level": 1800,
+    "abilityBonuses": {"Charisma": 6},
+    "ratingStats": {"Critical Strike": 1350, "Defense": 1350, "Combined Rating": 1620},
+    "set": "Tiamat's Prized Possessions",
+    "setSize": 3,
+    "setPartners": ["Tiamat's Golden Sash", "Tiamat's Arcane Globe"],
+    "setBonus": "3 of Set: Draconic Resilience: Reduce incoming damage by 8% and gain 8% Critical Avoidance for 10 seconds when your stamina drops below 75% (20 second cooldown).",
+    "source": "Rise of Tiamat (Master)"
+  },
+  {
+    "name": "Dragonmind Clasp",
+    "slot": "Belt",
+    "item_level": 1600,
+    "abilityBonuses": {"Constitution": 6},
+    "ratingStats": {"Critical Strike": 1200, "Awareness": 1200, "Combined Rating": 1440},
+    "set": "Insightful Alacrity",
+    "setSize": 3,
+    "setPartners": ["Dragonmind Charm", "Green Dragon's Mark"],
+    "setBonus": "3 of Set: When you use an encounter power, you gain a stack of Insightful Alacrity, granting 2.5% Critical Severity and 3% Movement Speed for 5 seconds. Stacks up to 3 times.",
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Dragonmind Charm",
+    "slot": "Neck",
+    "item_level": 1600,
+    "abilityBonuses": {"Strength": 3, "Charisma": 3},
+    "ratingStats": {"Combat Advantage": 1200, "Critical Severity": 1200, "Combined Rating": 1440},
+    "set": "Insightful Alacrity",
+    "setSize": 3,
+    "setPartners": ["Dragonmind Clasp", "Green Dragon's Mark"],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Dragonhide Sash",
+    "slot": "Belt",
+    "item_level": 1600,
+    "abilityBonuses": {"Constitution": 6},
+    "ratingStats": {"Combat Advantage": 1200, "Critical Avoidance": 1200, "Combined Rating": 1440},
+    "set": "Aggressive Alacrity",
+    "setSize": 3,
+    "setPartners": ["Dragonhide Choker", "Red Dragon's Mark"],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Dragonhide Choker",
+    "slot": "Neck",
+    "item_level": 1600,
+    "abilityBonuses": {"Dexterity": 3, "Intelligence": 3},
+    "ratingStats": {"Critical Strike": 1200, "Awareness": 1200, "Combined Rating": 1440},
+    "set": "Aggressive Alacrity",
+    "setSize": 3,
+    "setPartners": ["Dragonhide Sash", "Red Dragon's Mark"],
+    "setBonus": "3 of Set: When you use an encounter power, you gain a stack of Aggressive Alacrity, granting 2.5% Combat Advantage and 3% Movement Speed for 5 seconds. Stacks up to 3 times.",
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Dragonscale Neckguard",
+    "slot": "Neck",
+    "item_level": 1600,
+    "abilityBonuses": {"Strength": 3, "Constitution": 3},
+    "ratingStats": {"Combat Advantage": 1200, "Incoming Healing": 1200, "Combined Rating": 1440},
+    "set": "Vanguard's Alacrity",
+    "setSize": 3,
+    "setPartners": ["Dragonscale Girdle", "Blue Dragon's Mark"],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Dragonscale Girdle",
+    "slot": "Belt",
+    "item_level": 1600,
+    "abilityBonuses": {"Constitution": 6},
+    "ratingStats": {"Deflection": 1200, "Incoming Healing": 1200, "Combined Rating": 1440},
+    "set": "Vanguard's Alacrity",
+    "setSize": 3,
+    "setPartners": ["Dragonscale Neckguard", "Blue Dragon's Mark"],
+    "setBonus": "3 of Set: When you use an encounter power, you gain a stack of Vanguard's Alacrity, granting 2.5% Awareness and 3% Deflect Severity for 5 seconds. Stacks up to 3 times.",
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Dragonsoul Brooch",
+    "slot": "Neck",
+    "item_level": 1600,
+    "abilityBonuses": {"Wisdom": 3, "Charisma": 3},
+    "ratingStats": {"Critical Avoidance": 1200, "Outgoing Healing": 1200, "Combined Rating": 1440},
+    "set": "Celestial Alacrity",
+    "setSize": 3,
+    "setPartners": ["Dragonsoul Belt", "White Dragon's Mark"],
+    "setBonus": "3 of Set: When you use an encounter power, you gain a stack of Celestial Alacrity, granting 2.5% Critical Strike and 3% Incoming Healing for 5 seconds. Stacks up to 3 times.",
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Dragonsoul Belt",
+    "slot": "Belt",
+    "item_level": 1600,
+    "abilityBonuses": {"Constitution": 6},
+    "ratingStats": {"Combat Advantage": 1200, "Outgoing Healing": 1200, "Combined Rating": 1440},
+    "set": "Celestial Alacrity",
+    "setSize": 3,
+    "setPartners": ["Dragonsoul Brooch", "White Dragon's Mark"],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Mythallar Shard",
+    "slot": "Neck",
+    "item_level": 1500,
+    "abilityBonuses": {"Intelligence": 6},
+    "ratingStats": {"Critical Severity": 1125, "Incoming Healing": 1125, "Combined Rating": 1350},
+    "set": "Mythallar",
+    "setSize": 3,
+    "setPartners": ["Mythallar Piece", "Mythallar Fragment"],
+    "source": "Dragon Hunts; Dragonbone Vale Campaign"
+  },
+  {
+    "name": "Mythallar Piece",
+    "slot": "Belt",
+    "item_level": 1500,
+    "abilityBonuses": {"Strength": 3, "Charisma": 3},
+    "ratingStats": {"Critical Strike": 1125, "Defense": 1125, "Combined Rating": 1350},
+    "set": "Mythallar",
+    "setSize": 3,
+    "setPartners": ["Mythallar Shard", "Mythallar Fragment"],
+    "source": "Dragon Hunts; Dragonbone Vale Campaign"
+  },
+  {
+    "name": "Worn Circlet of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 1238, "Critical Strike": 742, "Incoming Healing": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Necromancer's Repel", "description": "When you use a Daily power, you knockback all enemies within 20 feet away from you, stunning undead enemies for 3 seconds. (30 second cooldown) (Not usable in PVP)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Worn Jacket of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1650,
+    "ratingStats": {"Critical Severity": 1238, "Awareness": 495, "Deflect Severity": 742, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Soul Siphon", "description": "Your powers have a 10% chance to siphon life essence from your target, creating a nearby healing orb which can be picked up to restore 5% of your Maximum Hit Points over 5 seconds. (20 second cooldown)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Worn Reachers of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 1238, "Defense": 495, "Deflect Severity": 742, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Survivor's Might", "description": "Gain 200 Power for each percent of health you are missing."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Worn Longboots of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 1238, "Critical Severity": 742, "Control Resistance": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Charged Power", "description": "When Action Points are full, your Critical Severity is increased by 5000."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Tattered Cap of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1650,
+    "ratingStats": {"Critical Strike": 1238, "Critical Severity": 742, "Control Bonus": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Executioner's Accuracy", "description": "When you kill an enemy, your Accuracy increases by 5% for 10 seconds."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Timeworn Robes of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1650,
+    "ratingStats": {"Critical Strike": 1238, "Critical Severity": 742, "Critical Avoidance": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Herald's Cry", "description": "You gain 1000 Power for each player in your team. When your teammates are 25' or further away from you, your Power is increased by 1,000."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Timeworn Hood of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 495, "Deflect Severity": 742, "Outgoing Healing": 1238, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Challenger's Fortitude", "description": "When in combat with only one enemy, your Critical Strike is increased by 5000."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Tattered Boots of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 742, "Critical Severity": 1238, "Defense": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Gladiator's Might", "description": "For every 5 seconds you are in combat, you gain 200 Power. Max 24 Stacks: 4800 Power"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Tattered Gloves of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 1238, "Critical Strike": 742, "Awareness": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Death Defier's Might", "description": "Gain 500 Power for each enemy you are engaged in battle. (Max of 15 targets)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Tattered Leathers of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 742, "Combat Advantage": 1238, "Critical Avoidance": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Perilous Attraction", "description": "When you damage your target for more than 15% of your Maximum Hit Points in a single blow, your target is pulled towards you for 5 seconds. Applies to a single target and does not stack. Control Immune targets suffer a 20 magnitude Bleed over this duration. Can only occur once every 10 seconds. (Not usable in PVP)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Timeworn Mitts of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 742, "Combat Advantage": 1238, "Defense": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Medic's Response", "description": "Whenever you Deflect an attack, gain 5% Outgoing Healing for 10 seconds."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Timeworn Boots of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1650,
+    "ratingStats": {"Critical Strike": 742, "Critical Severity": 1238, "Control Resistance": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Charged Might", "description": "When Action Points are full, your Power is increased by 5000."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Shabby Helm of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 1238, "Combat Advantage": 742, "Awareness": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Executioner's Pursuit", "description": "When you kill an enemy, there is a 20% chance you will teleport to a nearby enemy. Can only occur once every 10 seconds."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Shabby Cuirass of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 1238, "Deflection": 495, "Control Bonus": 742, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Reckless Brutality", "description": "Whenever you deal damage to an enemy gain a stack of Reckless Brutality, increasing your Power by 1000 but increasing your damage taken by 2% for 5 seconds. (Max 5 stacks)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Shabby Vambraces of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1650,
+    "ratingStats": {"Critical Severity": 742, "Control Bonus": 1238, "Incoming Healing": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Escalating Might", "description": "Gain 250 Power for 10 seconds when you strike an enemy, lose a stack when struck. Max 20 Stacks: 5000 Power"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Rusted Sabatons of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 742, "Critical Strike": 495, "Awareness": 1238, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Critical Rebuff", "description": "Whenever you are struck by a Critical Strike, you have a 10% chance to increase your Deflect Severity by 7.5% for 10 seconds."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Rusted Gauntlets of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1650,
+    "ratingStats": {"Defense": 1238, "Awareness": 742, "Incoming Healing": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Survivor's Fury", "description": "Gain 200 Deflect for each percent of health you are missing."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Rusted Mail of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 1238, "Critical Strike": 742, "Deflection": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "The Ol' Switcheroo", "description": "+5% Incoming Healing, -7500 Accuracy"}],
+    "percentStats": {"Incoming Healing": 5},
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Rusted Sallet of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 1238, "Critical Severity": 495, "Defense": 742, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Executioner's Guard", "description": "When you kill an enemy, your Defense increases by 5% for 10 seconds. (30 second cooldown)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Shabby Greaves of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 742, "Critical Strike": 1238, "Deflect Severity": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Death Defier's Haste", "description": "Gain 2.5% Movement Speed for each enemy you are engaged in battle, to the max of 12%."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Inferior Helmet of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 1238, "Critical Strike": 742, "Control Resistance": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 5000."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Inferior Plate of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 742, "Critical Severity": 1238, "Control Bonus": 495, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "The Ol' Switcheroo", "description": "+5% Critical Strike, -7500 Combat Advantage"}],
+    "percentStats": {"Critical Strike": 5},
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Inferior Crushers of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1650,
+    "ratingStats": {"Accuracy": 495, "Critical Severity": 742, "Outgoing Healing": 1238, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Past Regards", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you will be teleported back 25 feet, and will gain 5000 Power for 10 seconds. (20 second cooldown)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Inferior Stompers of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1650,
+    "ratingStats": {"Combat Advantage": 1238, "Awareness": 495, "Deflect Severity": 742, "Combined Rating": 1485},
+    "equipBonuses": [{"name": "Contender's Haste", "description": "At the start of combat, your Movement Speed is increased by 5% and your Awareness is increased by 1000 for 30 seconds."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Superior Stompers of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1850,
+    "ratingStats": {"Combat Advantage": 1388, "Critical Strike": 833, "Awareness": 555, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Healer's Sacrifice", "description": "Increases Overall Outgoing Healing by 5%. Decreases Incoming Healing by 30%."}],
+    "percentStats": {"Outgoing Healing": 5, "Incoming Healing": -30},
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Superior Crushers of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1850,
+    "ratingStats": {"Critical Severity": 1388, "Outgoing Healing": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Herald's Decree", "description": "When you have no teammates within 30' of you, your Power and Defense is increased by 5%."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Superior Plate of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1850,
+    "ratingStats": {"Critical Strike": 555, "Critical Severity": 1388, "Outgoing Healing": 833, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Graceful Harmony", "description": "You gain 1.3% Outgoing Healing for each player in your team. When your teammates are 20' or closer to you, your Forte is increased by 1.5%."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Superior Helmet of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1850,
+    "ratingStats": {"Accuracy": 1388, "Critical Strike": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Tenacious Luck", "description": "When in combat with only one enemy, your Critical Strike is increased by 7%."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Mighty Greaves of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1850,
+    "ratingStats": {"Combat Advantage": 833, "Critical Strike": 1388, "Deflect Severity": 555, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Bloodletting", "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Maximum Hit Points by 20% and gain 3% Damage for 10 seconds."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Rugged Sallet of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1850,
+    "ratingStats": {"Defense": 1388, "Critical Avoidance": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Manticore's Mane Bite", "description": "When you use a Daily power, the next enemy that attacks you takes damage equal to 50% of your max health (30 second cooldown). In PvP this damage is reduced to 10% of your max health."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Rugged Mail of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1850,
+    "ratingStats": {"Combat Advantage": 1388, "Defense": 833, "Deflection": 555, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Boar's Determination", "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 7.5% Awareness and 5% Stamina Regeneration for 10 seconds. (15 second cooldown)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Rugged Gauntlets of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1850,
+    "ratingStats": {"Defense": 1388, "Incoming Healing": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Defender Guard", "description": "Gain 1% Base Damage Boost when struck. Stacks 5 times. When you strike an enemy, the stacks are consumed and you gain -1% Incoming Damage per stack consumed for 10 seconds. Stacks cannot be applied at the same time."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Rugged Sabatons of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1850,
+    "ratingStats": {"Accuracy": 833, "Critical Strike": 555, "Awareness": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Ghosted", "description": "Whenever you are struck by a Critical Strike, you have a 10% chance to increase your Maximum Hit Points by 20% and gain 3% Defense for 10 seconds. Disabled in Thay Arena PvP."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Mighty Vambraces of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1850,
+    "ratingStats": {"Critical Severity": 1388, "Incoming Healing": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Defender Strike", "description": "Gain -1% Incoming Damage when you strike an enemy. Stacks 5 times. When you are struck, the stacks are consumed and you gain 1% Base Damage Boost per stack consumed for 10 seconds. Stacks cannot be applied at the same time."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Mighty Cuirass of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1850,
+    "ratingStats": {"Combat Advantage": 1388, "Critical Strike": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Ruthless Advantage", "description": "When you damage or heal your target for more than 10% of your Maximum Hit Points in a single blow, you gain 1.5% Accuracy and Combat Advantage for 15 seconds. (Max stack 5)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Mighty Helm of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1850,
+    "ratingStats": {"Accuracy": 1388, "Combat Advantage": 833, "Awareness": 555, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Maximized Opportunity", "description": "When in combat with only one enemy, your Combat Advantage is increased by 7%."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Serene Boots of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1850,
+    "ratingStats": {"Critical Strike": 833, "Critical Severity": 1388, "Control Resistance": 555, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Champion's Might", "description": "When your health is greater than 85%, your Power is increased by 7,500."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Serene Mitts of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1850,
+    "ratingStats": {"Defense": 1388, "Outgoing Healing": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Medic's Devotion", "description": "Healing an ally increases your Power by 1.3%, but reduces your Incoming Healing by 2%. (Max stack 5)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Tactful Leathers of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1850,
+    "ratingStats": {"Accuracy": 1388, "Combat Advantage": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Ruthless Might", "description": "When you damage or heal your target for more than 10% of your Maximum Hit Points in a single blow, you gain 1.5% Critical Strike and Critical Severity for 15 seconds. Max 5 Stacks: 7.5% Critical Strike and Critical Severity"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Tactful Gloves of the Dragon Hunter",
+    "slot": "Arms",
+    "item_level": 1850,
+    "ratingStats": {"Accuracy": 1388, "Critical Strike": 833, "Awareness": 555, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Charged Rejuvenation", "description": "Whenever you are healed in combat, you have a 10% chance to gain 7.5% Recharge Speed for 10 seconds. (15 second cooldown)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Tactful Boots of the Dragon Hunter",
+    "slot": "Feet",
+    "item_level": 1850,
+    "ratingStats": {"Combat Advantage": 833, "Critical Strike": 1388, "Defense": 555, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Discharged Force", "description": "When Action Points are less than 80%, your Power is increased by 7%."}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Serene Hood of the Dragon Hunter",
+    "slot": "Head",
+    "item_level": 1850,
+    "ratingStats": {"Critical Strike": 1388, "Deflect Severity": 1388, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Butcher's Focus", "description": "When you damage or heal your target for more than 10% of your Maximum Hit Points in a single blow, you gain 1% Critical Strike for 10 seconds. (Max stack 10)"}],
+    "source": "Dragon Hunts"
+  },
+  {
+    "name": "Serene Robes of the Dragon Hunter",
+    "slot": "Armor",
+    "item_level": 1850,
+    "ratingStats": {"Critical Strike": 1388, "Critical Severity": 833, "Critical Avoidance": 555, "Combined Rating": 1665},
+    "equipBonuses": [{"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 1% Critical Strike, to the max of 12%"}],
+    "source": "Dragon Hunts"
+  }
+]
