@@ -2373,9 +2373,11 @@
     }
     function renderCompanion(c) {
       const power = findCompanionPower(c.powerRef);
+      const tier = state.companionRarity || "Mythic";
+      const tierIL = COMPANION_RARITY_IL[tier] || 750;
       return {
         name: c.name,
-        meta: power ? `IL ${power.item_level || "?"} · ${(power.slot || []).join("/")} (active)` : "(active)",
+        meta: power ? `IL ${tierIL} (${tier}) · ${(power.slot || []).join("/")} (active)` : "(active)",
         desc: power ? describeCompanionPower(power) : ""
       };
     }
@@ -2384,16 +2386,18 @@
     // power's active-slot stats.
     function renderSummonedCompanion(c) {
       const sb = c.summonedBuff;
+      const tier = state.companionRarity || "Mythic";
+      const tierIL = COMPANION_RARITY_IL[tier] || 750;
       if (!sb) {
         return {
           name: c.name,
-          meta: "summon · party bonus unknown",
+          meta: `summon · IL ${tierIL} (${tier}) · party bonus unknown`,
           desc: "No summoned-buff data captured for this companion yet."
         };
       }
       return {
         name: c.name,
-        meta: `summon · ${sb.scope || "self"}${sb.range ? " · " + sb.range + "'" : ""}`,
+        meta: `summon · IL ${tierIL} (${tier}) · ${sb.scope || "self"}${sb.range ? " · " + sb.range + "'" : ""}`,
         desc: sb.buff || ""
       };
     }
@@ -2412,13 +2416,19 @@
       return { name: c.name, meta: c.tier || "", desc: stats };
     }
     function renderInsignia(i) {
+      const tier = state.insigniaRarity || "Mythic";
+      const tierIL = insigniaTierIL(tier);
+      const mult = insigniaTierMultiplier(tier);
       const stats = (i.stats || []).map(s => {
         const isPct = s.type === "percent";
-        return `+${s.value}${isPct ? "%" : ""} ${s.stat}`;
+        const v = (s.value || 0) * mult;
+        // Show scaled values; rating stats are integers, percent keeps a digit
+        const shown = isPct ? v.toFixed(2).replace(/\.?0+$/, "") : Math.round(v);
+        return `+${shown}${isPct ? "%" : ""} ${s.stat}`;
       }).join(", ");
       return {
         name: i.name,
-        meta: `${i.category || "?"} · IL ${i.item_level || "?"}`,
+        meta: `${i.category || "?"} · IL ${tierIL} (${tier})`,
         desc: stats
       };
     }
