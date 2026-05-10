@@ -3131,6 +3131,10 @@
       const summonedComp = (typeof COMPANIONS_DATA !== "undefined" && s.summoned)
         ? COMPANIONS_DATA.find(c => c.name === s.summoned)
         : null;
+      const compBolster = ((s.companionBolster == null ? 100 : +s.companionBolster) || 0) / 100;
+      const compRarityForBase = s.companionRarity || "Mythic";
+      const compRarityIL = COMPANION_RARITY_IL[compRarityForBase] || COMPANION_RARITY_IL.Mythic;
+
       if (summonedComp && summonedComp.summonedBuff && summonedComp.summonedBuff.stat) {
         const sb = summonedComp.summonedBuff;
         buffs.push({
@@ -3139,14 +3143,33 @@
         });
       }
 
+      // Summoned companion base IL contribution. Per Obikin's guide a Mythic
+      // companion summoned at 100% bolster contributes ~1650 IL distributed
+      // across the 12 core stats. Scales linearly with both bolster and the
+      // summoned companion's rarity (anchor: Mythic = 750 IL → 1650 base).
+      // This is SEPARATE from the companion's own equip-power contribution
+      // (handled later via pushCompanionPower for the summoned slot).
+      if (summonedComp) {
+        const SUMMON_BASE_IL_AT_MYTHIC_FULL = 1650;
+        const rarityScale = compRarityIL / COMPANION_RARITY_IL.Mythic;
+        const baseIL = SUMMON_BASE_IL_AT_MYTHIC_FULL * rarityScale * compBolster;
+        const cr = expandCR(baseIL, 1);
+        if (cr) {
+          buffs.push({
+            source: "Summoned base IL: " + summonedComp.name + " (" + compRarityForBase + ", " + Math.round(compBolster * 100) + "% bolster)",
+            ratingStats: cr
+          });
+        }
+      }
+
       // Helper: turn a companion enhancement into a buffs[] entry.
-      // Companion bolster scales enhancement power per mekaniks docs.
-      const compBolster = ((s.companionBolster == null ? 100 : +s.companionBolster) || 0) / 100;
+      // Enhancement value is rank-only — NOT bolster-scaled (per Obikin guide:
+      // "Enhancement Power: 750 IL ← quality-dependent, NOT affected by bolster").
       function enhToBuff(label, name) {
         if (!name) return;
         const e = findEnhancementByName(name);
         if (!e || !e.stat) return;
-        const v = (e.value || 0) * compBolster;
+        const v = (e.value || 0);
         const entry = { source: label + ": " + e.name };
         if (e.type === "percent") entry.percentStats = { [e.stat]: v };
         else                      entry.ratingStats  = { [e.stat]: v };

@@ -301,5 +301,63 @@ console.log("\n--- Test 10: forte healer alias routing ---");
 }
 
 // =============================================================
+// Test: companion contributions reach final stats (sanity check
+// for Obikin's bolster model — the engine doesn't compute the
+// summoned-base-IL contribution itself, that's done by the wiring
+// layer in toon-forge.html before calling computeStats; here we
+// just verify that buffs[] entries with ratingStats DO flow to
+// ratingTotal / contributors and are visible in finalPct.)
+// =============================================================
+console.log("\n--- Test: companion buffs flow to stats ---");
+{
+  // Simulated wiring output for: Mythic summoned companion at 100%
+  // bolster + 1 active Mythic companion.
+  // - Summoned base IL contribution: 1650 distributed across 12 stats
+  //   = 137.5 per stat
+  // - Active comp equip power CR: 750 distributed across 12 stats
+  //   = 62.5 per stat
+  // - Active comp per-stat percent (e.g. 7.5% Outgoing Healing)
+  const character = {
+    totalItemLevel: 89000,
+    buffs: [
+      {
+        source: "Summoned base IL: TestComp (Mythic, 100% bolster)",
+        ratingStats: {
+          "Power": 137.5, "Critical Strike": 137.5, "Combat Advantage": 137.5,
+          "Critical Severity": 137.5, "Accuracy": 137.5, "Forte": 137.5,
+          "Defense": 137.5, "Awareness": 137.5, "Critical Avoidance": 137.5,
+          "Deflect": 137.5, "Deflect Severity": 137.5, "Outgoing Healing": 137.5
+        }
+      },
+      {
+        source: "Active: TestComp2 CR (Mythic)",
+        ratingStats: {
+          "Power": 62.5, "Critical Strike": 62.5, "Combat Advantage": 62.5,
+          "Critical Severity": 62.5, "Accuracy": 62.5, "Forte": 62.5,
+          "Defense": 62.5, "Awareness": 62.5, "Critical Avoidance": 62.5,
+          "Deflect": 62.5, "Deflect Severity": 62.5, "Outgoing Healing": 62.5
+        }
+      },
+      {
+        source: "Active: TestComp2 bonus (Mythic)",
+        percentStats: { "Outgoing Healing": 7.5 }
+      }
+    ]
+  };
+  const r = E.computeStats(character);
+  // Power should have 137.5 (summoned base) + 62.5 (active CR) = 200 rating
+  assertClose(r.stats["Power"].ratingTotal, 200, 0.01, "Power rating from companion buffs");
+  // Outgoing Healing: 200 rating + 7.5% explicit
+  assertClose(r.stats["Outgoing Healing"].ratingTotal, 200, 0.01, "OH rating from companion buffs");
+  assertClose(r.stats["Outgoing Healing"].percentTotal, 7.5, 0.01, "OH percent from companion power");
+  // Both companion sources should appear as contributors
+  const powerContribs = r.stats["Power"].contributors.map(c => c.source).join(" | ");
+  const hasSummoned = /Summoned base IL/.test(powerContribs);
+  const hasActiveCR = /Active: TestComp2 CR/.test(powerContribs);
+  assertEq(hasSummoned, true, "summoned-base-IL contributor visible on Power");
+  assertEq(hasActiveCR, true, "active-companion-CR contributor visible on Power");
+}
+
+// =============================================================
 console.log(`\n${passes} pass, ${fails} fail`);
 if (fails > 0) process.exit(1);
