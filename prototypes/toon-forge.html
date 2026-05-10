@@ -3884,12 +3884,13 @@
 
     /* ===== Quick stats (engine-driven) =====
        5 tiles next to the gauge, role-specific. */
-    // Per-role priority stats, matching the canonical lists in
-    // mekaniks.html (Stat Priorities tab). Five tiles per role.
+    // Per-role priority stats — what shows up as build-score tiles
+    // and what the advisor recommends. Heal = 4 stats per n00b's
+    // in-game guidance (n00b 2026-05-10).
     const ROLE_QUICK_STATS = {
       dps:  ["Power", "Combat Advantage", "Critical Severity", "Critical Strike", "Accuracy"],
       tank: ["Awareness", "Defense", "Critical Avoidance", "Maximum Hit Points", "Deflect"],
-      heal: ["Power", "Outgoing Healing", "Forte", "Awareness", "Defense"]
+      heal: ["Power", "Outgoing Healing", "Critical Strike", "Critical Severity"]
     };
 
     // Friendlier short labels for the tiny tiles.
@@ -5167,11 +5168,10 @@
 
       const advisor = document.getElementById("stat-advisor");
       if (advisor) {
-        // Match mekaniks.html canonical priority lists.
         const priority = isTank
           ? ["Awareness", "Defense", "Critical Avoidance", "Deflect", "Deflect Severity"]
           : isHealer
-          ? ["Power", "Outgoing Healing", "Forte", "Awareness", "Defense"]
+          ? ["Power", "Outgoing Healing", "Critical Strike", "Critical Severity"]
           : ["Power", "Combat Advantage", "Critical Severity", "Critical Strike", "Accuracy"];
 
         const advisorTIL = TIL;
