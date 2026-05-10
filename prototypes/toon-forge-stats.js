@@ -72,6 +72,10 @@ const TOON_FORGE_BONUS_STATS = [
   "magnitude",        // damage-formula side; not a stat percentage
   "Physical Damage",  // damage-formula side (Phase 4); not a stat panel entry
   "Magical Damage",   // damage-formula side (Phase 4)
+  "Max HP Percent",   // boon/buff effect, not a separate stat panel entry
+  "Encounter Dmg Bonus", // class/feat data; not a core stat
+  "Dmg Bonus",        // generic damage-bonus tag from artifact data
+  "Damage Bonus",     // alias of the above
 ];
 
 // Per-paragon display labels for the class resource. The internal
@@ -115,3 +119,32 @@ const CLASS_RESOURCE_REGEN_ALIASES = [
   // Stamina & Stealth are class resources too but already exist as
   // their own stats / mechanics; not aliased here.
 ];
+
+// CamelCase stat-name aliases. Source data (notably enchants.js, some
+// gear, artifacts) carries stat names without spaces. The engine
+// canonicalizes them on ingest so contributions don't get silently
+// dropped into "unknown-stat" warnings.
+const STAT_NAME_ALIASES = {
+  "CriticalStrike":     "Critical Strike",
+  "CriticalSeverity":   "Critical Severity",
+  "CombatAdvantage":    "Combat Advantage",
+  "CriticalAvoidance":  "Critical Avoidance",
+  "DeflectChance":      "Deflect",
+  "DeflectSeverity":    "Deflect Severity",
+  "OutgoingHealing":    "Outgoing Healing",
+  "IncomingHealing":    "Incoming Healing",
+  "ControlBonus":       "Control Bonus",
+  "ControlResist":      "Control Resist",
+  "MaximumHitPoints":   "Maximum Hit Points",
+  "MaxHP":              "Maximum Hit Points",
+  "Max HP":             "Maximum Hit Points",
+  "ActionPointGain":    "Action Point Gain",
+  "RechargeSpeed":      "Recharge Speed",
+  "MovementSpeed":      "Movement Speed",
+  "StaminaRegeneration":"Stamina Regeneration",
+  "StaminaRegen":       "Stamina Regeneration",
+  "DeflectSev":         "Deflect Severity",
+  "CritStrike":         "Critical Strike",
+  "CritSeverity":       "Critical Severity",
+  "CritAvoidance":      "Critical Avoidance"
+};

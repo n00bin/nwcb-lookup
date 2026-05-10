@@ -95,8 +95,13 @@
   // they're handled separately by ability-score scaling.
 
   function addRating(result, statName, amount, sourceLabel) {
+    // Canonicalize camelCase / abbreviated stat names so source data
+    // doesn't get silently dropped into unknown-stat warnings.
+    if (STAT_NAME_ALIASES[statName]) statName = STAT_NAME_ALIASES[statName];
     var statResult = result.stats[statName];
     if (!statResult) {
+      // Bonus stats that aren't core combat stats — silently ignore
+      if (TOON_FORGE_BONUS_STATS.indexOf(statName) !== -1) return;
       // Unknown stat — skip, but record warning once
       var key = "unknown-stat:" + statName;
       if (result.warnings.indexOf(key) === -1) {
@@ -178,6 +183,9 @@
     if (CLASS_RESOURCE_REGEN_ALIASES.indexOf(statName) !== -1) {
       statName = "Class Resource Regen";
     }
+    // Canonicalize camelCase / abbreviated stat names so source data
+    // doesn't get silently dropped into unknown-stat warnings.
+    if (STAT_NAME_ALIASES[statName]) statName = STAT_NAME_ALIASES[statName];
     var statResult = result.stats[statName];
     if (!statResult) {
       // Bonus stats that aren't core combat stats — silently ignore

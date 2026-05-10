@@ -3060,33 +3060,39 @@
         }
       }
 
-      // Summoned companion's bonus power — its CR distributes to the player.
-      // Per mekaniks: "Player bonus powers — NOT affected by bolster".
-      if (summonedComp && summonedComp.powerRef) {
-        const sumPower = findCompanionPower(summonedComp.powerRef);
-        const scr = sumPower ? expandCR(sumPower.combinedRating, 1) : null;
-        if (scr) {
-          buffs.push({
-            source: "Summoned CR: " + summonedComp.name,
-            ratingStats: scr
-          });
+      // Helper: take a companion power and push its CR (12-stat distribution)
+      // plus its per-stat percent contributions. Not bolstered (player bonus
+      // powers are exempt per mekaniks docs). Companion power stats[] are
+      // percentages stored at the data's base rarity.
+      function pushCompanionPower(label, power) {
+        if (!power) return;
+        const cr = expandCR(power.combinedRating, 1);
+        if (cr) {
+          buffs.push({ source: label + " CR", ratingStats: cr });
+        }
+        const percentStats = {};
+        for (const st of (power.stats || [])) {
+          if (!st || !st.stat) continue;
+          percentStats[st.stat] = (percentStats[st.stat] || 0) + (st.value || 0);
+        }
+        if (Object.keys(percentStats).length) {
+          buffs.push({ source: label + " bonus", percentStats });
         }
       }
 
+      // Summoned companion's bonus power — applies to the player like the
+      // 5 active. Not bolstered.
+      if (summonedComp && summonedComp.powerRef) {
+        pushCompanionPower("Summoned: " + summonedComp.name, findCompanionPower(summonedComp.powerRef));
+      }
+
       // Active (non-summoned) companions — each slotted companion's bonus
-      // power contributes its CR to the player. Not bolstered.
+      // power contributes CR + per-stat percents to the player. Not bolstered.
       for (const compName of (s.activeComps || [])) {
         if (!compName) continue;
         const c = findCompanionByName(compName);
         if (!c) continue;
-        const power = findCompanionPower(c.powerRef);
-        const acr = power ? expandCR(power.combinedRating, 1) : null;
-        if (acr) {
-          buffs.push({
-            source: "Active Comp CR: " + c.name,
-            ratingStats: acr
-          });
-        }
+        pushCompanionPower("Active: " + c.name, findCompanionPower(c.powerRef));
       }
 
       // Companion enchantment (slotType: "companion") on the summoned comp.
@@ -3101,8 +3107,9 @@
         }
       }
 
-      // Companion gear → buffs[] (rating contributions).
-      // Only the summoned companion has gear in NW.
+      // Companion gear → buffs[] (rating contributions + CR distribution).
+      // Only the summoned companion has gear in NW. Companion gear is one
+      // of the four CR sources per mekaniks docs.
       function compGearToBuff(label, gearObj) {
         if (!gearObj) return;
         for (const slot of ["Neck", "Waist", "Ring"]) {
@@ -3112,8 +3119,16 @@
           if (!it) continue;
           buffs.push({
             source: `${label}: ${slot} — ${it.name}`,
-            ratingStats: it.ratingStats || {}
+            ratingStats: it.ratingStats || {},
+            percentStats: it.percentStats || {}
           });
+          const cr = expandCR(it.combinedRating, 1);
+          if (cr) {
+            buffs.push({
+              source: `${label} CR: ${slot} — ${it.name}`,
+              ratingStats: cr
+            });
+          }
         }
       }
       compGearToBuff("Comp Gear (summoned)", s.summonedGear);
