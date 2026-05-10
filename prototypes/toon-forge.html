@@ -3577,6 +3577,66 @@
         });
       }
 
+      // ===== equipBonuses on gear + artifacts =====
+      // Each gear/artifact piece can carry an `equipBonuses` array with:
+      //   - { type: "Equip", stat, amount, name }   → always-on bonus
+      //   - { type: "Set",   stat, amount, setName, pieces }
+      //     → applies only when N pieces of `setName` are equipped
+      //   - { type: "Modification", description, ... }
+      //     → narrative/text effects we don't model (skip)
+      //
+      // Amounts in the data are percentages (e.g. "+6 Outgoing Healing"
+      // means +6%, not +6 rating). We push them into the buffs[] channel
+      // as percentStats so they flow into the stat's bonus column.
+      //
+      // First: count set-piece occurrences across all equipped gear +
+      // artifacts so we know which Set bonuses qualify.
+      const setPieceCounts = {};
+      function countSetPieces(item) {
+        if (!item || !Array.isArray(item.equipBonuses)) return;
+        for (const eb of item.equipBonuses) {
+          if (eb && eb.type === "Set" && eb.setName) {
+            setPieceCounts[eb.setName] = (setPieceCounts[eb.setName] || 0) + 1;
+          }
+        }
+      }
+      if (gear) for (const slotLabel in gear) countSetPieces(gear[slotLabel]);
+      if (artifacts.primary) countSetPieces(artifacts.primary);
+      for (const a of (artifacts.secondary || [])) countSetPieces(a);
+
+      // Helper: ingest one item's equipBonuses for one source label.
+      function ingestEquipBonuses(label, item) {
+        if (!item || !Array.isArray(item.equipBonuses)) return;
+        for (const eb of item.equipBonuses) {
+          if (!eb || !eb.stat || eb.amount == null) continue;
+          if (eb.scope && eb.scope !== "self") continue;  // party/enemy buffs handled elsewhere
+          if (eb.type === "Equip") {
+            buffs.push({
+              source: `${label} bonus: ${eb.name || eb.stat}`,
+              percentStats: { [eb.stat]: eb.amount }
+            });
+          } else if (eb.type === "Set") {
+            const have = setPieceCounts[eb.setName] || 0;
+            if (have >= (eb.pieces || 2)) {
+              buffs.push({
+                source: `${label} set: ${eb.setName} (${have}-pc)`,
+                percentStats: { [eb.stat]: eb.amount }
+              });
+            }
+          }
+          // type === "Modification" or anything else: skip (narrative)
+        }
+      }
+      if (gear) {
+        for (const slotLabel in gear) {
+          ingestEquipBonuses(`Gear ${slotLabel}: ${gear[slotLabel].name}`, gear[slotLabel]);
+        }
+      }
+      if (artifacts.primary) ingestEquipBonuses(`Artifact: ${artifacts.primary.name}`, artifacts.primary);
+      for (const a of (artifacts.secondary || [])) {
+        ingestEquipBonuses(`Artifact: ${a.name}`, a);
+      }
+
       // Helper: take a companion power and push its CR (12-stat distribution)
       // plus its per-stat percent contributions. Not bolstered (player bonus
       // powers are exempt per mekaniks docs). Companion power stats[] are
