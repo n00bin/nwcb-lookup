@@ -1834,7 +1834,7 @@
         s: {
           role: state.role, class: state.class, paragon: state.paragon,
           race: state.race, raceChoices: state.raceChoices,
-          il: state.il, name: state.name,
+          il: state.il, ilManual: state.ilManual, name: state.name,
           abil: state.abil, abilBase: state.abilBase, abilLevels: state.abilLevels,
           gear: state.gear, kits: state.kits,
           artifacts: state.artifacts,
@@ -2862,6 +2862,10 @@
       return sum;
     }
     function applyAutoTIL() {
+      // If the user has typed their own IL, respect it — auto-calc only
+      // covers gear + artifacts and misses companion/mount bolster IL
+      // contributions. Manual override sticks until cleared.
+      if (state.ilManual) return;
       const til = computeTILFromBuild();
       if (til <= 0) return;
       state.il = String(til);
@@ -4970,7 +4974,7 @@
       renderAbilityGrid();
       rerenderAll();
     });
-    document.getElementById("f-il").addEventListener("input",       e => { state.il      = e.target.value; rerenderAll(); });
+    document.getElementById("f-il").addEventListener("input",       e => { state.il      = e.target.value; state.ilManual = true; rerenderAll(); });
     document.getElementById("f-name").addEventListener("input",     e => { state.name    = e.target.value; rerenderAll(); });
     // (f-mount listener removed — replaced by 5-slot stable picker, see renderStable.)
     document.getElementById("sim-mag").addEventListener("input",    () => renderSim());
