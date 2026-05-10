@@ -3624,17 +3624,19 @@
           if (eb.scope && eb.scope !== "self") continue;  // party/enemy buffs handled elsewhere
           if (eb.alwaysActive === false) continue;        // conditional → skip standing-around
           if (eb.role && !roleMatches(eb.role)) continue; // role-conditional set bonuses
+          // amount is percent by default; kind: "rating" means flat rating value
+          const channel = (eb.kind === "rating") ? "ratingStats" : "percentStats";
           if (eb.type === "Equip") {
             buffs.push({
               source: `${label} bonus: ${eb.name || eb.stat}`,
-              percentStats: { [eb.stat]: eb.amount }
+              [channel]: { [eb.stat]: eb.amount }
             });
           } else if (eb.type === "Set") {
             const have = setPieceCounts[eb.setName] || 0;
             if (have >= (eb.pieces || 2)) {
               buffs.push({
                 source: `${label} set: ${eb.setName} (${have}-pc)`,
-                percentStats: { [eb.stat]: eb.amount }
+                [channel]: { [eb.stat]: eb.amount }
               });
             }
           }
