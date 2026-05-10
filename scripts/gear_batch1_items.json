@@ -1,31 +1,1250 @@
 [
-  {"name": "Aegis of the Condemned", "slot": "Off Hand", "subSlot": "Shield", "item_level": 5250, "allowedClasses": ["Paladin"], "ratingStats": {"Critical Strike": 3150, "Awareness": 2100, "Outgoing Healing": 2100}, "combinedRating": 4725, "set": "Impending Doom", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Oathbreaker's Malevolence", "slot": "Main Hand", "subSlot": "Blade", "item_level": 5250, "allowedClasses": ["Paladin"], "ratingStats": {"Power": 1837, "Defense": 1837, "Outgoing Healing": 4700}, "combinedRating": 4725, "weaponDamage": 200, "set": "Impending Doom", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Greaves of the Unyielding Bastion", "slot": "Feet", "item_level": 5000, "allowedClasses": ["Paladin","Barbarian","Fighter"], "ratingStats": {"Defense": 2888, "Critical Avoidance": 3712}, "combinedRating": 4500, "equipBonuses": [{"name": "Deflective Agility", "description": "On Deflect: +2.5% Defense and +2% Movement Speed for 10s (12s cd)"}], "set": "Doomed Reaver Armor", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Helm of the Unyielding Bastion", "slot": "Head", "item_level": 5000, "allowedClasses": ["Paladin","Barbarian","Fighter"], "ratingStats": {"Awareness": 3300, "Critical Avoidance": 3712}, "combinedRating": 4500, "equipBonuses": [{"name": "Battle Acumen", "description": "Per 5s in combat: +0.4% Awareness, +0.5% Crit Avoid. Max 10 stacks (4%/5%)"}], "set": "Doomed Reaver Armor", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Plate of the Unyielding Bastion", "slot": "Armor", "item_level": 5000, "allowedClasses": ["Paladin","Barbarian","Fighter"], "ratingStats": {"Awareness": 2700, "Critical Avoidance": 4538}, "combinedRating": 4500, "equipBonuses": [{"name": "Retaliatory Shockwave", "description": "On hit > 15% MaxHP: 60 mag shockwave + 3.5% Awareness 7s (12s cd)"}], "set": "Doomed Reaver Armor", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Gauntlets of the Unyielding Bastion", "slot": "Arms", "item_level": 5000, "allowedClasses": ["Paladin","Barbarian","Fighter"], "ratingStats": {"Defense": 2888, "Critical Avoidance": 3712}, "combinedRating": 4500, "equipBonuses": [{"name": "Reprisal Reflex", "description": "On Crit hit on you: reflect 10% MaxHP + 0.5% Awareness 10s (10s cd)"}], "set": "Doomed Reaver Armor", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Sabatons of the Eternal Sigil", "slot": "Feet", "item_level": 5000, "allowedClasses": ["Paladin","Cleric"], "ratingStats": {"Critical Strike": 4050, "Outgoing Healing": 1300}, "combinedRating": 4500, "equipBonuses": [{"name": "Shared Vitality", "description": "On heal: 40% chance for self + nearest ally to gain 3% CritStrike + 3.5% CritSev 10s (15s cd)"}], "set": "Doomed Reaver Armor", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Vambraces of the Eternal Sigil", "slot": "Arms", "item_level": 5000, "allowedClasses": ["Paladin","Cleric"], "ratingStats": {"Critical Strike": 4950, "Critical Severity": 4050}, "combinedRating": 4500, "equipBonuses": [{"name": "Radiant Guidance", "description": "Per 6s in combat: +2.5% Divinity regen + 0.2% CritStrike to nearest 2 allies. Max 8 stacks (20%/1.6%)"}], "set": "Doomed Reaver Armor", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Aegis of the Eternal Sigil", "slot": "Armor", "item_level": 5000, "allowedClasses": ["Paladin","Cleric"], "ratingStats": {"Critical Strike": 4050, "Outgoing Healing": 1300}, "combinedRating": 4500, "equipBonuses": [{"name": "Unbroken Strength", "description": "Per 1s at MaxHP: +0.55% Power + 0.6% Accuracy. -3 stacks/s below MaxHP. Max 10 (5.5%/6%)"}], "set": "Doomed Reaver Armor", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Visage of the Eternal Sigil", "slot": "Head", "item_level": 5000, "allowedClasses": ["Paladin","Cleric"], "ratingStats": {"Critical Strike": 4950, "Critical Severity": 4050}, "combinedRating": 4500, "equipBonuses": [{"name": "Renewed Divinity", "description": "Divinity regen 25% faster"}], "set": "Doomed Reaver Armor", "setSize": 2, "source": "Soul Harvest (Master)"},
-  {"name": "Arcane Conduit Seal — Pressured Muse", "displayName": "Arcane Conduit Seal", "slot": "Ring", "item_level": 3800, "ratingStats": {"Critical Strike": 2736, "Incoming Healing": 2052, "Outgoing Healing": 1368}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Pressured Muse", "description": "Resource regen 10% faster when Stamina ≤ 50%"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "heal"},
-  {"name": "Arcane Conduit Sigil — Survivor's Avoidance", "displayName": "Arcane Conduit Sigil", "slot": "Ring", "item_level": 3800, "ratingStats": {"Defense": 1596, "Deflect": 2565, "Deflect Severity": 2565}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Survivor's Avoidance", "description": "Up to 8% Crit Avoid based on health %"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "tank"},
-  {"name": "Arcane Conduit Mark — Rested Healing", "displayName": "Arcane Conduit Mark", "slot": "Neck", "item_level": 3800, "ratingStats": {"Critical Strike": 2052, "Defense": 1597, "Forte": 2052}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Rested Healing", "description": "+7.5% OH when Stamina > 75%"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "heal"},
-  {"name": "Arcane Conduit Ink — Ruthless Critical", "displayName": "Arcane Conduit Ink", "slot": "Shirt", "item_level": 3800, "ratingStats": {"Accuracy": 1881, "Combat Advantage": 1824, "Critical Severity": 2052}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Ruthless Critical", "description": "On dmg/heal > 15% MaxHP: +1.2% CritStrike + 0.7% Power 15s. Max 5 (6%/3.5%)"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "dps"},
-  {"name": "Arcane Conduit Crest — Combatant's Advantage", "displayName": "Arcane Conduit Crest", "slot": "Pant", "item_level": 3800, "ratingStats": {"Critical Strike": 2736, "Critical Severity": 2052, "Deflect": 2565}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Combatant's Advantage", "description": "Per 2s in combat: +1.2% CA, -1.7% Defense. Max 5 stacks"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "dps"},
-  {"name": "Arcane Conduit Seal — Corrupt Healing", "displayName": "Arcane Conduit Seal", "slot": "Ring", "item_level": 3800, "ratingStats": {"Critical Strike": 2052, "Defense": 1197, "Forte": 2052}, "percentStats": {"Recharge Speed": 1.5, "Outgoing Healing": 5, "Incoming Healing": -7.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Corrupt Healing", "description": "+5% OH, -7.5% IH (corrupt trade)"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "heal-corrupt"},
-  {"name": "Arcane Conduit Sigil — Explosive Defense", "displayName": "Arcane Conduit Sigil", "slot": "Ring", "item_level": 3800, "ratingStats": {"Awareness": 1596, "Critical Avoidance": 2508, "Deflect Severity": 2565}, "percentStats": {"Recharge Speed": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Explosive Defense", "description": "On Daily: +6.3% Defense 8s + 150 dmg in 25' (10s cd)"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "tank-explosive"},
-  {"name": "Arcane Conduit Insignia — Challenger's Awareness", "displayName": "Arcane Conduit Insignia", "slot": "Neck", "item_level": 3800, "ratingStats": {"Combat Advantage": 1368, "Critical Strike": 2736, "Defense": 1197}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Challenger's Awareness", "description": "vs 2+ enemies: CritStrike +8.5%. vs 1: removed"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "tank-aware"},
-  {"name": "Arcane Conduit Mark — Survivors Healing Aura", "displayName": "Arcane Conduit Mark", "slot": "Neck", "item_level": 3800, "ratingStats": {"Critical Strike": 2736, "Incoming Healing": 2052, "Outgoing Healing": 1368}, "percentStats": {"Recharge Speed": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Survivors Healing Aura", "description": "At ≤50% HP: 5% IH for self + allies in 25' for 6s (15s cd)"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "heal-survivor"},
-  {"name": "Arcane Conduit Ink — Brutal Power", "displayName": "Arcane Conduit Ink", "slot": "Shirt", "item_level": 3800, "ratingStats": {"Combat Advantage": 1824, "Critical Strike": 2052, "Power": 1197}, "percentStats": {"Recharge Speed": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Brutal Power", "description": "On Crit at-will: +1% Power 10s. Max 3 stacks"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "dps-brutal"},
-  {"name": "Arcane Conduit Insignia — Corrupt Power", "displayName": "Arcane Conduit Insignia", "slot": "Neck", "item_level": 3800, "ratingStats": {"Combat Advantage": 1368, "Critical Strike": 2736, "Power": 1197}, "percentStats": {"Recharge Speed": 1.5, "Power": 5, "Incoming Healing": -7.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Corrupt Power", "description": "+5% Power, -7.5% IH (corrupt trade)"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "dps-corrupt"},
-  {"name": "Arcane Conduit Crest — Critical Momentum", "displayName": "Arcane Conduit Crest", "slot": "Pant", "item_level": 3800, "ratingStats": {"Combat Advantage": 1824, "Awareness": 1368, "Control Bonus": 1710}, "percentStats": {"Recharge Speed": 1.5}, "combinedRating": 3420, "equipBonuses": [{"name": "Critical Momentum", "description": "Moving in combat: stack +3% CritStrike per 2s for 4s"}], "set": "Soul Harvest", "source": "Soul Harvest (Master)", "variant": "dps-momentum"},
-  {"name": "Deathsilver Ring of Submission", "slot": "Ring", "item_level": 4900, "ratingStats": {"Accuracy": 9555, "Combat Advantage": 5880, "Forte": 6615}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3920, "equipBonuses": [{"name": "Critical Spiker", "description": "Per 5s in combat: +1.1% CritStrike. Max 6 stacks (6.6%)"}], "set": "Rings: Soul Harvest", "source": "Soul Harvest (Master)"},
-  {"name": "Deathsilver Halo of Obedience", "slot": "Ring", "item_level": 4900, "ratingStats": {"Critical Severity": 8820, "Forte": 6615}, "percentStats": {"Recharge Speed": 1.5}, "combinedRating": 3920, "equipBonuses": [{"name": "Maiden's Finesse", "description": "When Stamina > 75%: +4% CritStrike, +3% Power"}], "set": "Rings: Soul Harvest", "source": "Soul Harvest (Master)"},
-  {"name": "Deathsilver Loop of Influence", "slot": "Ring", "item_level": 4900, "ratingStats": {"Combat Advantage": 5880, "Critical Strike": 8820}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3920, "equipBonuses": [{"name": "Challenger's Lethality", "description": "vs 1 enemy: per 2s gain +0.4% CritStrike + 0.4% CritSev. vs 4+: -1 stack/2s. Max 10 (4%/4%)"}], "set": "Rings: Soul Harvest", "source": "Soul Harvest (Master)"},
-  {"name": "Deathsilver Hoop of Oppression", "slot": "Ring", "item_level": 4900, "ratingStats": {"Defense": 5145, "Awareness": 5880}, "percentStats": {"Stamina Regeneration": 1.5}, "combinedRating": 3920, "equipBonuses": [{"name": "Survivor's Resistance", "description": "Up to 7.5% Awareness based on health %"}], "set": "Rings: Soul Harvest", "source": "Soul Harvest (Master)"},
-  {"name": "Deathsilver Band of Sacrifice", "slot": "Ring", "item_level": 4900, "ratingStats": {"Critical Strike": 8820, "Forte": 6615}, "percentStats": {"Recharge Speed": 1.5}, "combinedRating": 3920, "equipBonuses": [{"name": "Circular Healing", "description": "When healed in combat: +9% OH for 10s (15s cd)"}], "set": "Rings: Soul Harvest", "source": "Soul Harvest (Master)"},
-  {"name": "Deathsilver Coil of Dominion", "slot": "Ring", "item_level": 4900, "ratingStats": {"Critical Strike": 8820, "Critical Severity": 8820}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3920, "equipBonuses": [{"name": "Dashing Ranger", "description": "When moving: +5% Accuracy, +3.5% CritStrike for 4s"}], "set": "Rings: Soul Harvest", "source": "Soul Harvest (Master)"},
-  {"name": "Rotsteel Coil of Blight", "slot": "Ring", "item_level": 4650, "ratingStats": {"Combat Advantage": 8580, "Critical Strike": 8370}, "percentStats": {"Action Point Gain": 1.5}, "combinedRating": 3720, "equipBonuses": [{"name": "Survivor's Tenacity", "description": "Current HP increases CritSev up to 7.5%"}], "set": "Rings: Soul Harvest", "source": "Soul Harvest (Advanced)"}
+  {
+    "name": "Aegis of the Condemned",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 5250,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Critical Strike": 3150,
+      "Awareness": 2100,
+      "Outgoing Healing": 2100
+    },
+    "combinedRating": 4725,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Oathbreaker's Malevolence",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 5250,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Power": 1837,
+      "Defense": 1837,
+      "Outgoing Healing": 4700
+    },
+    "combinedRating": 4725,
+    "weaponDamage": 200,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Greaves of the Unyielding Bastion",
+    "slot": "Feet",
+    "item_level": 5000,
+    "allowedClasses": [
+      "Paladin",
+      "Barbarian",
+      "Fighter"
+    ],
+    "ratingStats": {
+      "Defense": 2888,
+      "Critical Avoidance": 3712
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Deflective Agility",
+        "description": "On Deflect: +2.5% Defense and +2% Movement Speed for 10s (12s cd)"
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Helm of the Unyielding Bastion",
+    "slot": "Head",
+    "item_level": 5000,
+    "allowedClasses": [
+      "Paladin",
+      "Barbarian",
+      "Fighter"
+    ],
+    "ratingStats": {
+      "Awareness": 3300,
+      "Critical Avoidance": 3712
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Battle Acumen",
+        "description": "Per 5s in combat: +0.4% Awareness, +0.5% Crit Avoid. Max 10 stacks (4%/5%)"
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Plate of the Unyielding Bastion",
+    "slot": "Armor",
+    "item_level": 5000,
+    "allowedClasses": [
+      "Paladin",
+      "Barbarian",
+      "Fighter"
+    ],
+    "ratingStats": {
+      "Awareness": 2700,
+      "Critical Avoidance": 4538
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Retaliatory Shockwave",
+        "description": "On hit > 15% MaxHP: 60 mag shockwave + 3.5% Awareness 7s (12s cd)"
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Gauntlets of the Unyielding Bastion",
+    "slot": "Arms",
+    "item_level": 5000,
+    "allowedClasses": [
+      "Paladin",
+      "Barbarian",
+      "Fighter"
+    ],
+    "ratingStats": {
+      "Defense": 2888,
+      "Critical Avoidance": 3712
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Reprisal Reflex",
+        "description": "On Crit hit on you: reflect 10% MaxHP + 0.5% Awareness 10s (10s cd)"
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Sabatons of the Eternal Sigil",
+    "slot": "Feet",
+    "item_level": 5000,
+    "allowedClasses": [
+      "Paladin",
+      "Cleric"
+    ],
+    "ratingStats": {
+      "Critical Strike": 4050,
+      "Outgoing Healing": 1300
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Shared Vitality",
+        "description": "On heal: 40% chance for self + nearest ally to gain 3% CritStrike + 3.5% CritSev 10s (15s cd)"
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Vambraces of the Eternal Sigil",
+    "slot": "Arms",
+    "item_level": 5000,
+    "allowedClasses": [
+      "Paladin",
+      "Cleric"
+    ],
+    "ratingStats": {
+      "Critical Strike": 4950,
+      "Critical Severity": 4050
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Radiant Guidance",
+        "description": "Per 6s in combat: +2.5% Divinity regen + 0.2% CritStrike to nearest 2 allies. Max 8 stacks (20%/1.6%)"
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Aegis of the Eternal Sigil",
+    "slot": "Armor",
+    "item_level": 5000,
+    "allowedClasses": [
+      "Paladin",
+      "Cleric"
+    ],
+    "ratingStats": {
+      "Critical Strike": 4050,
+      "Outgoing Healing": 1300
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Unbroken Strength",
+        "description": "Per 1s at MaxHP: +0.55% Power + 0.6% Accuracy. -3 stacks/s below MaxHP. Max 10 (5.5%/6%)"
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Visage of the Eternal Sigil",
+    "slot": "Head",
+    "item_level": 5000,
+    "allowedClasses": [
+      "Paladin",
+      "Cleric"
+    ],
+    "ratingStats": {
+      "Critical Strike": 4950,
+      "Critical Severity": 4050
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Renewed Divinity",
+        "description": "Divinity regen 25% faster"
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Arcane Conduit Seal — Pressured Muse",
+    "displayName": "Arcane Conduit Seal",
+    "slot": "Ring",
+    "item_level": 3800,
+    "ratingStats": {
+      "Critical Strike": 2736,
+      "Incoming Healing": 2052,
+      "Outgoing Healing": 1368
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Pressured Muse",
+        "description": "Resource regen 10% faster when Stamina ≤ 50%"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "heal"
+  },
+  {
+    "name": "Arcane Conduit Sigil — Survivor's Avoidance",
+    "displayName": "Arcane Conduit Sigil",
+    "slot": "Ring",
+    "item_level": 3800,
+    "ratingStats": {
+      "Defense": 1596,
+      "Deflect": 2565,
+      "Deflect Severity": 2565
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Avoidance",
+        "description": "Up to 8% Crit Avoid based on health %"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "tank"
+  },
+  {
+    "name": "Arcane Conduit Mark — Rested Healing",
+    "displayName": "Arcane Conduit Mark",
+    "slot": "Neck",
+    "item_level": 3800,
+    "ratingStats": {
+      "Critical Strike": 2052,
+      "Defense": 1597,
+      "Forte": 2052
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Rested Healing",
+        "description": "+7.5% OH when Stamina > 75%"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "heal"
+  },
+  {
+    "name": "Arcane Conduit Ink — Ruthless Critical",
+    "displayName": "Arcane Conduit Ink",
+    "slot": "Shirt",
+    "item_level": 3800,
+    "ratingStats": {
+      "Accuracy": 1881,
+      "Combat Advantage": 1824,
+      "Critical Severity": 2052
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Ruthless Critical",
+        "description": "On dmg/heal > 15% MaxHP: +1.2% CritStrike + 0.7% Power 15s. Max 5 (6%/3.5%)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "dps"
+  },
+  {
+    "name": "Arcane Conduit Crest — Combatant's Advantage",
+    "displayName": "Arcane Conduit Crest",
+    "slot": "Pant",
+    "item_level": 3800,
+    "ratingStats": {
+      "Critical Strike": 2736,
+      "Critical Severity": 2052,
+      "Deflect": 2565
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Combatant's Advantage",
+        "description": "Per 2s in combat: +1.2% CA, -1.7% Defense. Max 5 stacks"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "dps"
+  },
+  {
+    "name": "Arcane Conduit Seal — Corrupt Healing",
+    "displayName": "Arcane Conduit Seal",
+    "slot": "Ring",
+    "item_level": 3800,
+    "ratingStats": {
+      "Critical Strike": 2052,
+      "Defense": 1197,
+      "Forte": 2052
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5,
+      "Outgoing Healing": 5,
+      "Incoming Healing": -7.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Corrupt Healing",
+        "description": "+5% OH, -7.5% IH (corrupt trade)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "heal-corrupt"
+  },
+  {
+    "name": "Arcane Conduit Sigil — Explosive Defense",
+    "displayName": "Arcane Conduit Sigil",
+    "slot": "Ring",
+    "item_level": 3800,
+    "ratingStats": {
+      "Awareness": 1596,
+      "Critical Avoidance": 2508,
+      "Deflect Severity": 2565
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Explosive Defense",
+        "description": "On Daily: +6.3% Defense 8s + 150 dmg in 25' (10s cd)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "tank-explosive"
+  },
+  {
+    "name": "Arcane Conduit Insignia — Challenger's Awareness",
+    "displayName": "Arcane Conduit Insignia",
+    "slot": "Neck",
+    "item_level": 3800,
+    "ratingStats": {
+      "Combat Advantage": 1368,
+      "Critical Strike": 2736,
+      "Defense": 1197
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Challenger's Awareness",
+        "description": "vs 2+ enemies: CritStrike +8.5%. vs 1: removed"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "tank-aware"
+  },
+  {
+    "name": "Arcane Conduit Mark — Survivors Healing Aura",
+    "displayName": "Arcane Conduit Mark",
+    "slot": "Neck",
+    "item_level": 3800,
+    "ratingStats": {
+      "Critical Strike": 2736,
+      "Incoming Healing": 2052,
+      "Outgoing Healing": 1368
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Survivors Healing Aura",
+        "description": "At ≤50% HP: 5% IH for self + allies in 25' for 6s (15s cd)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "heal-survivor"
+  },
+  {
+    "name": "Arcane Conduit Ink — Brutal Power",
+    "displayName": "Arcane Conduit Ink",
+    "slot": "Shirt",
+    "item_level": 3800,
+    "ratingStats": {
+      "Combat Advantage": 1824,
+      "Critical Strike": 2052,
+      "Power": 1197
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Brutal Power",
+        "description": "On Crit at-will: +1% Power 10s. Max 3 stacks"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "dps-brutal"
+  },
+  {
+    "name": "Arcane Conduit Insignia — Corrupt Power",
+    "displayName": "Arcane Conduit Insignia",
+    "slot": "Neck",
+    "item_level": 3800,
+    "ratingStats": {
+      "Combat Advantage": 1368,
+      "Critical Strike": 2736,
+      "Power": 1197
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5,
+      "Power": 5,
+      "Incoming Healing": -7.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Corrupt Power",
+        "description": "+5% Power, -7.5% IH (corrupt trade)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "dps-corrupt"
+  },
+  {
+    "name": "Arcane Conduit Crest — Critical Momentum",
+    "displayName": "Arcane Conduit Crest",
+    "slot": "Pant",
+    "item_level": 3800,
+    "ratingStats": {
+      "Combat Advantage": 1824,
+      "Awareness": 1368,
+      "Control Bonus": 1710
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3420,
+    "equipBonuses": [
+      {
+        "name": "Critical Momentum",
+        "description": "Moving in combat: stack +3% CritStrike per 2s for 4s"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Master)",
+    "variant": "dps-momentum"
+  },
+  {
+    "name": "Deathsilver Ring of Submission",
+    "slot": "Ring",
+    "item_level": 4900,
+    "ratingStats": {
+      "Accuracy": 9555,
+      "Combat Advantage": 5880,
+      "Forte": 6615
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3920,
+    "equipBonuses": [
+      {
+        "name": "Critical Spiker",
+        "description": "Per 5s in combat: +1.1% CritStrike. Max 6 stacks (6.6%)"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Deathsilver Halo of Obedience",
+    "slot": "Ring",
+    "item_level": 4900,
+    "ratingStats": {
+      "Critical Severity": 8820,
+      "Forte": 6615
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3920,
+    "equipBonuses": [
+      {
+        "name": "Maiden's Finesse",
+        "description": "When Stamina > 75%: +4% CritStrike, +3% Power"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Deathsilver Loop of Influence",
+    "slot": "Ring",
+    "item_level": 4900,
+    "ratingStats": {
+      "Combat Advantage": 5880,
+      "Critical Strike": 8820
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3920,
+    "equipBonuses": [
+      {
+        "name": "Challenger's Lethality",
+        "description": "vs 1 enemy: per 2s gain +0.4% CritStrike + 0.4% CritSev. vs 4+: -1 stack/2s. Max 10 (4%/4%)"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Deathsilver Hoop of Oppression",
+    "slot": "Ring",
+    "item_level": 4900,
+    "ratingStats": {
+      "Defense": 5145,
+      "Awareness": 5880
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 3920,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Resistance",
+        "description": "Up to 7.5% Awareness based on health %"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Deathsilver Band of Sacrifice",
+    "slot": "Ring",
+    "item_level": 4900,
+    "ratingStats": {
+      "Critical Strike": 8820,
+      "Forte": 6615
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3920,
+    "equipBonuses": [
+      {
+        "name": "Circular Healing",
+        "description": "When healed in combat: +9% OH for 10s (15s cd)"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Deathsilver Coil of Dominion",
+    "slot": "Ring",
+    "item_level": 4900,
+    "ratingStats": {
+      "Critical Strike": 8820,
+      "Critical Severity": 8820
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3920,
+    "equipBonuses": [
+      {
+        "name": "Dashing Ranger",
+        "description": "When moving: +5% Accuracy, +3.5% CritStrike for 4s"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Master)"
+  },
+  {
+    "name": "Rotsteel Coil of Blight",
+    "slot": "Ring",
+    "item_level": 4650,
+    "ratingStats": {
+      "Combat Advantage": 8580,
+      "Critical Strike": 8370
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3720,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Tenacity",
+        "description": "Current HP increases CritSev up to 7.5%"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Rotsteel Loop of Ash",
+    "slot": "Ring",
+    "item_level": 4650,
+    "ratingStats": {
+      "Critical Strike": 8370,
+      "Critical Severity": 8370
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3720,
+    "equipBonuses": [
+      {
+        "name": "Combatant's Advantage",
+        "description": "Per 5s in combat: +0.5% CA. Max 6.5% at 13 stacks"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Rotsteel Hoop of Corruption",
+    "slot": "Ring",
+    "item_level": 4650,
+    "ratingStats": {
+      "Awareness": 5580,
+      "Critical Avoidance": 7872
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 3720,
+    "equipBonuses": [
+      {
+        "name": "Charged Fortitude",
+        "description": "When Stamina ≥ 75%, Defense increased by 5%"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Rotsteel Band of Withering",
+    "slot": "Ring",
+    "item_level": 4650,
+    "ratingStats": {
+      "Critical Strike": 8370,
+      "Outgoing Healing": 5580
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3720,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Gift",
+        "description": "Current HP increases OH up to 6%"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Rotsteel Ring of Spores",
+    "slot": "Ring",
+    "item_level": 4650,
+    "ratingStats": {
+      "Combat Advantage": 5580,
+      "Critical Strike": 8370
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3720,
+    "equipBonuses": [
+      {
+        "name": "Combatant's Impact",
+        "description": "Per 5s in combat: +0.7% CritStrike. Max 9.1% at 13 stacks"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Rotsteel Halo of Festering",
+    "slot": "Ring",
+    "item_level": 4650,
+    "ratingStats": {
+      "Critical Severity": 8370,
+      "Forte": 6278
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3720,
+    "equipBonuses": [
+      {
+        "name": "Combatant's Power",
+        "description": "Per 5s in combat: +0.4% Power. Max 5.2% at 13 stacks"
+      }
+    ],
+    "set": "Rings: Soul Harvest",
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Mystic Conduit Crest — Duelist's Strength",
+    "displayName": "Mystic Conduit Crest",
+    "slot": "Pant",
+    "item_level": 3600,
+    "ratingStats": {
+      "Combat Advantage": 1728,
+      "Critical Severity": 1944,
+      "Critical Avoidance": 1782
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Duelist's Strength",
+        "description": "vs 1 enemy: +2250 CA every 2s. vs 2+: -1 stack. Max 5 (11250 CA)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "duelist"
+  },
+  {
+    "name": "Mystic Conduit Mark — Precise Severity",
+    "displayName": "Mystic Conduit Mark",
+    "slot": "Neck",
+    "item_level": 3600,
+    "ratingStats": {
+      "Critical Strike": 2592,
+      "Defense": 1134,
+      "Outgoing Healing": 1296
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Precise Severity",
+        "description": "On Crit at-will: +7.5% CritSev for 5s. Reapplying refreshes"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "precise"
+  },
+  {
+    "name": "Mystic Conduit Ink — Critical Tactics",
+    "displayName": "Mystic Conduit Ink",
+    "slot": "Shirt",
+    "item_level": 3600,
+    "ratingStats": {
+      "Accuracy": 2808,
+      "Defense": 1134,
+      "Forte": 1458
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Critical Tactics",
+        "description": "When Stamina > 75%, CritStrike increased by 11250"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "tactics"
+  },
+  {
+    "name": "Mystic Conduit Insignia — Indefatigable Advantage",
+    "displayName": "Mystic Conduit Insignia",
+    "slot": "Neck",
+    "item_level": 3600,
+    "ratingStats": {
+      "Combat Advantage": 1728,
+      "Power": 1134,
+      "Control Bonus": 1620
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Indefatigable Advantage",
+        "description": "When Stamina < 25%, Power increased by 11250"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "indefatigable"
+  },
+  {
+    "name": "Mystic Conduit Seal — Healer's Influence",
+    "displayName": "Mystic Conduit Seal",
+    "slot": "Ring",
+    "item_level": 3600,
+    "ratingStats": {
+      "Critical Strike": 1944,
+      "Control Resist": 1620,
+      "Outgoing Healing": 1728
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Healer's Influence",
+        "description": "Healing ally with encounter: 10% chance to gain +11,250 OH for 5s (10s cd)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "heal-influence"
+  },
+  {
+    "name": "Mystic Conduit Sigil — Sudden Intuition",
+    "displayName": "Mystic Conduit Sigil",
+    "slot": "Ring",
+    "item_level": 3600,
+    "ratingStats": {
+      "Accuracy": 2106,
+      "Awareness": 1728,
+      "Deflect": 2430
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Sudden Intuition",
+        "description": "When struck by CA dmg: 30% chance to gain +10,125 Awareness for 8s (15s cd)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "tank-intuition"
+  },
+  {
+    "name": "Mystic Conduit Insignia — Challenger's Accuracy",
+    "displayName": "Mystic Conduit Insignia",
+    "slot": "Neck",
+    "item_level": 3600,
+    "ratingStats": {
+      "Combat Advantage": 1728,
+      "Critical Severity": 1944,
+      "Critical Avoidance": 1782
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Challenger's Accuracy",
+        "description": "vs 3+ enemies: +2250 Accuracy/2s. vs 1: -1/2s. Max 5 (11250)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "tank-accuracy"
+  },
+  {
+    "name": "Mystic Conduit Mark — Charged Precision",
+    "displayName": "Mystic Conduit Mark",
+    "slot": "Neck",
+    "item_level": 3600,
+    "ratingStats": {
+      "Critical Severity": 1944,
+      "Deflect": 2430,
+      "Outgoing Healing": 1728
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Charged Precision",
+        "description": "When Stamina > 75%: CritStrike +8%"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "charged-precision"
+  },
+  {
+    "name": "Mystic Conduit Ink — Butcher's Precision (Lesser)",
+    "displayName": "Mystic Conduit Ink",
+    "slot": "Shirt",
+    "item_level": 3600,
+    "ratingStats": {
+      "Combat Advantage": 1296,
+      "Critical Strike": 2592,
+      "Defense": 1134
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Butcher's Precision (Lesser)",
+        "description": "On dmg/heal > 10% MaxHP: +11,250 CritSev for 5s (10s cd)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "butcher-lesser"
+  },
+  {
+    "name": "Mystic Conduit Crest — Sprinter's Advantage",
+    "displayName": "Mystic Conduit Crest",
+    "slot": "Pant",
+    "item_level": 3600,
+    "ratingStats": {
+      "Accuracy": 2808,
+      "Defense": 1134,
+      "Forte": 1458
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Sprinter's Advantage",
+        "description": "When moving: +5100 Power and +5625 CA for 3s (10s cd)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "sprinter"
+  },
+  {
+    "name": "Mystic Conduit Seal — Survivor's Forte",
+    "displayName": "Mystic Conduit Seal",
+    "slot": "Ring",
+    "item_level": 3600,
+    "ratingStats": {
+      "Critical Severity": 2592,
+      "Forte": 1458,
+      "Outgoing Healing": 1296
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Forte",
+        "description": "Up to 8% Forte based on health %"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "survivor-forte"
+  },
+  {
+    "name": "Mystic Conduit Sigil — Survivor's Avoidance (Lesser)",
+    "displayName": "Mystic Conduit Sigil",
+    "slot": "Ring",
+    "item_level": 3600,
+    "ratingStats": {
+      "Accuracy": 2106,
+      "Combat Advantage": 1296,
+      "Defense": 1512
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Avoidance (Lesser)",
+        "description": "On hit: 10% chance for +11,250 Crit Avoid 5s (10s cd)"
+      }
+    ],
+    "set": "Soul Harvest",
+    "source": "Soul Harvest (Advanced)",
+    "variant": "survivor-lesser"
+  },
+  {
+    "name": "Mask of the Vital Sigil",
+    "slot": "Head",
+    "item_level": 4700,
+    "allowedClasses": [
+      "Paladin",
+      "Cleric"
+    ],
+    "ratingStats": {
+      "Critical Strike": 3807,
+      "Outgoing Healing": 3102
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Healing Momentum",
+        "description": "After moving: Divinity regen +8%, allies in 15' gain +1.3% IH for 4s. Pauses after 4s of standing still"
+      }
+    ],
+    "set": "Dread March Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Sabatons of the Vital Sigil",
+    "slot": "Feet",
+    "item_level": 4700,
+    "allowedClasses": [
+      "Paladin",
+      "Cleric"
+    ],
+    "ratingStats": {
+      "Power": 1974,
+      "Outgoing Healing": 2538
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Sustained Vitality",
+        "description": "Per 5s in combat: +0.5% OH and +0.6% Forte. Max 6 stacks (3% OH, 3.6% Forte)"
+      }
+    ],
+    "set": "Dread March Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Vambraces of the Vital Sigil",
+    "slot": "Arms",
+    "item_level": 4700,
+    "allowedClasses": [
+      "Paladin",
+      "Cleric"
+    ],
+    "ratingStats": {
+      "Forte": 3490,
+      "Outgoing Healing": 2538
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Divine Ascendance",
+        "description": "Divinity maximum increased by 20%"
+      }
+    ],
+    "set": "Dread March Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Breastplate of the Vital Sigil",
+    "slot": "Armor",
+    "item_level": 4700,
+    "allowedClasses": [
+      "Paladin",
+      "Cleric"
+    ],
+    "ratingStats": {
+      "Forte": 3490,
+      "Outgoing Healing": 2538
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Protective Embrace",
+        "description": "Heal ally grants them +1% Defense for 6s. Max 5 stacks (5%)"
+      }
+    ],
+    "set": "Dread March Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Crown of the Iron Bulwark",
+    "slot": "Head",
+    "item_level": 4700,
+    "allowedClasses": [
+      "Paladin",
+      "Barbarian",
+      "Fighter"
+    ],
+    "ratingStats": {
+      "Defense": 2221,
+      "Awareness": 3102
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Shared Resilience",
+        "description": "On encounter use: 40% chance for self + lowest-HP ally in 25' to gain +5% Forte and +3.5% Defense 8s (15s cd)"
+      }
+    ],
+    "set": "Dread March Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Cuirass of the Iron Bulwark",
+    "slot": "Armor",
+    "item_level": 4700,
+    "allowedClasses": [
+      "Paladin",
+      "Barbarian",
+      "Fighter"
+    ],
+    "ratingStats": {
+      "Awareness": 2538,
+      "Critical Avoidance": 4265
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Reactive Shielding",
+        "description": "On dmg > 15% MaxHP: 20' aura gives allies +1% Defense and +2.5% IH 8s (15s cd)"
+      }
+    ],
+    "set": "Dread March Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Vambraces of the Iron Bulwark",
+    "slot": "Arms",
+    "item_level": 4700,
+    "allowedClasses": [
+      "Paladin",
+      "Barbarian",
+      "Fighter"
+    ],
+    "ratingStats": {
+      "Awareness": 2538,
+      "Critical Avoidance": 4265
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Tactical Insight",
+        "description": "Per 6s in combat: +0.4% Awareness, +0.1% Power to allies in 20'. Max 8 (3.2% / 0.8% per ally)"
+      }
+    ],
+    "set": "Dread March Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Aegis of the Condemned · IL 4800",
+    "displayName": "Aegis of the Condemned",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 4800,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Critical Strike": 2880,
+      "Awareness": 1920,
+      "Outgoing Healing": 1920
+    },
+    "combinedRating": 4320,
+    "equipBonuses": [
+      {
+        "name": "Impending Doom set bonus",
+        "description": "Set Impending Doom (0/2) — Charges by daily/encounter/in-combat. Unleashed: Tank −1% Incoming dmg, Heal −1% OH; +x% Forte; +x% Defense"
+      }
+    ],
+    "set": "Impending Doom",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)",
+    "tier": "Advanced"
+  }
 ]
