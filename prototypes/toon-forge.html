@@ -4378,20 +4378,8 @@
           </div>
         </div>`).join("");
 
-      // If TIL is 0 (no gear yet), show a hint above the cards
-      const wrap = body.parentElement;
-      let warn = wrap.querySelector(".sim-warn");
-      if (TIL === 0) {
-        if (!warn) {
-          warn = document.createElement("div");
-          warn.className = "sim-warn";
-          warn.style.cssText = "padding:0.5rem 0.7rem;background:rgba(210,153,34,0.08);border:1px solid var(--gold);border-radius:6px;color:var(--gold);font-size:0.82rem;margin-bottom:0.5rem;";
-          warn.textContent = "Total Item Level is 0 — equip some gear in step 3 to get real numbers.";
-          wrap.insertBefore(warn, body);
-        }
-      } else if (warn) {
-        warn.remove();
-      }
+      // TIL=0 is not a real in-game state (fresh characters start ~5k IL),
+      // so we don't show a "no gear" warning here.
 
       // ===== Stat priority advisor =====
       // For each role-relevant stat, compute expected output with +1% added,
