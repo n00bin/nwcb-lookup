@@ -76,6 +76,8 @@ const TOON_FORGE_BONUS_STATS = [
   "Encounter Dmg Bonus", // class/feat data; not a core stat
   "Dmg Bonus",        // generic damage-bonus tag from artifact data
   "Damage Bonus",     // alias of the above
+  "Damage Vs Bosses", // boon/feat conditional bonus
+  "Outgoing Damage",  // class power data; not a stat panel entry
 ];
 
 // Per-paragon display labels for the class resource. The internal
