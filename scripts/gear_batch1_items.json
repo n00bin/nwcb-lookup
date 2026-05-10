@@ -2641,5 +2641,1082 @@
     ],
     "set": "Enchanted Awareness",
     "setSize": 2
+  },
+  {
+    "name": "Runes of the Pledged",
+    "slot": "Shirt",
+    "item_level": 3000,
+    "ratingStats": {
+      "Critical Severity": 3620,
+      "Deflection": 2025,
+      "Outgoing Healing": 1440
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Healing Tactics",
+        "description": "When your Stamina is over 75%, your Outgoing Healing is increased by 9,375."
+      }
+    ],
+    "set": "Enchanted Healing",
+    "setSize": 2,
+    "notes": "Healer Shirt"
+  },
+  {
+    "name": "Runes of the Promised",
+    "slot": "Shirt",
+    "item_level": 3000,
+    "ratingStats": {
+      "Critical Strike": 2160,
+      "Critical Severity": 1620,
+      "Deflection": 2025
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Lethal Tactics",
+        "description": "When your Stamina is over 75%, your Critical Severity is increased by 9,375."
+      }
+    ],
+    "set": "Enchanted Advantage",
+    "setSize": 2,
+    "notes": "Offense Shirt"
+  },
+  {
+    "name": "Runes of the Oathbound",
+    "slot": "Pants",
+    "item_level": 3000,
+    "ratingStats": {
+      "Combat Advantage": 1440,
+      "Awareness": 1080,
+      "Control Bonus": 1350
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Lethal Tactics",
+        "description": "When your Stamina is over 75%, your Critical Severity is increased by 9,375."
+      }
+    ],
+    "set": "Enchanted Advantage",
+    "setSize": 2,
+    "notes": "Offense Pants"
+  },
+  {
+    "name": "Runes of the Sworn",
+    "slot": "Pants",
+    "item_level": 3000,
+    "ratingStats": {
+      "Critical Strike": 2160,
+      "Incoming Healing": 1620,
+      "Outgoing Healing": 1080
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Healing Tactics",
+        "description": "When your Stamina is over 75%, your Outgoing Healing is increased by 9,375."
+      }
+    ],
+    "set": "Enchanted Healing",
+    "setSize": 2,
+    "notes": "Healer Pants"
+  },
+  {
+    "name": "Runes of the Covenant",
+    "slot": "Pants",
+    "item_level": 3000,
+    "ratingStats": {
+      "Accuracy": 2340,
+      "Defense": 945,
+      "Forte": 1215
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Lethal Tactics",
+        "description": "When your Stamina is over 75%, your Critical Severity is increased by 9,375."
+      }
+    ],
+    "set": "Enchanted Advantage",
+    "setSize": 2,
+    "notes": "Offense Pants"
+  },
+  {
+    "name": "Runes of the Avowed — Challenger's Awareness",
+    "displayName": "Runes of the Avowed",
+    "slot": "Pants",
+    "item_level": 3000,
+    "ratingStats": {
+      "Defense": 945,
+      "Critical Avoidance": 1980,
+      "Deflect Severity": 2025
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Challenger's Awareness",
+        "description": "When in combat with 3 or more enemies, your Awareness is increased by 1,875 every 2 seconds. Every 2 seconds you are in combat with 1 or less enemies, lose 1 stack. Max Stacks: 5 — 9,375 Awareness."
+      }
+    ],
+    "set": "Enchanted Awareness",
+    "setSize": 2,
+    "variant": "Challenger's Awareness"
+  },
+  {
+    "name": "Runes of the Pledged — Challenger's Forte",
+    "displayName": "Runes of the Pledged",
+    "slot": "Shirt",
+    "item_level": 3000,
+    "ratingStats": {
+      "Critical Strike": 2160,
+      "Incoming Healing": 1620,
+      "Outgoing Healing": 1080
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Challenger's Forte",
+        "description": "When in combat with 1 enemy, your Forte is increased by 0.6% every 2 seconds. Every 2 seconds you are in combat with 3 or more enemies, lose 1 stack. Max Stacks: 5 — 3% Forte."
+      }
+    ],
+    "set": "Enchanted Healing",
+    "setSize": 2,
+    "variant": "Challenger's Forte"
+  },
+  {
+    "name": "Runes of the Covenant — Encounter Reprieve",
+    "displayName": "Runes of the Covenant",
+    "slot": "Pants",
+    "item_level": 3000,
+    "ratingStats": {
+      "Critical Strike": 2160,
+      "Critical Severity": 1620,
+      "Deflection": 2025
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Encounter Reprieve",
+        "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Encounter Power cooldowns by 1 second. This effect may only occur once every 5 seconds."
+      }
+    ],
+    "set": "Enchanted Advantage",
+    "setSize": 2,
+    "variant": "Encounter Reprieve"
+  },
+  {
+    "name": "Runes of the Oathbound — Encounter Reprieve",
+    "displayName": "Runes of the Oathbound",
+    "slot": "Pants",
+    "item_level": 3000,
+    "ratingStats": {
+      "Combat Advantage": 1440,
+      "Awareness": 1080,
+      "Control Bonus": 1350
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Encounter Reprieve",
+        "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Encounter Power cooldowns by 1 second. This effect may only occur once every 5 seconds."
+      }
+    ],
+    "set": "Enchanted Advantage",
+    "setSize": 2,
+    "variant": "Encounter Reprieve"
+  },
+  {
+    "name": "Runes of the Sworn — Challenger's Forte",
+    "displayName": "Runes of the Sworn",
+    "slot": "Pants",
+    "item_level": 3000,
+    "ratingStats": {
+      "Critical Strike": 1620,
+      "Control Resist": 1350,
+      "Outgoing Healing": 1440
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Challenger's Forte",
+        "description": "When in combat with 1 enemy, your Forte is increased by 0.6% every 2 seconds. Every 2 seconds you are in combat with 3 or more enemies, lose 1 stack. Max Stacks: 5 — 3% Forte."
+      }
+    ],
+    "set": "Enchanted Healing",
+    "setSize": 2,
+    "variant": "Challenger's Forte"
+  },
+  {
+    "name": "Runes of the Promised — Encounter Reprieve",
+    "displayName": "Runes of the Promised",
+    "slot": "Shirt",
+    "item_level": 3000,
+    "ratingStats": {
+      "Combat Advantage": 1080,
+      "Critical Severity": 2160,
+      "Defense": 945
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 2700,
+    "equipBonuses": [
+      {
+        "name": "Encounter Reprieve",
+        "description": "Whenever you Critically Strike with your Powers, you have a 10% chance to reduce your Encounter Power cooldowns by 1 second. This effect may only occur once every 5 seconds."
+      }
+    ],
+    "set": "Enchanted Advantage",
+    "setSize": 2,
+    "variant": "Encounter Reprieve"
+  },
+  {
+    "name": "The Bladed Ascendant",
+    "slot": "Ring",
+    "item_level": 3950,
+    "ratingStats": {
+      "Critical Strike": 5688,
+      "Forte": 6399
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3160,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Haste",
+        "description": "Your current Hit Points increases your Recharge Speed, up to a maximum of 3%."
+      }
+    ],
+    "set": "Rings: Shackles of Divinity",
+    "setSize": 8,
+    "source": "Shackles of Divinity"
+  },
+  {
+    "name": "The Sanguine Seal",
+    "slot": "Ring",
+    "item_level": 3950,
+    "ratingStats": {
+      "Combat Advantage": 3792,
+      "Critical Severity": 8532
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3160,
+    "equipBonuses": [
+      {
+        "name": "Thayan Predator",
+        "description": "+5% Damage in Thay. +2% Damage in non-Thay."
+      }
+    ],
+    "set": "Rings: Shackles of Divinity",
+    "setSize": 8,
+    "source": "Shackles of Divinity"
+  },
+  {
+    "name": "The Crimson Inlay",
+    "slot": "Ring",
+    "item_level": 3950,
+    "ratingStats": {
+      "Critical Strike": 8532,
+      "Outgoing Healing": 3792
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3160,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Haste",
+        "description": "Your current Hit Points increases your Recharge Speed, up to a maximum of 3%."
+      }
+    ],
+    "set": "Rings: Shackles of Divinity",
+    "setSize": 8,
+    "source": "Shackles of Divinity"
+  },
+  {
+    "name": "The Veinbinder",
+    "slot": "Ring",
+    "item_level": 3950,
+    "ratingStats": {
+      "Defense": 4977,
+      "Awareness": 3792
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3160,
+    "equipBonuses": [
+      {
+        "name": "Combatant's Awareness",
+        "description": "For every 5 seconds you are in combat, you gain 750 Awareness and 750 Deflect. Max Stacks: 10."
+      }
+    ],
+    "set": "Rings: Shackles of Divinity",
+    "setSize": 8,
+    "source": "Shackles of Divinity"
+  },
+  {
+    "name": "The Runebound Shackle",
+    "slot": "Ring",
+    "item_level": 3950,
+    "ratingStats": {
+      "Critical Strike": 8532,
+      "Critical Severity": 5688
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3160,
+    "equipBonuses": [
+      {
+        "name": "Thayan Predator",
+        "description": "+5% Damage in Thay. +2% Damage in non-Thay."
+      }
+    ],
+    "set": "Rings: Shackles of Divinity",
+    "setSize": 8,
+    "source": "Shackles of Divinity"
+  },
+  {
+    "name": "The Triarch Sigil",
+    "slot": "Ring",
+    "item_level": 3950,
+    "ratingStats": {
+      "Combat Advantage": 2370,
+      "Critical Strike": 3555,
+      "Incoming Healing": 1422
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3160,
+    "equipBonuses": [
+      {
+        "name": "Thayan Predator",
+        "description": "+5% Damage in Thay. +2% Damage in non-Thay."
+      }
+    ],
+    "set": "Rings: Shackles of Divinity",
+    "setSize": 8,
+    "source": "Shackles of Divinity"
+  },
+  {
+    "name": "Aegis of the Condemned · IL 4550",
+    "displayName": "Aegis of the Condemned",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 4550,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Critical Strike": 2670,
+      "Outgoing Healing": 2670
+    },
+    "combinedRating": 4805,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)",
+    "tier": "Advanced",
+    "variant": "IL 4550",
+    "notes": "Artifact Equipment — Soul Harvest (Advanced) variant"
+  },
+  {
+    "name": "Oathbreaker's Malevolence · IL 4550",
+    "displayName": "Oathbreaker's Malevolence",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 4550,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "weaponDamage": 50,
+    "ratingStats": {
+      "Power": 1557,
+      "Defense": 1557,
+      "Outgoing Healing": 1557
+    },
+    "combinedRating": 4065,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "tier": "Advanced",
+    "variant": "IL 4550",
+    "notes": "Artifact Equipment — Paladin mace, Soul Harvest variant"
+  },
+  {
+    "name": "Aegis of the Condemned · IL 4100",
+    "displayName": "Aegis of the Condemned",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 4100,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Awareness": 2460,
+      "Outgoing Healing": 2460
+    },
+    "combinedRating": 3690,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "variant": "IL 4100",
+    "notes": "Artifact Equipment"
+  },
+  {
+    "name": "Oathbreaker's Malevolence · IL 3750",
+    "displayName": "Oathbreaker's Malevolence",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 3750,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Power": 1969,
+      "Defense": 1969
+    },
+    "combinedRating": 3375,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "variant": "IL 3750",
+    "notes": "Artifact Equipment — Paladin mace"
+  },
+  {
+    "name": "Aegis of the Condemned · IL 3750",
+    "displayName": "Aegis of the Condemned",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 3750,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Awareness": 2250,
+      "Outgoing Healing": 2250
+    },
+    "combinedRating": 3375,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "variant": "IL 3750",
+    "notes": "Artifact Equipment"
+  },
+  {
+    "name": "Oathbreaker's Malevolence · IL 4100",
+    "displayName": "Oathbreaker's Malevolence",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 4100,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Power": 2152,
+      "Defense": 2152
+    },
+    "combinedRating": 3690,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "variant": "IL 4100",
+    "notes": "Artifact Equipment — Paladin mace"
+  },
+  {
+    "name": "Aegis of the Condemned · IL 3400",
+    "displayName": "Aegis of the Condemned",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 3400,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Awareness": 2040,
+      "Outgoing Healing": 2040
+    },
+    "combinedRating": 3060,
+    "set": "Whisper of Power",
+    "setSize": 2,
+    "setBonus": "+7,200 Forte",
+    "setPartners": [
+      "Oathbreaker's Malevolence"
+    ],
+    "variant": "IL 3400",
+    "notes": "Artifact Equipment — lower tier with Whisper of Power set"
+  },
+  {
+    "name": "Oathbreaker's Malevolence · IL 3400",
+    "displayName": "Oathbreaker's Malevolence",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 3400,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Power": 1785,
+      "Defense": 1785
+    },
+    "combinedRating": 3060,
+    "set": "Whisper of Power",
+    "setSize": 2,
+    "setBonus": "+7,200 Forte",
+    "setPartners": [
+      "Aegis of the Condemned"
+    ],
+    "variant": "IL 3400",
+    "notes": "Artifact Equipment — Paladin mace, Whisper of Power tier"
+  },
+  {
+    "name": "Nightpiercer Bindings",
+    "slot": "Belt",
+    "item_level": 4050,
+    "abilityBonuses": {
+      "Strength": 3,
+      "Intelligence": 3
+    },
+    "ratingStats": {
+      "Critical Strike": 1645,
+      "Defense": 1063,
+      "Deflection": 2278
+    },
+    "combinedRating": 3645,
+    "set": "Finish the Job",
+    "setSize": 3,
+    "setPartners": [
+      "Nightpiercer Choker",
+      "Assassin's Knife"
+    ],
+    "setBonus": "3 of Set: If the target dies while affected by the poison, you gain a 4% power buff. This effect is significantly stronger in Thay zones and dungeons giving 10% power buff."
+  },
+  {
+    "name": "Nightpiercer Choker",
+    "slot": "Neck",
+    "item_level": 4050,
+    "abilityBonuses": {
+      "Charisma": 6
+    },
+    "ratingStats": {
+      "Combat Advantage": 1215,
+      "Defense": 2126,
+      "Awareness": 1215
+    },
+    "combinedRating": 3645,
+    "set": "Finish the Job",
+    "setSize": 3,
+    "setPartners": [
+      "Nightpiercer Bindings",
+      "Assassin's Knife"
+    ],
+    "setBonus": "3 of Set: If the target dies while affected by the poison, you gain a 4% power buff. This effect is significantly stronger in Thay zones and dungeons giving 10% power buff."
+  },
+  {
+    "name": "Tempest Gaze Sigil",
+    "slot": "Pants",
+    "item_level": 3150,
+    "ratingStats": {
+      "Combat Advantage": 1134,
+      "Forte": 1276,
+      "Incoming Healing": 2268
+    },
+    "percentStats": {
+      "Movement Speed": 3
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Charged Bulwark",
+        "description": "Whenever you are healed in combat, gain 8,800 Defense for 10 seconds. (30 second cooldown)"
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2
+  },
+  {
+    "name": "Tempest Gaze Seal",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Critical Strike": 1701,
+      "Defense": 992,
+      "Forte": 1701
+    },
+    "percentStats": {
+      "Movement Speed": 1
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Precision Tactics",
+        "description": "When your Stamina is over 75%, your Critical Strike is increased by 8,800."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2
+  },
+  {
+    "name": "Tempest Gaze Mark",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Critical Severity": 1701,
+      "Deflection": 2126,
+      "Outgoing Healing": 1512
+    },
+    "percentStats": {
+      "Movement Speed": 1
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Precision Tactics",
+        "description": "When your Stamina is over 75%, your Critical Strike is increased by 8,800."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2
+  },
+  {
+    "name": "Tempest Gaze Insignia",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Combat Advantage": 1512,
+      "Critical Severity": 1701,
+      "Critical Avoidance": 1559
+    },
+    "percentStats": {
+      "Movement Speed": 3
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Depleted Advantage",
+        "description": "When your Stamina is under 25%, your Combat Advantage is increased by 8,800."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2
+  },
+  {
+    "name": "Tempest Gaze Crest",
+    "slot": "Pants",
+    "item_level": 3150,
+    "ratingStats": {
+      "Combat Advantage": 1134,
+      "Critical Severity": 2268,
+      "Defense": 992
+    },
+    "percentStats": {
+      "Movement Speed": 3
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Depleted Advantage",
+        "description": "When your Stamina is under 25%, your Combat Advantage is increased by 8,800."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2
+  },
+  {
+    "name": "Tempest Gaze Ink",
+    "slot": "Pants",
+    "item_level": 3150,
+    "ratingStats": {
+      "Critical Strike": 1701,
+      "Critical Severity": 1701,
+      "Deflection": 2126
+    },
+    "percentStats": {
+      "Movement Speed": 3
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Depleted Advantage",
+        "description": "When your Stamina is under 25%, your Combat Advantage is increased by 8,800."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2
+  },
+  {
+    "name": "Tempest Gaze Sigil — Depleted Defiance",
+    "displayName": "Tempest Gaze Sigil",
+    "slot": "Pants",
+    "item_level": 3150,
+    "ratingStats": {
+      "Defense": 1323,
+      "Critical Avoidance": 1559,
+      "Control Resist": 1418
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Depleted Defiance",
+        "description": "When your Stamina is under 15%, your Movement Speed is increased by 20%. This boost only applies during combat."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2,
+    "variant": "Depleted Defiance"
+  },
+  {
+    "name": "Tempest Gaze Seal — Charged Fury",
+    "displayName": "Tempest Gaze Seal",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Critical Strike": 2268,
+      "Incoming Healing": 1701,
+      "Outgoing Healing": 1534
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Charged Fury",
+        "description": "When your Stamina is over 75%, your Power is increased by 7,500."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2,
+    "variant": "Charged Fury"
+  },
+  {
+    "name": "Tempest Gaze Mark — Depleted Defiance",
+    "displayName": "Tempest Gaze Mark",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Critical Severity": 1701,
+      "Deflection": 2126,
+      "Outgoing Healing": 1512
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Depleted Defiance",
+        "description": "When your Stamina is under 15%, your Movement Speed is increased by 20%. This boost only applies during combat."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2,
+    "variant": "Depleted Defiance"
+  },
+  {
+    "name": "Tempest Gaze Crest — Charged Fury",
+    "displayName": "Tempest Gaze Crest",
+    "slot": "Pants",
+    "item_level": 3150,
+    "ratingStats": {
+      "Combat Advantage": 1134,
+      "Critical Strike": 2266,
+      "Defense": 992
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Charged Fury",
+        "description": "When your Stamina is over 75%, your Power is increased by 7,500."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2,
+    "variant": "Charged Fury"
+  },
+  {
+    "name": "Tempest Gaze Insignia — Charged Fury",
+    "displayName": "Tempest Gaze Insignia",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Combat Advantage": 1512,
+      "Critical Severity": 1701,
+      "Critical Avoidance": 1559
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Charged Fury",
+        "description": "When your Stamina is over 75%, your Power is increased by 7,500."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2,
+    "variant": "Charged Fury"
+  },
+  {
+    "name": "Tempest Gaze Ink — Charged Fury",
+    "displayName": "Tempest Gaze Ink",
+    "slot": "Pants",
+    "item_level": 3150,
+    "ratingStats": {
+      "Accuracy": 2457,
+      "Defense": 992,
+      "Forte": 1276
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Charged Fury",
+        "description": "When your Stamina is over 75%, your Power is increased by 7,500."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 2,
+    "variant": "Charged Fury"
+  },
+  {
+    "name": "Graveveil Halo of Finality",
+    "slot": "Ring",
+    "item_level": 4050,
+    "ratingStats": {
+      "Critical Strike": 5668,
+      "Outgoing Healing": 4860
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Overwhelming Support",
+        "description": "When in combat with only one enemy, gain 11,325 Outgoing Healing. This bonus is divided by the total number of enemies you are in combat with."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 8,
+    "source": "Doomvault Remains"
+  },
+  {
+    "name": "Graveveil Ring of Dusk",
+    "slot": "Ring",
+    "item_level": 4050,
+    "ratingStats": {
+      "Critical Strike": 7290,
+      "Critical Severity": 7290
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Assassin's Bloodbath",
+        "description": "Whenever you critically strike an enemy with your Powers, you gain 12,450 Critical Severity for 10 seconds. (15 second cooldown)"
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 8,
+    "source": "Doomvault Remains"
+  },
+  {
+    "name": "Graveveil Loop of Mourning",
+    "slot": "Ring",
+    "item_level": 4050,
+    "ratingStats": {
+      "Combat Advantage": 4860,
+      "Critical Strike": 7290
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "The Ol' Switcheroo",
+        "description": "+11,325 Power, +3,775 Defense."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 8,
+    "source": "Doomvault Remains"
+  },
+  {
+    "name": "Graveveil Coil of Silence",
+    "slot": "Ring",
+    "item_level": 4050,
+    "ratingStats": {
+      "Accuracy": 7898,
+      "Critical Strike": 7290
+    },
+    "percentStats": {
+      "Action Point Gain": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Heroic Tactics",
+        "description": "When your Stamina is over 75%, your Power is increased by 12,450."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 8,
+    "source": "Doomvault Remains"
+  },
+  {
+    "name": "Graveveil Band of Unlife",
+    "slot": "Ring",
+    "item_level": 4050,
+    "ratingStats": {
+      "Critical Strike": 4252,
+      "Forte": 5468
+    },
+    "percentStats": {
+      "Recharge Speed": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "The Ol' Switcheroo",
+        "description": "+11,325 Outgoing Healing, +3,775 Defense."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 8,
+    "source": "Doomvault Remains"
+  },
+  {
+    "name": "Graveveil Hoop of Decay",
+    "slot": "Ring",
+    "item_level": 4050,
+    "ratingStats": {
+      "Defense": 4252,
+      "Awareness": 4860
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 3240,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Reflexes",
+        "description": "Gain up to 12,450 Awareness based on your missing health. The max bonus is achieved at 25% or less health."
+      }
+    ],
+    "set": "Doomvault Remains",
+    "setSize": 8,
+    "source": "Doomvault Remains"
+  },
+  {
+    "name": "Mark of the Convert",
+    "slot": "Shirt",
+    "item_level": 2600,
+    "ratingStats": {
+      "Defense": 819,
+      "Critical Avoidance": 1716,
+      "Deflect Severity": 1756
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2340,
+    "equipBonuses": [
+      {
+        "name": "Precision Tactics",
+        "description": "When your Stamina is over 75%, your Critical Avoidance is increased by 7,275."
+      }
+    ],
+    "set": "Enchanted Awareness",
+    "setSize": 2,
+    "notes": "Glorious Undead Defence Shirt"
+  },
+  {
+    "name": "Mark of the Adept",
+    "slot": "Shirt",
+    "item_level": 2600,
+    "ratingStats": {
+      "Critical Severity": 1404,
+      "Deflection": 1755,
+      "Outgoing Healing": 1248
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2340,
+    "equipBonuses": [
+      {
+        "name": "Challenger's Forte",
+        "description": "When in combat with 3 or more enemies, your Forte is increased by 1,455 every 2 seconds. Every 2 seconds you are in combat with 1 or less enemies, lose 1 stack. Max Stacks: 5 — 7,275 Forte."
+      }
+    ],
+    "set": "Enchanted Forte",
+    "setSize": 2,
+    "notes": "Glorious Undead Healer Shirt"
+  },
+  {
+    "name": "Mark of the Fledgling",
+    "slot": "Shirt",
+    "item_level": 2600,
+    "ratingStats": {
+      "Critical Strike": 1872,
+      "Incoming Healing": 1404,
+      "Outgoing Healing": 936
+    },
+    "percentStats": {
+      "Stamina Regeneration": 1.5
+    },
+    "combinedRating": 2340,
+    "equipBonuses": [
+      {
+        "name": "Challenger's Forte",
+        "description": "When in combat with 3 or more enemies, your Forte is increased by 1,455 every 2 seconds. Every 2 seconds you are in combat with 1 or less enemies, lose 1 stack. Max Stacks: 5 — 7,275 Forte."
+      }
+    ],
+    "set": "Enchanted Forte",
+    "setSize": 2,
+    "notes": "Glorious Undead Healer Shirt variant"
   }
 ]
