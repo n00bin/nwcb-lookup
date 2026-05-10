@@ -1520,12 +1520,24 @@
           </label>
           <input type="range" id="comp-bolster" min="0" max="120" value="100" style="width:100%;">
         </div>
+        <div class="field" style="margin-top:0.4rem;">
+          <label>Companion IL contribution
+            <span class="hint-icon" data-tip="Read this from your in-game character sheet — NW shows it under 'Bolster' on the Companions panel. We don't compute it because the formula varies by character.">?</span>
+          </label>
+          <input type="number" id="comp-il-contrib" min="0" placeholder="e.g. 3960" style="width:100%;">
+        </div>
         <div class="field" style="margin-top:0.6rem;">
           <label>Mount bolster
             <span class="hint-icon" data-tip="0–125%. Scales mount Equip Power rating values and Combat Power magnitude. Insignia stats and Insignia Bonuses are NOT affected by bolster.">?</span>
             <span style="float:right;color:var(--amber);font-weight:600;" id="mount-bolster-display">100%</span>
           </label>
           <input type="range" id="mount-bolster" min="0" max="125" value="100" style="width:100%;">
+        </div>
+        <div class="field" style="margin-top:0.4rem;">
+          <label>Mount IL contribution
+            <span class="hint-icon" data-tip="Read this from your in-game character sheet — NW shows it under 'Bolster' on the Mounts panel.">?</span>
+          </label>
+          <input type="number" id="mount-il-contrib" min="0" placeholder="e.g. 7312" style="width:100%;">
         </div>
         <div class="field" style="margin-top:0.6rem;">
           <label>All companion rarity
@@ -1823,6 +1835,12 @@
       // captured at Mythic base; the MOUNT_INSIGNIAS_TIER_SCALING table
       // gives per-tier IL and stat multiplier (Celestial = 1.5×, etc.).
       insigniaRarity: "Mythic",
+      // Bolster IL contribution to character TIL — read off the user's
+      // in-game character sheet. The displayed values vary by character
+      // (companion gear/enchants/enhancement, active mount equip power)
+      // and we don't yet have the canonical formula, so they're inputs.
+      compBolsterILContribution: 0,
+      mountBolsterILContribution: 0,
       flankUptime: 0.70,  // % of hits with Combat Advantage active (0..1)
       boons: new Map(),  // key: "tier1:1" / "master:3" → { tier, boonId, points or ranks }
       // Order in which master boons were first ranked (by boonId).
@@ -1867,6 +1885,8 @@
           mountBolster: state.mountBolster,
           companionRarity: state.companionRarity,
           insigniaRarity: state.insigniaRarity,
+          compBolsterILContribution: state.compBolsterILContribution,
+          mountBolsterILContribution: state.mountBolsterILContribution,
           boons: [...state.boons],
           masterOrder: state.masterOrder,
           guildBoonPicks: state.guildBoonPicks,
@@ -1905,10 +1925,14 @@
       if (state.mountBolster     == null) state.mountBolster     = 100;
       if (state.companionRarity  == null) state.companionRarity  = "Mythic";
       if (state.insigniaRarity   == null) state.insigniaRarity   = "Mythic";
+      if (state.compBolsterILContribution  == null) state.compBolsterILContribution  = 0;
+      if (state.mountBolsterILContribution == null) state.mountBolsterILContribution = 0;
       setVal("comp-bolster",  state.companionBolster);
       setVal("mount-bolster", state.mountBolster);
       setVal("comp-rarity",   state.companionRarity);
       setVal("insignia-rarity", state.insigniaRarity);
+      setVal("comp-il-contrib",  state.compBolsterILContribution || "");
+      setVal("mount-il-contrib", state.mountBolsterILContribution || "");
       const cbd = document.getElementById("comp-bolster-display");
       if (cbd) cbd.textContent = state.companionBolster + "%";
       const mbd = document.getElementById("mount-bolster-display");
@@ -2962,12 +2986,12 @@
     }
     function computeTILFromBuild() {
       const gearIL = computeGearArtifactIL();
-      const summonedIL = computeSummonedCompIL();
-      const mountIL = computeActiveMountIL();
-      const cb = (state.companionBolster == null ? 100 : +state.companionBolster) / 100;
-      const mb = (state.mountBolster     == null ? 100 : +state.mountBolster)     / 100;
-      const compBolsterIL  = Math.round(summonedIL * (1 + cb));
-      const mountBolsterIL = Math.round(mountIL    * (1 + mb));
+      // Bolster IL contributions are user inputs read off the in-game
+      // character sheet — the formula NW uses isn't well-known and our
+      // earlier auto-computation was over-counting by 5–6×. Defaults are
+      // 0 until the user fills them in.
+      const compBolsterIL  = +state.compBolsterILContribution  || 0;
+      const mountBolsterIL = +state.mountBolsterILContribution || 0;
       return gearIL + compBolsterIL + mountBolsterIL;
     }
     function applyAutoTIL() {
@@ -3501,6 +3525,7 @@
         ench: state.enchants, ovr: state.overloads, kits: state.kits,
         gld: state.guildBoonPicks,
         cb: state.companionBolster, mb: state.mountBolster, cr: state.companionRarity, ir: state.insigniaRarity,
+        cic: state.compBolsterILContribution, mic: state.mountBolsterILContribution,
         boons: [...state.boons], buffs: [...state.buffs]
       });
       if (key === _engineCacheKey && _engineResult) return _engineResult;
@@ -5164,6 +5189,20 @@
         rerenderAll();
       });
     }
+    // Bolster IL contribution inputs — user-typed from in-game character
+    // sheet. Auto-computation isn't reliable; let the player put the
+    // exact NW-displayed value in.
+    function wireILContrib(id, key) {
+      const inp = document.getElementById(id);
+      if (!inp) return;
+      inp.value = state[key] || "";
+      inp.addEventListener("input", e => {
+        state[key] = +e.target.value || 0;
+        rerenderAll();
+      });
+    }
+    wireILContrib("comp-il-contrib",  "compBolsterILContribution");
+    wireILContrib("mount-il-contrib", "mountBolsterILContribution");
     // (Power picker removed — type magnitude directly. Sourcing reliable
     //  per-class power data is deferred until we have a sustainable
     //  pipeline for all 9 classes.)
