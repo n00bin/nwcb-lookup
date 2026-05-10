@@ -52,6 +52,8 @@ const TOON_FORGE_STATS = [
   // === Healing ===
   { name: "Outgoing Healing",  cap: 120, kind: "rating", category: "Healing" },
   { name: "Incoming Healing",  cap: 120, kind: "rating", category: "Healing" },
+  { name: "Overall Outgoing Healing", cap: null, kind: "rating", category: "Healing",
+    note: "Distinct from OH. Flat % multiplier on heal output (set bonuses, certain feats). Doesn't show on in-game OH stat row." },
 ];
 
 // Quick lookup helpers
