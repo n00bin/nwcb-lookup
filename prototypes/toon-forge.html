@@ -1515,17 +1515,40 @@
         <p class="hint">Bolster is what your <strong>top 10 companions</strong> and <strong>top 10 mounts</strong> by quality contribute, even when they're not summoned. Higher quality = higher bolster %. 100% = your gear works as listed; 120%/125% = max (10 Celestial each). See <a href="../mekaniks.html#view-bolster" target="_blank">Mekaniks → Bolster</a> for the per-tier table.</p>
         <div class="field">
           <label>Companion bolster
-            <span class="hint-icon" data-tip="0–120%. Scales summoned companion's Enhancement power. Player bonus powers (the 5 active companion powers) are NOT affected by bolster.">?</span>
+            <span class="hint-icon" data-tip="0–120%. Auto-computed from your companion collection below (top 10 by quality). Scales summoned companion's Enhancement power. Player bonus powers (the 5 active companion powers) are NOT affected by bolster.">?</span>
             <span style="float:right;color:var(--amber);font-weight:600;" id="comp-bolster-display">100%</span>
           </label>
-          <input type="range" id="comp-bolster" min="0" max="120" value="100" style="width:100%;">
+          <input type="range" id="comp-bolster" min="0" max="120" value="100" style="width:100%;opacity:0.85;cursor:not-allowed;" disabled>
         </div>
         <div class="field" style="margin-top:0.6rem;">
           <label>Mount bolster
-            <span class="hint-icon" data-tip="0–125%. Scales mount Equip Power rating values and Combat Power magnitude. Insignia stats and Insignia Bonuses are NOT affected by bolster.">?</span>
+            <span class="hint-icon" data-tip="0–125%. Auto-computed from your mount collection below (top 10 by quality). Scales mount Equip Power rating values and Combat Power magnitude. Insignia stats and Insignia Bonuses are NOT affected by bolster.">?</span>
             <span style="float:right;color:var(--amber);font-weight:600;" id="mount-bolster-display">100%</span>
           </label>
-          <input type="range" id="mount-bolster" min="0" max="125" value="100" style="width:100%;">
+          <input type="range" id="mount-bolster" min="0" max="125" value="100" style="width:100%;opacity:0.85;cursor:not-allowed;" disabled>
+        </div>
+        <div class="field" style="margin-top:0.4rem;">
+          <label>Mount collection
+            <span class="hint-icon" data-tip="How many mounts you own at each rarity. NW takes the top 10 by quality and sums each one's per-tier bolster (Common 1% / Uncommon 2% / Rare 3.5% / Epic 5% / Legendary 7.5% / Mythic 10% / Celestial 12.5%) into your mount bolster %, capped at 125%.">?</span>
+            <span style="float:right;color:var(--text-mute);font-size:0.78rem;" id="mount-collection-summary">top 10 of 0: 0%</span>
+          </label>
+          <div class="mount-collection-grid"
+               style="display:grid;grid-template-columns:repeat(7,1fr);gap:0.3rem;font-size:0.74rem;">
+            <div style="text-align:center;color:var(--text-mute);">Common</div>
+            <div style="text-align:center;color:var(--text-mute);">Uncom.</div>
+            <div style="text-align:center;color:var(--text-mute);">Rare</div>
+            <div style="text-align:center;color:var(--text-mute);">Epic</div>
+            <div style="text-align:center;color:var(--text-mute);">Legen.</div>
+            <div style="text-align:center;color:var(--text-mute);">Mythic</div>
+            <div style="text-align:center;color:var(--text-mute);">Celes.</div>
+            <input type="number" min="0" data-mount-tier="Common"    style="width:100%;text-align:center;">
+            <input type="number" min="0" data-mount-tier="Uncommon"  style="width:100%;text-align:center;">
+            <input type="number" min="0" data-mount-tier="Rare"      style="width:100%;text-align:center;">
+            <input type="number" min="0" data-mount-tier="Epic"      style="width:100%;text-align:center;">
+            <input type="number" min="0" data-mount-tier="Legendary" style="width:100%;text-align:center;">
+            <input type="number" min="0" data-mount-tier="Mythic"    style="width:100%;text-align:center;">
+            <input type="number" min="0" data-mount-tier="Celestial" style="width:100%;text-align:center;">
+          </div>
         </div>
         <div class="field" style="margin-top:0.6rem;">
           <label>Companion collection
@@ -1835,6 +1858,8 @@
       // at each rarity. NW takes the top 10 by quality and sums each one's
       // per-tier bolster % into the total companion bolster (capped at 120).
       compCollection: { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0, Mythic: 0, Celestial: 0 },
+      // Mount collection — same idea, capped at 125%.
+      mountCollection: { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0, Mythic: 0, Celestial: 0 },
       // Tier we assume all 20 slotted insignias are at. Insignia data is
       // captured at Mythic base; the MOUNT_INSIGNIAS_TIER_SCALING table
       // gives per-tier IL and stat multiplier (Celestial = 1.5×, etc.).
@@ -1891,6 +1916,7 @@
           summonedRarity: state.summonedRarity,
           activeCompRarities: state.activeCompRarities,
           compCollection: state.compCollection,
+          mountCollection: state.mountCollection,
           insigniaRarity: state.insigniaRarity,
           boons: [...state.boons],
           masterOrder: state.masterOrder,
@@ -1937,13 +1963,15 @@
       if (!Array.isArray(state.activeCompRarities) || state.activeCompRarities.length !== 5) {
         state.activeCompRarities = [fallback, fallback, fallback, fallback, fallback];
       }
-      // Companion collection (counts by tier) drives the bolster %.
+      // Companion + mount collection (counts by tier) drive their bolster %.
       if (!state.compCollection) {
         state.compCollection = { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0, Mythic: 0, Celestial: 0 };
       }
-      // Push collection counts into the inputs and re-sync the bolster
-      // slider/display from the loaded values.
-      if (typeof applyCompCollectionToInputs === "function") applyCompCollectionToInputs();
+      if (!state.mountCollection) {
+        state.mountCollection = { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0, Mythic: 0, Celestial: 0 };
+      }
+      if (typeof applyCompCollectionToInputs  === "function") applyCompCollectionToInputs();
+      if (typeof applyMountCollectionToInputs === "function") applyMountCollectionToInputs();
       setVal("comp-bolster",  state.companionBolster);
       setVal("mount-bolster", state.mountBolster);
       setVal("comp-rarity",   state.companionRarity);
@@ -3101,8 +3129,8 @@
       "Mythic":    750,
       "Celestial": 900
     };
-    // Bolster % per companion tier (verified from mekaniks.html docs).
-    // Used to compute companion bolster % from a player's collection counts.
+    // Bolster % per tier (verified from mekaniks.html docs). Companions
+    // and mounts share most tier weights but diverge at Celestial.
     const COMP_BOLSTER_PCT_PER_TIER = {
       "Common":    1,
       "Uncommon":  2,
@@ -3112,9 +3140,17 @@
       "Mythic":    10,
       "Celestial": 12
     };
-    // Sum the per-tier bolster contributions from the user's collection,
-    // counting only the top 10 highest-quality companions. Capped at 120%.
-    function compBolsterFromCollection(coll) {
+    const MOUNT_BOLSTER_PCT_PER_TIER = {
+      "Common":    1,
+      "Uncommon":  2,
+      "Rare":      3.5,
+      "Epic":      5,
+      "Legendary": 7.5,
+      "Mythic":    10,
+      "Celestial": 12.5
+    };
+    // Sum the per-tier bolster from the top 10 highest-quality entries.
+    function bolsterFromCollection(coll, table, cap) {
       const order = ["Celestial","Mythic","Legendary","Epic","Rare","Uncommon","Common"];
       let need = 10;
       let pct = 0;
@@ -3122,10 +3158,16 @@
         if (need <= 0) break;
         const have = +(coll && coll[tier]) || 0;
         const take = Math.min(have, need);
-        pct += take * COMP_BOLSTER_PCT_PER_TIER[tier];
+        pct += take * table[tier];
         need -= take;
       }
-      return Math.min(120, Math.round(pct * 10) / 10);
+      return Math.min(cap, Math.round(pct * 10) / 10);
+    }
+    function compBolsterFromCollection(coll) {
+      return bolsterFromCollection(coll, COMP_BOLSTER_PCT_PER_TIER, 120);
+    }
+    function mountBolsterFromCollection(coll) {
+      return bolsterFromCollection(coll, MOUNT_BOLSTER_PCT_PER_TIER, 125);
     }
 
     function compRarityScale(targetRarity, basePower) {
@@ -3661,7 +3703,7 @@
         gld: state.guildBoonPicks,
         cb: state.companionBolster, mb: state.mountBolster, cr: state.companionRarity, ir: state.insigniaRarity,
         sr: state.summonedRarity, acr: state.activeCompRarities,
-        cc: state.compCollection,
+        cc: state.compCollection, mc: state.mountCollection,
         boons: [...state.boons], buffs: [...state.buffs]
       });
       if (key === _engineCacheKey && _engineResult) return _engineResult;
@@ -5319,23 +5361,10 @@
       btn.addEventListener("click", () => setFlank(+btn.dataset.flankPreset));
     });
 
-    // Bolster sliders (companion + mount). Update state and rerender.
-    function wireBolsterSlider(sliderId, displayId, stateKey) {
-      const slider = document.getElementById(sliderId);
-      const display = document.getElementById(displayId);
-      if (!slider) return;
-      // Initial value from state
-      slider.value = state[stateKey];
-      if (display) display.textContent = state[stateKey] + "%";
-      slider.addEventListener("input", e => {
-        const v = Math.max(0, Math.min(+slider.max, +e.target.value));
-        state[stateKey] = v;
-        if (display) display.textContent = v + "%";
-        rerenderAll();
-      });
-    }
-    wireBolsterSlider("comp-bolster",  "comp-bolster-display",  "companionBolster");
-    wireBolsterSlider("mount-bolster", "mount-bolster-display", "mountBolster");
+    // Bolster sliders are now visual indicators only — values are auto-
+    // computed from the comp/mount collection inputs below them. Each
+    // slider's value/display is synced inside syncCompBolsterFromCollection
+    // and syncMountBolsterFromCollection.
 
     // Companion collection inputs (7 by tier) — drives the companion
     // bolster slider via NW's "top 10 by quality" formula.
@@ -5370,6 +5399,38 @@
       });
     });
     applyCompCollectionToInputs();
+
+    // Mount collection inputs (7 by tier) — drives the mount bolster slider.
+    function syncMountBolsterFromCollection() {
+      const pct = mountBolsterFromCollection(state.mountCollection);
+      state.mountBolster = pct;
+      const slider = document.getElementById("mount-bolster");
+      const display = document.getElementById("mount-bolster-display");
+      if (slider) slider.value = pct;
+      if (display) display.textContent = pct + "%";
+      const summary = document.getElementById("mount-collection-summary");
+      if (summary) {
+        const total = Object.values(state.mountCollection || {}).reduce((a,b) => a + (+b||0), 0);
+        summary.textContent = "top 10 of " + total + ": " + pct + "%";
+      }
+    }
+    function applyMountCollectionToInputs() {
+      document.querySelectorAll("input[data-mount-tier]").forEach(inp => {
+        const tier = inp.dataset.mountTier;
+        inp.value = (state.mountCollection && state.mountCollection[tier]) || "";
+      });
+      syncMountBolsterFromCollection();
+    }
+    document.querySelectorAll("input[data-mount-tier]").forEach(inp => {
+      inp.addEventListener("input", e => {
+        const tier = inp.dataset.mountTier;
+        if (!state.mountCollection) state.mountCollection = { Common:0,Uncommon:0,Rare:0,Epic:0,Legendary:0,Mythic:0,Celestial:0 };
+        state.mountCollection[tier] = Math.max(0, +e.target.value || 0);
+        syncMountBolsterFromCollection();
+        rerenderAll();
+      });
+    });
+    applyMountCollectionToInputs();
     // Insignia tier dropdown — scales all slotted insignia IL + CR + stats
     const insRaritySel = document.getElementById("insignia-rarity");
     if (insRaritySel) {
