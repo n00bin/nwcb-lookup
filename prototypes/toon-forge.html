@@ -1814,11 +1814,14 @@
       // i.e. data values apply as listed. See mekaniks.html "Bolster".
       companionBolster: 100,
       mountBolster: 100,
-      // Rarity tier we assume your slotted comps (summoned + 5 active) are
-      // running at. Companion power data is captured at each power's base
-      // rarity (item_level field); the engine scales CR + stats[] from the
-      // base IL up to this target IL.
+      // Rarity tiers per slotted companion. Each slot scales independently:
+      //   summonedRarity            → the summoned comp
+      //   activeCompRarities[0..4]  → the 5 active comp slots
+      // companionRarity remains as a default/bulk-set value (and a fallback
+      // for older saves that didn't track per-slot rarity).
       companionRarity: "Mythic",
+      summonedRarity: "Mythic",
+      activeCompRarities: ["Mythic", "Mythic", "Mythic", "Mythic", "Mythic"],
       // Tier we assume all 20 slotted insignias are at. Insignia data is
       // captured at Mythic base; the MOUNT_INSIGNIAS_TIER_SCALING table
       // gives per-tier IL and stat multiplier (Celestial = 1.5×, etc.).
@@ -1872,9 +1875,9 @@
           companionBolster: state.companionBolster,
           mountBolster: state.mountBolster,
           companionRarity: state.companionRarity,
+          summonedRarity: state.summonedRarity,
+          activeCompRarities: state.activeCompRarities,
           insigniaRarity: state.insigniaRarity,
-          compBolsterILContribution: state.compBolsterILContribution,
-          mountBolsterILContribution: state.mountBolsterILContribution,
           boons: [...state.boons],
           masterOrder: state.masterOrder,
           guildBoonPicks: state.guildBoonPicks,
@@ -1913,6 +1916,13 @@
       if (state.mountBolster     == null) state.mountBolster     = 100;
       if (state.companionRarity  == null) state.companionRarity  = "Mythic";
       if (state.insigniaRarity   == null) state.insigniaRarity   = "Mythic";
+      // Per-slot rarities — fall back to the legacy single-tier value
+      // (companionRarity) so saves from before per-slot still work.
+      const fallback = state.companionRarity || "Mythic";
+      if (state.summonedRarity   == null) state.summonedRarity   = fallback;
+      if (!Array.isArray(state.activeCompRarities) || state.activeCompRarities.length !== 5) {
+        state.activeCompRarities = [fallback, fallback, fallback, fallback, fallback];
+      }
       setVal("comp-bolster",  state.companionBolster);
       setVal("mount-bolster", state.mountBolster);
       setVal("comp-rarity",   state.companionRarity);
@@ -2999,12 +3009,15 @@
       const gearIL = computeGearArtifactIL();
       // Auto-computed bolster IL contributions:
       //   contribution = base_IL_for_rarity × (bolster_pct / 100)
-      // Verified against n00b's in-game character sheet.
-      const compRarity = state.companionRarity || "Mythic";
+      // Companion side uses the SUMMONED comp's rarity (only the summoned
+      // contributes to the bolster IL number, per n00b's in-game tests).
+      // Mount side uses the global rarity until per-mount rarity exists.
+      const summonedR = state.summonedRarity || state.companionRarity || "Mythic";
+      const mountR    = state.companionRarity || "Mythic";
       const cb = (state.companionBolster == null ? 100 : +state.companionBolster) / 100;
       const mb = (state.mountBolster     == null ? 100 : +state.mountBolster)     / 100;
-      const compBase  = COMP_BOLSTER_BASE_IL[compRarity]  || COMP_BOLSTER_BASE_IL.Mythic;
-      const mountBase = MOUNT_BOLSTER_BASE_IL[compRarity] || MOUNT_BOLSTER_BASE_IL.Mythic;
+      const compBase  = COMP_BOLSTER_BASE_IL[summonedR] || COMP_BOLSTER_BASE_IL.Mythic;
+      const mountBase = MOUNT_BOLSTER_BASE_IL[mountR]   || MOUNT_BOLSTER_BASE_IL.Mythic;
       const compBolsterIL  = Math.round(compBase  * cb);
       const mountBolsterIL = Math.round(mountBase * mb);
       return gearIL + compBolsterIL + mountBolsterIL;
@@ -3344,14 +3357,15 @@
       // plus its per-stat percent contributions. Not bolstered (player bonus
       // powers are exempt per mekaniks docs). Companion power stats[] are
       // percentages stored at the data's BASE rarity (item_level field);
-      // we scale them up to the user's chosen `companionRarity`.
-      const compRarity = s.companionRarity || "Mythic";
-      function pushCompanionPower(label, power) {
+      // we scale them up to the rarity passed in for this slot.
+      const defaultRarity = s.companionRarity || "Mythic";
+      function pushCompanionPower(label, power, rarity) {
         if (!power) return;
-        const scale = compRarityScale(compRarity, power);
+        const r = rarity || defaultRarity;
+        const scale = compRarityScale(r, power);
         const cr = expandCR(power.combinedRating, scale);
         if (cr) {
-          buffs.push({ source: label + " CR (" + compRarity + ")", ratingStats: cr });
+          buffs.push({ source: label + " CR (" + r + ")", ratingStats: cr });
         }
         const percentStats = {};
         for (const st of (power.stats || [])) {
@@ -3359,23 +3373,30 @@
           percentStats[st.stat] = (percentStats[st.stat] || 0) + (st.value || 0) * scale;
         }
         if (Object.keys(percentStats).length) {
-          buffs.push({ source: label + " bonus (" + compRarity + ")", percentStats });
+          buffs.push({ source: label + " bonus (" + r + ")", percentStats });
         }
       }
 
       // Summoned companion's bonus power — applies to the player like the
-      // 5 active. Not bolstered.
+      // 5 active. Not bolstered. Uses summoned-specific rarity.
       if (summonedComp && summonedComp.powerRef) {
-        pushCompanionPower("Summoned: " + summonedComp.name, findCompanionPower(summonedComp.powerRef));
+        pushCompanionPower("Summoned: " + summonedComp.name,
+          findCompanionPower(summonedComp.powerRef),
+          s.summonedRarity || defaultRarity);
       }
 
       // Active (non-summoned) companions — each slotted companion's bonus
       // power contributes CR + per-stat percents to the player. Not bolstered.
-      for (const compName of (s.activeComps || [])) {
+      // Each slot has its own rarity from activeCompRarities[i].
+      const activeRarities = Array.isArray(s.activeCompRarities) ? s.activeCompRarities : [];
+      for (let i = 0; i < (s.activeComps || []).length; i++) {
+        const compName = s.activeComps[i];
         if (!compName) continue;
         const c = findCompanionByName(compName);
         if (!c) continue;
-        pushCompanionPower("Active: " + c.name, findCompanionPower(c.powerRef));
+        pushCompanionPower("Active: " + c.name,
+          findCompanionPower(c.powerRef),
+          activeRarities[i] || defaultRarity);
       }
 
       // Companion enchantment (slotType: "companion") on the summoned comp.
@@ -3591,7 +3612,7 @@
         ench: state.enchants, ovr: state.overloads, kits: state.kits,
         gld: state.guildBoonPicks,
         cb: state.companionBolster, mb: state.mountBolster, cr: state.companionRarity, ir: state.insigniaRarity,
-        cic: state.compBolsterILContribution, mic: state.mountBolsterILContribution,
+        sr: state.summonedRarity, acr: state.activeCompRarities,
         boons: [...state.boons], buffs: [...state.buffs]
       });
       if (key === _engineCacheKey && _engineResult) return _engineResult;
@@ -4493,23 +4514,53 @@
       const wrap = document.getElementById("comp-pick-rows");
       if (!wrap) return;
       const rows = [
-        { type: "summoned", label: "Summoned", value: state.summoned },
-        ...ACTIVE_SLOT_TYPES.map((t, i) => ({ type: "active", label: t, idx: i, value: state.activeComps[i] }))
+        { type: "summoned", label: "Summoned", value: state.summoned, rarity: state.summonedRarity || state.companionRarity || "Mythic" },
+        ...ACTIVE_SLOT_TYPES.map((t, i) => ({
+          type: "active", label: t, idx: i,
+          value: state.activeComps[i],
+          rarity: (state.activeCompRarities && state.activeCompRarities[i]) || state.companionRarity || "Mythic"
+        }))
       ];
+      const RARITY_OPTS = ["Common","Uncommon","Rare","Epic","Legendary","Mythic","Celestial"];
       let html = "";
       for (const r of rows) {
         const filled = !!r.value;
         const text = filled
           ? (r.type === "summoned" ? "★ " : `${r.label}: `) + r.value
           : `+ ${r.label}`;
-        html += `<div class="comp-row-active">
+        const rarityOpts = RARITY_OPTS.map(t =>
+          `<option value="${t}"${t === r.rarity ? " selected" : ""}>${t}</option>`
+        ).join("");
+        html += `<div class="comp-row-active" style="display:flex;gap:0.4rem;align-items:center;">
           <div class="comp-slot ${filled ? "filled" : ""} ${r.type === "summoned" ? "summoned" : ""}"
-               data-pick-row="${r.type}"${r.idx !== undefined ? ` data-idx="${r.idx}"` : ""}>
+               data-pick-row="${r.type}"${r.idx !== undefined ? ` data-idx="${r.idx}"` : ""}
+               style="flex:1;">
             ${text}
           </div>
+          <select class="comp-rarity-mini" data-rarity-row="${r.type}"${r.idx !== undefined ? ` data-idx="${r.idx}"` : ""}
+                  style="font-size:0.78rem;padding:0.3rem 0.4rem;background:var(--elevated);color:var(--text);border:1px solid var(--border);border-radius:4px;">
+            ${rarityOpts}
+          </select>
         </div>`;
       }
       wrap.innerHTML = html;
+
+      // Per-slot rarity dropdowns: update the matching state field on change.
+      wrap.querySelectorAll("select[data-rarity-row]").forEach(sel => {
+        sel.addEventListener("change", e => {
+          const v = e.target.value;
+          if (sel.dataset.rarityRow === "summoned") {
+            state.summonedRarity = v;
+          } else {
+            const i = +sel.dataset.idx;
+            if (!Array.isArray(state.activeCompRarities)) {
+              state.activeCompRarities = ["Mythic","Mythic","Mythic","Mythic","Mythic"];
+            }
+            state.activeCompRarities[i] = v;
+          }
+          rerenderAll();
+        });
+      });
 
       wrap.querySelectorAll("[data-pick-row]").forEach(el => {
         el.addEventListener("click", () => {
@@ -5237,12 +5288,18 @@
     wireBolsterSlider("comp-bolster",  "comp-bolster-display",  "companionBolster");
     wireBolsterSlider("mount-bolster", "mount-bolster-display", "mountBolster");
 
-    // Companion rarity dropdown — scales all 6 slotted comps' CR + stats[]
+    // "All companion rarity" — bulk action that cascades to all 6 per-slot
+    // rarities (summoned + 5 active). Each slot can still be tweaked
+    // individually after via the per-row dropdowns.
     const compRaritySel = document.getElementById("comp-rarity");
     if (compRaritySel) {
       compRaritySel.value = state.companionRarity || "Mythic";
       compRaritySel.addEventListener("change", e => {
-        state.companionRarity = e.target.value;
+        const v = e.target.value;
+        state.companionRarity = v;
+        state.summonedRarity = v;
+        state.activeCompRarities = [v, v, v, v, v];
+        renderCompPickRows();   // rebuild per-row dropdowns to reflect bulk
         rerenderAll();
       });
     }
