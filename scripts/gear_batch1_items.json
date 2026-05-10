@@ -1246,5 +1246,571 @@
     "setSize": 2,
     "source": "Soul Harvest (Advanced)",
     "tier": "Advanced"
+  },
+  {
+    "name": "Oathbreaker's Malevolence · IL 4800",
+    "displayName": "Oathbreaker's Malevolence",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 4800,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Power": 1680,
+      "Defense": 1680,
+      "Outgoing Healing": 4920
+    },
+    "combinedRating": 4320,
+    "weaponDamage": 180,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)",
+    "tier": "Advanced"
+  },
+  {
+    "name": "Greaves of the Iron Bulwark",
+    "slot": "Feet",
+    "item_level": 4700,
+    "allowedClasses": [
+      "Paladin",
+      "Barbarian",
+      "Fighter"
+    ],
+    "ratingStats": {
+      "Awareness": 2538,
+      "Critical Avoidance": 4265
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Immovable Bulwark",
+        "description": "Standing still > 1s: +2.5% Defense and +4% Deflect (until you move)"
+      }
+    ],
+    "set": "Dread March Armor",
+    "setSize": 2,
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Boots of the Endless March",
+    "slot": "Feet",
+    "item_level": 4300,
+    "ratingStats": {
+      "Critical Avoidance": 3193,
+      "Control Resist": 3348
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Abyssal Might (Greater)",
+        "description": "On encounter use: 15% chance for +10% CritSev for 8s"
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Gauntlets of the High Hierarch",
+    "slot": "Arms",
+    "item_level": 4300,
+    "ratingStats": {
+      "Critical Severity": 4257,
+      "Defense": 2032
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Fount of Healing (Greater)",
+        "description": "On dmg > 50% MaxHP single blow: drop 3 orbs (15% MaxHP each); orb pickup grants +2% Forte 10s (30s cd)"
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Cuirass of the Black Flame",
+    "slot": "Armor",
+    "item_level": 4300,
+    "ratingStats": {
+      "Accuracy": 3775,
+      "Combat Advantage": 2838,
+      "Forte": 3193
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Executioner's Remedy (Greater)",
+        "description": "On kill: +5% health"
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Bindings of the Death Pact",
+    "slot": "Arms",
+    "item_level": 4300,
+    "ratingStats": {
+      "Accuracy": 4612,
+      "Critical Severity": 3483
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Berserking Might (Greater)",
+        "description": "+6.9% damage for 5s to each enemy you're fighting (max 10 targets)"
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Treads of the Arch-Thrall",
+    "slot": "Feet",
+    "item_level": 4300,
+    "ratingStats": {
+      "Combat Advantage": 2838,
+      "Forte": 2612
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Eagle's Mastery (Greater)",
+        "description": "On dmg > 15% MaxHP single blow: +1% Power/CritStrike/CritSev for 10s. Max 5 (5% each)"
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Hood of the Subjugator",
+    "slot": "Head",
+    "item_level": 4300,
+    "ratingStats": {
+      "Critical Severity": 3483,
+      "Outgoing Healing": 2838
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Survivor's Grace (Greater)",
+        "description": "When your health is above 90%, your Outgoing Healing is increased by 9%. When your health is below 50%, Movement Speed is increased by 20%."
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Vestments of the Crimson Magister",
+    "slot": "Armor",
+    "item_level": 4300,
+    "ratingStats": {
+      "Combat Advantage": 2838,
+      "Critical Bonus": 2902,
+      "Combat Resistance": 2902
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Thayan Hunter (Greater)",
+        "description": "+3% Power and Defense in Thay. +2% Power and Defense outside of Thay."
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Veil of the Eternal Enclave",
+    "slot": "Head",
+    "item_level": 4300,
+    "ratingStats": {
+      "Combat Advantage": 2064,
+      "Critical Severity": 2322
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Critical Daily (Greater)",
+        "description": "When you deal damage with a Daily power, your Critical Strike is increased by 15% for 10 seconds (10 second cooldown)."
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Greaves of the Unbroken Doctrine",
+    "slot": "Feet",
+    "item_level": 4300,
+    "ratingStats": {
+      "Awareness": 2838,
+      "Outgoing Healing": 3483
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Undying's Grasp (Greater)",
+        "description": "When hit at 30% HP or lower, gain 40% Incoming Healing for 8 seconds and 13% Movement Speed (15 second cooldown)."
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Crown of the Unyielding Will",
+    "slot": "Head",
+    "item_level": 4300,
+    "ratingStats": {
+      "Awareness": 2322,
+      "Critical Avoidance": 3902
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Gladiator's Sustenance (Greater)",
+        "description": "For every 10 seconds you are in combat, you gain 2.4% Incoming Healing. Max Stacks: 5 — 2.4% Incoming Healing."
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Bulwark of the Eternal Zulkirate",
+    "slot": "Armor",
+    "item_level": 4300,
+    "ratingStats": {
+      "Deflect Severity": 4154,
+      "Defense": 2612,
+      "Control Bonus": 3548
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Ruthless Might (Greater)",
+        "description": "When you damage or heal your target for more than 10% of your Maximum Hit Points in a single blow, you gain 1.5% Critical Strike and Critical Severity for 15 seconds. Max Stacks: 5 — 7.5% Critical Strike and Critical Severity."
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Vambraces of the Tyrant-King",
+    "slot": "Arms",
+    "item_level": 4300,
+    "ratingStats": {
+      "Accuracy": 4612,
+      "Combat Advantage": 2322
+    },
+    "combinedRating": 3870,
+    "equipBonuses": [
+      {
+        "name": "Warden's Versatility (Greater)",
+        "description": "When your health is 50% or more, your Defense is increased by 4%. When your health is below 50%, Power is increased by 7%."
+      }
+    ],
+    "set": "Eternal Dominion Armor",
+    "setSize": 2,
+    "source": "Shackles of Divinity (Master)"
+  },
+  {
+    "name": "Sabatons of the Deathless Faith",
+    "slot": "Feet",
+    "item_level": 4550,
+    "ratingStats": {
+      "Critical Strike": 3686,
+      "Forte": 3378
+    },
+    "combinedRating": 4095,
+    "equipBonuses": [
+      {
+        "name": "Healer's Influence (Ascendant)",
+        "description": "Healing an ally with an Encounter power heals you for 80,000 and grants the allies close to you 3.5% Defense for 5 seconds."
+      }
+    ],
+    "set": "Supreme Dominion Armor",
+    "setSize": 2,
+    "tier": "Ascendant"
+  },
+  {
+    "name": "Vambraces of the Unbreakable Creed",
+    "slot": "Arms",
+    "item_level": 4550,
+    "ratingStats": {
+      "Critical Severity": 3686,
+      "Forte": 3378
+    },
+    "combinedRating": 4095,
+    "equipBonuses": [
+      {
+        "name": "Warden's Reflexes (Ascendant)",
+        "description": "When you use an encounter power, you have a 30% chance to gain 12% Awareness for 6 seconds."
+      }
+    ],
+    "set": "Supreme Dominion Armor",
+    "setSize": 2,
+    "tier": "Ascendant"
+  },
+  {
+    "name": "Aegis of the Bloodwrought Covenant",
+    "slot": "Armor",
+    "item_level": 4550,
+    "ratingStats": {
+      "Critical Strike": 4505,
+      "Forte": 2150,
+      "Outgoing Healing": 2457
+    },
+    "combinedRating": 4095,
+    "equipBonuses": [
+      {
+        "name": "Gladiator's Restoration (Ascendant)",
+        "description": "For every 5 seconds you are in combat, you gain 1% Outgoing Healing and Critical Strike. Max Stacks: 5 — 5% Outgoing Healing and Critical Strike. You gain +3% Forte."
+      }
+    ],
+    "set": "Supreme Dominion Armor",
+    "setSize": 2,
+    "tier": "Ascendant"
+  },
+  {
+    "name": "Gauntlets of the Wrathborn",
+    "slot": "Arms",
+    "item_level": 4550,
+    "ratingStats": {
+      "Accuracy": 3993,
+      "Critical Severity": 3686
+    },
+    "combinedRating": 4095,
+    "equipBonuses": [
+      {
+        "name": "Enveloped Rage (Ascendant)",
+        "description": "When in combat with 1 enemy, your Accuracy is increased by 1.6% every 2 seconds. Every 2 seconds you are in combat with 2 or more enemies, lose 1 stack. Max Stacks: 5 — 8% Accuracy. You gain +4% Combat Advantage."
+      }
+    ],
+    "set": "Supreme Dominion Armor",
+    "setSize": 2,
+    "tier": "Ascendant"
+  },
+  {
+    "name": "Warboots of the Cataclysmic March",
+    "slot": "Feet",
+    "item_level": 4550,
+    "ratingStats": {
+      "Critical Avoidance": 3378,
+      "Combat Resistance": 3686
+    },
+    "combinedRating": 4095,
+    "equipBonuses": [
+      {
+        "name": "Ghosted (Ascendant)",
+        "description": "Whenever you are struck by a Critical Strike, you have a 10% chance to increase your Maximum Hit Points by 15% and gain 3% Defense for 10 seconds. Disabled in Thay Arena PvP."
+      }
+    ],
+    "set": "Supreme Dominion Armor",
+    "setSize": 2,
+    "tier": "Ascendant"
+  },
+  {
+    "name": "Visage of the Eternal Herald",
+    "slot": "Head",
+    "item_level": 4550,
+    "ratingStats": {
+      "Critical Severity": 4305,
+      "Outgoing Healing": 2457
+    },
+    "combinedRating": 4095,
+    "equipBonuses": [
+      {
+        "name": "Ruthless Resources (Ascendant)",
+        "description": "When you damage or heal your target for more than 10% of your Maximum Hit Points, you gain 3% faster Divinity/Performance/Soulweave regeneration for 15 seconds. Max Stacks: 5. You gain +5% Critical Strike."
+      }
+    ],
+    "set": "Supreme Dominion Armor",
+    "setSize": 2,
+    "tier": "Ascendant"
+  },
+  {
+    "name": "Cuirass of Endless Butchery",
+    "slot": "Armor",
+    "item_level": 4550,
+    "ratingStats": {
+      "Defense": 2628,
+      "Forte": 2150,
+      "Incoming Healing": 3686
+    },
+    "combinedRating": 4095,
+    "equipBonuses": [
+      {
+        "name": "Divine Blessing (Ascendant)",
+        "description": "Your current Hit Points decreases your Incoming Damage, up to a max of 4%. Your maximum Hit Points are increased by 5%."
+      }
+    ],
+    "set": "Supreme Dominion Armor",
+    "setSize": 2,
+    "tier": "Ascendant"
+  },
+  {
+    "name": "Crown of the Everscourge",
+    "slot": "Head",
+    "item_level": 4550,
+    "ratingStats": {
+      "Critical Strike": 4505,
+      "Forte": 2764
+    },
+    "combinedRating": 4095,
+    "equipBonuses": [
+      {
+        "name": "Enduring Advantage (Ascendant)",
+        "description": "Your current Hit Points increases your Combat Advantage, up to a maximum of 7%. You gain 5% Recharge speed."
+      }
+    ],
+    "set": "Supreme Dominion Armor",
+    "setSize": 2,
+    "tier": "Ascendant"
+  },
+  {
+    "name": "Ebon Crusader's Aegis",
+    "slot": "Off Hand",
+    "subSlot": "Shield",
+    "item_level": 4000,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "ratingStats": {
+      "Critical Strike": 3960,
+      "Awareness": 2160
+    },
+    "combinedRating": 3600,
+    "equipBonuses": [
+      {
+        "name": "Blood Bargain Equip",
+        "description": "Whenever you are struck by a Critical Strike, you have a 10% chance to increase your Critical Avoidance by 10% and gain 5% Power for 10 seconds."
+      }
+    ],
+    "set": "Blood Bargain",
+    "setSize": 2,
+    "setBonus": "While in Thay, your Movement Speed is increased by 12% and your Forte is increased by 8%.",
+    "setPartners": [
+      "Oathbreaker's Judgment"
+    ],
+    "notes": "Heavy, Off-Hand, Shield"
+  },
+  {
+    "name": "Oathbreaker's Judgment",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 4000,
+    "allowedClasses": [
+      "Paladin"
+    ],
+    "weaponDamage": 100,
+    "ratingStats": {
+      "Awareness": 2640,
+      "Forte": 2430
+    },
+    "combinedRating": 3600,
+    "equipBonuses": [
+      {
+        "name": "Blood Bargain Equip",
+        "description": "Whenever you are struck by a Critical Strike, you have a 10% chance to increase your Critical Avoidance by 10% and gain 5% Power for 10 seconds."
+      }
+    ],
+    "set": "Blood Bargain",
+    "setSize": 2,
+    "setBonus": "While in Thay, your Movement Speed is increased by 12% and your Forte is increased by 8%.",
+    "setPartners": [
+      "Ebon Crusader's Aegis"
+    ],
+    "notes": "Blade, Weapon"
+  },
+  {
+    "name": "Bloodwoven Brands",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Defense": 1323,
+      "Critical Avoidance": 1701,
+      "Combat Resistance": 1418,
+      "Control Bonus": 1418
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Warden's Defense",
+        "description": "Whenever you are damaged for more than 15% of your Maximum Hit Points in a single blow, you gain 3% Defense for 10 seconds."
+      }
+    ],
+    "set": "Enchanted Awareness",
+    "setSize": 2,
+    "notes": "Defense Shirt"
+  },
+  {
+    "name": "Bloodwoven Symbols",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Critical Strike": 1701,
+      "Forte": 1701,
+      "Outgoing Healing": 1134
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Medic's Haste",
+        "description": "Whenever you heal an ally you have a chance to gain +3% Recharge speed for 5 seconds. (7 second cooldown)"
+      }
+    ],
+    "set": "Enchanted Healing",
+    "setSize": 2,
+    "notes": "Healer Shirt"
+  },
+  {
+    "name": "Bloodwoven Signs",
+    "slot": "Shirt",
+    "item_level": 3150,
+    "ratingStats": {
+      "Combat Advantage": 1512,
+      "Critical Severity": 2268,
+      "Awareness": 1134
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Occult Advantage",
+        "description": "+5% Combat Advantage, -5% Accuracy."
+      }
+    ],
+    "set": "Enchanted Advantage",
+    "setSize": 2,
+    "notes": "Offense Shirt"
+  },
+  {
+    "name": "Bloodwoven Sigils",
+    "slot": "Pants",
+    "item_level": 3150,
+    "ratingStats": {
+      "Combat Advantage": 1134,
+      "Critical Strike": 2268,
+      "Defense": 992
+    },
+    "combinedRating": 2835,
+    "equipBonuses": [
+      {
+        "name": "Reckless Advantage",
+        "description": "Whenever you deal damage to an enemy, gain a stack of Reckless Advantage, increasing your Combat Advantage by 2% but decreasing your Critical Avoidance by 1.5% for 5 seconds. (Max 3 stacks)"
+      }
+    ],
+    "set": "Enchanted Advantage",
+    "setSize": 2,
+    "notes": "Offense Pants (paired with Bloodwoven Signs)"
   }
 ]
