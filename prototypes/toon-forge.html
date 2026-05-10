@@ -3609,12 +3609,21 @@
       // (e.g., "+1.5% OH per teammate within 20'" or "on crit") and is
       // skipped for the standing-around stat panel. Conditional bonuses
       // can be toggled on in the damage simulator separately.
+      const currentRoleKey = String(s.role || "").toLowerCase();
+      function roleMatches(itemRole) {
+        if (!itemRole) return true;
+        const r = String(itemRole).toLowerCase();
+        if (r === currentRoleKey) return true;
+        if ((r === "healer" || r === "heal") && (currentRoleKey === "healer" || currentRoleKey === "heal")) return true;
+        return false;
+      }
       function ingestEquipBonuses(label, item) {
         if (!item || !Array.isArray(item.equipBonuses)) return;
         for (const eb of item.equipBonuses) {
           if (!eb || !eb.stat || eb.amount == null) continue;
           if (eb.scope && eb.scope !== "self") continue;  // party/enemy buffs handled elsewhere
           if (eb.alwaysActive === false) continue;        // conditional → skip standing-around
+          if (eb.role && !roleMatches(eb.role)) continue; // role-conditional set bonuses
           if (eb.type === "Equip") {
             buffs.push({
               source: `${label} bonus: ${eb.name || eb.stat}`,
