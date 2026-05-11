@@ -3523,6 +3523,13 @@
       }
 
       // Guild boons — 1 pick per category (Offense / Defense / Utility).
+      // Each active guild boon contributes:
+      //   1) Its specific stat bonus (e.g., +3000 Crit Sev rating)
+      //   2) Its combinedRating distributed to all 13 core stats
+      //      (each Celestial-tier guild boon: CR 800)
+      // The CR distribution was previously dropped — verified by n00b
+      // 2026-05-11. Only the active 3 picks contribute, NOT the full
+      // unlocked roster.
       for (const cat of ["Offense", "Defense", "Utility"]) {
         const name = (s.guildBoonPicks || {})[cat];
         if (!name) continue;
@@ -3532,6 +3539,15 @@
         if (b.statType === "percent") entry.percentStats = { [b.stat]: b.amount || 0 };
         else                          entry.ratingStats  = { [b.stat]: b.amount || 0 };
         buffs.push(entry);
+        if (b.combinedRating) {
+          const cr = expandCR(b.combinedRating, 1);
+          if (cr) {
+            buffs.push({
+              source: `Guild ${cat} CR: ${b.name}`,
+              ratingStats: cr
+            });
+          }
+        }
       }
 
       // Paragon Class Features — passive abilities granted by the chosen
