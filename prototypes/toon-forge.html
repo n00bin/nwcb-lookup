@@ -3913,16 +3913,23 @@
         }
       }
 
-      // Paragon Class Features — passive abilities granted by the chosen
-      // class+paragon combo (e.g. Oathkeeper's Composure / Aura of
-      // Restoration). Until we have a UI for the user to pick their
-      // active 2 class features, the paragon entry in classes.json carries
-      // a default list. Source: in-game Powers screenshots from n00b
-      // 2026-05-11. Each entry can contribute percentStats and/or
-      // ratingStats just like a buff.
+      // Class & Paragon features — passive abilities granted by the
+      // chosen class+paragon combo. Two layers:
+      //   1) Class-level (e.g. Paladin's Divine Protection — applies to
+      //      every Paladin regardless of paragon).
+      //   2) Paragon-level (e.g. Oathkeeper's Composure / Aura of
+      //      Restoration — applies only to that paragon path).
+      // Both carry the same shape: { name, percentStats, ratingStats }
+      // and feed into the buffs[] channel the same way.
+      const classDef = findClass(s.class);
       const paragonDef = findParagon(s.class, s.paragon);
-      if (paragonDef && Array.isArray(paragonDef.classFeatures)) {
-        for (const cf of paragonDef.classFeatures) {
+      const featureLists = [
+        (classDef && Array.isArray(classDef.classFeatures)) ? classDef.classFeatures : null,
+        (paragonDef && Array.isArray(paragonDef.classFeatures)) ? paragonDef.classFeatures : null
+      ];
+      for (const list of featureLists) {
+        if (!list) continue;
+        for (const cf of list) {
           if (!cf) continue;
           buffs.push({
             source: `Class Feature: ${cf.name}`,
