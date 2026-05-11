@@ -4939,41 +4939,145 @@
         });
       });
     }
+    /* Render-helper for the artifact picker modal. Same pattern as
+       renderGearItem: returns a rich multi-section card. Artifacts add
+       an "Artifact Power" section that surfaces the active ability text
+       (power / debuff / cooldown) — that's the field n00b couldn't see
+       from the old <select> dropdown. */
+    function renderArtifactItem(item) {
+      const escape = (str) => String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+
+      const il = item.item_level ? "IL " + item.item_level : "";
+      const cr = item.combinedRating ? "CR " + item.combinedRating : "";
+      const type = item.type ? item.type : "";
+      const cd = item.cooldown ? item.cooldown + "s CD" : "";
+      const meta = [il, cr, type, cd].filter(Boolean).join(" · ");
+
+      // Stats
+      const ratingParts = item.ratingStats
+        ? Object.entries(item.ratingStats).map(([s, v]) => `+${v.toLocaleString()} ${s}`)
+        : [];
+      const percentParts = (item.percentStats && Object.keys(item.percentStats).length)
+        ? Object.entries(item.percentStats).map(([s, v]) => `+${v}% ${s}`)
+        : [];
+      const abilityParts = (item.abilityBonuses && Object.keys(item.abilityBonuses).length)
+        ? Object.entries(item.abilityBonuses).map(([s, v]) => `+${v} ${s}`)
+        : [];
+      const statLines = [...ratingParts, ...percentParts, ...abilityParts];
+      const statBlock = statLines.length
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Stats</div>
+             ${statLines.map(line => `<div class="gear-card-stat-line">${escape(line)}</div>`).join("")}
+           </div>`
+        : "";
+
+      // Artifact Power / Debuff (this is what was hidden in the dropdown)
+      const powerLines = [];
+      if (item.power)  powerLines.push(`<div class="gear-card-bonus-desc">${escape(item.power)}</div>`);
+      if (item.debuff) powerLines.push(`<div class="gear-card-bonus-desc"><strong>Debuff:</strong> ${escape(item.debuff)}</div>`);
+      const powerBlock = powerLines.length
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Artifact Power${item.cooldown ? " (" + item.cooldown + "s CD)" : ""}</div>
+             ${powerLines.join("")}
+           </div>`
+        : "";
+
+      // Equip bonuses (mostly empty for artifacts but handle structurally)
+      const bonusMap = new Map();
+      for (const eb of (item.equipBonuses || [])) {
+        if (!eb || !eb.name) continue;
+        if (!bonusMap.has(eb.name)) bonusMap.set(eb.name, []);
+        bonusMap.get(eb.name).push(eb);
+      }
+      const bonusBlocks = [];
+      for (const [name, entries] of bonusMap.entries()) {
+        const first = entries[0];
+        const isConditional = entries.every(eb => eb.alwaysActive === false);
+        const isAlwaysOn = entries.some(eb => eb.alwaysActive === true);
+        let tag = "";
+        if (isAlwaysOn) tag = "always on";
+        else if (isConditional) tag = "conditional";
+        const txt = first.description || first.effectText || first.condition || "";
+        bonusBlocks.push(`
+          <div class="gear-card-bonus ${isConditional ? "cond" : ""}">
+            <div class="gear-card-bonus-name">🌟 ${escape(name)}${tag ? `<span class="gear-card-bonus-tag">${tag}</span>` : ""}</div>
+            ${txt ? `<div class="gear-card-bonus-desc">${escape(txt)}</div>` : ""}
+          </div>`);
+      }
+      const bonusBlock = bonusBlocks.length
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Equip Bonuses</div>
+             ${bonusBlocks.join("")}
+           </div>`
+        : "";
+
+      // Class restriction
+      const classNote = Array.isArray(item.allowedClasses) && item.allowedClasses.length < 9
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Class</div>
+             <div class="gear-card-stat-line">${escape(item.allowedClasses.join(" / "))}</div>
+           </div>`
+        : "";
+
+      const desc = [statBlock, powerBlock, bonusBlock, classNote].filter(Boolean).join("");
+      return { name: item.name, meta, desc };
+    }
+
     function renderArtifacts() {
       const g = document.getElementById("artifact-grid");
       const opts = artifactOptions(state.class);
       // Names already picked in any slot — used to filter other slots'
-      // dropdowns since you can't equip duplicate artifacts in-game.
+      // pickers since you can't equip duplicate artifacts in-game.
       const pickedNames = new Set(
         ARTIFACT_SLOTS.map(s => state.artifacts[s]).filter(Boolean)
       );
       g.innerHTML = ARTIFACT_SLOTS.map(slot => {
         const v = state.artifacts[slot] || "";
         const filled = !!v;
-        // For this slot, exclude artifacts picked elsewhere (keep current pick).
-        const allowed = opts.filter(item => item.name === v || !pickedNames.has(item.name));
-        const optionsHtml = '<option value="">— None —</option>' +
-          allowed.map(item => {
-            const tier = item.item_level ? " (IL " + item.item_level + ")" : "";
-            return `<option value="${item.name.replace(/"/g,'&quot;')}" ${v === item.name ? "selected" : ""}>${item.name}${tier}</option>`;
-          }).join("");
+        const noItems = opts.length === 0;
+        const chipLabel = filled
+          ? "💎 " + v
+          : (noItems ? "(no artifacts available)" : "+ Pick artifact");
+        const chipClasses = ["gear-pick-chip"];
+        if (filled) chipClasses.push("filled");
+        if (noItems) chipClasses.push("disabled");
         return `
           <div class="slot ${filled ? "filled" : ""}">
             <div class="slot-label">${slot}</div>
-            <select data-art="${slot}">
-              ${optionsHtml}
-            </select>
+            <div class="${chipClasses.join(" ")}" data-art-pick="${slot}" title="${filled ? v : "Click to pick an artifact"}">
+              ${chipLabel}
+            </div>
           </div>`;
       }).join("");
-      g.querySelectorAll("select").forEach(sel => {
-        sel.addEventListener("change", e => {
-          state.artifacts[sel.dataset.art] = e.target.value;
-          applyAutoTIL();
-          recomputeAbilityTotals();
-          renderAbilityGrid();
-          renderArtifacts();   // re-filter other dropdowns to exclude the new pick
-          rerenderAll();
-          toast(e.target.value ? `Slotted ${e.target.value} (${sel.dataset.art})` : `Cleared ${sel.dataset.art}`);
+      g.querySelectorAll("[data-art-pick]").forEach(el => {
+        if (el.classList.contains("disabled")) return;
+        el.addEventListener("click", () => {
+          const slot = el.dataset.artPick;
+          const current = state.artifacts[slot] || "";
+          // Recompute pickedNames each click so just-picked entries are
+          // excluded from sibling slots. Keep current pick visible.
+          const others = new Set(
+            ARTIFACT_SLOTS.map(s => state.artifacts[s]).filter(Boolean).filter(n => n !== current)
+          );
+          const allowed = opts.filter(item => !others.has(item.name));
+          openPicker({
+            title: `${slot} — ${allowed.length} artifacts available`,
+            items: allowed,
+            render: renderArtifactItem,
+            onPick: (item) => {
+              state.artifacts[slot] = item ? item.name : "";
+              applyAutoTIL();
+              recomputeAbilityTotals();
+              renderAbilityGrid();
+              renderArtifacts();
+              rerenderAll();
+              toast(item ? `Slotted ${item.name} (${slot})` : `Cleared ${slot}`);
+            }
+          });
         });
       });
     }
