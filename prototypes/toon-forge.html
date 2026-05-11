@@ -731,6 +731,68 @@
     .picker-item-desc {
       color: var(--text-mute); font-size: 0.82rem; margin-top: 0.3rem;
     }
+    /* Rich gear-card sub-blocks. Used inside picker-item-desc when the
+       row is rendered by renderGearItem(). Each block is a small section
+       so the picker shows full equip-bonus text, not just bonus names. */
+    .gear-card-section {
+      margin-top: 0.45rem;
+      padding-top: 0.35rem;
+      border-top: 1px dashed var(--border);
+    }
+    .gear-card-section-title {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--amber);
+      margin-bottom: 0.25rem;
+      opacity: 0.85;
+    }
+    .gear-card-stat-line {
+      color: var(--text);
+      font-family: ui-monospace, monospace;
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+    .gear-card-bonus {
+      margin-top: 0.3rem;
+      padding-left: 0.5rem;
+      border-left: 2px solid var(--gold);
+    }
+    .gear-card-bonus.cond {
+      border-left-color: var(--amber);
+      opacity: 0.95;
+    }
+    .gear-card-bonus-name {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+    .gear-card-bonus.cond .gear-card-bonus-name { color: var(--amber); }
+    .gear-card-bonus-tag {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      margin-left: 0.4rem;
+    }
+    .gear-card-bonus-desc {
+      color: var(--text-mute);
+      font-size: 0.78rem;
+      line-height: 1.45;
+      margin-top: 0.1rem;
+    }
+    .gear-card-set {
+      margin-top: 0.3rem;
+      color: var(--text);
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+    .gear-card-set-text {
+      color: var(--text-mute);
+      font-size: 0.76rem;
+      font-style: italic;
+      margin-top: 0.15rem;
+    }
     .picker-empty {
       color: var(--text-dim); text-align: center; padding: 1.5rem;
     }
@@ -4586,33 +4648,108 @@
       el.style.display = warnings.length ? "block" : "none";
     }
 
-    /* Render-helper for the gear picker modal. Surfaces every meaningful
-       stat field on a single item card so the user can compare options
-       without equipping each one to see what it does. */
+    /* Render-helper for the gear picker modal. Produces a rich multi-
+       section card per item so the user can compare options without
+       equipping each one to see what it does. Returns desc as HTML
+       (openPicker interpolates desc verbatim into .picker-item-desc).
+       Cards include: stat block, every equipBonus (with description
+       text and an always-on vs conditional tag), and the set-bonus
+       text if any. */
     function renderGearItem(item) {
-      const ratingParts = item.ratingStats
-        ? Object.entries(item.ratingStats).map(([s,v]) => `+${v} ${s}`)
-        : [];
-      const percentParts = (item.percentStats && Object.keys(item.percentStats).length)
-        ? Object.entries(item.percentStats).map(([s,v]) => `+${v}% ${s}`)
-        : [];
-      const abilityParts = (item.abilityBonuses && Object.keys(item.abilityBonuses).length)
-        ? Object.entries(item.abilityBonuses).map(([s,v]) => `+${v} ${s}`)
-        : [];
-      const stats = [...ratingParts, ...percentParts, ...abilityParts].join(" · ");
-      // Equip bonus names (dedup; description text is too long for one row)
-      const bonusNames = (item.equipBonuses || [])
-        .map(eb => eb && eb.name)
-        .filter(Boolean)
-        .filter((v, i, a) => a.indexOf(v) === i);
-      const bonusLine = bonusNames.length ? "🌟 " + bonusNames.join(", ") : "";
-      const setLine = item.set
-        ? `🛡 ${item.set}${item.setSize ? " (" + item.setSize + "pc)" : ""}`
-        : "";
+      const escape = (str) => String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+
+      // ---- meta line (above the desc block) ----
       const il = item.item_level ? "IL " + item.item_level : "";
       const cr = item.combinedRating ? "CR " + item.combinedRating : "";
-      const meta = [il, cr, setLine].filter(Boolean).join(" · ");
-      const desc = [stats, bonusLine].filter(Boolean).join(" · ");
+      const setMeta = item.set
+        ? "🛡 " + item.set + (item.setSize ? " (" + item.setSize + "pc)" : "")
+        : "";
+      const tier = item.tier || "";
+      const meta = [il, cr, tier, setMeta].filter(Boolean).join(" · ");
+
+      // ---- stat block ----
+      const ratingParts = item.ratingStats
+        ? Object.entries(item.ratingStats).map(([s, v]) => `+${v.toLocaleString()} ${s}`)
+        : [];
+      const percentParts = (item.percentStats && Object.keys(item.percentStats).length)
+        ? Object.entries(item.percentStats).map(([s, v]) => `+${v}% ${s}`)
+        : [];
+      const abilityParts = (item.abilityBonuses && Object.keys(item.abilityBonuses).length)
+        ? Object.entries(item.abilityBonuses).map(([s, v]) => `+${v} ${s}`)
+        : [];
+      const statLines = [...ratingParts, ...percentParts, ...abilityParts];
+      const statBlock = statLines.length
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Stats</div>
+             ${statLines.map(line => `<div class="gear-card-stat-line">${escape(line)}</div>`).join("")}
+           </div>`
+        : "";
+
+      // ---- equip-bonus block (one card per UNIQUE bonus name; merge dupes) ----
+      const bonusMap = new Map();
+      for (const eb of (item.equipBonuses || [])) {
+        if (!eb || !eb.name) continue;
+        if (!bonusMap.has(eb.name)) bonusMap.set(eb.name, []);
+        bonusMap.get(eb.name).push(eb);
+      }
+      const bonusBlocks = [];
+      for (const [name, entries] of bonusMap.entries()) {
+        const first = entries[0];
+        const isConditional = entries.every(eb => eb.alwaysActive === false);
+        const isAlwaysOn = entries.some(eb => eb.alwaysActive === true);
+        let tag = "";
+        if (isAlwaysOn) tag = "always on";
+        else if (isConditional) tag = "conditional";
+        // The 'set' type sometimes has no description; that's fine
+        const txt = first.description || first.effectText || first.condition || "";
+        const role = first.role ? ` [${first.role}]` : "";
+        const setBadge = (first.type === "Set" && first.setName)
+          ? ` <span class="gear-card-bonus-tag">set ${escape(first.setName)} ${first.pieces || 2}pc</span>`
+          : "";
+        bonusBlocks.push(`
+          <div class="gear-card-bonus ${isConditional ? "cond" : ""}">
+            <div class="gear-card-bonus-name">🌟 ${escape(name)}${escape(role)}${tag ? `<span class="gear-card-bonus-tag">${tag}</span>` : ""}${setBadge}</div>
+            ${txt ? `<div class="gear-card-bonus-desc">${escape(txt)}</div>` : ""}
+          </div>`);
+      }
+      const bonusBlock = bonusBlocks.length
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Equip / Set Bonuses</div>
+             ${bonusBlocks.join("")}
+           </div>`
+        : "";
+
+      // ---- raw set tooltip text (separate from the structured set
+      //      bonuses captured above; covers sets where only setBonus
+      //      narrative text is in data, no equipBonus entries) ----
+      const setBlock = (item.setBonus && !item.equipBonuses?.some(e => e && e.type === "Set"))
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Set: ${escape(item.set || "")}</div>
+             <div class="gear-card-set-text">${escape(item.setBonus)}</div>
+           </div>`
+        : "";
+
+      // ---- class restriction note ----
+      const classNote = Array.isArray(item.allowedClasses) && item.allowedClasses.length < 9
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Class</div>
+             <div class="gear-card-stat-line">${escape(item.allowedClasses.join(" / "))}</div>
+           </div>`
+        : "";
+
+      // ---- notes ----
+      const notesBlock = item.notes
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Notes</div>
+             <div class="gear-card-set-text">${escape(item.notes)}</div>
+           </div>`
+        : "";
+
+      const desc = [statBlock, bonusBlock, setBlock, classNote, notesBlock].filter(Boolean).join("");
       return { name: item.name, meta, desc };
     }
 
