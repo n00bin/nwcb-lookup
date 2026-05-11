@@ -2437,14 +2437,18 @@
     }
 
     /* ===== Companion gear helpers ===== */
-    function findCompGearByName(name, slotType) {
+    // NW companion gear: the 3 equipment slots are universal — any comp gear
+    // piece can go into any of the 3 slots, and the same item may be slotted
+    // in all 3 (duplicates allowed). We don't filter by slot type here; the
+    // `slotType` parameter is kept for label compatibility only.
+    function findCompGearByName(name, _slotType) {
       if (!name || typeof COMPANION_GEAR_DATA === "undefined") return null;
-      return COMPANION_GEAR_DATA.find(it => it.name === name && it.slot === slotType) || null;
+      return COMPANION_GEAR_DATA.find(it => it.name === name) || null;
     }
-    function compGearOptionsForSlot(slotType) {
+    function compGearOptionsForSlot(_slotType) {
       if (typeof COMPANION_GEAR_DATA === "undefined") return [];
       return COMPANION_GEAR_DATA
-        .filter(it => it.slot === slotType)
+        .slice()
         .sort((a,b) => (b.item_level || 0) - (a.item_level || 0) || a.name.localeCompare(b.name));
     }
     function renderCompGear(item) {
@@ -2453,7 +2457,7 @@
         : "";
       return {
         name: item.name,
-        meta: `IL ${item.item_level || "?"} · ${item.tier || "?"}`,
+        meta: `IL ${item.item_level || "?"} · ${item.tier || "?"} · (orig. ${item.slot || "?"})`,
         desc: stats
       };
     }
@@ -5862,8 +5866,10 @@
     document.querySelectorAll("[data-summoned-equip]").forEach(el => {
       el.addEventListener("click", () => {
         const slot = el.dataset.summonedEquip;
+        // Slots are universal — show ALL comp gear, regardless of which chip.
+        // Duplicates across slots are allowed (e.g., 3× Thayan Icon).
         openPicker({
-          title: `Summoned companion equipment — ${slot}`,
+          title: "Summoned companion equipment (slot is universal — duplicates allowed)",
           items: compGearOptionsForSlot(slot),
           render: renderCompGear,
           onPick: (item) => {
