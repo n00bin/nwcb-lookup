@@ -1651,7 +1651,7 @@
               <a href="#" id="il-breakdown-toggle" style="font-size:0.75rem;color:var(--amber);text-decoration:none;">▶ Show breakdown</a>
             </span>
           </label>
-          <input type="number" id="f-il" placeholder="auto-computed from gear + artifacts + bolstered comp/mount IL" readonly style="background:var(--elevated);">
+          <input type="number" id="f-il" placeholder="filled in automatically from your gear, artifacts, companions, and mounts" readonly style="background:var(--elevated);">
           <div id="il-breakdown" style="display:none;margin-top:0.5rem;padding:0.6rem 0.7rem;background:var(--elevated);border:1px solid var(--border);border-radius:5px;font-size:0.78rem;line-height:1.5;"></div>
         </div>
 
@@ -1663,7 +1663,7 @@
 
       <div class="panel">
         <h2>Ability scores</h2>
-        <p class="hint">Class hands you a base. <strong>L9 and L16</strong> sprinkle +1 on everyone for free. The other six levels each let you pick <strong>two</strong> stats and bump them by +1. Gear and boons stack on top automatically.</p>
+        <p class="hint">Your class sets the starting numbers. At levels 9 and 16 every ability gets a free +1. At the other six leveling-up points you pick two abilities and add +1 to each. Anything from gear or boons piles on top automatically.</p>
         <div id="abil-grid-wrapper"></div>
       </div>
 
@@ -1684,7 +1684,7 @@
 
       <div class="panel">
         <h2>Enchantments</h2>
-        <p class="hint">Eleven slots, three flavors. <strong>4 Offense</strong>, <strong>4 Defense</strong>, <strong>1 Utility</strong>, <strong>1 Combat</strong>, <strong>1 Bonus</strong>. Universal enchants morph their effect to the slot type they sit in.</p>
+        <p class="hint">Eleven slots in total: <strong>4 Offense</strong>, <strong>4 Defense</strong>, <strong>1 Utility</strong>, <strong>1 Combat</strong>, and <strong>1 Bonus</strong>. Universal enchants change what stat they give based on which slot you put them in.</p>
         <div id="ench-offense-grid"></div>
         <div id="ench-defense-grid"></div>
         <div id="ench-other-grid"></div>
@@ -1692,13 +1692,13 @@
 
       <div class="panel">
         <h2>Overloads</h2>
-        <p class="hint">Two slots, each a flat percent buff. Pick the same one twice and the dropdown will quietly hide it from you.</p>
+        <p class="hint">Two slots, each adds a flat percent bonus. You can't equip the same overload in both slots — once you pick it, it disappears from the second slot's picker.</p>
         <div class="slot-grid" id="overload-grid"></div>
       </div>
 
       <div class="panel">
         <h2>Artifacts</h2>
-        <p class="hint">Primary's combat power is what you press in fights. The other three sit pretty for stat bonuses.</p>
+        <p class="hint">The Primary artifact is the one with the active power you can press in a fight. The other three secondary artifacts don't have an active power — you equip them for their stat bonuses.</p>
         <div class="slot-grid" id="artifact-grid" style="grid-template-columns:repeat(2,1fr);"></div>
       </div>
 
@@ -1819,7 +1819,7 @@
     <div class="step-panel" data-panel="5">
       <div class="panel">
         <h2>Boons</h2>
-        <p class="hint">Spend your campaign points. Tap the +/− on each row. Master tier costs more per rank but stacks all three effects.</p>
+        <p class="hint">Spend your campaign points. Use the +/− buttons on each row to add or remove points. Master tier boons cost more per rank but each rank gives you all three of its effects.</p>
         <div id="boon-list"></div>
       </div>
 
@@ -1880,10 +1880,10 @@
 
       <div class="panel">
         <h2>Where to spend next</h2>
-        <p class="hint" id="advisor-hint">Marginal damage gain from adding <strong>+1%</strong> to each role-relevant stat. Top of the list is your best return on investment right now.</p>
+        <p class="hint" id="advisor-hint">If you added <strong>+1%</strong> to each of these stats, how much would it help your damage (or healing)? The stat at the top is the one that helps you most right now.</p>
         <div id="stat-advisor"></div>
         <p style="font-size:0.72rem;color:var(--text-dim);margin-top:0.7rem;line-height:1.5;">
-          Single-cast view against a standard PvE enemy (50% Defense, 50% Deflect, 90% Deflect Severity, 0% Awareness/CritAvoid/Accuracy). Doesn't model proc-on-crit boons, set bonuses with synergistic triggers, rotation cooldowns, or specific dungeon-tier defenses. Use as directional advice; for endgame theorycrafting, validate with parser data.
+          These numbers are for one hit against a typical enemy. They don't include special triggers from boons, set bonuses, or cooldowns. Treat them as a guide for where to invest next — not as exact in-fight damage.
         </p>
       </div>
 
@@ -1959,7 +1959,7 @@
             <input type="checkbox" id="dstats-hide-buffs">
             Hide buffs
           </label>
-          <label class="dstats-hide-buffs" id="dstats-show-cond-label" title="Include conditional / in-combat / proc bonuses at their maximum value. Examples: Channeler's Focus at 10 stacks, Critical Harmony in a full 5-person party, Ruthless Resources proc active, Dark Matter Wildspace doubling. Standing-around values otherwise hide these.">
+          <label class="dstats-hide-buffs" id="dstats-show-cond-label" title="Some bonuses only fire in combat, at low health, after a hit, or with teammates nearby. Turn this on to see what your stats would look like if every one of those was active at full strength. Leave it off to see your everyday standing-around values.">
             <input type="checkbox" id="dstats-show-cond">
             Show conditional
           </label>
@@ -4799,8 +4799,8 @@
         ? `<details class="dstat-sources">
              <summary>Sources (${n})</summary>
              <div class="dstat-sources-body">
-               ${renderSourceGroup(`Direct stat rating — subtotal +${Math.round(directTotal).toLocaleString()}`, directContribs)}
-               ${renderSourceGroup(`Combined Rating distributed to this stat — subtotal +${Math.round(crTotal).toLocaleString()}`, crContribs)}
+               ${renderSourceGroup(`Direct rating from items — adds +${Math.round(directTotal).toLocaleString()}`, directContribs)}
+               ${renderSourceGroup(`Shared Combined Rating from items — adds +${Math.round(crTotal).toLocaleString()}`, crContribs)}
                ${renderSourceGroup("Percent bonuses", percentContribs)}
              </div>
            </details>`
@@ -4836,10 +4836,13 @@
       if (lblCond) lblCond.classList.toggle("on", _dstatsShowConditional);
       let html = "";
 
-      // Warnings block
-      if (r.warnings && r.warnings.length) {
-        html += `<div class="dstats-warnings"><strong>Warnings (${r.warnings.length}):</strong><ul>${
-          r.warnings.map(w => `<li>${w}</li>`).join("")
+      // Warnings block — filter out "unknown-stat:..." entries; those
+      // are developer breadcrumbs for the engine catalog, not anything
+      // a player can act on.
+      const visibleWarnings = (r.warnings || []).filter(w => !/^unknown-stat:/i.test(w));
+      if (visibleWarnings.length) {
+        html += `<div class="dstats-warnings"><strong>Heads up (${visibleWarnings.length}):</strong><ul>${
+          visibleWarnings.map(w => `<li>${w}</li>`).join("")
         }</ul></div>`;
       }
 

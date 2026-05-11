@@ -472,8 +472,8 @@
         // Rating overcap — record wasted rating warning
         var ratingExcess = (rawContrib - ratingCap) * 1000;  // % back to rating points
         result.warnings.push(
-          "Rating overcap on " + def.name + ": +" +
-          Math.round(ratingExcess) + " rating wasted (cap = " + ratingCap + "%)"
+          def.name + ": " + Math.round(ratingExcess) +
+          " rating is wasted because this stat is already at its rating cap."
         );
         clampedContrib = ratingCap;
       }
@@ -487,8 +487,8 @@
         if (combined > def.cap) {
           var totalExcess = combined - def.cap;
           result.warnings.push(
-            "Total cap on " + def.name + ": " +
-            totalExcess.toFixed(1) + "% over cap (" + def.cap + "%)"
+            def.name + " is " + totalExcess.toFixed(1) + "% over its total cap of " +
+            def.cap + "% — anything past the cap doesn't help."
           );
           combined = def.cap;
           s.capReached = true;
