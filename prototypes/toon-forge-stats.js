@@ -29,8 +29,14 @@ const TOON_FORGE_STATS = [
   { name: "Deflect Severity",  cap: 120, kind: "rating", category: "Defensive" },
 
   // === Control ===
-  { name: "Control Bonus",     cap: "unverified", kind: "rating", category: "Control" },
-  { name: "Control Resist",    cap: "unverified", kind: "rating", category: "Control" },
+  // Control Bonus / Control Resist verified 2026-05-11 (n00b in-game):
+  //   Control Bonus = 94,870 rating → 25.1% total (≈ 18.1% rating contribution + 7% bonus)
+  //   Control Resist = 98,965 rating → 36.2% total (≈ 22.2% rating contribution + 14% bonus)
+  // Both use the standard rating-to-% formula. Cap not yet verified —
+  // setting to 90 conservatively (matches most uncapped-feeling rating
+  // stats). Will adjust if a player ever overcaps in-game.
+  { name: "Control Bonus",     cap: 90, kind: "rating", category: "Control" },
+  { name: "Control Resist",    cap: 90, kind: "rating", category: "Control" },
 
   // === Special ===
   { name: "Forte",             cap: 120, kind: "rating", category: "Special",
