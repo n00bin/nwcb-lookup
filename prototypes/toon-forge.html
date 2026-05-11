@@ -2508,17 +2508,82 @@
       return KITS_DATA.filter(k => (k.appliesTo || []).includes(canonical))
         .sort((a,b) => (b.item_level || 0) - (a.item_level || 0) || a.name.localeCompare(b.name));
     }
+    /* Shared HTML-escape + card-section helpers used by every "rich card"
+       picker renderer below (kits, enchants, overloads). They build the
+       same multi-section card UI introduced for gear/artifacts so the
+       full effect text is visible in the picker without equipping. */
+    function _escHTML(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    function _statSection(item, title) {
+      const lines = [];
+      if (item.ratingStats) {
+        for (const [s, v] of Object.entries(item.ratingStats)) {
+          if (v) lines.push(`+${(+v).toLocaleString()} ${s}`);
+        }
+      }
+      if (item.percentStats) {
+        for (const [s, v] of Object.entries(item.percentStats)) {
+          if (v) lines.push(`+${v}% ${s}`);
+        }
+      }
+      if (item.abilityBonuses) {
+        for (const [s, v] of Object.entries(item.abilityBonuses)) {
+          if (v) lines.push(`+${v} ${s}`);
+        }
+      }
+      if (!lines.length) return "";
+      return `<div class="gear-card-section">
+        <div class="gear-card-section-title">${_escHTML(title || "Stats")}</div>
+        ${lines.map(line => `<div class="gear-card-stat-line">${_escHTML(line)}</div>`).join("")}
+      </div>`;
+    }
+    function _equipBonusSection(equipBonuses, title) {
+      if (!Array.isArray(equipBonuses) || equipBonuses.length === 0) return "";
+      const bonusMap = new Map();
+      for (const eb of equipBonuses) {
+        if (!eb || !eb.name) continue;
+        if (!bonusMap.has(eb.name)) bonusMap.set(eb.name, []);
+        bonusMap.get(eb.name).push(eb);
+      }
+      if (!bonusMap.size) return "";
+      const blocks = [];
+      for (const [name, entries] of bonusMap.entries()) {
+        const first = entries[0];
+        const isConditional = entries.every(eb => eb.alwaysActive === false);
+        const isAlwaysOn = entries.some(eb => eb.alwaysActive === true);
+        const tag = isAlwaysOn ? "always on" : (isConditional ? "conditional" : "");
+        const txt = first.description || first.effectText || first.condition || "";
+        blocks.push(`
+          <div class="gear-card-bonus ${isConditional ? "cond" : ""}">
+            <div class="gear-card-bonus-name">🌟 ${_escHTML(name)}${tag ? `<span class="gear-card-bonus-tag">${tag}</span>` : ""}</div>
+            ${txt ? `<div class="gear-card-bonus-desc">${_escHTML(txt)}</div>` : ""}
+          </div>`);
+      }
+      return `<div class="gear-card-section">
+        <div class="gear-card-section-title">${_escHTML(title || "Equip Bonuses")}</div>
+        ${blocks.join("")}
+      </div>`;
+    }
+
     function renderKitPick(k) {
-      const r = k.ratingStats || {};
-      const p = k.percentStats || {};
-      const parts = [];
-      for (const [s,v] of Object.entries(r)) if (v) parts.push(`+${v} ${s}`);
-      for (const [s,v] of Object.entries(p)) if (v) parts.push(`+${v}% ${s}`);
-      return {
-        name: k.name,
-        meta: `IL ${k.item_level || "?"} · ${(k.appliesTo || []).join("/")}`,
-        desc: parts.join(", ")
-      };
+      const il = k.item_level ? "IL " + k.item_level : "";
+      const slots = (k.appliesTo || []).join(" / ");
+      const meta = [il, slots].filter(Boolean).join(" · ");
+      const desc = [
+        _statSection(k, "Stats"),
+        slots
+          ? `<div class="gear-card-section">
+               <div class="gear-card-section-title">Applies To</div>
+               <div class="gear-card-stat-line">${_escHTML(slots)}</div>
+             </div>`
+          : ""
+      ].filter(Boolean).join("");
+      return { name: k.name, meta, desc };
     }
 
     /* ===== Enchant + Overload helpers ===== */
@@ -2549,11 +2614,50 @@
       return parts.join(", ");
     }
     function renderEnchantPick(e) {
-      return {
-        name: e.name,
-        meta: `IL ${e.item_level || "?"} · ${e.slotType || "?"}`,
-        desc: describeEnchant(e)
-      };
+      const il = e.item_level ? "IL " + e.item_level : "";
+      const cr = e.combinedRating ? "CR " + e.combinedRating : "";
+      const slotType = e.slotType ? e.slotType + " slot" : "";
+      const meta = [il, cr, slotType].filter(Boolean).join(" · ");
+
+      // Universal enchants morph per slotted family — show all three
+      let universalBlock = "";
+      if (e.universal) {
+        const sections = [];
+        for (const sub of ["offense", "defense", "utility"]) {
+          const obj = e.universal[sub] || {};
+          const lines = Object.entries(obj)
+            .filter(([s, v]) => v)
+            .map(([s, v]) => `+${(+v).toLocaleString()} ${s}`);
+          if (lines.length) {
+            sections.push(
+              `<div class="gear-card-bonus">
+                 <div class="gear-card-bonus-name">In ${sub} slot</div>
+                 ${lines.map(line => `<div class="gear-card-stat-line" style="padding-left:0.5rem;">${_escHTML(line)}</div>`).join("")}
+               </div>`);
+          }
+        }
+        if (sections.length) {
+          universalBlock = `<div class="gear-card-section">
+            <div class="gear-card-section-title">Per-Slot Effect</div>
+            ${sections.join("")}
+          </div>`;
+        }
+      }
+
+      const description = e.description
+        ? `<div class="gear-card-section">
+             <div class="gear-card-section-title">Effect</div>
+             <div class="gear-card-set-text">${_escHTML(e.description)}</div>
+           </div>`
+        : "";
+
+      const desc = [
+        universalBlock,
+        _statSection(e, "Direct Stats"),
+        _equipBonusSection(e.equipBonuses, "Equip Bonuses"),
+        description
+      ].filter(Boolean).join("");
+      return { name: e.name, meta, desc };
     }
     function findOverloadByName(name) {
       if (!name || typeof OVERLOADS_DATA === "undefined") return null;
@@ -2564,14 +2668,27 @@
       return OVERLOADS_DATA.slice().sort((a,b) => a.name.localeCompare(b.name));
     }
     function renderOverloadPick(o) {
-      const p = o.percentStats || {};
-      const stats = Object.entries(p).map(([k,v]) => `+${v}% ${k}`).join(", ");
-      const enemy = o.enemyType ? ` · vs ${o.enemyType}` : "";
-      return {
-        name: o.name,
-        meta: `Overload${enemy}`,
-        desc: stats
-      };
+      const il = o.item_level ? "IL " + o.item_level : "";
+      const enemy = o.enemyType ? "vs " + o.enemyType : "";
+      const dmgPct = (o.damagePct && o.damagePct !== 0) ? `+${o.damagePct}% dmg` : "";
+      const meta = ["Overload", il, enemy, dmgPct].filter(Boolean).join(" · ");
+      const desc = [
+        _statSection(o, "Stats"),
+        _equipBonusSection(o.equipBonuses, "Equip Bonuses"),
+        o.zones && o.zones.length
+          ? `<div class="gear-card-section">
+               <div class="gear-card-section-title">Active In Zones</div>
+               <div class="gear-card-stat-line">${_escHTML(o.zones.join(" / "))}</div>
+             </div>`
+          : "",
+        o.description
+          ? `<div class="gear-card-section">
+               <div class="gear-card-section-title">Effect</div>
+               <div class="gear-card-set-text">${_escHTML(o.description)}</div>
+             </div>`
+          : ""
+      ].filter(Boolean).join("");
+      return { name: o.name, meta, desc };
     }
 
     /* ===== Companion gear helpers ===== */
