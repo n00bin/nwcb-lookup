@@ -982,21 +982,36 @@
       color: var(--text-dim); margin: 0 0 0.5rem;
     }
     .dstat-row {
-      display: grid;
-      grid-template-columns: 1fr auto 180px;
-      gap: 0.7rem; align-items: center;
-      padding: 0.55rem 0.7rem;
+      display: block;
+      padding: 0.7rem 0.9rem;
       background: var(--elevated);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      margin-bottom: 0.35rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
       font-size: 0.88rem;
     }
     .dstat-row.cap-reached { border-color: var(--pos); }
-    .dstat-name { font-weight: 600; }
-    .dstat-detail { color: var(--text-mute); font-family: ui-monospace, monospace; font-size: 0.78rem; }
+    .dstat-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 0.8rem; margin-bottom: 0.35rem;
+    }
+    .dstat-name {
+      font-weight: 700; font-size: 1.05rem; color: var(--text);
+      font-family: Georgia, serif;
+    }
+    .dstat-row.cap-reached .dstat-name { color: var(--pos); }
+    .dstat-value {
+      font-weight: 700; font-size: 1.15rem; color: var(--amber);
+      font-family: ui-monospace, monospace;
+    }
+    .dstat-row.cap-reached .dstat-value { color: var(--pos); }
+    .dstat-detail {
+      color: var(--text-mute); font-family: ui-monospace, monospace;
+      font-size: 0.78rem; margin-top: 0.35rem;
+    }
     .dstat-bar {
       height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden;
+      margin-top: 0.3rem;
     }
     .dstat-bar > div {
       height: 100%; background: var(--amber);
@@ -1004,11 +1019,30 @@
     }
     .dstat-bar.uncapped > div { background: var(--gold); }
     .dstat-row.cap-reached .dstat-bar > div { background: var(--pos); }
-    .dstat-contributors {
-      grid-column: 1 / -1;
+    .dstat-sources {
+      margin-top: 0.5rem;
       font-size: 0.75rem; color: var(--text-dim);
-      padding-top: 0.3rem; margin-top: 0.3rem;
+    }
+    .dstat-sources > summary {
+      cursor: pointer; user-select: none;
+      color: var(--text-mute);
+      padding: 0.25rem 0;
+      list-style: none;
+    }
+    .dstat-sources > summary::-webkit-details-marker { display: none; }
+    .dstat-sources > summary::before {
+      content: "▸ ";
+      display: inline-block;
+      transition: transform 0.15s;
+      color: var(--amber);
+    }
+    .dstat-sources[open] > summary::before { content: "▾ "; }
+    .dstat-sources > summary:hover { color: var(--text); }
+    .dstat-sources-body {
+      padding: 0.4rem 0.2rem 0.2rem;
       border-top: 1px dashed var(--border);
+      margin-top: 0.3rem;
+      line-height: 1.5;
     }
     .dstats-warnings {
       background: rgba(248,81,73,0.08);
@@ -4054,39 +4088,52 @@
       const capReached = !isFlat && s.capReached;
       let valueLabel, detailLabel, barWidth, barUncapped = false;
 
+      // Sum the actual rating total from contributors (only "rating" type).
+      const ratingTotal = (s.contributors || [])
+        .filter(c => c.type === "rating")
+        .reduce((sum, c) => sum + (c.amount || 0), 0);
+      const ratingFmt = Math.round(ratingTotal).toLocaleString();
+
       if (isFlat) {
         valueLabel = (s.flat || 0).toLocaleString() + (def.name === "Maximum Hit Points" ? " HP" : "");
-        detailLabel = "flat";
+        detailLabel = "flat value (no rating-to-% conversion)";
         barWidth = Math.min(100, (s.flat || 0) / 8000);  // visual scale
         barUncapped = true;
       } else if (typeof def.cap === "number") {
         valueLabel = s.finalPct.toFixed(1) + "%";
-        detailLabel = `cap ${def.cap}% — rating ${s.ratingContribPct.toFixed(1)}% + bonus ${s.percentTotal.toFixed(1)}%`;
+        detailLabel = `cap ${def.cap}% · rating ${s.ratingContribPct.toFixed(1)}% (${ratingFmt}) · bonus ${s.percentTotal.toFixed(1)}%`;
         barWidth = Math.min(100, (s.finalPct / def.cap) * 100);
       } else {
         valueLabel = s.finalPct.toFixed(1) + "%";
-        detailLabel = `no cap — rating ${s.ratingContribPct.toFixed(1)}% + bonus ${s.percentTotal.toFixed(1)}%`;
+        detailLabel = `no cap · rating ${s.ratingContribPct.toFixed(1)}% (${ratingFmt}) · bonus ${s.percentTotal.toFixed(1)}%`;
         barWidth = Math.min(100, s.finalPct);
         barUncapped = true;
       }
 
-      const contributors = s.contributors && s.contributors.length
-        ? `<div class="dstat-contributors">${
-            s.contributors.slice().sort((a,b) => Math.abs(b.amount) - Math.abs(a.amount))
-              .map(c => {
-                const sign = c.amount >= 0 ? "+" : "";
-                return `${c.source}: ${sign}${c.amount}${c.type === "rating" ? " rating" : "%"}`;
-              })
-              .join(" • ")
-          }</div>`
+      const n = (s.contributors || []).length;
+      const sourcesBlock = n
+        ? `<details class="dstat-sources">
+             <summary>Sources (${n})</summary>
+             <div class="dstat-sources-body">${
+               s.contributors.slice().sort((a,b) => Math.abs(b.amount) - Math.abs(a.amount))
+                 .map(c => {
+                   const sign = c.amount >= 0 ? "+" : "";
+                   return `${c.source}: ${sign}${c.amount}${c.type === "rating" ? " rating" : "%"}`;
+                 })
+                 .join(" • ")
+             }</div>
+           </details>`
         : "";
 
       return `
         <div class="dstat-row ${capReached ? "cap-reached" : ""}">
-          <div class="dstat-name">${def.name}</div>
-          <div class="dstat-detail">${valueLabel} <span style="opacity:0.6">— ${detailLabel}</span></div>
+          <div class="dstat-head">
+            <div class="dstat-name">${def.name}</div>
+            <div class="dstat-value">${valueLabel}</div>
+          </div>
           <div class="dstat-bar ${barUncapped ? "uncapped" : ""}"><div style="width:${barWidth}%;"></div></div>
-          ${contributors}
+          <div class="dstat-detail">${detailLabel}</div>
+          ${sourcesBlock}
         </div>`;
     }
 
