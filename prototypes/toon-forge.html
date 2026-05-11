@@ -3447,16 +3447,19 @@
         });
       }
 
-      // Summoned companion base IL contribution. Per Obikin's guide a Mythic
-      // companion summoned at 100% bolster contributes ~1650 IL distributed
-      // across the 12 core stats. Scales linearly with both bolster and the
-      // summoned companion's rarity (anchor: Mythic = 750 IL → 1650 base).
-      // This is SEPARATE from the companion's own equip-power contribution
+      // Summoned companion base IL contribution. Uses the per-rarity
+      // COMP_BOLSTER_BASE_IL table (Mythic = 1650, Celestial = 3300,
+      // verified in-game 2026-05-10 by n00b: 3960 contribution at 120%
+      // bolster on Celestial = 3300 base). The previous linear-scale
+      // formula (1650 × rarityIL_ratio) was wrong for Celestial — it
+      // produced 1980 base instead of 3300, leaving every stat ~1.6%
+      // short of in-game. Now mirrors what computeTILBreakdown() uses
+      // for the TIL summation so rating distribution and TIL agree.
+      // SEPARATE from the companion's own equip-power contribution
       // (handled later via pushCompanionPower for the summoned slot).
       if (summonedComp) {
-        const SUMMON_BASE_IL_AT_MYTHIC_FULL = 1650;
-        const rarityScale = compRarityIL / COMPANION_RARITY_IL.Mythic;
-        const baseIL = SUMMON_BASE_IL_AT_MYTHIC_FULL * rarityScale * compBolster;
+        const summonBase = COMP_BOLSTER_BASE_IL[compRarityForBase] || COMP_BOLSTER_BASE_IL.Mythic;
+        const baseIL = summonBase * compBolster;
         const cr = expandCR(baseIL, 1);
         if (cr) {
           buffs.push({
