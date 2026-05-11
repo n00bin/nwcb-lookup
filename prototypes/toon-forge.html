@@ -4308,11 +4308,15 @@
       }
       // Within rating contributors, split direct stat ratings from Combined-
       // Rating distributions. A CR contribution's source label always contains
-      // " CR:" (e.g. "Gear CR: ...", "Artifact CR: ...", "Enchant Offense 1 CR: ...")
-      // or "base IL:" (companion bolster contribution).
+      // " CR " as a word (e.g. "Gear CR: Arms — Vambraces",
+      // "Artifact CR: Demon Skull", "Enchant Offense 1 CR: Garnet",
+      // "Summoned: Black Scorpion CR (Celestial)"), or "base IL:"
+      // (companion bolster contribution). Note: companion-power CR
+      // entries don't have a colon after CR (e.g. "... CR (Celestial)"),
+      // so the regex uses a word boundary instead.
       function isCRSource(src) {
         const s = String(src || "");
-        return / CR:/i.test(s) || /base IL:/i.test(s);
+        return /\bCR\b/.test(s) || /base IL:/i.test(s);
       }
       // When "Hide buffs" is on, drop consumable-buff entries from the
       // contributor lists (the subtotals below will adjust to match).
