@@ -294,6 +294,39 @@
       font-size: 0.85rem;
       font-family: inherit;
     }
+    /* Gear-pick chip — same role as the old <select>, but click opens
+       the rich picker modal that shows stats / equip bonuses / set info.
+       Style mirrors .comp-loadout-chip so the gear and companion sections
+       feel consistent. */
+    .gear-pick-chip {
+      display: block;
+      width: 100%;
+      background: var(--bg);
+      border: 1px dashed var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: border-color 0.1s, color 0.1s;
+    }
+    .gear-pick-chip:hover { border-color: var(--amber); color: var(--amber); }
+    .gear-pick-chip.filled {
+      border-style: solid;
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .gear-pick-chip.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      color: var(--text-dim);
+    }
+    .gear-pick-chip.disabled:hover { border-color: var(--border); color: var(--text-dim); }
     .slot.filled { border-color: rgba(240,136,62,0.4); background: rgba(240,136,62,0.04); }
 
     /* ===== Companions / Mounts mini-grid ===== */
@@ -4553,6 +4586,36 @@
       el.style.display = warnings.length ? "block" : "none";
     }
 
+    /* Render-helper for the gear picker modal. Surfaces every meaningful
+       stat field on a single item card so the user can compare options
+       without equipping each one to see what it does. */
+    function renderGearItem(item) {
+      const ratingParts = item.ratingStats
+        ? Object.entries(item.ratingStats).map(([s,v]) => `+${v} ${s}`)
+        : [];
+      const percentParts = (item.percentStats && Object.keys(item.percentStats).length)
+        ? Object.entries(item.percentStats).map(([s,v]) => `+${v}% ${s}`)
+        : [];
+      const abilityParts = (item.abilityBonuses && Object.keys(item.abilityBonuses).length)
+        ? Object.entries(item.abilityBonuses).map(([s,v]) => `+${v} ${s}`)
+        : [];
+      const stats = [...ratingParts, ...percentParts, ...abilityParts].join(" · ");
+      // Equip bonus names (dedup; description text is too long for one row)
+      const bonusNames = (item.equipBonuses || [])
+        .map(eb => eb && eb.name)
+        .filter(Boolean)
+        .filter((v, i, a) => a.indexOf(v) === i);
+      const bonusLine = bonusNames.length ? "🌟 " + bonusNames.join(", ") : "";
+      const setLine = item.set
+        ? `🛡 ${item.set}${item.setSize ? " (" + item.setSize + "pc)" : ""}`
+        : "";
+      const il = item.item_level ? "IL " + item.item_level : "";
+      const cr = item.combinedRating ? "CR " + item.combinedRating : "";
+      const meta = [il, cr, setLine].filter(Boolean).join(" · ");
+      const desc = [stats, bonusLine].filter(Boolean).join(" · ");
+      return { name: item.name, meta, desc };
+    }
+
     function renderGear() {
       const g = document.getElementById("gear-grid");
       g.innerHTML = GEAR_SLOTS.map(s => {
@@ -4561,11 +4624,13 @@
         const kitName = state.kits[s.label] || "";
         const kitOptions = kitsForGearSlot(s.label);
         const opts = gearOptionsForSlot(s.slot, state.class);
-        const optionsHtml = '<option value="">— None —</option>' +
-          opts.map(item => {
-            const tier = item.item_level ? " (IL " + item.item_level + ")" : "";
-            return `<option value="${item.name.replace(/"/g,'&quot;')}" ${v === item.name ? "selected" : ""}>${item.name}${tier}</option>`;
-          }).join("");
+        const noItems = opts.length === 0;
+        const chipLabel = filled
+          ? "⚔ " + v
+          : (noItems ? "(no items available)" : "+ Pick item");
+        const chipClasses = ["gear-pick-chip"];
+        if (filled) chipClasses.push("filled");
+        if (noItems) chipClasses.push("disabled");
         // Reinforcement kit chip — only shown when the slot has applicable kits
         const kitChip = kitOptions.length
           ? `<div class="gear-kit-chip ${kitName ? "filled" : ""}" data-gear-kit="${s.label}">
@@ -4574,23 +4639,36 @@
           : "";
         return `
           <div class="slot ${filled ? "filled" : ""}">
-            <div class="slot-label">${s.label}${opts.length === 0 ? " — no items" : ""}</div>
-            <select data-gear="${s.label}" data-slot-type="${s.slot}">
-              ${optionsHtml}
-            </select>
+            <div class="slot-label">${s.label}${noItems ? " — no items" : ""}</div>
+            <div class="${chipClasses.join(" ")}" data-gear-pick="${s.label}" data-slot-type="${s.slot}" title="${filled ? v : "Click to pick an item"}">
+              ${chipLabel}
+            </div>
             ${kitChip}
           </div>`;
       }).join("");
-      g.querySelectorAll("select[data-gear]").forEach(sel => {
-        sel.addEventListener("change", e => {
-          state.gear[sel.dataset.gear] = e.target.value;
-          applyAutoTIL();
-          recomputeAbilityTotals();
-          renderAbilityGrid();
-          renderGear();
-          renderGearWarnings();
-          rerenderAll();
-          toast(e.target.value ? `Equipped ${e.target.value} (${sel.dataset.gear})` : `Cleared ${sel.dataset.gear}`);
+      g.querySelectorAll("[data-gear-pick]").forEach(el => {
+        if (el.classList.contains("disabled")) return;
+        el.addEventListener("click", () => {
+          const slotLabel = el.dataset.gearPick;
+          const slotData = GEAR_SLOTS.find(x => x.label === slotLabel);
+          if (!slotData) return;
+          const items = gearOptionsForSlot(slotData.slot, state.class);
+          if (!items.length) return;
+          openPicker({
+            title: `${slotLabel} — ${items.length} items available`,
+            items,
+            render: renderGearItem,
+            onPick: (item) => {
+              state.gear[slotLabel] = item ? item.name : "";
+              applyAutoTIL();
+              recomputeAbilityTotals();
+              renderAbilityGrid();
+              renderGear();
+              renderGearWarnings();
+              rerenderAll();
+              toast(item ? `Equipped ${item.name} (${slotLabel})` : `Cleared ${slotLabel}`);
+            }
+          });
         });
       });
       g.querySelectorAll("[data-gear-kit]").forEach(el => {
