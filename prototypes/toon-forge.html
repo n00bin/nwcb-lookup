@@ -965,8 +965,25 @@
       padding: 1rem 1.4rem;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
     }
     .dstats-header h2 { margin: 0; color: var(--amber); font-family: Georgia, serif; }
+    .dstats-header-actions {
+      display: flex; align-items: center; gap: 0.7rem;
+    }
+    .dstats-hide-buffs {
+      display: flex; align-items: center; gap: 0.35rem;
+      color: var(--text-mute); font-size: 0.82rem;
+      cursor: pointer; user-select: none;
+      padding: 0.3rem 0.6rem;
+      border: 1px solid var(--border); border-radius: 6px;
+    }
+    .dstats-hide-buffs:hover { color: var(--text); border-color: var(--amber); }
+    .dstats-hide-buffs input { cursor: pointer; }
+    .dstats-hide-buffs.on {
+      color: var(--amber); border-color: var(--amber);
+      background: rgba(255,180,80,0.08);
+    }
     .dstats-close {
       background: transparent; color: var(--text-mute);
       border: 1px solid var(--border); border-radius: 6px;
@@ -1820,7 +1837,13 @@
     <div class="dstats-modal">
       <div class="dstats-header">
         <h2>Detailed Stats</h2>
-        <button class="dstats-close" id="dstats-close">✕ Close</button>
+        <div class="dstats-header-actions">
+          <label class="dstats-hide-buffs" id="dstats-hide-buffs-label" title="Hide all consumable buff contributions (Zurek, Squash Soup, etc.) so the panel matches your in-game unbuffed stat tooltip.">
+            <input type="checkbox" id="dstats-hide-buffs">
+            Hide buffs
+          </label>
+          <button class="dstats-close" id="dstats-close">✕ Close</button>
+        </div>
       </div>
       <div class="dstats-body" id="dstats-body">
         <!-- Populated by openDetailedStats() -->
@@ -4121,34 +4144,87 @@
     /* ===== Detailed Stats modal ===== */
     const DSTATS_CATEGORIES = ["Offensive", "Defensive", "Control", "Special", "Utility", "Healing"];
 
-    function formatStatRow(def, s) {
+    // Consumable buffs from state.buffs[] get the source prefix
+    // "Buff: Buff: <name>" (the engine prepends "Buff: " to the entry's
+    // own "Buff: <name>" source). Other entries pushed through the
+    // buffs[] array (companion gear, enchants, mount equip, etc.) just
+    // get the single "Buff: " prefix. So this regex picks out ONLY the
+    // consumable-buff contributors for the "Hide buffs" toggle.
+    function isConsumableBuffContributor(c) {
+      return /^Buff:\s*Buff:\s*/.test(String(c && c.source || ""));
+    }
+    // Replays the engine's rating-to-% math so the renderer can show
+    // a recomputed contribution when consumable buffs are filtered out.
+    function ratingToPercentLocal(rating, TIL, cap) {
+      if (!rating || !TIL) return 0;
+      const raw = 50 + (rating - TIL) / 1000;
+      let ratingCap = null;
+      if (cap === 120) ratingCap = 60;
+      else if (cap === 90) ratingCap = 50;
+      let clamped = Math.max(0, raw);
+      if (ratingCap !== null && clamped > ratingCap) clamped = ratingCap;
+      return clamped;
+    }
+
+    function formatStatRow(def, s, ctx) {
+      const TIL = (ctx && ctx.totalItemLevel) || 0;
+      const hideBuffs = !!(ctx && ctx.hideBuffs);
       const isFlat = def.kind === "flat";
-      const capReached = !isFlat && s.capReached;
       let valueLabel, detailLabel, barWidth, barUncapped = false;
 
-      // Sum the actual rating total from contributors (only "rating" type).
-      const ratingTotal = (s.contributors || [])
+      // Working copies of the stat numbers, optionally reduced by the
+      // buff contributions when the user has "Hide buffs" toggled on.
+      let ratingTotal = (s.contributors || [])
         .filter(c => c.type === "rating")
         .reduce((sum, c) => sum + (c.amount || 0), 0);
+      let percentTotal = s.percentTotal;
+      let ratingContribPct = s.ratingContribPct;
+      let finalPct = s.finalPct;
+      let flatValue = s.flat || 0;
+
+      if (hideBuffs) {
+        const allContribs = s.contributors || [];
+        const buffRating = allContribs
+          .filter(c => isConsumableBuffContributor(c) && c.type === "rating")
+          .reduce((sum, c) => sum + (c.amount || 0), 0);
+        const buffPercent = allContribs
+          .filter(c => isConsumableBuffContributor(c) && c.type === "percent")
+          .reduce((sum, c) => sum + (c.amount || 0), 0);
+        ratingTotal -= buffRating;
+        percentTotal -= buffPercent;
+        if (isFlat) {
+          flatValue -= buffRating;
+        } else if (def.kind === "fixed" && def.flatRating) {
+          ratingContribPct = ratingTotal / def.flatRating;
+          finalPct = ratingContribPct + percentTotal;
+        } else {
+          // kind: "rating" — replay the engine clamp/cap logic.
+          ratingContribPct = ratingToPercentLocal(ratingTotal, TIL, def.cap);
+          finalPct = ratingContribPct + percentTotal;
+          if (typeof def.cap === "number" && finalPct > def.cap) finalPct = def.cap;
+        }
+      }
+
+      const capReached = !isFlat && typeof def.cap === "number" && finalPct >= def.cap - 0.05;
       const ratingFmt = Math.round(ratingTotal).toLocaleString();
 
       if (isFlat) {
-        valueLabel = (s.flat || 0).toLocaleString() + (def.name === "Maximum Hit Points" ? " HP" : "");
+        valueLabel = flatValue.toLocaleString() + (def.name === "Maximum Hit Points" ? " HP" : "");
         detailLabel = "flat value (no rating-to-% conversion)";
-        barWidth = Math.min(100, (s.flat || 0) / 8000);  // visual scale
+        barWidth = Math.min(100, flatValue / 8000);  // visual scale
         barUncapped = true;
       } else if (typeof def.cap === "number") {
-        valueLabel = s.finalPct.toFixed(1) + "%";
-        detailLabel = `cap ${def.cap}% · rating ${s.ratingContribPct.toFixed(1)}% (${ratingFmt}) · bonus ${s.percentTotal.toFixed(1)}%`;
-        barWidth = Math.min(100, (s.finalPct / def.cap) * 100);
+        valueLabel = finalPct.toFixed(1) + "%";
+        detailLabel = `cap ${def.cap}% · rating ${ratingContribPct.toFixed(1)}% (${ratingFmt}) · bonus ${percentTotal.toFixed(1)}%`;
+        barWidth = Math.min(100, (finalPct / def.cap) * 100);
       } else {
-        valueLabel = s.finalPct.toFixed(1) + "%";
-        detailLabel = `no cap · rating ${s.ratingContribPct.toFixed(1)}% (${ratingFmt}) · bonus ${s.percentTotal.toFixed(1)}%`;
-        barWidth = Math.min(100, s.finalPct);
+        valueLabel = finalPct.toFixed(1) + "%";
+        detailLabel = `no cap · rating ${ratingContribPct.toFixed(1)}% (${ratingFmt}) · bonus ${percentTotal.toFixed(1)}%`;
+        barWidth = Math.min(100, finalPct);
         barUncapped = true;
       }
 
-      const n = (s.contributors || []).length;
+      const n = allContribsFiltered.length;
       // Tidy a source label: drop redundant "Buff: " / "Buff: Buff: " prefixes,
       // strip "(Celestial)" suffix that adds visual noise, leave the core meaningful name.
       function cleanSource(src) {
@@ -4180,14 +4256,18 @@
         const s = String(src || "");
         return / CR:/i.test(s) || /base IL:/i.test(s);
       }
-      const allRating = (s.contributors || []).filter(c => c.type === "rating");
+      // When "Hide buffs" is on, drop consumable-buff entries from the
+      // contributor lists (the subtotals below will adjust to match).
+      const allContribsFiltered = (s.contributors || [])
+        .filter(c => !hideBuffs || !isConsumableBuffContributor(c));
+      const allRating = allContribsFiltered.filter(c => c.type === "rating");
       const directContribs = allRating
         .filter(c => !isCRSource(c.source))
         .slice().sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
       const crContribs = allRating
         .filter(c => isCRSource(c.source))
         .slice().sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
-      const percentContribs = (s.contributors || [])
+      const percentContribs = allContribsFiltered
         .filter(c => c.type !== "rating")
         .slice().sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
       // Group subtotals so the user can see the rating split at a glance.
@@ -4216,9 +4296,17 @@
         </div>`;
     }
 
+    // Toggle state for the "Hide buffs" checkbox — persists across opens
+    // within the session so the user doesn't have to re-tick it every time.
+    let _dstatsHideBuffs = false;
+
     function openDetailedStats() {
       const r = getEngineResult();
       const body = document.getElementById("dstats-body");
+      const cb = document.getElementById("dstats-hide-buffs");
+      if (cb) cb.checked = _dstatsHideBuffs;
+      const lbl = document.getElementById("dstats-hide-buffs-label");
+      if (lbl) lbl.classList.toggle("on", _dstatsHideBuffs);
       let html = "";
 
       // Warnings block
@@ -4237,6 +4325,7 @@
       </div>`;
 
       // Group stats by category
+      const ctx = { totalItemLevel: r.totalItemLevel, hideBuffs: _dstatsHideBuffs };
       for (const cat of DSTATS_CATEGORIES) {
         const stats = TOON_FORGE_STATS.filter(d => d.category === cat);
         if (!stats.length) continue;
@@ -4245,7 +4334,7 @@
         for (const def of stats) {
           const s = r.stats[def.name];
           if (!s) continue;
-          html += formatStatRow(def, s);
+          html += formatStatRow(def, s, ctx);
         }
         html += `</div>`;
       }
@@ -5944,6 +6033,12 @@
     document.getElementById("dstats-close").addEventListener("click", closeDetailedStats);
     document.getElementById("dstats-overlay").addEventListener("click", (e) => {
       if (e.target.id === "dstats-overlay") closeDetailedStats();
+    });
+    document.getElementById("dstats-hide-buffs").addEventListener("change", (e) => {
+      _dstatsHideBuffs = !!e.target.checked;
+      const lbl = document.getElementById("dstats-hide-buffs-label");
+      if (lbl) lbl.classList.toggle("on", _dstatsHideBuffs);
+      openDetailedStats();  // re-render the modal body with the new flag
     });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeDetailedStats();
