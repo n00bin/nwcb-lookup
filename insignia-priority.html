@@ -11,14 +11,16 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/layout.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+  <!-- Page-specific Google Fonts removed in favor of the site-wide
+       --font-main / --font-display vars from theme.css. Body now uses
+       the system sans, headings use Georgia, matching the rest of the
+       site for visual consistency. -->
+
   <style>
     body.ip-themed {
       background: radial-gradient(ellipse at top, #1a1208 0%, #0a0705 55%, #050302 100%) fixed;
       color: #e8d9b0;
-      font-family: 'EB Garamond', Georgia, serif;
+      font-family: var(--font-main);
     }
     .ip-page {
       --gold:        #d4af37;
@@ -59,14 +61,14 @@
 
     .ip-header { text-align: center; padding: 2rem 0 1rem; }
     .ip-eyebrow {
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 0.7rem;
       letter-spacing: 0.4em;
       color: rgba(212, 175, 55, 0.55);
       margin-bottom: 0.85rem;
     }
     .ip-header h1 {
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-weight: 600;
       font-size: 2rem;
       letter-spacing: 0.05em;
@@ -119,7 +121,7 @@
       margin-bottom: 0.35rem;
     }
     .ip-stat-value {
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 1.7rem;
       color: var(--bone);
     }
@@ -141,7 +143,7 @@
       box-shadow: 0 0 0 1px rgba(0,0,0,0.4) inset, 0 8px 30px rgba(0,0,0,0.5);
     }
     .ip-panel-title {
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 1.15rem;
       letter-spacing: 0.06em;
       color: var(--gold-bright);
@@ -159,7 +161,7 @@
       border: 1px solid rgba(212, 175, 55, 0.22);
       border-radius: 2px;
       color: var(--bone);
-      font-family: 'EB Garamond', Georgia, serif;
+      font-family: var(--font-main);
       font-size: 0.95rem;
       padding: 0.55rem 0.8rem;
       outline: none;
@@ -184,7 +186,7 @@
       color: #1a1208;
       border: 1px solid rgba(212, 175, 55, 0.45);
       border-radius: 2px;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       letter-spacing: 0.08em;
       font-size: 0.78rem;
       font-weight: 600;
@@ -230,7 +232,7 @@
       border: 1px solid var(--gold-faint);
       border-radius: 2px;
       padding: 0.05em 0.4em;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 0.9em;
       color: var(--gold-warm);
       font-style: normal;
@@ -253,7 +255,7 @@
       flex-wrap: wrap;
     }
     .ip-char-name {
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 1.05rem;
       letter-spacing: 0.03em;
       color: var(--bone);
@@ -271,7 +273,7 @@
       border: none;
       cursor: pointer;
       color: rgba(180, 70, 70, 0.55);
-      font-family: 'EB Garamond', serif;
+      font-family: var(--font-main);
       font-size: 0.92rem;
       font-style: italic;
       padding: 0.15rem 0.3rem;
@@ -291,7 +293,7 @@
       border: 1px solid rgba(212, 175, 55, 0.25);
       border-radius: 2px;
       padding: 0.3rem 0.5rem;
-      font-family: 'EB Garamond', serif;
+      font-family: var(--font-main);
       font-size: 0.88rem;
       cursor: pointer;
     }
@@ -336,7 +338,7 @@
       border: 1px solid rgba(212, 175, 55, 0.2);
       border-radius: 2px;
       padding: 0.22rem 0.6rem 0.22rem 0.5rem;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 0.82rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -392,7 +394,7 @@
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid rgba(212, 175, 55, 0.25);
       border-radius: 2px;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 0.95rem;
       color: var(--bone-soft);
       flex-shrink: 0;
@@ -494,7 +496,7 @@
       margin-bottom: 0.45rem;
     }
     .ip-rank-num {
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-weight: 600;
       font-size: 1.25rem;
       width: 1.85rem;
@@ -533,7 +535,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 0.78rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -545,7 +547,7 @@
 
     .ip-rank-count { flex-shrink: 0; text-align: right; padding-left: 0.5rem; }
     .ip-rank-count-num {
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-weight: 600;
       font-size: 1.2rem;
       color: rgba(232, 217, 176, 0.7);
@@ -595,7 +597,7 @@
       color: rgba(212, 175, 55, 0.75);
       border: 1px solid rgba(212, 175, 55, 0.3);
       border-radius: 2px;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       letter-spacing: 0.06em;
       font-size: 0.82rem;
       font-weight: 500;
@@ -635,7 +637,7 @@
       background: transparent;
       border: none;
       padding: 0.55rem 0.75rem;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 0.78rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -661,7 +663,7 @@
       border: 1px solid rgba(212, 175, 55, 0.2);
       border-radius: 2px;
       padding: 0.22rem 0.55rem;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 0.78rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -720,7 +722,7 @@
       margin-bottom: 0.45rem;
     }
     .ip-bonus-name {
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       font-size: 1rem;
       letter-spacing: 0.03em;
       color: var(--bone);
@@ -737,7 +739,7 @@
       color: var(--rar-celestial);
       font-weight: 600;
       font-style: normal;
-      font-family: 'Cinzel', serif;
+      font-family: var(--font-display);
       letter-spacing: 0.03em;
     }
     .ip-bonus-types {

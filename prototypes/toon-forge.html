@@ -23,13 +23,19 @@
       --dps:       #f0883e;
       --tank:      #58a6ff;
       --heal:      #d2a8ff;
+      /* Typography — kept in sync with main site css/theme.css. The
+         prototype is self-contained (doesn't load theme.css) so these
+         duplicate values let us reference --font-* the same way. */
+      --font-main:    'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: Georgia, 'Times New Roman', serif;
+      --font-mono:    'Cascadia Code', 'Consolas', 'Courier New', monospace;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--font-main);
       font-size: 15px;
       line-height: 1.5;
     }
@@ -41,7 +47,7 @@
       padding: 1.4rem 2rem 1rem;
     }
     .hero h1 {
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       font-size: 2.1rem;
       margin: 0;
       color: var(--amber);
@@ -115,7 +121,7 @@
       background: var(--elevated);
       border: 1px solid var(--border);
       font-size: 0.75rem;
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       transition: all 0.2s;
     }
     .step.active .num { background: var(--amber); color: #000; border-color: var(--amber); }
@@ -145,7 +151,7 @@
       margin-bottom: 1.25rem;
     }
     .panel h2 {
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       margin: 0 0 0.4rem;
       color: var(--amber);
       font-size: 1.35rem;
@@ -176,7 +182,7 @@
       filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
     }
     .role-card .name {
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       font-size: 1.2rem;
       font-weight: 700;
       margin-bottom: 0.25rem;
@@ -387,7 +393,7 @@
       margin: 0 0 0.4rem;
       padding-bottom: 0.25rem;
       border-bottom: 1px solid var(--border);
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
     }
     .boon-row {
       display: flex; align-items: center; justify-content: space-between;
@@ -422,7 +428,7 @@
     .boon-count {
       min-width: 38px;
       text-align: center;
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
       font-size: 0.85rem;
       color: var(--text);
     }
@@ -515,13 +521,13 @@
     }
     .gauge .num {
       position: relative;
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       font-size: 1.4rem;
       font-weight: 700;
       color: var(--amber);
       z-index: 1;
     }
-    .score-label { font-family: Georgia, serif; }
+    .score-label { font-family: var(--font-display); }
     .score-label .title {
       font-size: 0.72rem;
       color: var(--text-mute);
@@ -558,7 +564,7 @@
       margin-bottom: 0.15rem;
     }
     .quick-stat .val {
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--text);
@@ -691,7 +697,7 @@
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 0.8rem;
     }
-    .picker-header h3 { margin: 0; color: var(--amber); font-family: Georgia, serif; flex: 0 0 auto; }
+    .picker-header h3 { margin: 0; color: var(--amber); font-family: var(--font-display); flex: 0 0 auto; }
     .picker-header input {
       flex: 1; padding: 0.5rem 0.7rem;
       background: var(--bg); border: 1px solid var(--border); color: var(--text);
@@ -726,7 +732,7 @@
     }
     .picker-item-meta {
       color: var(--text-mute); font-size: 0.78rem; margin-top: 0.2rem;
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
     }
     .picker-item-desc {
       color: var(--text-mute); font-size: 0.82rem; margin-top: 0.3rem;
@@ -749,7 +755,7 @@
     }
     .gear-card-stat-line {
       color: var(--text);
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
       font-size: 0.78rem;
       line-height: 1.4;
     }
@@ -948,12 +954,12 @@
       background: var(--elevated);
       font-weight: 700;
       color: var(--amber);
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
     }
     .abil-grid td.cell-base, .abil-grid td.cell-total {
       font-weight: 700;
       color: var(--text);
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
     }
     .abil-grid td.cell-total { color: var(--amber); background: var(--elevated); }
     .abil-grid td.cell-pick {
@@ -977,7 +983,7 @@
       background: var(--bg); border: 1px solid var(--border);
       color: var(--text); padding: 0.2rem 0.3rem;
       border-radius: 4px;
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
       text-align: center; font-size: 0.85rem;
     }
     .abil-grid td.cell-bonus input:focus { outline: none; border-color: var(--amber); }
@@ -1010,11 +1016,11 @@
       font-weight: 700;
       color: var(--amber);
       margin-bottom: 0.6rem;
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
     }
     .race-choice-callout.complete .race-choice-header { color: var(--pos); }
     .race-choice-status {
-      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--font-main);
       font-size: 0.78rem;
       font-weight: 500;
       color: var(--text-mute);
@@ -1040,7 +1046,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s;
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
     }
     .race-choice-btn:hover {
       border-color: var(--amber); color: var(--amber);
@@ -1075,7 +1081,7 @@
       display: flex; align-items: center; justify-content: space-between;
       gap: 1rem;
     }
-    .dstats-header h2 { margin: 0; color: var(--amber); font-family: Georgia, serif; }
+    .dstats-header h2 { margin: 0; color: var(--amber); font-family: var(--font-display); }
     .dstats-header-actions {
       display: flex; align-items: center; gap: 0.7rem;
     }
@@ -1122,16 +1128,16 @@
     }
     .dstat-name {
       font-weight: 700; font-size: 1.05rem; color: var(--text);
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
     }
     .dstat-row.cap-reached .dstat-name { color: var(--pos); }
     .dstat-value {
       font-weight: 700; font-size: 1.15rem; color: var(--amber);
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
     }
     .dstat-row.cap-reached .dstat-value { color: var(--pos); }
     .dstat-detail {
-      color: var(--text-mute); font-family: ui-monospace, monospace;
+      color: var(--text-mute); font-family: var(--font-mono);
       font-size: 0.78rem; margin-top: 0.35rem;
     }
     .dstat-bar {
@@ -1193,7 +1199,7 @@
       text-overflow: ellipsis;
     }
     .dstat-source-list .val {
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
       color: var(--text);
       text-align: right;
       white-space: nowrap;
@@ -1353,7 +1359,7 @@
       width: 32px; height: 32px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
       font-weight: 700;
       font-size: 0.95rem;
       line-height: 1;
@@ -1382,7 +1388,7 @@
       font-weight: 700;
       font-size: 1rem;
       color: var(--text);
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       margin-bottom: 0.35rem;
     }
     .advisor-row.top-pick .advisor-name { color: var(--amber); }
@@ -1402,7 +1408,7 @@
     .advisor-progress {
       font-size: 0.75rem;
       color: var(--text-dim);
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
       margin-bottom: 0.3rem;
     }
     .advisor-advice {
@@ -1435,7 +1441,7 @@
       background: var(--elevated);
     }
     .sim-table td.dmg {
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       font-weight: 700;
       text-align: right;
       color: var(--amber);
@@ -1459,7 +1465,7 @@
       color: var(--text-mute);
     }
     .sim-hero-value {
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       font-size: 1.85rem;
       font-weight: 700;
       color: var(--gold);
@@ -1504,7 +1510,7 @@
       color: var(--text-mute);
     }
     .sim-card-stat-value {
-      font-family: Georgia, serif;
+      font-family: var(--font-display);
       font-weight: 700;
       font-size: 1.1rem;
       margin-top: 0.18rem;
@@ -3603,7 +3609,7 @@
       const { total, parts } = computeTILBreakdown();
       let rows = parts.map(p => {
         let row = `<div style="display:flex;justify-content:space-between;padding:0.15rem 0;">
-          <span>${p.label}</span><span style="font-family:Georgia,serif;color:var(--text);">${p.value.toLocaleString()}</span>
+          <span>${p.label}</span><span style="font-family:var(--font-display);color:var(--text);">${p.value.toLocaleString()}</span>
         </div>`;
         if (p.sources && p.sources.length) {
           row += `<div style="padding-left:0.8rem;color:var(--text-mute);font-size:0.72rem;line-height:1.4;">` +
@@ -3614,7 +3620,7 @@
       }).join("");
       el.innerHTML = rows + `
         <div style="margin-top:0.5rem;padding-top:0.4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-weight:700;">
-          <span>Total IL</span><span style="font-family:Georgia,serif;color:var(--amber);">${total.toLocaleString()}</span>
+          <span>Total IL</span><span style="font-family:var(--font-display);color:var(--amber);">${total.toLocaleString()}</span>
         </div>`;
     }
 

@@ -42,9 +42,14 @@
   --insignia-enlightened: #3fb950;
   --insignia-universal:   #8b949e;
 
-  /* Typography */
-  --font-main: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+  /* Typography
+     Three roles, one font each:
+       --font-main:    body copy, controls, lists. Default everywhere.
+       --font-display: headings, titles, hero text, warnings/alerts.
+       --font-mono:    numbers, codes, formulas. */
+  --font-main:    'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-mono:    'Cascadia Code', 'Consolas', 'Courier New', monospace;
 
   /* Sizing */
   --radius-sm: 4px;
@@ -71,6 +76,11 @@ body {
   line-height: 1.5;
   min-height: 100vh;
 }
+
+/* Headings + titles use the display font.
+   Per-page CSS can override font-size / color / spacing but should
+   inherit font-family unless intentionally swapping for a brand font. */
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); }
 
 a {
   color: var(--accent);
