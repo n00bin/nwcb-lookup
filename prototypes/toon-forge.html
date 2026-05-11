@@ -2835,44 +2835,15 @@
       return { name: c.name, meta, desc };
     }
     function renderMount(m) {
-      const slots = (m.insigniaSlots || []);
-      const meta = `${slots.length} insignia slot${slots.length === 1 ? "" : "s"}`;
-      // One row per slot with preferred-badge surfacing
-      const slotRows = slots.map((s, i) => {
-        const cats = (s.allowed || []).map(c => c === "*" ? "Universal" : c).join(" / ");
-        const preferred = s.preferred ? ` <span class="gear-card-bonus-tag">★ prefers ${_escHTML(s.preferred)} (+20%)</span>` : "";
-        return `<div class="gear-card-stat-line">Slot ${i+1}: ${_escHTML(cats || "?")}${preferred}</div>`;
-      }).join("");
-      const slotBlock = slots.length
-        ? `<div class="gear-card-section">
-             <div class="gear-card-section-title">Insignia Slots</div>
-             ${slotRows}
-           </div>`
-        : "";
-      const combat = findCombatPowerById(m.combatRef);
-      const combatBlock = combat
-        ? `<div class="gear-card-section">
-             <div class="gear-card-section-title">Mount Combat Power</div>
-             <div class="gear-card-bonus-name">⚔ ${_escHTML(combat.name)}</div>
-             <div class="gear-card-bonus-desc">${[combat.magnitude ? "Magnitude " + combat.magnitude : "", combat.rechargeTimeSeconds ? combat.rechargeTimeSeconds + "s recharge" : ""].filter(Boolean).join(" · ")}</div>
-           </div>`
-        : "";
-      const equip = findEquipPowerById(m.equipRef);
-      const equipBlock = equip
-        ? `<div class="gear-card-section">
-             <div class="gear-card-section-title">Mount Equip Power</div>
-             <div class="gear-card-bonus-name">✦ ${_escHTML(equip.name)}</div>
-             <div class="gear-card-bonus-desc">${(equip.stats || []).map(s => `+${s.value}${s.type === "percent" ? "%" : ""} ${s.stat}`).join(" · ")}${equip.combinedRating ? " · +" + equip.combinedRating + " CR" : ""}</div>
-           </div>`
-        : "";
-      const sourceBlock = m.source
-        ? `<div class="gear-card-section">
-             <div class="gear-card-section-title">Source</div>
-             <div class="gear-card-set-text">${_escHTML(m.source)}</div>
-           </div>`
-        : "";
-      const desc = [slotBlock, combatBlock, equipBlock, sourceBlock].filter(Boolean).join("");
-      return { name: m.name, meta, desc };
+      const slots = (m.insigniaSlots || []).map(s =>
+        (s.allowed || []).join("/").replace("*", "Universal") +
+        (s.preferred ? ` ★ ${s.preferred}` : "")
+      );
+      return {
+        name: m.name,
+        meta: `${slots.length} insignia slot${slots.length === 1 ? "" : "s"}`,
+        desc: slots.length ? "Slots: " + slots.join(" · ") : ""
+      };
     }
     function renderCollar(c) {
       const meta = [c.tier || "", c.item_level ? "IL " + c.item_level : "", c.combinedRating ? "CR " + c.combinedRating : ""].filter(Boolean).join(" · ");
@@ -5737,10 +5708,51 @@
       }
     }
 
+    // Two-stage flow: pick the desired Insignia Bonus FIRST, then the
+    // mount picker is filtered to only mounts that can fit that bonus's
+    // requiredInsignias schema. This matches how players actually plan
+    // their stable — you decide what bonus you want active on this slot,
+    // then choose any compatible mount.
     function pickMount(idx) {
+      if (typeof MOUNT_INSIGNIA_BONUSES_DATA === "undefined") return;
+      const bonusItems = MOUNT_INSIGNIA_BONUSES_DATA
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      // Stage 1: pick the bonus.
       openPicker({
-        title: `Stable slot ${idx + 1} — Mount`,
-        items: getMountList(),
+        title: `Stable slot ${idx + 1} — Pick an Insignia Bonus first`,
+        items: bonusItems,
+        render: (b) => {
+          const mounts = mountsThatGrantBonus(b.id);
+          return {
+            name: b.name,
+            meta: `Requires ${(b.requiredInsignias || []).join(" + ")} · ${mounts.length} compatible mount${mounts.length === 1 ? "" : "s"}`,
+            desc: b.effectText || "(no effect text)"
+          };
+        },
+        onPick: (bonus) => {
+          // "— None —" (no-filter) path: show every mount.
+          if (!bonus) {
+            openMountStage(idx, null, null);
+            return;
+          }
+          // Stage 2: filter mounts by canMountFitBonus(b.requiredInsignias).
+          const mountNames = mountsThatGrantBonus(bonus.id);
+          const allowed = MOUNTS_DATA.filter(m => mountNames.includes(m.name));
+          openMountStage(idx, bonus, allowed);
+        }
+      });
+    }
+
+    function openMountStage(idx, bonus, allowedMounts) {
+      const items = allowedMounts || getMountList();
+      const title = bonus
+        ? `Stable slot ${idx + 1} — Mount for "${bonus.name}" (${items.length})`
+        : `Stable slot ${idx + 1} — Mount (no bonus filter)`;
+      openPicker({
+        title,
+        items,
         render: renderMount,
         onPick: (m) => {
           state.stable[idx].mount = m ? m.name : "";
@@ -5750,8 +5762,10 @@
           cur.length = slotCount;
           for (let k = 0; k < slotCount; k++) if (cur[k] === undefined) cur[k] = null;
           state.stable[idx].insignias = cur;
-          // Reset desired bonus — it may not be valid on the new mount
-          state.stable[idx].desiredBonus = null;
+          // If user picked a bonus first, pre-set desiredBonus so the
+          // row's bonus chip starts in the correct state. Otherwise
+          // clear it since previous bonus may not fit the new mount.
+          state.stable[idx].desiredBonus = (m && bonus) ? bonus.id : null;
           renderStable(); rerenderAll();
         }
       });
