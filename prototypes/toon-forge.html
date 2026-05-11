@@ -3633,7 +3633,19 @@
 
         // Insignias — each slotted insignia adds its own stats + CR.
         // Each insignia has its own tier (per-individual-insignia picker).
+        //
+        // PREFERRED SLOT BONUS (verified by n00b 2026-05-11):
+        // 4-slot mounts designate one of their slots as "preferred" for a
+        // specific insignia category (e.g. Brain Stealer Dragon slot 4
+        // prefers Regal). When the slotted insignia's category matches
+        // the preferred category, the insignia's direct stat values get
+        // a +20% bonus. CR distribution from the insignia is NOT boosted
+        // (only the direct ratingStats / percentStats).
         const slotTiers = Array.isArray(slot.insigniaTiers) ? slot.insigniaTiers : [];
+        const mountForSlot = findMountByName(slot.mount);
+        const mountSchema = (mountForSlot && Array.isArray(mountForSlot.insigniaSlots))
+          ? mountForSlot.insigniaSlots
+          : [];
         for (let iIdx = 0; iIdx < (slot.insignias || []).length; iIdx++) {
           const insName = slot.insignias[iIdx];
           if (!insName) continue;
@@ -3641,14 +3653,21 @@
           if (!ins) continue;
           const insTier = slotTiers[iIdx] || "Mythic";
           const insMult = insigniaTierMultiplier(insTier);
+          // Check if this insignia is in its mount's preferred slot AND
+          // matches the preferred category.
+          const slotMeta = mountSchema[iIdx] || {};
+          const preferredCat = slotMeta.preferred || null;
+          const isPreferredMatch = !!(preferredCat && ins.category === preferredCat);
+          const prefBoost = isPreferredMatch ? 1.20 : 1.0;
           const ratingStats = {};
           const percentStats = {};
           for (const st of (ins.stats || [])) {
             const tgt = st.type === "percent" ? percentStats : ratingStats;
-            tgt[st.stat] = (tgt[st.stat] || 0) + (st.value || 0) * insMult;
+            tgt[st.stat] = (tgt[st.stat] || 0) + (st.value || 0) * insMult * prefBoost;
           }
+          const prefTag = isPreferredMatch ? " ★ preferred" : "";
           buffs.push({
-            source: `${slotLabel} Insignia: ${ins.name} (${insTier})`,
+            source: `${slotLabel} Insignia: ${ins.name} (${insTier})${prefTag}`,
             ratingStats, percentStats
           });
           const icr = expandCR(ins.combinedRating, insMult);
