@@ -4165,17 +4165,33 @@
           <div class="dstat-source-list">${rows}</div>
         </div>`;
       }
-      const ratingContribs = (s.contributors || [])
-        .filter(c => c.type === "rating")
+      // Within rating contributors, split direct stat ratings from Combined-
+      // Rating distributions. A CR contribution's source label always contains
+      // " CR:" (e.g. "Gear CR: ...", "Artifact CR: ...", "Enchant Offense 1 CR: ...")
+      // or "base IL:" (companion bolster contribution).
+      function isCRSource(src) {
+        const s = String(src || "");
+        return / CR:/i.test(s) || /base IL:/i.test(s);
+      }
+      const allRating = (s.contributors || []).filter(c => c.type === "rating");
+      const directContribs = allRating
+        .filter(c => !isCRSource(c.source))
+        .slice().sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
+      const crContribs = allRating
+        .filter(c => isCRSource(c.source))
         .slice().sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
       const percentContribs = (s.contributors || [])
         .filter(c => c.type !== "rating")
         .slice().sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
+      // Group subtotals so the user can see the rating split at a glance.
+      const directTotal = directContribs.reduce((s, c) => s + c.amount, 0);
+      const crTotal     = crContribs.reduce((s, c) => s + c.amount, 0);
       const sourcesBlock = n
         ? `<details class="dstat-sources">
              <summary>Sources (${n})</summary>
              <div class="dstat-sources-body">
-               ${renderSourceGroup("Rating", ratingContribs)}
+               ${renderSourceGroup(`Direct stat rating — subtotal +${Math.round(directTotal).toLocaleString()}`, directContribs)}
+               ${renderSourceGroup(`Combined Rating distributed to this stat — subtotal +${Math.round(crTotal).toLocaleString()}`, crContribs)}
                ${renderSourceGroup("Percent bonuses", percentContribs)}
              </div>
            </details>`
