@@ -3468,17 +3468,12 @@
         }
       }
       add("Reinforcement kits", cur, sources);
-      // Guild boons
-      cur = 0; sources = [];
-      if (state.guildBoonPicks) {
-        for (const cat of ["Offense", "Defense", "Utility"]) {
-          const name = state.guildBoonPicks[cat];
-          if (!name) continue;
-          const b = findGuildBoon(cat, name);
-          if (b && b.item_level) { cur += b.item_level; sources.push({ name: `${cat}: ${b.name}`, il: b.item_level }); }
-        }
-      }
-      add("Guild boons", cur, sources);
+      // Guild boons — verified by n00b 2026-05-11: do NOT count toward
+      // player TIL. Their stat contributions are still applied in the
+      // engine pipeline, but their item_level value is purely an
+      // internal sort/category key, not a TIL contributor.
+      // (Removed from TIL breakdown; if a future patch changes this,
+      // re-enable here.)
       // Mount insignias (per-slot tier) + collars
       let insSum = 0, insSources = [];
       let collarSum = 0, collarSources = [];
@@ -3493,15 +3488,27 @@
           }
         }
         const slotTiers = Array.isArray(slot.insigniaTiers) ? slot.insigniaTiers : [];
+        const mountForSlot = findMountByName(slot.mount);
+        const mountSchema = (mountForSlot && Array.isArray(mountForSlot.insigniaSlots))
+          ? mountForSlot.insigniaSlots
+          : [];
         for (let iIdx = 0; iIdx < (slot.insignias || []).length; iIdx++) {
           const insName = slot.insignias[iIdx];
           if (!insName) continue;
           const ins = findInsigniaByName(insName);
           if (!ins) continue;
           const tier = slotTiers[iIdx] || "Mythic";
-          const il = insigniaTierIL(tier);
+          const baseIL = insigniaTierIL(tier);
+          const slotMeta = mountSchema[iIdx] || {};
+          const preferredCat = slotMeta.preferred || null;
+          const isPreferredMatch = !!(preferredCat && ins.category === preferredCat);
+          // In-game tooltip on Brain Stealer Dragon slot 4 confirmed
+          // "Item Level (Preferred Slot): 900" on Celestial Regal Insignia
+          // of Dominance = base 750 × 1.20.
+          const il = isPreferredMatch ? Math.round(baseIL * 1.20) : baseIL;
+          const prefTag = isPreferredMatch ? ` ★ preferred (+20% IL)` : "";
           insSum += il;
-          insSources.push({ name: `Mount ${stIdx+1}: ${ins.name} (${tier})`, il });
+          insSources.push({ name: `Mount ${stIdx+1}: ${ins.name} (${tier})${prefTag}`, il });
         }
       }
       add("Mount insignias", insSum, insSources);
@@ -3529,7 +3536,24 @@
       const cp = findCombatPowerById(state.activeCombatPower);
       if (cp && cp.item_level) { cur += cp.item_level; sources.push({ name: `Combat Power: ${cp.name}`, il: cp.item_level }); }
       add("Active mount powers", cur, sources);
-      // Active companions (per-rarity)
+      // Summoned companion rarity IL — verified in-game 2026-05-11 by
+      // n00b's rarity-swap test: switching summoned from Mythic→Celestial
+      // raised TIL by 810 while the bolster contribution only rose by
+      // 660. The extra 150 = ΔRarity IL (900 − 750). So the summoned
+      // companion contributes BOTH its rarity IL AND the bolster line.
+      // (Earlier model omitted this, which hid +900 of TIL.)
+      if (state.summoned) {
+        const sR = state.summonedRarity || state.companionRarity || "Mythic";
+        const sumIL = COMPANION_RARITY_IL[sR] || 0;
+        if (sumIL > 0) {
+          add("Summoned companion", sumIL, [
+            { name: `${state.summoned} (${sR})`, il: sumIL }
+          ]);
+        }
+      }
+      // Active companions (per-rarity). Verified in-game 2026-05-11:
+      // each slotted comp contributes its FULL rarity IL (Celestial 900
+      // each — removing one drops TIL by exactly 900).
       cur = 0; sources = [];
       const activeRarities = Array.isArray(state.activeCompRarities) ? state.activeCompRarities : [];
       for (let i = 0; i < (state.activeComps || []).length; i++) {
@@ -4004,13 +4028,19 @@
         // Insignias — each slotted insignia adds its own stats + CR.
         // Each insignia has its own tier (per-individual-insignia picker).
         //
-        // PREFERRED SLOT BONUS (verified by n00b 2026-05-11):
-        // 4-slot mounts designate one of their slots as "preferred" for a
-        // specific insignia category (e.g. Brain Stealer Dragon slot 4
-        // prefers Regal). When the slotted insignia's category matches
-        // the preferred category, the insignia's direct stat values get
-        // a +20% bonus. CR distribution from the insignia is NOT boosted
-        // (only the direct ratingStats / percentStats).
+        // PREFERRED SLOT BONUS (verified in-game by n00b 2026-05-11
+        // via Brain Stealer Dragon slot-4 tooltip showing
+        // "Item Level (Preferred Slot): 900" on a Celestial Regal Insignia
+        // of Dominance — base IL 750 × 1.20):
+        // 4-slot mounts designate one slot as "preferred" for a specific
+        // insignia shape/category. When the slotted insignia's category
+        // matches the preferred category, EVERYTHING about that one
+        // insignia gets a +20% bonus:
+        //   - Item Level contribution to TIL
+        //   - Direct rating/percent stat values
+        //   - Combined Rating distribution
+        // It does NOT boost the insignia bonus power values (those are
+        // handled by the second-pass insignia bonus stacking logic below).
         const slotTiers = Array.isArray(slot.insigniaTiers) ? slot.insigniaTiers : [];
         const mountForSlot = findMountByName(slot.mount);
         const mountSchema = (mountForSlot && Array.isArray(mountForSlot.insigniaSlots))
@@ -4040,10 +4070,10 @@
             source: `${slotLabel} Insignia: ${ins.name} (${insTier})${prefTag}`,
             ratingStats, percentStats
           });
-          const icr = expandCR(ins.combinedRating, insMult);
+          const icr = expandCR(ins.combinedRating, insMult * prefBoost);
           if (icr) {
             buffs.push({
-              source: `${slotLabel} Insignia CR: ${ins.name} (${insTier})`,
+              source: `${slotLabel} Insignia CR: ${ins.name} (${insTier})${prefTag}`,
               ratingStats: icr
             });
           }
@@ -4083,6 +4113,13 @@
         const mode = bonus.stackingMode || "diminishing";
         const maxStacks = bonus.maxStacks || (mode === "diminishing" ? 3 : 5);
         const n = Math.min(insts.length, maxStacks);
+        // Conditional flag: bonuses with a trigger ("at full HP", "AP full",
+        // "when Stamina < 25%", "on crit", etc.) only fire when the trigger
+        // is met — treat as conditional so the standing-around stat panel
+        // doesn't include them by default. Show Conditional ON includes
+        // them at full effect. Bonuses with no condition (e.g. Mender's
+        // Covenant which is a straight stat swap) stay always-on.
+        const isConditional = !!(bonus.condition && String(bonus.condition).trim());
         for (let i = 0; i < n; i++) {
           const mult = (mode === "linear") ? 1 : (DIMINISHING_MULTIPLIERS[i] || 0);
           if (mult === 0) break;
@@ -4099,6 +4136,7 @@
             : (mode === "linear" && insts.length > 1 ? ` (stack ${i+1}/${insts.length})` : "");
           buffs.push({
             source: `${slotLabel} Insignia Bonus: ${bonus.name}${stackTag}`,
+            conditional: isConditional,
             ratingStats, percentStats
           });
         }
@@ -4257,6 +4295,51 @@
         if (Object.keys(percentStats).length) {
           buffs.push({ source: label + " bonus (" + r + ")", percentStats });
         }
+        // Proc effect with structured stat data — push as conditional so
+        // it surfaces in Show Conditional view (e.g. Raptor's "Part of the
+        // Pack" 5-stack proc, Fire Archon's 10s stacking buff).
+        //
+        // Data convention: procEffect.statEffects is the per-stack value;
+        // procEffect.maxStacks is the cap (or 1 if not set). scope filters:
+        // - "self" or "party" → applies to player
+        // - "enemy"            → debuff, skip
+        //
+        // Stack accounting: if the same stat with the same value is ALSO
+        // in power.stats (the always-on baseline, e.g. Raptor 4.5% Power
+        // from slotting), the proc adds (maxStacks - 1) more stacks to
+        // avoid double-counting the baseline. If the stat is only in
+        // statEffects, the full maxStacks × value applies.
+        const pe = power.procEffect;
+        if (pe && Array.isArray(pe.statEffects) && pe.statEffects.length) {
+          const maxStacks = pe.maxStacks || 1;
+          const procRating = {};
+          const procPercent = {};
+          for (const eff of pe.statEffects) {
+            if (!eff || !eff.stat) continue;
+            if (eff.scope === "enemy") continue;
+            const alreadyBaseline = (power.stats || []).some(s =>
+              s.stat === eff.stat && Math.abs((s.value || 0) - (eff.value || 0)) < 0.05
+            );
+            const extraStacks = alreadyBaseline ? Math.max(0, maxStacks - 1) : maxStacks;
+            if (extraStacks <= 0) continue;
+            const amount = (eff.value || 0) * extraStacks * scale;
+            if (eff.type === "percent") {
+              procPercent[eff.stat] = (procPercent[eff.stat] || 0) + amount;
+            } else {
+              procRating[eff.stat] = (procRating[eff.stat] || 0) + amount;
+            }
+          }
+          if (Object.keys(procRating).length || Object.keys(procPercent).length) {
+            const stackTag = maxStacks > 1 ? ` (full ${maxStacks} stacks)` : "";
+            const triggerTag = pe.trigger ? ` on ${pe.trigger}` : "";
+            buffs.push({
+              source: label + ` proc (${r})${stackTag}${triggerTag}`,
+              conditional: true,
+              ratingStats: procRating,
+              percentStats: procPercent
+            });
+          }
+        }
       }
 
       // Summoned companion's bonus power — applies to the player like the
@@ -4334,20 +4417,25 @@
         } else if (slotType === "combat") {
           // Combat enchants (e.g. Celestial Swift Synergy R) describe their
           // effect as "Your attacks grant you a stack of Preparation..."
-          // — the per-stack % bonuses listed in percentStats are achieved
-          // only by attacking, and decay out of combat. They MUST NOT
-          // contribute to the standing-around stat panel. n00b verified
-          // 2026-05-11 that in-game Crit Sev / Combat Advantage do not
-          // include these values when out of combat.
+          // — the per-stack % bonuses are achieved only by attacking, and
+          // decay out of combat. They MUST NOT contribute to the
+          // standing-around stat panel (n00b verified 2026-05-11 that
+          // in-game Crit Sev / Combat Advantage do not include these
+          // values when out of combat).
           //
-          // Some Combat enchants also have an always-on "Equip:" damage
-          // line (e.g. Swift Synergy R: +12% Dmg Bonus). That bonus stat
-          // ("Dmg Bonus") is in TOON_FORGE_BONUS_STATS — silenced
-          // anyway — so skipping the whole percentStats block here doesn't
-          // drop any stat-panel value. Revisit if a future Combat enchant
-          // has a true always-on, panel-visible % bonus.
+          // BUT they ARE conditional buffs — when the user toggles
+          // "Show conditional" ON in Detailed Stats, the engine should
+          // surface them at full-stack value. So push percentStats as
+          // a CONDITIONAL contributor instead of skipping it. The
+          // always-on ratingStats stay on the main entry.
           entry.ratingStats = e.ratingStats || {};
-          // intentionally skipping e.percentStats
+          if (e.percentStats && Object.keys(e.percentStats).length) {
+            buffs.push({
+              source: `Enchant ${slotLabel}: ${e.name} (at full stacks)`,
+              conditional: true,
+              percentStats: e.percentStats
+            });
+          }
         } else {
           entry.ratingStats = e.ratingStats || {};
           entry.percentStats = e.percentStats || {};
@@ -4387,7 +4475,12 @@
         });
       }
 
-      // Overloads
+      // Overloads. Always-on ratingStats/percentStats go straight in.
+      // Some overloads also have zone- or proc-conditional equipBonuses
+      // (e.g. Wildspace Warrior adds an extra +5% Power only in Wildspace,
+      // Wildspace Slayer adds +5% Dmg in Wildspace) — those are pushed
+      // as conditional buffs via ingestEquipBonuses so they surface in
+      // the Show Conditional view.
       for (let i = 0; i < (s.overloads || []).length; i++) {
         const name = s.overloads[i];
         if (!name) continue;
@@ -4398,6 +4491,21 @@
           ratingStats: o.ratingStats || {},
           percentStats: o.percentStats || {}
         });
+        // Zone-/proc-conditional bonuses: tag and push individually
+        for (const eb of (o.equipBonuses || [])) {
+          if (!eb || !eb.stat || eb.amount == null) continue;
+          if (eb.scope && eb.scope !== "self") continue;
+          const channel = (eb.kind === "rating") ? "ratingStats" : "percentStats";
+          // Zone or trigger context implies conditional. If neither, treat
+          // it as always-on per the data's intent.
+          const isCond = !!(eb.zones && eb.zones.length) || (eb.alwaysActive === false);
+          const ctxTag = (eb.zones && eb.zones.length) ? ` (in ${eb.zones.join("/")})` : "";
+          buffs.push({
+            source: `Overload ${i + 1}: ${o.name}${ctxTag}`,
+            conditional: isCond,
+            [channel]: { [eb.stat]: eb.amount }
+          });
+        }
       }
 
       return {
