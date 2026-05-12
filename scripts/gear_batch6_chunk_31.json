@@ -1,0 +1,821 @@
+[
+  {
+    "name": "Grimfang · IL 3400",
+    "displayName": "Grimfang",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 3400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3315,
+      "Critical Strike": 3060
+    },
+    "combinedRating": 3060,
+    "set": "Whisper of Power",
+    "setSize": 2,
+    "setPartners": ["Harrowed Messengers"],
+    "source": "Soul Collector Zone Mechanic",
+    "notes": "Whispered to have been carved from the very bones of beasts now long extinct, this rare bow avails from old whispers about. Once marked, no quarry escapes the inevitable end. Artifact Equipment. Cannot Discard."
+  },
+  {
+    "name": "Grimfang · IL 3750",
+    "displayName": "Grimfang",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 3750,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3656,
+      "Critical Strike": 3375
+    },
+    "combinedRating": 3375,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Harrowed Messengers"],
+    "source": "Soul Collector Zone Mechanic",
+    "notes": "Set Impending Doom unlocks at this tier."
+  },
+  {
+    "name": "Grimfang · IL 4100",
+    "displayName": "Grimfang",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 4100,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3997,
+      "Critical Strike": 3690
+    },
+    "combinedRating": 3690,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Harrowed Messengers"],
+    "source": "Soul Collector Zone Mechanic"
+  },
+  {
+    "name": "Grimfang · IL 4450",
+    "displayName": "Grimfang",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 4450,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 2892,
+      "Combat Advantage": 1780,
+      "Critical Strike": 2670
+    },
+    "weaponDamage": 50,
+    "combinedRating": 4005,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Harrowed Messengers"],
+    "source": "Soul Collector Zone Mechanic",
+    "notes": "+50 Damage; gains Combat Advantage stat at this IL."
+  },
+  {
+    "name": "Grimfang · IL 4800",
+    "displayName": "Grimfang",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 4800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3120,
+      "Combat Advantage": 1920,
+      "Critical Strike": 2880
+    },
+    "weaponDamage": 100,
+    "combinedRating": 4320,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Harrowed Messengers"],
+    "setBonus": "2 of Set: Accumulate 13 Charges to consume them and become Unleashed. Charged by: 1 charge per Daily power (10s CD), 1 charge per Encounter power (1.5s CD), 1 charge per 3s in combat. Unleashed grants: +4.5% Base Damage Boost. Charges and Unleashed lasts 20s and are refreshable. Leaving combat removes all Charges.",
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Grimfang · IL 5250",
+    "displayName": "Grimfang",
+    "slot": "Main Hand",
+    "subSlot": "Blade",
+    "item_level": 5250,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3412,
+      "Combat Advantage": 2100,
+      "Critical Strike": 3150
+    },
+    "weaponDamage": 200,
+    "combinedRating": 4725,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Harrowed Messengers"],
+    "source": "Soul Harvest (Master)",
+    "tier": "Master",
+    "notes": "Artifact Equipment Maximum Quality. Recommended."
+  },
+  {
+    "name": "Harrowed Messengers · IL 3400",
+    "displayName": "Harrowed Messengers",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 3400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3315,
+      "Combat Advantage": 2040
+    },
+    "combinedRating": 3060,
+    "set": "Whisper of Power",
+    "setSize": 2,
+    "setPartners": ["Grimfang"],
+    "source": "Soul Collector Zone Mechanic",
+    "notes": "Artifact Stat Increase: Unlocks at Epic Rarity. Cannot Discard. Cannot Sell."
+  },
+  {
+    "name": "Harrowed Messengers · IL 3750",
+    "displayName": "Harrowed Messengers",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 3750,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3656,
+      "Combat Advantage": 2250
+    },
+    "combinedRating": 3375,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Grimfang"],
+    "source": "Soul Collector Zone Mechanic",
+    "notes": "Artifact Stat Increase: Unlocks at Epic Rarity."
+  },
+  {
+    "name": "Harrowed Messengers · IL 4100",
+    "displayName": "Harrowed Messengers",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 4100,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3997,
+      "Combat Advantage": 2460
+    },
+    "combinedRating": 3690,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Grimfang"],
+    "source": "Soul Collector Zone Mechanic"
+  },
+  {
+    "name": "Harrowed Messengers · IL 4450",
+    "displayName": "Harrowed Messengers",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 4450,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 4339,
+      "Combat Advantage": 2670
+    },
+    "combinedRating": 4005,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Grimfang"],
+    "source": "Soul Collector Zone Mechanic",
+    "notes": "Modification: This slot will hold a bonus statistic chosen from a selection of the special statistics given by Epic and higher rarity artifact weapons. Select 'Manage Artifact Modifications' to select which statistic is slotted. Modification: This slot will hold an enhancement to one of the 10 Class Features of your class."
+  },
+  {
+    "name": "Harrowed Messengers · IL 4800",
+    "displayName": "Harrowed Messengers",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 4800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3120,
+      "Combat Advantage": 1920,
+      "Critical Severity": 2880
+    },
+    "combinedRating": 4320,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Grimfang"],
+    "setBonus": "2 of Set: Accumulate 13 Charges to consume them and become Unleashed. Charged by: 1 charge per Daily power (10s CD), 1 charge per Encounter power (1.5s CD), 1 charge per 3s in combat. Unleashed grants: +4.9% Base Damage Boost. Charges and Unleashed lasts 20s and are refreshable. Leaving combat removes all Charges.",
+    "source": "Soul Harvest (Advanced)"
+  },
+  {
+    "name": "Harrowed Messengers · IL 5250",
+    "displayName": "Harrowed Messengers",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 5250,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 3412,
+      "Combat Advantage": 2100,
+      "Critical Severity": 3150
+    },
+    "combinedRating": 4725,
+    "set": "Impending Doom",
+    "setSize": 2,
+    "setPartners": ["Grimfang"],
+    "source": "Soul Harvest (Master)",
+    "tier": "Master",
+    "notes": "Artifact Equipment Maximum Quality. Recommended."
+  },
+  {
+    "name": "Phantom's Mark",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 4000,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 2640,
+      "Awareness": 2160
+    },
+    "combinedRating": 3600,
+    "set": "Crimson Clarity (Greater)",
+    "setSize": 2,
+    "setPartners": ["Phantom Fang"],
+    "setBonus": "2 of Set: While in Thay, your Movement Speed is increased by 12% and your Damage is increased by 3%. Your current Hit Points increases your Critical Severity, up to a maximum of 5%.",
+    "tier": "Greater",
+    "source": "Shackles of Divinity (Master)",
+    "notes": "Binds on Pickup (Account), Binds on Equip (Character). A hunter's secret weapon, imbued with the essence of spectral beasts. It sharpens the senses, ensuring that no prey escapes notice."
+  },
+  {
+    "name": "Phantom Fang",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 4000,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 3960,
+      "Critical Severity": 3240
+    },
+    "weaponDamage": 100,
+    "combinedRating": 3600,
+    "set": "Crimson Clarity (Greater)",
+    "setSize": 2,
+    "setPartners": ["Phantom's Mark"],
+    "setBonus": "2 of Set: While in Thay, your Movement Speed is increased by 12% and your Damage is increased by 3%. Your current Hit Points increases your Critical Severity, up to a maximum of 5%.",
+    "tier": "Greater",
+    "source": "Shackles of Divinity (Master)",
+    "notes": "Binds on Pickup (Account), Binds on Equip (Character). Forged from the spine of an ancient predator, this bow thirsts for the hunt. When the arrows reach their target, they fracture, rupturing anything they strike."
+  },
+  {
+    "name": "Deadshot's Mark",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 3800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 2508,
+      "Awareness": 2052
+    },
+    "combinedRating": 3420,
+    "set": "Crimson Clarity",
+    "setSize": 2,
+    "setPartners": ["Phantom's Bite"],
+    "setBonus": "2 of Set: While in Thay, your Movement Speed is increased by 5%. Your current Hit Points increases your Critical Severity, up to a maximum of 5%.",
+    "source": "Shackles of Divinity (Advanced)",
+    "notes": "An inscribed hunting totem, carried by rangers of old. It sharpens the senses, ensuring that no prey escapes notice."
+  },
+  {
+    "name": "Phantom's Bite",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 3800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 3762,
+      "Critical Severity": 3078
+    },
+    "weaponDamage": 50,
+    "combinedRating": 3420,
+    "set": "Crimson Clarity",
+    "setSize": 2,
+    "setPartners": ["Deadshot's Mark"],
+    "setBonus": "2 of Set: While in Thay, your Movement Speed is increased by 5%. Your current Hit Points increases your Critical Severity, up to a maximum of 5%.",
+    "source": "Shackles of Divinity (Advanced)",
+    "notes": "A bow crafted from bleached wood and veined with eerie silver. Arrows released from it seem to leave behind a momentary afterimage before striking their prey."
+  },
+  {
+    "name": "Bloodveil Blades of the Thayan Zealot",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 3300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 1782,
+      "Critical Strike": 3267
+    },
+    "combinedRating": 2970,
+    "set": "Umbral Stride",
+    "setSize": 2,
+    "setPartners": ["Deathstinger Bow of the Thayan Zealot"],
+    "setBonus": "2 of Set: While in Thay, your Movement Speed is increased by 10%. Every 1s in combat, you will gain a stack of Umbral Stride. Each stack grants the following bonuses: General: +0.25% Power, DPS: +0.5% Critical Severity, Healer: +0.5% Overall Outgoing Healing, Tank: +0.5% Awareness. Max 10 stacks.",
+    "source": "Zone Rewards"
+  },
+  {
+    "name": "Deathstinger Bow of the Thayan Zealot",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 3300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Severity": 3267,
+      "Forte": 2005
+    },
+    "weaponDamage": 100,
+    "combinedRating": 2970,
+    "set": "Umbral Stride",
+    "setSize": 2,
+    "setPartners": ["Bloodveil Blades of the Thayan Zealot"],
+    "setBonus": "2 of Set: While in Thay, your Movement Speed is increased by 10%. Every 1s in combat, you will gain a stack of Umbral Stride. Each stack grants the following bonuses: General: +0.25% Power, DPS: +0.5% Critical Severity, Healer: +0.5% Overall Outgoing Healing, Tank: +0.5% Awareness. Max 10 stacks.",
+    "source": "Zone Rewards"
+  },
+  {
+    "name": "Greaves of the Scarlet Arcanum",
+    "slot": "Feet",
+    "item_level": 5000,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 3500,
+      "Critical Severity": 4050
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Momentum's Edge",
+        "description": "While moving, gain +3% Power and +0.6% Combat Advantage. If you stand still for more than 3 seconds, you lose all stacks. Max 5 Stacks: +2.5% Power and +3% Combat Advantage."
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "tier": "Reinforced",
+    "source": "Soul Harvest (Master)",
+    "notes": "Recommended. Reinforced: Empty. Binds on Pickup (Account), Binds on Equip (Character)."
+  },
+  {
+    "name": "Gauntlets of the Scarlet Arcanum",
+    "slot": "Arms",
+    "item_level": 5000,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 3500,
+      "Critical Strike": 4050
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Devastating Precision",
+        "description": "When you damage your target for more than 20% of your Maximum Hit Points in a single blow, your enemy suffers -8% Critical Severity, while you gain +8% Critical Severity for 8 seconds (10 second cooldown)."
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "tier": "Reinforced",
+    "source": "Soul Harvest (Master)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Cuirass of the Scarlet Arcanum",
+    "slot": "Armor",
+    "item_level": 5000,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Accuracy": 3218,
+      "Combat Advantage": 1980,
+      "Forte": 2228
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Focused Frenzy",
+        "description": "When you use a Daily power, for the next 30 seconds your next Encounter Power deals +75% more Damage."
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "tier": "Reinforced",
+    "source": "Soul Harvest (Master)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Helm of the Scarlet Arcanum",
+    "slot": "Head",
+    "item_level": 5000,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Accuracy": 3218,
+      "Combat Advantage": 1980,
+      "Forte": 2228
+    },
+    "combinedRating": 4500,
+    "equipBonuses": [
+      {
+        "name": "Steady Henson",
+        "description": "For every 8 seconds you are in combat, gain +1% Accuracy and +0.3% Recharge Speed. Max 7 Stacks: +7% Accuracy and +2.1% Recharge Speed."
+      }
+    ],
+    "set": "Doomed Reaver Armor",
+    "tier": "Reinforced",
+    "source": "Soul Harvest (Master)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Greaves of the Crimson Gale",
+    "slot": "Feet",
+    "item_level": 4700,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 3102,
+      "Forte": 2855
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Kinetic Precision",
+        "description": "While moving, gain +1% Power and +0.7% Combat Advantage. If you stand still for more than 4 seconds, you lose all stacks. Max 5 Stacks: +5% Power and +3.5% Combat Advantage."
+      }
+    ],
+    "set": "Dread March Armor",
+    "tier": "Reinforced",
+    "source": "Soul Harvest (Advanced)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Vambraces of the Crimson Gale",
+    "slot": "Arms",
+    "item_level": 4700,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Critical Strike": 3807,
+      "Forte": 3490
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Precision Against Odds",
+        "description": "Each enemy you are in combat with increases your Critical Strike by 1.8%. Max 5 targets: 9% Critical Strike."
+      }
+    ],
+    "set": "Dread March Armor",
+    "tier": "Reinforced",
+    "source": "Soul Harvest (Advanced)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Hauberk of the Crimson Gale",
+    "slot": "Armor",
+    "item_level": 4700,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Critical Strike": 3807,
+      "Forte": 3490
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Lethal Focus",
+        "description": "When you damage your target for more than 15% of your Maximum Hit Points in a single blow, you gain +3% Hit Points and +4% Accuracy for 7 seconds (5 second cooldown)."
+      }
+    ],
+    "set": "Dread March Armor",
+    "tier": "Reinforced",
+    "source": "Soul Harvest (Advanced)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Diadem of the Crimson Gale",
+    "slot": "Head",
+    "item_level": 4700,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 3102,
+      "Forte": 2855
+    },
+    "combinedRating": 4230,
+    "equipBonuses": [
+      {
+        "name": "Advantageous Strike",
+        "description": "Whenever you deal Combat Advantage damage with your Powers, gain +3% Combat Advantage and +2.5% Power for 6 seconds (10 second cooldown)."
+      }
+    ],
+    "set": "Dread March Armor",
+    "tier": "Reinforced",
+    "source": "Soul Harvest (Advanced)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Bismuth Flex Bow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 3400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 2040,
+      "Critical Strike": 3060
+    },
+    "weaponDamage": 100,
+    "combinedRating": 3060,
+    "set": "Prismatic Defier of Dread",
+    "setSize": 2,
+    "setPartners": ["Crystal Flex Bow", "Crystal Knife", "Bismuth Knife"],
+    "setBonus": "2 of Set: While in The Pirates' Skyhold or Dread Sanctum, your Movement Speed is increased by 12%. Every 1s in combat, you will gain a stack of Prismatic Force. Each stack of Prismatic Force will grant the following bonuses: General: +0.35% Power, DPS: +0.5% Critical Severity, Healer: +0.4% Overall Outgoing Healing, Tank: +0.4% Awareness. Max 10 stacks.",
+    "source": "Zone Rewards",
+    "notes": "Binds on Pickup (Account), Binds on Equip (Character)."
+  },
+  {
+    "name": "Bismuth Knife",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 3400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 2040,
+      "Critical Strike": 3060
+    },
+    "weaponDamage": 100,
+    "combinedRating": 3060,
+    "set": "Prismatic Defier of Dread",
+    "setSize": 2,
+    "setPartners": ["Crystal Flex Bow", "Crystal Knife", "Bismuth Flex Bow"],
+    "setBonus": "2 of Set: While in The Pirates' Skyhold or Dread Sanctum, your Movement Speed is increased by 12%. Every 1s in combat, you will gain a stack of Prismatic Force. Each stack of Prismatic Force will grant the following bonuses: General: +0.35% Power, DPS: +0.5% Critical Severity, Healer: +0.4% Overall Outgoing Healing, Tank: +0.4% Awareness. Max 10 stacks.",
+    "source": "Zone Rewards"
+  },
+  {
+    "name": "Crystal Flex Bow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 3100,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Severity": 2790,
+      "Forte": 2092
+    },
+    "weaponDamage": 100,
+    "combinedRating": 2790,
+    "set": "Prismatic Defier of Dread",
+    "setSize": 2,
+    "setPartners": ["Bismuth Flex Bow", "Crystal Knife", "Bismuth Knife"],
+    "source": "Zone Rewards"
+  },
+  {
+    "name": "Crystal Knife",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 3100,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 1860,
+      "Critical Strike": 2790
+    },
+    "weaponDamage": 100,
+    "combinedRating": 2790,
+    "set": "Prismatic Defier of Dread",
+    "setSize": 2,
+    "setPartners": ["Bismuth Flex Bow", "Crystal Flex Bow", "Bismuth Knife"],
+    "source": "Zone Rewards"
+  },
+  {
+    "name": "Bloodbrass Bow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 2750,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Severity": 2475,
+      "Forte": 1856
+    },
+    "combinedRating": 2475,
+    "set": "Skyhold Arms",
+    "setSize": 2,
+    "setPartners": ["Bloodbrass Knife"],
+    "setBonus": "2 of Set: While in The Pirates' Skyhold, your Movement Speed is increased by 12%. Every 1s in combat, you will gain a stack of Freebooter's Will. Each stack of Freebooter's Will grants the following bonuses: General: +0.25% Power, DPS: +0.5% Critical Severity, Healer: +0.5% Overall Outgoing Healing, Tank: +0.5% Awareness. Max 10 stacks.",
+    "source": "Pirates' Skyhold Campaign Store",
+    "notes": "Binds on Pickup (Account), Binds on Equip (Character). This bloodbrass-reinforced bow fires arrows that hiss like a siren's call. Perfect for striking fear into enemies from afar."
+  },
+  {
+    "name": "Bloodbrass Knife",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 2750,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 1650,
+      "Critical Strike": 2475
+    },
+    "combinedRating": 2475,
+    "set": "Skyhold Arms",
+    "setSize": 2,
+    "setPartners": ["Bloodbrass Bow"],
+    "setBonus": "2 of Set: While in The Pirates' Skyhold, your Movement Speed is increased by 12%. Every 1s in combat, you will gain a stack of Freebooter's Will. Each stack of Freebooter's Will grants the following bonuses: General: +0.25% Power, DPS: +0.5% Critical Severity, Healer: +0.5% Overall Outgoing Healing, Tank: +0.5% Awareness. Max 10 stacks.",
+    "source": "Pirates' Skyhold Campaign Store",
+    "notes": "A thin, wicked knife made of bloodbrass. Ideal for quick, silent strikes."
+  },
+  {
+    "name": "Prismatic Luminstep Greaves",
+    "slot": "Feet",
+    "item_level": 3700,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Critical Strike": 3330,
+      "Forte": 2498
+    },
+    "combinedRating": 3330,
+    "equipBonuses": [
+      {
+        "name": "Discharged Precision (Lesser)",
+        "description": "When Action Points are less than 80%, your Accuracy is increased. +5% while outside of the Pirates' Skyhold or the Dread Sanctum. +10% while inside of the Pirates' Skyhold or the Dread Sanctum."
+      }
+    ],
+    "set": "Prismatic Crystalline Armor",
+    "tier": "Reinforced",
+    "source": "Dread Sanctum (Master)",
+    "notes": "Reinforced: Empty. Binds on Pickup (Account), Binds on Equip (Character)."
+  },
+  {
+    "name": "Prismatic Crystalflex Bracers",
+    "slot": "Arms",
+    "item_level": 3700,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 2220,
+      "Critical Strike": 3330
+    },
+    "combinedRating": 3330,
+    "equipBonuses": [
+      {
+        "name": "Enveloped Rage (Greater)",
+        "description": "When in combat with 3 or more enemies, your Critical Severity is increased by 1.8% every 2 seconds. Every 2 seconds you are in combat with 1 or fewer enemies, lose 1 stack. Max 5 stacks: 9% Critical Severity."
+      }
+    ],
+    "set": "Prismatic Crystalline Armor",
+    "tier": "Reinforced",
+    "source": "Dread Sanctum (Master)",
+    "notes": "Reinforced: Empty."
+  },
+  {
+    "name": "Prismatic Bismuth Mail",
+    "slot": "Armor",
+    "item_level": 3700,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Critical Strike": 3330,
+      "Critical Severity": 3330
+    },
+    "combinedRating": 3330,
+    "equipBonuses": [
+      {
+        "name": "Tactical Daily (Greater)",
+        "description": "When you deal damage with a Daily power, your next encounter power will deal 20% more damage. (30 second cooldown). You gain 5% Combat Advantage."
+      }
+    ],
+    "set": "Prismatic Crystalline Armor",
+    "tier": "Reinforced",
+    "source": "Dread Sanctum (Master)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Prismatic Fractal Barbut",
+    "slot": "Head",
+    "item_level": 3700,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Accuracy": 1804,
+      "Combat Advantage": 2220,
+      "Forte": 1249
+    },
+    "combinedRating": 3330,
+    "equipBonuses": [
+      {
+        "name": "Critical Spiker (Greater)",
+        "description": "For every 5 seconds you are in combat, you gain 1.8% Critical Strike. Max Stacks: 5."
+      }
+    ],
+    "set": "Prismatic Crystalline Armor",
+    "tier": "Reinforced",
+    "source": "Dread Sanctum (Master)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Luminstep Greaves",
+    "slot": "Feet",
+    "item_level": 3350,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Accuracy": 1633,
+      "Combat Advantage": 2010,
+      "Forte": 1131
+    },
+    "combinedRating": 3015,
+    "equipBonuses": [
+      {
+        "name": "Discharged Precision (Lesser)",
+        "description": "When Action Points are less than 80%, your Accuracy is increased. +5% while outside of the Pirates' Skyhold or the Dread Sanctum. +10% while inside of the Pirates' Skyhold or the Dread Sanctum."
+      }
+    ],
+    "set": "Crystalline Armor",
+    "tier": "Reinforced",
+    "source": "Dread Sanctum (Advanced)",
+    "notes": "Reinforced: Empty."
+  },
+  {
+    "name": "Crystalflex Bracers",
+    "slot": "Arms",
+    "item_level": 3350,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Critical Strike": 3015,
+      "Critical Severity": 3015
+    },
+    "combinedRating": 3015,
+    "equipBonuses": [
+      {
+        "name": "Enveloped Rage (Greater)",
+        "description": "When in combat with 3 or more enemies, your Critical Severity is increased by 1.8% every 2 seconds. Every 2 seconds you are in combat with 1 or fewer enemies, lose 1 stack. Max 5 stacks: 9% Critical Severity."
+      }
+    ],
+    "set": "Crystalline Armor",
+    "tier": "Reinforced",
+    "source": "Dread Sanctum (Advanced)",
+    "notes": "Reinforced: Empty."
+  },
+  {
+    "name": "Bismuth Mail",
+    "slot": "Armor",
+    "item_level": 3350,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 2010,
+      "Critical Severity": 3015
+    },
+    "combinedRating": 3015,
+    "equipBonuses": [
+      {
+        "name": "Tactical Daily (Greater)",
+        "description": "When you deal damage with a Daily power, your next encounter power will deal 20% more damage. (30 second cooldown). You gain 5% Combat Advantage."
+      }
+    ],
+    "set": "Crystalline Armor",
+    "tier": "Reinforced",
+    "source": "Dread Sanctum (Advanced)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Fractal Barbut",
+    "slot": "Head",
+    "item_level": 3350,
+    "allowedClasses": ["Rogue", "Cleric", "Bard", "Ranger"],
+    "ratingStats": {
+      "Critical Strike": 3015,
+      "Forte": 2265
+    },
+    "combinedRating": 3015,
+    "equipBonuses": [
+      {
+        "name": "Critical Spiker (Greater)",
+        "description": "For every 5 seconds you are in combat, you gain 1.8% Critical Strike. Max Stacks: 5."
+      }
+    ],
+    "set": "Crystalline Armor",
+    "tier": "Reinforced",
+    "source": "Dread Sanctum (Advanced)",
+    "notes": "Recommended. Reinforced: Empty."
+  },
+  {
+    "name": "Encased Magma Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 2700,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 1012,
+      "Defense": 1012,
+      "Forte": 2025
+    },
+    "weaponDamage": 87.5,
+    "combinedRating": 2430,
+    "set": "Living Magma",
+    "setSize": 2,
+    "setPartners": ["Encased Magma Knives"],
+    "source": "Mountain of Flame Campaign Store",
+    "notes": "Binds on Pickup (Account), Binds on Equip (Character)."
+  },
+  {
+    "name": "Encased Magma Knives",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 2700,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 1012,
+      "Combat Advantage": 2025,
+      "Forte": 1012
+    },
+    "weaponDamage": 87.5,
+    "combinedRating": 2430,
+    "set": "Living Magma",
+    "setSize": 2,
+    "setPartners": ["Encased Magma Longbow"],
+    "source": "Mountain of Flame Campaign Store"
+  }
+]
