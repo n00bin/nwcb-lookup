@@ -2580,7 +2580,7 @@
     function renderKitPick(k) {
       const il = k.item_level ? "IL " + k.item_level : "";
       const slots = (k.appliesTo || []).join(" / ");
-      const meta = [il, slots].filter(Boolean).join(" · ");
+      const meta = il;
       const desc = [
         _statSection(k, "Stats"),
         slots
