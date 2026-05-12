@@ -1646,7 +1646,7 @@
 
         <div class="field">
           <label>Item Level
-            <span class="hint-icon" data-tip="Auto-summed from every IL source the engine knows about. Click 'Show breakdown' to see each line item.">?</span>
+            <span class="hint-icon" data-tip="Auto-summed from every IL source the engine knows about. Click 'Show breakdown' to see each line item. Your TIL is also the baseline for rating-to-percent — see Mekaniks → Stats for the formula.">?</span>
             <span style="float:right;">
               <a href="#" id="il-breakdown-toggle" style="font-size:0.75rem;color:var(--amber);text-decoration:none;">▶ Show breakdown</a>
             </span>
@@ -1663,7 +1663,7 @@
 
       <div class="panel">
         <h2>Ability scores</h2>
-        <p class="hint">Your class sets the starting numbers. At levels 9 and 16 every ability gets a free +1. At the other six leveling-up points you pick two abilities and add +1 to each. Anything from gear or boons piles on top automatically.</p>
+        <p class="hint">Your class sets the starting numbers. At levels 9 and 16 every ability gets a free +1. At the other six leveling-up points you pick two abilities and add +1 to each. Anything from gear or boons piles on top automatically. See <a href="../mekaniks.html#view-abilities" target="_blank">Mekaniks → Abilities</a> for what each ability score actually does in combat.</p>
         <div id="abil-grid-wrapper"></div>
       </div>
 
@@ -1796,7 +1796,7 @@
 
       <div class="panel">
         <h2>Mount stable</h2>
-        <p class="hint">Five mounts in your stable. Each gets a <strong>collar</strong>, a <strong>mount</strong>, and a fistful of <strong>insignias</strong>. Pick which <strong>Insignia Bonus</strong> you want per mount — slot the matching insignia categories and the row turns green.</p>
+        <p class="hint">Five mounts in your stable. Each gets a <strong>collar</strong>, a <strong>mount</strong>, and a fistful of <strong>insignias</strong>. Pick which <strong>Insignia Bonus</strong> you want per mount — slot the matching insignia categories and the row turns green. Running the same bonus on multiple mounts stacks at <strong>100% / 50% / 25%</strong> (see <a href="../mekaniks.html#view-stacking" target="_blank">Mekaniks → Stacking</a>).</p>
         <div style="margin-bottom:0.6rem;">
           <button class="btn btn-ghost" id="find-bonus-btn" style="font-size:0.85rem;">🔍 Find an Insignia Bonus</button>
         </div>
@@ -1845,7 +1845,7 @@
     <div class="step-panel" data-panel="6">
       <div class="panel">
         <h2 id="sim-title">Run the math</h2>
-        <p class="hint" id="sim-hint">Type your power's magnitude from the in-game tooltip. We'll run the math against a typical PvE enemy and show what one hit would actually do.</p>
+        <p class="hint" id="sim-hint">Type your power's magnitude from the in-game tooltip. We'll run the math against a typical PvE enemy and show what one hit would actually do. See <a href="../mekaniks.html#view-damage" target="_blank">Mekaniks → Damage</a> for the full formula.</p>
         <div class="row-2">
           <div class="field">
             <label>Sample power magnitude
@@ -1880,7 +1880,7 @@
 
       <div class="panel">
         <h2>Where to spend next</h2>
-        <p class="hint" id="advisor-hint">If you added <strong>+1%</strong> to each of these stats, how much would it help your damage (or healing)? The stat at the top is the one that helps you most right now.</p>
+        <p class="hint" id="advisor-hint">If you added <strong>+1%</strong> to each of these stats, how much would it help your damage (or healing)? The stat at the top is the one that helps you most right now. See <a href="../mekaniks.html#view-priorities" target="_blank">Mekaniks → Priorities</a> for the canonical priority list per role.</p>
         <div id="stat-advisor"></div>
         <p style="font-size:0.72rem;color:var(--text-dim);margin-top:0.7rem;line-height:1.5;">
           These numbers are for one hit against a typical enemy. They don't include special triggers from boons, set bonuses, or cooldowns. Treat them as a guide for where to invest next — not as exact in-fight damage.
@@ -1955,6 +1955,7 @@
       <div class="dstats-header">
         <h2>Detailed Stats</h2>
         <div class="dstats-header-actions">
+          <a href="../mekaniks.html#view-stats" target="_blank" style="font-size:0.75rem;color:var(--amber);text-decoration:none;white-space:nowrap;" title="See how rating becomes percent on the Mekaniks page.">ⓘ How rating becomes %</a>
           <label class="dstats-hide-buffs" id="dstats-hide-buffs-label" title="Hide all consumable buff contributions (Zurek, Squash Soup, etc.) so the panel matches your in-game unbuffed stat tooltip.">
             <input type="checkbox" id="dstats-hide-buffs">
             Hide buffs
