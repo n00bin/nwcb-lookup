@@ -3667,15 +3667,17 @@
     // powers, mount collars, mount insignias). The value adds equally to
     // each of the 12 core stats as RATING. Sources are listed in
     // mekaniks.html "Combined Rating".
-    // 13 core stats Combined Rating distributes to. Forte was previously
-    // excluded but n00b's in-game numbers (Forte rating 121,407 for an
-    // end-game build) confirm CR sources feed Forte too — without Forte
-    // in this list, Forte rating undercounts by ~100k for end-game.
+    // 15 core stats Combined Rating distributes to. Forte was added earlier
+    // (n00b's end-game Forte rating ~121k confirmed it). Control Bonus and
+    // Control Resist added 2026-05-11 (n00b's in-game numbers: Control
+    // Bonus 94,870 ≈ Deflect Sev 94,870, Control Resist 98,965 — same
+    // CR-distribution pattern; without them in this list, Control Bonus
+    // shows 0 rating and Control Resist undercounts by ~95k).
     const CR_CORE_STATS = [
       "Power", "Critical Strike", "Critical Severity", "Combat Advantage",
       "Accuracy", "Defense", "Awareness", "Critical Avoidance",
       "Deflect", "Deflect Severity", "Outgoing Healing", "Incoming Healing",
-      "Forte"
+      "Forte", "Control Bonus", "Control Resist"
     ];
     function expandCR(amount, multiplier) {
       const m = (multiplier == null) ? 1 : multiplier;
@@ -4119,7 +4121,14 @@
         // doesn't include them by default. Show Conditional ON includes
         // them at full effect. Bonuses with no condition (e.g. Mender's
         // Covenant which is a straight stat swap) stay always-on.
-        const isConditional = !!(bonus.condition && String(bonus.condition).trim());
+        //
+        // Override: `standingActive: true` flags bonuses whose trigger
+        // happens to be met when standing around (full HP, full AP,
+        // Stamina > 75%, etc.) — verified by n00b 2026-05-11 that
+        // Cautious Devotion and Trainer's Restoration both appear in
+        // the in-game stat panel out of combat.
+        const isConditional = !bonus.standingActive
+          && !!(bonus.condition && String(bonus.condition).trim());
         for (let i = 0; i < n; i++) {
           const mult = (mode === "linear") ? 1 : (DIMINISHING_MULTIPLIERS[i] || 0);
           if (mult === 0) break;
@@ -4833,6 +4842,29 @@
       let finalPct = s.finalPct;
       let flatValue = s.flat || 0;
 
+      // NW displays "Overall Outgoing Healing" as the SUM of:
+      //   1) the Outgoing Healing stat's final % (rating-derived + bonus)
+      //   2) any standalone OOH multipliers (Dark Matter 2pc Healer, etc.)
+      // n00b's in-game tooltip on 2026-05-11 read "+111.3% = 105.3% (OH) +
+      // 6% (Dark Matter)". We match by injecting OH's filtered finalPct
+      // as a synthetic always-on bonus on this row only. Display-only —
+      // does not affect engine math elsewhere.
+      //
+      // Important: read OH's *filtered* finalPct (the one the user sees
+      // on the OH row after the Hide Buffs / Show Conditional toggles
+      // are applied), not the engine's raw finalPct. That value is
+      // captured into ctx._filteredOHfinalPct when the OH row is
+      // rendered earlier in the iteration. OH is listed before OOH in
+      // TOON_FORGE_STATS so it's always available by the time we get
+      // here.
+      const isOOH = def.name === "Overall Outgoing Healing";
+      let synthesizedOH = 0;
+      if (isOOH && ctx && typeof ctx._filteredOHfinalPct === "number") {
+        synthesizedOH = ctx._filteredOHfinalPct;
+        percentTotal += synthesizedOH;
+        finalPct += synthesizedOH;
+      }
+
       // Helper: recompute the rating/bonus/final % after a given amount
       // has been removed from rating and/or percent totals.
       function rebase(deltaRating, deltaPercent) {
@@ -4873,6 +4905,12 @@
           .filter(c => isConsumableBuffContributor(c) && c.type === "percent" && (showConditional || !c.conditional))
           .reduce((sum, c) => sum + (c.amount || 0), 0);
         if (buffRating || buffPercent) rebase(buffRating, buffPercent);
+      }
+
+      // Snapshot OH's filtered finalPct on ctx so the OOH row (rendered
+      // later in this iteration) can roll it in to match NW's display.
+      if (def.name === "Outgoing Healing" && ctx) {
+        ctx._filteredOHfinalPct = finalPct;
       }
 
       const capReached = !isFlat && typeof def.cap === "number" && finalPct >= def.cap - 0.05;
@@ -4945,10 +4983,20 @@
       const percentContribs = allContribsFiltered
         .filter(c => c.type !== "rating")
         .slice().sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
+      // For the Overall Outgoing Healing row, prepend a synthetic
+      // contributor that surfaces the OH stat's rolled-in %, matching
+      // NW's "Modified by: Buffs +X%" display.
+      if (isOOH && synthesizedOH) {
+        percentContribs.unshift({
+          source: "Outgoing Healing stat",
+          amount: synthesizedOH,
+          type: "percent"
+        });
+      }
       // Group subtotals so the user can see the rating split at a glance.
       const directTotal = directContribs.reduce((s, c) => s + c.amount, 0);
       const crTotal     = crContribs.reduce((s, c) => s + c.amount, 0);
-      const n = allContribsFiltered.length;
+      const n = allContribsFiltered.length + (isOOH && synthesizedOH ? 1 : 0);
       const sourcesBlock = n
         ? `<details class="dstat-sources">
              <summary>Sources (${n})</summary>
@@ -5012,7 +5060,8 @@
       const ctx = {
         totalItemLevel: r.totalItemLevel,
         hideBuffs: _dstatsHideBuffs,
-        showConditional: _dstatsShowConditional
+        showConditional: _dstatsShowConditional,
+        allStats: r.stats
       };
       for (const cat of DSTATS_CATEGORIES) {
         const stats = TOON_FORGE_STATS.filter(d => d.category === cat);
