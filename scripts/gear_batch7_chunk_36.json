@@ -1,0 +1,1327 @@
+[
+  {
+    "name": "Burning Longbow · IL 500",
+    "displayName": "Burning Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188,
+      "Combined Rating": 450
+    },
+    "set": "Burning Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "notes": "Bind on Pickup (Account). Set Burning Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Burning Longbow · IL 600",
+    "displayName": "Burning Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225,
+      "Combined Rating": 540
+    },
+    "set": "Burning Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "notes": "Bind on Pickup (Account). Maximum Quality. Set Burning Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Burning Axes · IL 300",
+    "displayName": "Burning Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112,
+      "Combined Rating": 270
+    },
+    "set": "Burning Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Weapons of the Elements",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set Burning Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Burning Axes · IL 400",
+    "displayName": "Burning Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150,
+      "Combined Rating": 360
+    },
+    "set": "Burning Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "notes": "Set Burning Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Burning Axes · IL 500",
+    "displayName": "Burning Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188,
+      "Combined Rating": 450
+    },
+    "set": "Burning Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "notes": "Bind on Pickup (Account). Set Burning Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Burning Axes · IL 600",
+    "displayName": "Burning Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225,
+      "Combined Rating": 540
+    },
+    "set": "Burning Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "notes": "Bind on Pickup (Account). Maximum Quality. Set Burning Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Drowned Longbow · IL 300",
+    "displayName": "Drowned Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112,
+      "Combined Rating": 270
+    },
+    "set": "Drowned Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Weapons of the Elements",
+    "setPartners": ["Drowned Longbow", "Drowned Axes"],
+    "setBonus": "2 of Set: When you are struck, Heal for 50% of your Maximum Hit Points over the next 30 seconds; this effect may only activate once every 60 seconds. Disabled in PvP/Arena PvP.",
+    "notes": "Bind on Equip (Character). Set Drowned Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Drowned Longbow · IL 400",
+    "displayName": "Drowned Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150,
+      "Combined Rating": 360
+    },
+    "set": "Drowned Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "notes": "Set Drowned Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Drowned Longbow · IL 500",
+    "displayName": "Drowned Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188,
+      "Combined Rating": 450
+    },
+    "set": "Drowned Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "notes": "Bind on Pickup (Account). Set Drowned Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Drowned Longbow · IL 600",
+    "displayName": "Drowned Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225,
+      "Combined Rating": 540
+    },
+    "set": "Drowned Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "notes": "Bind on Pickup (Account). Maximum Quality. Set Drowned Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Drowned Axes · IL 300",
+    "displayName": "Drowned Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112,
+      "Combined Rating": 270
+    },
+    "set": "Drowned Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Weapons of the Elements",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set Drowned Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Drowned Axes · IL 400",
+    "displayName": "Drowned Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150,
+      "Combined Rating": 360
+    },
+    "set": "Drowned Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "notes": "Set Drowned Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Drowned Axes · IL 500",
+    "displayName": "Drowned Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188,
+      "Combined Rating": 450
+    },
+    "set": "Drowned Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "notes": "Bind on Pickup (Account). Set Drowned Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Drowned Axes · IL 600",
+    "displayName": "Drowned Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225,
+      "Combined Rating": 540
+    },
+    "set": "Drowned Heart",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "notes": "Bind on Pickup (Account). Maximum Quality. Set Drowned Heart (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Eternal Boots",
+    "slot": "Feet",
+    "item_level": 1300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 337,
+      "Combat Advantage": 337,
+      "Defense": 975,
+      "Critical Avoidance": 296,
+      "Combined Rating": 1170
+    },
+    "set": "Eternal Armor",
+    "source": "Tyranny of Dragons Epic Adventure",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Minimum Level: 20."
+  },
+  {
+    "name": "Eternal Bracers",
+    "slot": "Arms",
+    "item_level": 1300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 337,
+      "Critical Severity": 339,
+      "Defense": 975,
+      "Deflection": 294,
+      "Combined Rating": 1170
+    },
+    "set": "Eternal Armor",
+    "source": "Tyranny of Dragons Epic Adventure",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Minimum Level: 20."
+  },
+  {
+    "name": "Eternal Hide Armor",
+    "slot": "Armor",
+    "subSlot": "Hide",
+    "item_level": 1300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 337,
+      "Combat Advantage": 337,
+      "Defense": 975,
+      "Critical Avoidance": 296,
+      "Combined Rating": 1170
+    },
+    "set": "Eternal Armor",
+    "source": "Tyranny of Dragons Epic Adventure",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Minimum Level: 20."
+  },
+  {
+    "name": "Eternal Hood",
+    "slot": "Head",
+    "item_level": 1300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 337,
+      "Critical Severity": 339,
+      "Defense": 975,
+      "Deflection": 294,
+      "Combined Rating": 1170
+    },
+    "set": "Eternal Armor",
+    "source": "Tyranny of Dragons Epic Adventure",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Minimum Level: 20."
+  },
+  {
+    "name": "White Draconic Guise",
+    "slot": "Head",
+    "item_level": 610,
+    "ratingStats": {
+      "Defense": 472,
+      "Critical Avoidance": 472,
+      "Combined Rating": 367
+    },
+    "source": "The Temple of Tiamat",
+    "notes": "Bind on Pickup (Account), Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18."
+  },
+  {
+    "name": "Red Draconic Guise",
+    "slot": "Head",
+    "item_level": 610,
+    "ratingStats": {
+      "Combat Advantage": 472,
+      "Defense": 472,
+      "Combined Rating": 367
+    },
+    "source": "The Temple of Tiamat",
+    "notes": "Bind on Pickup (Account), Bind on Equip (Character). Minimum Level: 18."
+  },
+  {
+    "name": "Green Draconic Guise",
+    "slot": "Head",
+    "item_level": 610,
+    "ratingStats": {
+      "Critical Strike": 472,
+      "Defense": 472,
+      "Combined Rating": 367
+    },
+    "source": "The Temple of Tiamat",
+    "notes": "Bind on Pickup (Account), Bind on Equip (Character). Minimum Level: 18."
+  },
+  {
+    "name": "Blue Draconic Guise",
+    "slot": "Head",
+    "item_level": 610,
+    "ratingStats": {
+      "Accuracy": 472,
+      "Defense": 472,
+      "Combined Rating": 367
+    },
+    "source": "The Temple of Tiamat",
+    "notes": "Bind on Pickup (Account), Bind on Equip (Character). Minimum Level: 18."
+  },
+  {
+    "name": "Black Draconic Guise",
+    "slot": "Head",
+    "item_level": 610,
+    "ratingStats": {
+      "Defense": 472,
+      "Critical Avoidance": 472,
+      "Combined Rating": 367
+    },
+    "source": "The Temple of Tiamat",
+    "notes": "Bind on Pickup (Account), Bind on Equip (Character). Minimum Level: 18."
+  },
+  {
+    "name": "Golden Dragon's Stormwarden",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 150,
+      "Critical Strike": 150,
+      "Critical Severity": 150,
+      "Combined Rating": 270
+    },
+    "set": "Golden Dragon",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "setPartners": ["Golden Dragon Longbow", "Golden Dragon Blades"],
+    "setBonus": "2 of Set: Equip: 0 Deflection / Equip: 0 Critical Severity",
+    "equipBonuses": [
+      {"name": "Equip", "description": "Increase damage done by Electric Shot and Clear the Ground by 10%."}
+    ],
+    "source": "Tyranny of Dragons Campaign Tasks",
+    "notes": "Bind on Pickup (Character). Set (0/2). Minimum Level: 15. Air is an element favored by the Golden Dragon. This longbow uses that affinity to enhance the Ranger's Electric Shot and Clear the Ground."
+  },
+  {
+    "name": "Pathfinder of the Golden Dragon",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 150,
+      "Critical Avoidance": 150,
+      "Combined Rating": 270
+    },
+    "set": "Golden Dragon",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "setPartners": ["Golden Dragon Longbow", "Golden Dragon Blades"],
+    "setBonus": "2 of Set: Equip: 0 Deflection / Equip: 0 Critical Severity",
+    "equipBonuses": [
+      {"name": "Equip", "description": "Increase damage done by Hunter's Teamwork and Careful Attack by 10%."}
+    ],
+    "source": "Tyranny of Dragons Campaign Tasks",
+    "notes": "Bind on Pickup (Character). Set (0/2). Minimum Level: 15. The Golden Dragon is used to using teamwork to reach his goals. Therefore the Ranger will benefit from using this longbow with Ranger's Teamwork and Careful Attack."
+  },
+  {
+    "name": "Golden Dragon Blades",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 150,
+      "Critical Avoidance": 150,
+      "Deflection": 150,
+      "Combined Rating": 270
+    },
+    "set": "Golden Dragon",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Tyranny of Dragons Epic Adventure",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set (0/2). Minimum Level: 15. Modification: This slot will hold an enhancement to one of the 10 Class features of your class."
+  },
+  {
+    "name": "Elemental Fire Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 150,
+      "Critical Avoidance": 150,
+      "Deflection": 150,
+      "Combined Rating": 270
+    },
+    "set": "Longbow of Elemental Fire",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Tyranny of Dragons Epic Adventure",
+    "setPartners": ["Longbow of Elemental Fire", "Elemental Fire Axes"],
+    "setBonus": "2 of Set: Equip: 0 Deflection / Equip: 0 Critical Severity",
+    "notes": "Bind on Pickup (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Longbow of Elemental Fire",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 150,
+      "Critical Strike": 150,
+      "Critical Severity": 150,
+      "Combined Rating": 270
+    },
+    "set": "Longbow of Elemental Fire",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Tyranny of Dragons Campaign Tasks",
+    "setPartners": ["Longbow of Elemental Fire", "Elemental Fire Axes"],
+    "setBonus": "2 of Set: Equip: 0 Deflection / Equip: 0 Critical Severity",
+    "notes": "Bind on Pickup (Character). Set (0/2). Minimum Level: 18. The Longbow of Elemental Fire awaits the raining down of destruction on the prey of the Ranger. It can be augmented to enhance any of the at-will powers of the Ranger."
+  },
+  {
+    "name": "Dragon Bone Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 350,
+      "Combat Advantage": 422,
+      "Critical Strike": 427
+    },
+    "tier": "Artifact Equipment",
+    "source": "Dragon Bone Weapons (Dragon Charthraxis - Neverdeath, Menothrax the Greedy - Icespire Peak, Vartilingoix - Ebon Downs)",
+    "notes": "Bind on Equip (Character). No Level Requirement. Cannot Sell."
+  },
+  {
+    "name": "Dragon Bone Blades",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 422,
+      "Critical Strike": 427,
+      "Critical Severity": 350
+    },
+    "tier": "Artifact Equipment",
+    "source": "Dragon Bone Weapons",
+    "notes": "Bind on Equip (Character). No Level Requirement. Cannot Sell."
+  },
+  {
+    "name": "Reinforced Dragonflight Raid Hood",
+    "slot": "Head",
+    "item_level": 1400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 420,
+      "Critical Strike": 630,
+      "Defense": 1050,
+      "Combined Rating": 1260
+    },
+    "set": "Dragonflight",
+    "setSize": 4,
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Set Dragonflight (0/4). Minimum Level: 20."
+  },
+  {
+    "name": "Reinforced Dragonflight Raid Coat",
+    "slot": "Armor",
+    "subSlot": "Hide",
+    "item_level": 1400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 630,
+      "Combat Advantage": 420,
+      "Defense": 1050,
+      "Combined Rating": 1260
+    },
+    "set": "Dragonflight",
+    "setSize": 4,
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Set Dragonflight (0/4). Minimum Level: 20."
+  },
+  {
+    "name": "Reinforced Dragonflight Raid Bracers",
+    "slot": "Arms",
+    "item_level": 1400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 630,
+      "Combat Advantage": 420,
+      "Defense": 1050,
+      "Combined Rating": 1260
+    },
+    "set": "Dragonflight",
+    "setSize": 4,
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Set Dragonflight (0/4). Minimum Level: 20."
+  },
+  {
+    "name": "Reinforced Dragonflight Raid Gaiters",
+    "slot": "Feet",
+    "item_level": 1400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 420,
+      "Critical Strike": 630,
+      "Defense": 1050,
+      "Combined Rating": 1260
+    },
+    "set": "Dragonflight",
+    "setSize": 4,
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Set Dragonflight (0/4). Minimum Level: 20."
+  },
+  {
+    "name": "Reinforced Dragonflight Assault Hood",
+    "slot": "Head",
+    "item_level": 1400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 630,
+      "Combat Advantage": 420,
+      "Defense": 1050,
+      "Combined Rating": 1260
+    },
+    "set": "Dragonflight",
+    "setSize": 4,
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Set Dragonflight (0/4). Minimum Level: 20."
+  },
+  {
+    "name": "Reinforced Dragonflight Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 1400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 420,
+      "Critical Severity": 630,
+      "Defense": 1050,
+      "Combined Rating": 1260
+    },
+    "set": "Dragonflight",
+    "setSize": 4,
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Set Dragonflight (0/4). Minimum Level: 20."
+  },
+  {
+    "name": "Reinforced Dragonflight Assault Bracers",
+    "slot": "Arms",
+    "item_level": 1400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 630,
+      "Critical Severity": 420,
+      "Defense": 1050,
+      "Combined Rating": 1260
+    },
+    "set": "Dragonflight",
+    "setSize": 4,
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Set Dragonflight (0/4). Minimum Level: 20."
+  },
+  {
+    "name": "Reinforced Dragonflight Assault Coat",
+    "slot": "Armor",
+    "subSlot": "Hide",
+    "item_level": 1400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 630,
+      "Critical Severity": 420,
+      "Defense": 1050,
+      "Combined Rating": 1260
+    },
+    "set": "Dragonflight",
+    "setSize": 4,
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III",
+    "notes": "Bind on Pickup (Account). Reinforced: Empty. Set Dragonflight (0/4). Minimum Level: 20."
+  },
+  {
+    "name": "Leather Raid Mekeleya",
+    "slot": "Head",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 353,
+      "Critical Strike": 235,
+      "Defense": 588,
+      "Combined Rating": 706
+    },
+    "equipBonuses": [
+      {"name": "Gladiator's Accuracy", "description": "For every 5 seconds you are in combat, you gain 100 Accuracy. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor III / Ranger Stronghold Set III",
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III / Ranger Stronghold Set III",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18. Module 13: The Lost City of Omu."
+  },
+  {
+    "name": "Leather Raid Kafe",
+    "slot": "Armor",
+    "subSlot": "Hide",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 353,
+      "Critical Strike": 235,
+      "Defense": 588,
+      "Combined Rating": 706
+    },
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor III / Ranger Stronghold Set III",
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III / Ranger Stronghold Set III",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18. Module 13: The Lost City of Omu."
+  },
+  {
+    "name": "Leather Raid Gwanitis",
+    "slot": "Arms",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 353,
+      "Critical Strike": 235,
+      "Defense": 588,
+      "Combined Rating": 706
+    },
+    "equipBonuses": [
+      {"name": "Survivor's Parry", "description": "Gain 25 Deflect for each percent of health you are missing."}
+    ],
+    "set": "Masterwork Armor III / Ranger Stronghold Set III",
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III / Ranger Stronghold Set III",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18. Module 13: The Lost City of Omu."
+  },
+  {
+    "name": "Leather Raid Chamas",
+    "slot": "Feet",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 353,
+      "Critical Strike": 235,
+      "Defense": 588,
+      "Combined Rating": 706
+    },
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor III / Ranger Stronghold Set III",
+    "source": "Reinforced Dragonflight Gear / Masterwork Armor III / Ranger Stronghold Set III",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18. Module 13: The Lost City of Omu."
+  },
+  {
+    "name": "Leather Assault Mekeleya",
+    "slot": "Head",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 353,
+      "Critical Severity": 235,
+      "Defense": 588,
+      "Combined Rating": 706
+    },
+    "equipBonuses": [
+      {"name": "Gladiator's Accuracy", "description": "For every 5 seconds you are in combat, you gain 100 Accuracy. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor III / Ranger Stronghold Set III",
+    "source": "Masterwork Armor III / Ranger Stronghold Set III",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18. Module 13: The Lost City of Omu."
+  },
+  {
+    "name": "Leather Assault Chamas",
+    "slot": "Feet",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 353,
+      "Critical Severity": 235,
+      "Defense": 588,
+      "Combined Rating": 706
+    },
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor III / Ranger Stronghold Set III",
+    "source": "Masterwork Armor III / Ranger Stronghold Set III",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18."
+  },
+  {
+    "name": "Leather Assault Gwanitis",
+    "slot": "Arms",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 353,
+      "Critical Severity": 235,
+      "Defense": 588,
+      "Combined Rating": 706
+    },
+    "equipBonuses": [
+      {"name": "Survivor's Parry", "description": "Gain 25 Deflect for each percent of health you are missing."}
+    ],
+    "set": "Masterwork Armor III / Ranger Stronghold Set III",
+    "source": "Masterwork Armor III / Ranger Stronghold Set III",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18."
+  },
+  {
+    "name": "Leather Assault Kafe",
+    "slot": "Armor",
+    "subSlot": "Hide",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 353,
+      "Critical Severity": 235,
+      "Defense": 588,
+      "Combined Rating": 706
+    },
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor III / Ranger Stronghold Set III",
+    "source": "Masterwork Armor III / Ranger Stronghold Set III",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18."
+  },
+  {
+    "name": "Bronzewood Tlahuitolli · IL 350",
+    "displayName": "Bronzewood Tlahuitolli",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 350,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 131,
+      "Combat Advantage": 262,
+      "Critical Strike": 131,
+      "Combined Rating": 315
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "setPartners": ["Bronzewood Tlahuitolli", "Mastered Obsidian Iztopilli"],
+    "setBonus": "2 of Set: You and nearby allies are granted the following: +2% Base Damage Boost, +2% Overall Outgoing Healing, +2% Incoming Damage. This effect may stack up to 5 times when allies are equipped with a set of Stronghold weapons.",
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Stronghold)",
+    "notes": "Bind on Equip (Character). Set Masterwork III Weapon Set (0/2). Minimum Level: 18. Strongest set of crafted artifact weapons available at launch of Module 13."
+  },
+  {
+    "name": "Bronzewood Tlahuitolli · IL 500",
+    "displayName": "Bronzewood Tlahuitolli",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188,
+      "Combined Rating": 450
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Stronghold)",
+    "notes": "Bind on Pickup (Character). Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Bronzewood Tlahuitolli · IL 650",
+    "displayName": "Bronzewood Tlahuitolli",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 650,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 244,
+      "Combat Advantage": 488,
+      "Critical Strike": 244,
+      "Combined Rating": 585
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Stronghold)",
+    "notes": "Bind on Pickup (Character). Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Bronzewood Tlahuitolli · IL 800",
+    "displayName": "Bronzewood Tlahuitolli",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 300,
+      "Combat Advantage": 600,
+      "Critical Strike": 300,
+      "Combined Rating": 720
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Stronghold)",
+    "notes": "Bind on Pickup (Character). Maximum Quality. Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Obsidian Iztopilli · IL 350",
+    "displayName": "Obsidian Iztopilli",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 350,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 131,
+      "Combat Advantage": 262,
+      "Critical Strike": 131,
+      "Combined Rating": 315
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Obsidian Iztopilli · IL 500",
+    "displayName": "Obsidian Iztopilli",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188,
+      "Combined Rating": 450
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Obsidian Iztopilli · IL 650",
+    "displayName": "Obsidian Iztopilli",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 650,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 244,
+      "Combat Advantage": 488,
+      "Critical Strike": 244,
+      "Combined Rating": 585
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu",
+    "notes": "Bind on Pickup (Character). Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Obsidian Iztopilli · IL 800",
+    "displayName": "Obsidian Iztopilli",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 300,
+      "Combat Advantage": 600,
+      "Critical Strike": 300,
+      "Combined Rating": 720
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "source": "Masterwork III / Module 13: Lost City of Omu",
+    "notes": "Bind on Pickup (Character). Maximum Quality. Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Exalted Bronzewood Tlahuitolli · IL 400",
+    "displayName": "Exalted Bronzewood Tlahuitolli",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150,
+      "Combined Rating": 360
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Exalted)",
+    "notes": "Bind on Equip (Character). Set Masterwork III Weapon Set (0/2). Minimum Level: 18. Strongest set of exalted artifact weapons available at launch of Module 13."
+  },
+  {
+    "name": "Exalted Bronzewood Tlahuitolli · IL 550",
+    "displayName": "Exalted Bronzewood Tlahuitolli",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 550,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 206,
+      "Combat Advantage": 412,
+      "Critical Strike": 206,
+      "Combined Rating": 495
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Exalted)",
+    "notes": "Bind on Pickup (Character). Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Exalted Bronzewood Tlahuitolli · IL 700",
+    "displayName": "Exalted Bronzewood Tlahuitolli",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 700,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 262,
+      "Combat Advantage": 525,
+      "Critical Strike": 262,
+      "Combined Rating": 630
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Exalted)",
+    "notes": "Bind on Pickup (Character). Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Exalted Bronzewood Tlahuitolli · IL 850",
+    "displayName": "Exalted Bronzewood Tlahuitolli",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 850,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 319,
+      "Combat Advantage": 638,
+      "Critical Strike": 319,
+      "Combined Rating": 765
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Exalted)",
+    "notes": "Bind on Pickup (Character). Maximum Quality. Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Exalted Obsidian Iztopilli · IL 400",
+    "displayName": "Exalted Obsidian Iztopilli",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150,
+      "Combined Rating": 360
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Exalted)",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Exalted Obsidian Iztopilli · IL 550",
+    "displayName": "Exalted Obsidian Iztopilli",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 550,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 206,
+      "Combat Advantage": 412,
+      "Critical Strike": 206,
+      "Combined Rating": 495
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Exalted)",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Exalted Obsidian Iztopilli · IL 700",
+    "displayName": "Exalted Obsidian Iztopilli",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 700,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 262,
+      "Combat Advantage": 525,
+      "Critical Strike": 262,
+      "Combined Rating": 630
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Exalted)",
+    "notes": "Bind on Pickup (Character). Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Exalted Obsidian Iztopilli · IL 850",
+    "displayName": "Exalted Obsidian Iztopilli",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 850,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 319,
+      "Combat Advantage": 638,
+      "Critical Strike": 319,
+      "Combined Rating": 765
+    },
+    "set": "Masterwork III Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "source": "Masterwork III / Module 13: Lost City of Omu (Exalted)",
+    "notes": "Bind on Pickup (Character). Maximum Quality. Set Masterwork III Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Brightsilver Longbow · IL 350",
+    "displayName": "Brightsilver Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 350,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 131,
+      "Combat Advantage": 262,
+      "Critical Strike": 131,
+      "Combined Rating": 315
+    },
+    "set": "Masterwork II Weapon Set",
+    "setSize": 2,
+    "setPartners": ["Brightsilver Longbow", "Titansteel Tabars"],
+    "setBonus": "2 of Set: You and nearby allies are granted the following: +2% Base Damage Boost, +2% Overall Outgoing Healing, +2% Incoming Damage. This effect may stack up to 5 times when allies are equipped with a set of Stronghold weapons.",
+    "tier": "Artifact Equipment",
+    "source": "Masterwork II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Set Masterwork II Weapon Set (0/2). Minimum Level: 18. Strongest set of crafted artifact weapons available at launch of Module 11: The Shroud of Souls."
+  },
+  {
+    "name": "Brightsilver Longbow · IL 500",
+    "displayName": "Brightsilver Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188,
+      "Combined Rating": 450
+    },
+    "set": "Masterwork II Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Set Masterwork II Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Brightsilver Longbow · IL 650",
+    "displayName": "Brightsilver Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 650,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 244,
+      "Combat Advantage": 488,
+      "Critical Strike": 244,
+      "Combined Rating": 585
+    },
+    "set": "Masterwork II Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Set Masterwork II Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Brightsilver Longbow · IL 800",
+    "displayName": "Brightsilver Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 300,
+      "Combat Advantage": 600,
+      "Critical Strike": 300,
+      "Combined Rating": 720
+    },
+    "set": "Masterwork II Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "source": "Masterwork II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Maximum Quality. Set Masterwork II Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Titansteel Tabars · IL 350",
+    "displayName": "Titansteel Tabars",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 350,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 131,
+      "Combat Advantage": 262,
+      "Critical Strike": 131,
+      "Combined Rating": 315
+    },
+    "set": "Masterwork II Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set Masterwork II Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Titansteel Tabars · IL 500",
+    "displayName": "Titansteel Tabars",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188,
+      "Combined Rating": 450
+    },
+    "set": "Masterwork II Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Artifact Stat Increase: Unlocks at Epic Rarity. Set Masterwork II Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Titansteel Tabars · IL 650",
+    "displayName": "Titansteel Tabars",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 650,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 244,
+      "Combat Advantage": 488,
+      "Critical Strike": 244,
+      "Combined Rating": 585
+    },
+    "set": "Masterwork II Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment",
+    "source": "Masterwork II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Set Masterwork II Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Titansteel Tabars · IL 800",
+    "displayName": "Titansteel Tabars",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 300,
+      "Combat Advantage": 600,
+      "Critical Strike": 300,
+      "Combined Rating": 720
+    },
+    "set": "Masterwork II Weapon Set",
+    "setSize": 2,
+    "tier": "Artifact Equipment Maximum Quality",
+    "source": "Masterwork II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Maximum Quality. Set Masterwork II Weapon Set (0/2). Minimum Level: 18."
+  },
+  {
+    "name": "Manticore Raid Hood",
+    "slot": "Head",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 340,
+      "Critical Strike": 227,
+      "Defense": 567,
+      "Combined Rating": 680
+    },
+    "equipBonuses": [
+      {"name": "Gladiator's Accuracy", "description": "For every 5 seconds you are in combat, you gain 100 Accuracy. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor II / Ranger Stronghold Set II",
+    "source": "Masterwork Armor II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18."
+  },
+  {
+    "name": "Manticore Raid Coat",
+    "slot": "Armor",
+    "subSlot": "Hide",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 340,
+      "Critical Strike": 227,
+      "Defense": 567,
+      "Combined Rating": 680
+    },
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor II / Ranger Stronghold Set II",
+    "source": "Masterwork Armor II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18."
+  },
+  {
+    "name": "Manticore Raid Bracers",
+    "slot": "Arms",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 340,
+      "Critical Strike": 227,
+      "Defense": 567,
+      "Combined Rating": 680
+    },
+    "equipBonuses": [
+      {"name": "Survivor's Parry", "description": "Gain 25 Deflect for each percent of health you are missing."}
+    ],
+    "set": "Masterwork Armor II / Ranger Stronghold Set II",
+    "source": "Masterwork Armor II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18."
+  },
+  {
+    "name": "Manticore Raid Gaiters",
+    "slot": "Feet",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 340,
+      "Critical Strike": 227,
+      "Defense": 567,
+      "Combined Rating": 680
+    },
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor II / Ranger Stronghold Set II",
+    "source": "Masterwork Armor II / Module 11: The Shroud of Souls",
+    "notes": "Bind on Equip (Character). Reinforced: Empty. Minimum Level: 18."
+  }
+]

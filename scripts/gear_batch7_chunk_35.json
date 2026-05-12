@@ -1,0 +1,1340 @@
+[
+  {
+    "name": "Vivified Trailblazer's Assault Hood",
+    "slot": "Head",
+    "item_level": 645,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 189,
+      "Critical Severity": 284,
+      "Defense": 472
+    },
+    "combinedRating": 567,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat. Binds on Pickup (Account). Minimum Level 18."
+  },
+  {
+    "name": "Trailblazer's Raid Coat",
+    "slot": "Armor",
+    "item_level": 603,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 265,
+      "Critical Strike": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat. Binds on Pickup (Account). Armor, Hide."
+  },
+  {
+    "name": "Trailblazer's Raid Hood",
+    "slot": "Head",
+    "item_level": 603,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 265,
+      "Critical Strike": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat. Binds on Pickup (Account)."
+  },
+  {
+    "name": "Vivified Trailblazer's Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 645,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 284,
+      "Critical Severity": 189,
+      "Defense": 472
+    },
+    "combinedRating": 567,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat. Binds on Pickup (Account)."
+  },
+  {
+    "name": "Vivified Trailblazer's Assault Bracers",
+    "slot": "Arms",
+    "item_level": 645,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 189,
+      "Critical Severity": 284,
+      "Defense": 472
+    },
+    "combinedRating": 567,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat. Binds on Pickup (Account)."
+  },
+  {
+    "name": "Vivified Trailblazer's Assault Coat",
+    "slot": "Armor",
+    "item_level": 645,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 189,
+      "Critical Strike": 284,
+      "Defense": 472
+    },
+    "combinedRating": 567,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat. Armor, Hide."
+  },
+  {
+    "name": "Trailblazer's Raid Bracers",
+    "slot": "Arms",
+    "item_level": 603,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 265,
+      "Critical Strike": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat. Binds on Pickup (Account)."
+  },
+  {
+    "name": "Trailblazer's Raid Gaiters",
+    "slot": "Feet",
+    "item_level": 603,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 265,
+      "Critical Strike": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat."
+  },
+  {
+    "name": "Trailblazer's Assault Hood",
+    "slot": "Head",
+    "item_level": 603,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 176,
+      "Critical Severity": 265,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat."
+  },
+  {
+    "name": "Trailblazer's Assault Coat",
+    "slot": "Armor",
+    "item_level": 603,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 176,
+      "Critical Strike": 265,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat. Armor, Hide."
+  },
+  {
+    "name": "Trailblazer's Assault Bracers",
+    "slot": "Arms",
+    "item_level": 603,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 176,
+      "Critical Severity": 265,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat."
+  },
+  {
+    "name": "Trailblazer's Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 603,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 265,
+      "Critical Severity": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Trailblazer's Relic",
+    "setSize": 4,
+    "notes": "Tier 2 Combat."
+  },
+  {
+    "name": "Prestige Executioner Hood",
+    "slot": "Head",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 176,
+      "Critical Severity": 132,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "setPartners": ["Prestige Head", "Prestige Body", "Prestige Arms", "Prestige Feet"],
+    "setBonus": "2 of Set: +10% Damage Resistance while Controlled.",
+    "notes": "PvP set. Binds on Pickup (Account). Minimum Level 18."
+  },
+  {
+    "name": "Prestige Executioner Coat",
+    "slot": "Armor",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 132,
+      "Critical Severity": 176,
+      "Defense": 441,
+      "Awareness": 132
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "setBonus": "2 of Set: +10% Damage Resistance while Controlled.",
+    "notes": "Hide, Armor."
+  },
+  {
+    "name": "Prestige Executioner Bracers",
+    "slot": "Arms",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 132,
+      "Critical Severity": 176,
+      "Defense": 441,
+      "Critical Avoidance": 132
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "setBonus": "2 of Set: +10% Damage Resistance while Controlled."
+  },
+  {
+    "name": "Prestige Executioner Gaiters",
+    "slot": "Feet",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 132,
+      "Combat Advantage": 176,
+      "Critical Severity": 132,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "setBonus": "2 of Set: +10% Damage Resistance while Controlled."
+  },
+  {
+    "name": "Prestige Duelist Hood",
+    "slot": "Head",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 132,
+      "Critical Severity": 176,
+      "Defense": 441,
+      "Awareness": 132
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "setBonus": "2 of Set: +10% Damage Resistance while Controlled.",
+    "notes": "PvP set."
+  },
+  {
+    "name": "Prestige Duelist Gaiters",
+    "slot": "Feet",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 190,
+      "Defense": 251,
+      "Deflection": 251
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "setBonus": "2 of Set: +10% Damage Resistance while Controlled."
+  },
+  {
+    "name": "Prestige Duelist Bracers",
+    "slot": "Arms",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 132,
+      "Critical Severity": 176,
+      "Defense": 441,
+      "Deflection": 132
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "setBonus": "2 of Set: +10% Damage Resistance while Controlled."
+  },
+  {
+    "name": "Prestige Duelist Coat",
+    "slot": "Armor",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 132,
+      "Critical Severity": 176,
+      "Defense": 441,
+      "Deflection": 132
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "setBonus": "2 of Set: +10% Damage Resistance while Controlled.",
+    "notes": "Hide, Armor."
+  },
+  {
+    "name": "Prestige Duelist Coat · PvP 648",
+    "displayName": "Prestige Duelist Coat",
+    "slot": "Armor",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Defense": 441,
+      "Awareness": 132,
+      "Critical Severity": 176,
+      "Deflection": 529
+    },
+    "combinedRating": 529,
+    "set": "Prestige",
+    "setSize": 4,
+    "notes": "PvP IL 648. Hide, Armor.",
+    "variant": "PvP 648"
+  },
+  {
+    "name": "Warborn Executioner Hood",
+    "slot": "Head",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 126,
+      "Critical Strike": 168,
+      "Critical Severity": 126,
+      "Defense": 420
+    },
+    "combinedRating": 504,
+    "set": "Warborn",
+    "setSize": 4,
+    "setPartners": ["Warborn Head", "Warborn Body", "Warborn Arms", "Warborn Feet"],
+    "setBonus": "2 of Set: +1% Power. 3 of Set: When two or more enemy players are nearby: +10% Movement Speed, +1% Power.",
+    "notes": "PvP IL 620. Minimum Level 18."
+  },
+  {
+    "name": "Warborn Executioner Coat",
+    "slot": "Armor",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 168,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Awareness": 126
+    },
+    "combinedRating": 504,
+    "set": "Warborn",
+    "setSize": 4,
+    "setBonus": "2 of Set: +1% Power. 3 of Set: When two or more enemy players are nearby: +10% Movement Speed, +1% Power.",
+    "notes": "Hide, Armor."
+  },
+  {
+    "name": "Warborn Executioner Bracers",
+    "slot": "Arms",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 168,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Critical Avoidance": 126
+    },
+    "combinedRating": 504,
+    "set": "Warborn",
+    "setSize": 4,
+    "setBonus": "2 of Set: +1% Power. 3 of Set: When two or more enemy players are nearby: +10% Movement Speed, +1% Power."
+  },
+  {
+    "name": "Warborn Executioner Gaiters",
+    "slot": "Feet",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 126,
+      "Combat Advantage": 168,
+      "Critical Severity": 126,
+      "Defense": 420
+    },
+    "combinedRating": 504,
+    "set": "Warborn",
+    "setSize": 4,
+    "setBonus": "2 of Set: +1% Power. 3 of Set: When two or more enemy players are nearby: +10% Movement Speed, +1% Power."
+  },
+  {
+    "name": "Warborn Duelist Hood",
+    "slot": "Head",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 168,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Deflection": 126
+    },
+    "combinedRating": 504,
+    "set": "Warborn",
+    "setSize": 4,
+    "setBonus": "2 of Set: +1% Power. 3 of Set: When two or more enemy players are nearby: +10% Movement Speed, +1% Power."
+  },
+  {
+    "name": "Warborn Duelist Gaiters",
+    "slot": "Feet",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 210,
+      "Defense": 210,
+      "Deflection": 210
+    },
+    "combinedRating": 504,
+    "set": "Warborn",
+    "setSize": 4,
+    "setBonus": "2 of Set: +1% Power. 3 of Set: When two or more enemy players are nearby: +10% Movement Speed, +1% Power."
+  },
+  {
+    "name": "Warborn Duelist Bracers",
+    "slot": "Arms",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 126,
+      "Combat Advantage": 168,
+      "Defense": 420,
+      "Deflection": 126
+    },
+    "combinedRating": 504,
+    "set": "Warborn",
+    "setSize": 4,
+    "setBonus": "2 of Set: +1% Power. 3 of Set: When two or more enemy players are nearby: +10% Movement Speed, +1% Power."
+  },
+  {
+    "name": "Warborn Duelist Coat",
+    "slot": "Armor",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 126,
+      "Defense": 420,
+      "Awareness": 168,
+      "Deflection": 126
+    },
+    "combinedRating": 504,
+    "set": "Warborn",
+    "setSize": 4,
+    "setBonus": "2 of Set: +1% Power. 3 of Set: When two or more enemy players are nearby: +10% Movement Speed, +1% Power.",
+    "notes": "Hide, Armor."
+  },
+  {
+    "name": "Black Ice Hood",
+    "slot": "Head",
+    "item_level": 512,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 131,
+      "Critical Strike": 59.9,
+      "Defense": 384,
+      "Awareness": 59.1
+    },
+    "combinedRating": 461,
+    "set": "Black Ice",
+    "setSize": 3,
+    "notes": "Black Ice Gear set."
+  },
+  {
+    "name": "Black Ice Armor",
+    "slot": "Armor",
+    "item_level": 512,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 59.9,
+      "Combat Advantage": 132,
+      "Defense": 384,
+      "Critical Avoidance": 132
+    },
+    "combinedRating": 461,
+    "set": "Black Ice",
+    "setSize": 3,
+    "notes": "Armor, Hide."
+  },
+  {
+    "name": "Black Ice Bracers",
+    "slot": "Arms",
+    "item_level": 512,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 132,
+      "Critical Severity": 59.9,
+      "Defense": 384,
+      "Critical Avoidance": 132,
+      "Deflection": 59.9
+    },
+    "combinedRating": 461,
+    "set": "Black Ice",
+    "setSize": 3
+  },
+  {
+    "name": "Black Ice Boots",
+    "slot": "Feet",
+    "item_level": 512,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 132,
+      "Critical Strike": 59.9,
+      "Awareness": 132,
+      "Defense": 132
+    },
+    "combinedRating": 461,
+    "set": "Black Ice",
+    "setSize": 3
+  },
+  {
+    "name": "Hammerstone Hood",
+    "slot": "Head",
+    "item_level": 352,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 92.4,
+      "Critical Strike": 39.6,
+      "Critical Severity": 92.4,
+      "Defense": 264,
+      "Deflection": 39.6
+    },
+    "combinedRating": 317,
+    "set": "Hammerstone Armor",
+    "setSize": 4,
+    "notes": "Binds on Equip (Character). Minimum Level 15."
+  },
+  {
+    "name": "Hammerstone Armor",
+    "slot": "Armor",
+    "item_level": 352,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 92.4,
+      "Critical Strike": 39.6,
+      "Critical Severity": 92.4,
+      "Defense": 264,
+      "Deflection": 39.6
+    },
+    "combinedRating": 317,
+    "set": "Hammerstone Armor",
+    "setSize": 4,
+    "notes": "Hide, Armor."
+  },
+  {
+    "name": "Hammerstone Gloves",
+    "slot": "Arms",
+    "item_level": 352,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 92.4,
+      "Critical Strike": 39.6,
+      "Critical Severity": 92.4,
+      "Defense": 264,
+      "Deflection": 39.6
+    },
+    "combinedRating": 317,
+    "set": "Hammerstone Armor",
+    "setSize": 4
+  },
+  {
+    "name": "Hammerstone Boots",
+    "slot": "Feet",
+    "item_level": 352,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 92.4,
+      "Critical Strike": 39.6,
+      "Critical Severity": 92.4,
+      "Defense": 264,
+      "Deflection": 39.6
+    },
+    "combinedRating": 317,
+    "set": "Hammerstone Armor",
+    "setSize": 4
+  },
+  {
+    "name": "Hammerstone Bow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 352,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 185,
+      "Critical Strike": 79.2,
+      "Critical Severity": 185,
+      "Deflection": 79.2
+    },
+    "combinedRating": 317,
+    "set": "Weapons of the Elk Tribe Chiefs",
+    "notes": "Weapon, Ranged. Binds on Equip (Character)."
+  },
+  {
+    "name": "Hammerstone Hatchets",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 352,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 185,
+      "Critical Strike": 79.2,
+      "Critical Severity": 185,
+      "Deflection": 79.2
+    },
+    "combinedRating": 317,
+    "set": "Weapons of the Elk Tribe Chiefs",
+    "notes": "Blade, Weapon."
+  },
+  {
+    "name": "Elk Tribe Noble's Seax",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 399,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 202,
+      "Critical Strike": 97.6,
+      "Critical Severity": 202,
+      "Critical Avoidance": 97.6
+    },
+    "combinedRating": 359,
+    "set": "Weapons of the Elk Tribe Chiefs",
+    "notes": "Blade, Free Appearance Change, Weapon."
+  },
+  {
+    "name": "Elk Tribe Noble's Horn Bow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 399,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 202,
+      "Critical Strike": 97.6,
+      "Critical Severity": 202,
+      "Critical Avoidance": 97.6
+    },
+    "combinedRating": 359,
+    "set": "Weapons of the Elk Tribe Chiefs",
+    "notes": "Ranged, Free Appearance Change, Weapon."
+  },
+  {
+    "name": "Hood of the Thayan Servitor",
+    "slot": "Head",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 88.8,
+      "Combat Advantage": 211,
+      "Critical Strike": 211,
+      "Defense": 600,
+      "Critical Avoidance": 88.8
+    },
+    "combinedRating": 720,
+    "set": "Thayan Servitor Armor",
+    "setSize": 4,
+    "notes": "Binds on Pickup (Account). Minimum Level 16."
+  },
+  {
+    "name": "Tunic of the Thayan Servitor",
+    "slot": "Armor",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 97.2,
+      "Combat Advantage": 203,
+      "Critical Strike": 203,
+      "Defense": 600,
+      "Critical Avoidance": 97.2
+    },
+    "combinedRating": 720,
+    "set": "Thayan Servitor Armor",
+    "setSize": 4,
+    "notes": "Hide, Armor."
+  },
+  {
+    "name": "Bracers of the Thayan Servitor",
+    "slot": "Arms",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 88.8,
+      "Combat Advantage": 211,
+      "Critical Strike": 211,
+      "Defense": 600,
+      "Critical Avoidance": 88.8
+    },
+    "combinedRating": 720,
+    "set": "Thayan Servitor Armor",
+    "setSize": 4
+  },
+  {
+    "name": "Boots of the Thayan Servitor",
+    "slot": "Feet",
+    "item_level": 800,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 88.8,
+      "Combat Advantage": 211,
+      "Critical Strike": 211,
+      "Defense": 600,
+      "Critical Avoidance": 88.8
+    },
+    "combinedRating": 720,
+    "set": "Thayan Servitor Armor",
+    "setSize": 4
+  },
+  {
+    "name": "Twisted Toxo · IL 300",
+    "displayName": "Twisted Toxo",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Twisted Set",
+    "setSize": 2,
+    "setPartners": ["Twisted Toxo", "Twisted Xiphoi"],
+    "setBonus": "2 of Set: Gain the effect of paranoia and bloodlust. Paranoia: Gain 160 Defense when struck, lose a stack when you strike an enemy. Bloodlust: Gain 160 Power when you strike an enemy, lose a stack when you are struck. Neither paranoia nor bloodlust may exceed 24 stacks or be reduced below 1 stack.",
+    "notes": "Artifact Equipment. Weapon, Ranged. Twisted Set (Demonic Artifacts and Gear).",
+    "variant": "IL 300"
+  },
+  {
+    "name": "Twisted Toxo · IL 400",
+    "displayName": "Twisted Toxo",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Twisted Set",
+    "setSize": 2,
+    "setPartners": ["Twisted Toxo", "Twisted Xiphoi"],
+    "notes": "Artifact Equipment. Weapon, Ranged.",
+    "variant": "IL 400"
+  },
+  {
+    "name": "Twisted Toxo · IL 500",
+    "displayName": "Twisted Toxo",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188
+    },
+    "combinedRating": 450,
+    "set": "Twisted Set",
+    "setSize": 2,
+    "setPartners": ["Twisted Toxo", "Twisted Xiphoi"],
+    "notes": "Artifact Equipment. Ranged, Weapon.",
+    "variant": "IL 500"
+  },
+  {
+    "name": "Twisted Toxo · IL 600",
+    "displayName": "Twisted Toxo",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225
+    },
+    "combinedRating": 540,
+    "set": "Twisted Set",
+    "setSize": 2,
+    "setPartners": ["Twisted Toxo", "Twisted Xiphoi"],
+    "notes": "Artifact Equipment Maximum Quality.",
+    "variant": "IL 600 Max Quality",
+    "tier": "Mythic"
+  },
+  {
+    "name": "Twisted Xiphoi · IL 300",
+    "displayName": "Twisted Xiphoi",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Twisted Set",
+    "setSize": 2,
+    "setPartners": ["Twisted Toxo", "Twisted Xiphoi"],
+    "notes": "Artifact Equipment. Blade, Weapon. Artifact Stat Increase: Unlocks at Epic Rarity.",
+    "variant": "IL 300"
+  },
+  {
+    "name": "Twisted Xiphoi · IL 400",
+    "displayName": "Twisted Xiphoi",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Twisted Set",
+    "setSize": 2,
+    "setPartners": ["Twisted Toxo", "Twisted Xiphoi"],
+    "notes": "Artifact Equipment. Blade, Weapon.",
+    "variant": "IL 400"
+  },
+  {
+    "name": "Twisted Xiphoi · IL 500",
+    "displayName": "Twisted Xiphoi",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188
+    },
+    "combinedRating": 450,
+    "set": "Twisted Set",
+    "setSize": 2,
+    "setPartners": ["Twisted Toxo", "Twisted Xiphoi"],
+    "notes": "Artifact Equipment. Blade, Weapon.",
+    "variant": "IL 500"
+  },
+  {
+    "name": "Twisted Xiphoi · IL 600",
+    "displayName": "Twisted Xiphoi",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225
+    },
+    "combinedRating": 540,
+    "set": "Twisted Set",
+    "setSize": 2,
+    "setPartners": ["Twisted Toxo", "Twisted Xiphoi"],
+    "notes": "Artifact Equipment Maximum Quality.",
+    "variant": "IL 600 Max Quality",
+    "tier": "Mythic"
+  },
+  {
+    "name": "Dusk Raid Hood",
+    "slot": "Head",
+    "item_level": 1175,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 352,
+      "Critical Severity": 529,
+      "Defense": 881
+    },
+    "combinedRating": 1058,
+    "set": "Dusk",
+    "setSize": 4,
+    "notes": "Dusk Armor set (Module 8: Underdark)."
+  },
+  {
+    "name": "Dusk Raid Coat",
+    "slot": "Armor",
+    "item_level": 1175,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 529,
+      "Combat Advantage": 352,
+      "Defense": 881
+    },
+    "combinedRating": 1058,
+    "set": "Dusk",
+    "setSize": 4,
+    "notes": "Armor, Hide."
+  },
+  {
+    "name": "Dusk Raid Bracers",
+    "slot": "Arms",
+    "item_level": 1175,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 529,
+      "Combat Advantage": 352,
+      "Defense": 881
+    },
+    "combinedRating": 1058,
+    "set": "Dusk",
+    "setSize": 4
+  },
+  {
+    "name": "Dusk Raid Gaiters",
+    "slot": "Feet",
+    "item_level": 1175,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 352,
+      "Critical Strike": 529,
+      "Defense": 881
+    },
+    "combinedRating": 1058,
+    "set": "Dusk",
+    "setSize": 4
+  },
+  {
+    "name": "Dusk Assault Hood",
+    "slot": "Head",
+    "item_level": 1175,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 529,
+      "Critical Severity": 352,
+      "Defense": 881
+    },
+    "combinedRating": 1058,
+    "set": "Dusk",
+    "setSize": 4
+  },
+  {
+    "name": "Dusk Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 1175,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 352,
+      "Critical Severity": 529,
+      "Defense": 881
+    },
+    "combinedRating": 1058,
+    "set": "Dusk",
+    "setSize": 4
+  },
+  {
+    "name": "Dusk Assault Bracers",
+    "slot": "Arms",
+    "item_level": 1175,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 529,
+      "Critical Severity": 352,
+      "Defense": 881
+    },
+    "combinedRating": 1058,
+    "set": "Dusk",
+    "setSize": 4
+  },
+  {
+    "name": "Dusk Assault Coat",
+    "slot": "Armor",
+    "item_level": 1175,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 529,
+      "Critical Severity": 352,
+      "Defense": 881
+    },
+    "combinedRating": 1058,
+    "set": "Dusk",
+    "setSize": 4,
+    "notes": "Armor, Hide."
+  },
+  {
+    "name": "Howling Longbow · IL 300",
+    "displayName": "Howling Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Howling Heart",
+    "setSize": 2,
+    "setPartners": ["Howling Longbow", "Howling Axes"],
+    "setBonus": "2 of Set: When you dodge, block, sprint or shadow slip your Movement Speed is increased by 50% for 2 seconds, this effect may only occur once every 10 seconds.",
+    "notes": "Artifact Equipment. Weapon, Ranged. Howling Hunter Set. Binds on Equip (Character). Give yourself to the wind and it will carry you from harm.",
+    "variant": "IL 300"
+  },
+  {
+    "name": "Howling Longbow · IL 400",
+    "displayName": "Howling Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Howling Heart",
+    "setSize": 2,
+    "setPartners": ["Howling Longbow", "Howling Axes"],
+    "notes": "Artifact Equipment.",
+    "variant": "IL 400"
+  },
+  {
+    "name": "Howling Longbow · IL 500",
+    "displayName": "Howling Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188
+    },
+    "combinedRating": 450,
+    "set": "Howling Heart",
+    "setSize": 2,
+    "setPartners": ["Howling Longbow", "Howling Axes"],
+    "notes": "Artifact Equipment.",
+    "variant": "IL 500"
+  },
+  {
+    "name": "Howling Longbow · IL 600",
+    "displayName": "Howling Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225
+    },
+    "combinedRating": 540,
+    "set": "Howling Heart",
+    "setSize": 2,
+    "setPartners": ["Howling Longbow", "Howling Axes"],
+    "notes": "Artifact Equipment Maximum Quality. Weapon, Ranged.",
+    "variant": "IL 600 Max Quality",
+    "tier": "Mythic"
+  },
+  {
+    "name": "Howling Axes · IL 300",
+    "displayName": "Howling Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Howling Heart",
+    "setSize": 2,
+    "setPartners": ["Howling Longbow", "Howling Axes"],
+    "notes": "Artifact Equipment. Blade, Weapon. Artifact Stat Increase: Unlocks at Epic Rarity.",
+    "variant": "IL 300"
+  },
+  {
+    "name": "Howling Axes · IL 400",
+    "displayName": "Howling Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Howling Heart",
+    "setSize": 2,
+    "setPartners": ["Howling Longbow", "Howling Axes"],
+    "notes": "Artifact Equipment. Blade, Weapon.",
+    "variant": "IL 400"
+  },
+  {
+    "name": "Howling Axes · IL 500",
+    "displayName": "Howling Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188
+    },
+    "combinedRating": 450,
+    "set": "Howling Heart",
+    "setSize": 2,
+    "setPartners": ["Howling Longbow", "Howling Axes"],
+    "notes": "Artifact Equipment. Blade, Weapon.",
+    "variant": "IL 500"
+  },
+  {
+    "name": "Howling Axes · IL 600",
+    "displayName": "Howling Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225
+    },
+    "combinedRating": 540,
+    "set": "Howling Heart",
+    "setSize": 2,
+    "setPartners": ["Howling Longbow", "Howling Axes"],
+    "notes": "Artifact Equipment Maximum Quality. Weapon, Blade.",
+    "variant": "IL 600 Max Quality",
+    "tier": "Mythic"
+  },
+  {
+    "name": "Earthen Longbow · IL 300",
+    "displayName": "Earthen Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Earthen Heart",
+    "setSize": 2,
+    "setPartners": ["Earthen Longbow", "Earthen Axes"],
+    "setBonus": "2 of Set: When you stand still for 3 seconds, incoming damage is reduced by 5%. This effect stacks up to 5 times and is removed upon moving.",
+    "notes": "Artifact Equipment. Weapon, Ranged. Earthen Ranger Set. Give yourself to the earth and you will stand unbroken.",
+    "variant": "IL 300"
+  },
+  {
+    "name": "Earthen Longbow · IL 400",
+    "displayName": "Earthen Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Earthen Heart",
+    "setSize": 2,
+    "setPartners": ["Earthen Longbow", "Earthen Axes"],
+    "notes": "Artifact Equipment.",
+    "variant": "IL 400"
+  },
+  {
+    "name": "Earthen Longbow · IL 500",
+    "displayName": "Earthen Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188
+    },
+    "combinedRating": 450,
+    "set": "Earthen Heart",
+    "setSize": 2,
+    "setPartners": ["Earthen Longbow", "Earthen Axes"],
+    "notes": "Artifact Equipment. Ranged, Weapon.",
+    "variant": "IL 500"
+  },
+  {
+    "name": "Earthen Longbow · IL 600",
+    "displayName": "Earthen Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225
+    },
+    "combinedRating": 540,
+    "set": "Earthen Heart",
+    "setSize": 2,
+    "setPartners": ["Earthen Longbow", "Earthen Axes"],
+    "notes": "Artifact Equipment Maximum Quality. Weapon, Ranged.",
+    "variant": "IL 600 Max Quality",
+    "tier": "Mythic"
+  },
+  {
+    "name": "Earthen Axes · IL 300",
+    "displayName": "Earthen Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Earthen Heart",
+    "setSize": 2,
+    "setPartners": ["Earthen Longbow", "Earthen Axes"],
+    "notes": "Artifact Equipment. Blade, Weapon. Artifact Stat Increase: Unlocks at Epic Rarity.",
+    "variant": "IL 300"
+  },
+  {
+    "name": "Earthen Axes · IL 400",
+    "displayName": "Earthen Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Earthen Heart",
+    "setSize": 2,
+    "setPartners": ["Earthen Longbow", "Earthen Axes"],
+    "notes": "Artifact Equipment. Blade, Weapon.",
+    "variant": "IL 400"
+  },
+  {
+    "name": "Earthen Axes · IL 500",
+    "displayName": "Earthen Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188
+    },
+    "combinedRating": 450,
+    "set": "Earthen Heart",
+    "setSize": 2,
+    "setPartners": ["Earthen Longbow", "Earthen Axes"],
+    "notes": "Artifact Equipment. Blade, Weapon.",
+    "variant": "IL 500"
+  },
+  {
+    "name": "Earthen Axes · IL 600",
+    "displayName": "Earthen Axes",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225
+    },
+    "combinedRating": 540,
+    "set": "Earthen Heart",
+    "setSize": 2,
+    "setPartners": ["Earthen Longbow", "Earthen Axes"],
+    "notes": "Artifact Equipment Maximum Quality. Weapon, Blade.",
+    "variant": "IL 600 Max Quality",
+    "tier": "Mythic"
+  },
+  {
+    "name": "Burning Longbow · IL 300",
+    "displayName": "Burning Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Burning Heart",
+    "setSize": 2,
+    "setPartners": ["Burning Longbow", "Burning Axes"],
+    "setBonus": "2 of Set: When using a daily power, there is a chance 25% of your AP will be immediately restored.",
+    "notes": "Artifact Equipment. Ranged, Weapon. Burning Ranger Set. Give yourself to the flames and your enemies will burn.",
+    "variant": "IL 300"
+  },
+  {
+    "name": "Burning Longbow · IL 400",
+    "displayName": "Burning Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Bow",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Burning Heart",
+    "setSize": 2,
+    "setPartners": ["Burning Longbow", "Burning Axes"],
+    "notes": "Artifact Equipment. Weapon, Ranged.",
+    "variant": "IL 400"
+  }
+]

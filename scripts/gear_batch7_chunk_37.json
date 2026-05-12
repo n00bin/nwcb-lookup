@@ -1,0 +1,1236 @@
+[
+  {
+    "name": "Manticore Assault Hood",
+    "slot": "Head",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 340,
+      "Critical Severity": 227,
+      "Defense": 113
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Gladiator's Accuracy", "description": "For every 5 seconds you are in combat, you gain 100 Accuracy. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Executioner Coat",
+    "slot": "Armor",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 227,
+      "Critical Severity": 170,
+      "Defense": 567,
+      "Awareness": 170
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Executioner Hood",
+    "slot": "Head",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 170,
+      "Critical Strike": 227,
+      "Critical Severity": 170,
+      "Defense": 567
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Gladiator's Accuracy", "description": "For every 5 seconds you are in combat, you gain 100 Accuracy. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 340,
+      "Critical Strike": 227,
+      "Defense": 113
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Assault Bracers",
+    "slot": "Arms",
+    "item_level": 784,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 353,
+      "Critical Severity": 235,
+      "Defense": 588
+    },
+    "combinedRating": 706,
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Assault Coat",
+    "slot": "Armor",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 340,
+      "Critical Severity": 227,
+      "Defense": 567
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Executioner Bracers",
+    "slot": "Arms",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 227,
+      "Critical Strike": 170,
+      "Defense": 567,
+      "Critical Avoidance": 170
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Survivor's Parry", "description": "Gain 25 Deflect for each percent of health you are missing."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Executioner Gaiters",
+    "slot": "Feet",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 170,
+      "Critical Strike": 227,
+      "Critical Severity": 170,
+      "Defense": 567
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Duelist Hood",
+    "slot": "Head",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 227,
+      "Critical Severity": 170,
+      "Defense": 170,
+      "Deflection": 170
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Gladiator's Accuracy", "description": "For every 5 seconds you are in combat, you gain 100 Accuracy. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Duelist Coat",
+    "slot": "Armor",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 170,
+      "Defense": 567,
+      "Awareness": 227,
+      "Deflection": 170
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Duelist Bracers",
+    "slot": "Arms",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 170,
+      "Critical Severity": 170,
+      "Defense": 227,
+      "Deflection": 227
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Survivor's Parry", "description": "Gain 25 Deflect for each percent of health you are missing."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Manticore Duelist Gaiters",
+    "slot": "Feet",
+    "item_level": 756,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 284,
+      "Defense": 567,
+      "Deflection": 284
+    },
+    "combinedRating": 680,
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor II",
+    "notes": "Set 7 of 20 — Masterwork Armor II"
+  },
+  {
+    "name": "Stronghold Longbow · IL 300",
+    "displayName": "Stronghold Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Stronghold Unity",
+    "setSize": 2,
+    "setBonus": "2 of Set: You and nearby allies are granted the following: +2% Base Damage Boost, +2% Overall Outgoing Healing, +2% Incoming Damage. This effect may stack up to 5 times when allies are equipped with a set of Stronghold weapons.",
+    "notes": "Artifact Equipment. Set 10 of 20 — Ranger Stronghold Set."
+  },
+  {
+    "name": "Stronghold Longbow · IL 400",
+    "displayName": "Stronghold Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Stronghold Unity",
+    "notes": "Artifact Equipment. Set 10 of 20."
+  },
+  {
+    "name": "Stronghold Longbow · IL 500",
+    "displayName": "Stronghold Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188
+    },
+    "combinedRating": 450,
+    "set": "Stronghold Unity",
+    "notes": "Artifact Equipment. Set 10 of 20."
+  },
+  {
+    "name": "Stronghold Longbow · IL 600",
+    "displayName": "Stronghold Longbow",
+    "slot": "Main Hand",
+    "subSlot": "Ranged",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225
+    },
+    "combinedRating": 540,
+    "set": "Stronghold Unity",
+    "notes": "Artifact Equipment Maximum Quality. Set 10 of 20."
+  },
+  {
+    "name": "Stronghold Tabars · IL 300",
+    "displayName": "Stronghold Tabars",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 300,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 112,
+      "Combat Advantage": 225,
+      "Critical Strike": 112
+    },
+    "combinedRating": 270,
+    "set": "Stronghold Unity",
+    "notes": "Artifact Equipment. Artifact Stat Increase: Unlocks at Epic Rarity."
+  },
+  {
+    "name": "Stronghold Tabars · IL 400",
+    "displayName": "Stronghold Tabars",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 400,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 150,
+      "Combat Advantage": 300,
+      "Critical Strike": 150
+    },
+    "combinedRating": 360,
+    "set": "Stronghold Unity",
+    "notes": "Artifact Equipment. Artifact Stat Increase: Unlocks at Epic Rarity."
+  },
+  {
+    "name": "Stronghold Tabars · IL 500",
+    "displayName": "Stronghold Tabars",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 500,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 188,
+      "Combat Advantage": 375,
+      "Critical Strike": 188
+    },
+    "combinedRating": 450,
+    "set": "Stronghold Unity",
+    "notes": "Artifact Equipment."
+  },
+  {
+    "name": "Stronghold Tabars · IL 600",
+    "displayName": "Stronghold Tabars",
+    "slot": "Off Hand",
+    "subSlot": "Blade",
+    "item_level": 600,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 225,
+      "Combat Advantage": 450,
+      "Critical Strike": 225
+    },
+    "combinedRating": 540,
+    "set": "Stronghold Unity",
+    "notes": "Artifact Equipment Maximum Quality."
+  },
+  {
+    "name": "Elemental Lionsmane Duelist Hood",
+    "slot": "Head",
+    "item_level": 574,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 172,
+      "Critical Severity": 129,
+      "Defense": 430,
+      "Deflection": 129
+    },
+    "combinedRating": 517,
+    "set": "Lionsmane",
+    "setSize": 4,
+    "setPartners": ["Lionsmane Head", "Lionsmane Body", "Lionsmane Arms", "Lionsmane Feet"],
+    "setBonus": "2 of Set: Equip: 0 Maximum Hit Points. 3 of Set: +5% Life Power.",
+    "notes": "PvP IL 634. Set 11 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Lionsmane Duelist Coat",
+    "slot": "Armor",
+    "item_level": 574,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 129,
+      "Defense": 430,
+      "Awareness": 172,
+      "Deflection": 129
+    },
+    "combinedRating": 517,
+    "set": "Lionsmane",
+    "notes": "PvP IL 634. Set 11 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Lionsmane Duelist Bracers",
+    "slot": "Arms",
+    "item_level": 574,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 129,
+      "Critical Severity": 129,
+      "Defense": 430,
+      "Deflection": 172
+    },
+    "combinedRating": 517,
+    "set": "Lionsmane",
+    "notes": "PvP IL 634. Set 11 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Lionsmane Duelist Gaiters",
+    "slot": "Feet",
+    "item_level": 574,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 215,
+      "Defense": 430,
+      "Deflection": 215
+    },
+    "combinedRating": 517,
+    "set": "Lionsmane",
+    "notes": "PvP IL 634. Set 11 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Lionsmane Duelist Gaiters",
+    "slot": "Feet",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 210,
+      "Defense": 420,
+      "Deflection": 210
+    },
+    "combinedRating": 504,
+    "set": "Lionsmane",
+    "notes": "PvP IL 620. Set 11 of 20."
+  },
+  {
+    "name": "Lionsmane Duelist Bracers",
+    "slot": "Arms",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 126,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Deflection": 168
+    },
+    "combinedRating": 504,
+    "set": "Lionsmane",
+    "notes": "PvP IL 620. Set 11 of 20."
+  },
+  {
+    "name": "Lionsmane Duelist Coat",
+    "slot": "Armor",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 126,
+      "Defense": 420,
+      "Awareness": 168,
+      "Deflection": 126
+    },
+    "combinedRating": 504,
+    "set": "Lionsmane",
+    "notes": "PvP IL 620. Set 11 of 20."
+  },
+  {
+    "name": "Lionsmane Duelist Hood",
+    "slot": "Head",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 168,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Deflection": 126
+    },
+    "combinedRating": 504,
+    "set": "Lionsmane",
+    "notes": "PvP IL 620. Set 11 of 20."
+  },
+  {
+    "name": "Elemental Lionsmane Executioner Hood",
+    "slot": "Head",
+    "item_level": 574,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 129,
+      "Critical Strike": 172,
+      "Critical Severity": 129,
+      "Defense": 430
+    },
+    "combinedRating": 517,
+    "set": "Lionsmane",
+    "notes": "PvP IL 634. Set 11 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Lionsmane Executioner Coat",
+    "slot": "Armor",
+    "item_level": 574,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 172,
+      "Critical Severity": 129,
+      "Defense": 430,
+      "Awareness": 129
+    },
+    "combinedRating": 517,
+    "set": "Lionsmane",
+    "notes": "PvP IL 634. Set 11 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Lionsmane Executioner Bracers",
+    "slot": "Arms",
+    "item_level": 574,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 172,
+      "Critical Strike": 129,
+      "Defense": 430,
+      "Critical Avoidance": 129
+    },
+    "combinedRating": 517,
+    "set": "Lionsmane",
+    "notes": "PvP IL 634. Set 11 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Lionsmane Executioner Gaiters",
+    "slot": "Feet",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 168,
+      "Combat Advantage": 126,
+      "Critical Severity": 126,
+      "Defense": 420
+    },
+    "combinedRating": 504,
+    "set": "Lionsmane",
+    "notes": "PvP IL 620. Set 11 of 20."
+  },
+  {
+    "name": "Lionsmane Executioner Bracers",
+    "slot": "Arms",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 168,
+      "Critical Strike": 126,
+      "Defense": 420,
+      "Critical Avoidance": 126
+    },
+    "combinedRating": 504,
+    "set": "Lionsmane",
+    "notes": "PvP IL 620. Set 11 of 20."
+  },
+  {
+    "name": "Lionsmane Executioner Coat",
+    "slot": "Armor",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 168,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Awareness": 126
+    },
+    "combinedRating": 504,
+    "set": "Lionsmane",
+    "notes": "PvP IL 620. Set 11 of 20."
+  },
+  {
+    "name": "Lionsmane Executioner Hood",
+    "slot": "Head",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 126,
+      "Critical Strike": 168,
+      "Critical Severity": 126,
+      "Defense": 420
+    },
+    "combinedRating": 504,
+    "set": "Lionsmane",
+    "notes": "PvP IL 620. Set 11 of 20."
+  },
+  {
+    "name": "Elemental Lionsmane Executioner Gaiters",
+    "slot": "Feet",
+    "item_level": 574,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 172,
+      "Combat Advantage": 129,
+      "Critical Severity": 129,
+      "Defense": 430
+    },
+    "combinedRating": 517,
+    "set": "Lionsmane",
+    "notes": "PvP IL 634. Set 11 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Dragonflight Raid Hood",
+    "slot": "Head",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 176,
+      "Critical Strike": 265,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Dragonflight",
+    "setSize": 4,
+    "setPartners": ["Dragonflight Head", "Dragonflight Body", "Dragonflight Arms", "Dragonflight Feet"],
+    "setBonus": "2 of Set: +2,000 Maximum Hit Points. 3 of Set: +500 Power.",
+    "notes": "Set 12 of 20."
+  },
+  {
+    "name": "Dragonflight Raid Coat",
+    "slot": "Armor",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 265,
+      "Combat Advantage": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Dragonflight",
+    "notes": "Set 12 of 20."
+  },
+  {
+    "name": "Dragonflight Raid Bracers",
+    "slot": "Arms",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 265,
+      "Combat Advantage": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Dragonflight",
+    "notes": "Set 12 of 20."
+  },
+  {
+    "name": "Dragonflight Raid Gaiters",
+    "slot": "Feet",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 176,
+      "Critical Strike": 265,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Dragonflight",
+    "notes": "Set 12 of 20."
+  },
+  {
+    "name": "Dragonflight Assault Coat",
+    "slot": "Armor",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 265,
+      "Critical Severity": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Dragonflight",
+    "notes": "Set 12 of 20."
+  },
+  {
+    "name": "Dragonflight Assault Hood",
+    "slot": "Head",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 265,
+      "Critical Severity": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Dragonflight",
+    "notes": "Set 12 of 20."
+  },
+  {
+    "name": "Dragonflight Assault Bracers",
+    "slot": "Arms",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 265,
+      "Critical Severity": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Dragonflight",
+    "notes": "Set 12 of 20."
+  },
+  {
+    "name": "Dragonflight Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 176,
+      "Critical Severity": 265,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Dragonflight",
+    "notes": "Set 12 of 20."
+  },
+  {
+    "name": "Elemental Dragonflight Raid Hood",
+    "slot": "Head",
+    "item_level": 596,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 179,
+      "Critical Strike": 268,
+      "Defense": 447
+    },
+    "combinedRating": 536,
+    "set": "Dragonflight",
+    "setSize": 4,
+    "setPartners": ["Dragonflight Head", "Dragonflight Body", "Dragonflight Arms", "Dragonflight Feet"],
+    "setBonus": "2 of Set: +2,000 Maximum Hit Points. 3 of Set: +500 Power.",
+    "notes": "Set 13 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Dragonflight Raid Coat",
+    "slot": "Armor",
+    "item_level": 596,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 268,
+      "Combat Advantage": 179,
+      "Defense": 447
+    },
+    "combinedRating": 536,
+    "set": "Dragonflight",
+    "notes": "Set 13 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Dragonflight Raid Bracers",
+    "slot": "Arms",
+    "item_level": 596,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 268,
+      "Combat Advantage": 179,
+      "Defense": 447
+    },
+    "combinedRating": 536,
+    "set": "Dragonflight",
+    "notes": "Set 13 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Dragonflight Raid Gaiters",
+    "slot": "Feet",
+    "item_level": 596,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 179,
+      "Critical Strike": 268,
+      "Defense": 447
+    },
+    "combinedRating": 536,
+    "set": "Dragonflight",
+    "notes": "Set 13 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Dragonflight Assault Hood",
+    "slot": "Head",
+    "item_level": 596,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 268,
+      "Critical Severity": 179,
+      "Defense": 447
+    },
+    "combinedRating": 536,
+    "set": "Dragonflight",
+    "notes": "Set 13 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Dragonflight Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 596,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 179,
+      "Critical Severity": 268,
+      "Defense": 447
+    },
+    "combinedRating": 536,
+    "set": "Dragonflight",
+    "notes": "Set 13 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Dragonflight Assault Bracers",
+    "slot": "Arms",
+    "item_level": 596,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 268,
+      "Critical Severity": 179,
+      "Defense": 447
+    },
+    "combinedRating": 536,
+    "set": "Dragonflight",
+    "notes": "Set 13 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Elemental Dragonflight Assault Coat",
+    "slot": "Armor",
+    "item_level": 596,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 268,
+      "Critical Severity": 179,
+      "Defense": 447
+    },
+    "combinedRating": 536,
+    "set": "Dragonflight",
+    "notes": "Set 13 of 20. Upgradeable via Elemental Infusion."
+  },
+  {
+    "name": "Umbral Assault Coat",
+    "slot": "Armor",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 328,
+      "Critical Severity": 218,
+      "Defense": 546
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Assault Bracers",
+    "slot": "Arms",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 328,
+      "Critical Severity": 218,
+      "Defense": 546
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Survivor's Parry", "description": "Gain 25 Deflect for each percent of health you are missing."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 328,
+      "Critical Strike": 218,
+      "Defense": 546
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Executioner Hood",
+    "slot": "Head",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 164,
+      "Critical Strike": 218,
+      "Critical Severity": 164,
+      "Defense": 546
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Gladiator's Accuracy", "description": "For every 5 seconds you are in combat, you gain 100 Accuracy. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Executioner Coat",
+    "slot": "Armor",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 218,
+      "Critical Severity": 164,
+      "Defense": 546,
+      "Awareness": 164
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Duelist Bracers",
+    "slot": "Arms",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 164,
+      "Critical Severity": 164,
+      "Defense": 218,
+      "Deflection": 218
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Survivor's Parry", "description": "Gain 25 Deflect for each percent of health you are missing."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Duelist Coat",
+    "slot": "Armor",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 164,
+      "Defense": 546,
+      "Awareness": 218,
+      "Deflection": 164
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Challenger's Might", "description": "When in combat with only one enemy, your Power is increased by 1500."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Duelist Hood",
+    "slot": "Head",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 218,
+      "Critical Severity": 164,
+      "Defense": 546,
+      "Deflection": 164
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Gladiator's Accuracy", "description": "For every 5 seconds you are in combat, you gain 100 Accuracy. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Executioner Gaiters",
+    "slot": "Feet",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 164,
+      "Critical Strike": 218,
+      "Critical Severity": 164,
+      "Defense": 546
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Executioner Bracers",
+    "slot": "Arms",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 218,
+      "Critical Strike": 164,
+      "Defense": 546,
+      "Critical Avoidance": 164
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Survivor's Parry", "description": "Gain 25 Deflect for each percent of health you are missing."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Umbral Duelist Gaiters",
+    "slot": "Feet",
+    "item_level": 728,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 273,
+      "Defense": 546,
+      "Deflection": 273
+    },
+    "combinedRating": 655,
+    "equipBonuses": [
+      {"name": "Gladiator's Focus", "description": "For every 5 seconds you are in combat, you gain 100 Critical Strike. If you stay in combat for longer than 2 minutes, this ability will no longer be active."}
+    ],
+    "set": "Masterwork Armor",
+    "notes": "Set 14 of 20 — Masterwork Armor"
+  },
+  {
+    "name": "Company Raid Hood",
+    "slot": "Head",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 265,
+      "Critical Strike": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Company PvE Armor",
+    "notes": "Set 15 of 20 — Company PVE Armor. Source: Guild Marks."
+  },
+  {
+    "name": "Company Raid Coat",
+    "slot": "Armor",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 176,
+      "Combat Advantage": 265,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Company PvE Armor",
+    "notes": "Set 15 of 20."
+  },
+  {
+    "name": "Company Raid Bracers",
+    "slot": "Arms",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 265,
+      "Critical Strike": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Company PvE Armor",
+    "notes": "Set 15 of 20."
+  },
+  {
+    "name": "Company Raid Gaiters",
+    "slot": "Feet",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 176,
+      "Combat Advantage": 265,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Company PvE Armor",
+    "notes": "Set 15 of 20."
+  },
+  {
+    "name": "Company Assault Hood",
+    "slot": "Head",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 265,
+      "Critical Strike": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Company PvE Armor",
+    "notes": "Set 15 of 20."
+  },
+  {
+    "name": "Company Assault Gaiters",
+    "slot": "Feet",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 265,
+      "Critical Severity": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Company PvE Armor",
+    "notes": "Set 15 of 20."
+  },
+  {
+    "name": "Company Assault Bracers",
+    "slot": "Arms",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 265,
+      "Critical Severity": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Company PvE Armor",
+    "notes": "Set 15 of 20."
+  },
+  {
+    "name": "Company Assault Coat",
+    "slot": "Armor",
+    "item_level": 588,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Critical Strike": 265,
+      "Critical Severity": 176,
+      "Defense": 441
+    },
+    "combinedRating": 529,
+    "set": "Company PvE Armor",
+    "notes": "Set 15 of 20."
+  },
+  {
+    "name": "Company Duelist Hood",
+    "slot": "Head",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 168,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Deflection": 126
+    },
+    "combinedRating": 504,
+    "set": "Company PvP Armor",
+    "notes": "PvP IL 620. Set 17 of 20 — Company PvP Armor. Source: Guild Marks."
+  },
+  {
+    "name": "Company Duelist Coat",
+    "slot": "Armor",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 126,
+      "Defense": 420,
+      "Awareness": 168,
+      "Deflection": 126
+    },
+    "combinedRating": 504,
+    "set": "Company PvP Armor",
+    "notes": "PvP IL 620. Set 17 of 20."
+  },
+  {
+    "name": "Company Duelist Bracers",
+    "slot": "Arms",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 126,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Deflection": 168
+    },
+    "combinedRating": 504,
+    "set": "Company PvP Armor",
+    "notes": "PvP IL 620. Set 17 of 20."
+  },
+  {
+    "name": "Company Duelist Gaiters",
+    "slot": "Feet",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 210,
+      "Defense": 420,
+      "Deflection": 210
+    },
+    "combinedRating": 504,
+    "set": "Company PvP Armor",
+    "notes": "PvP IL 620. Set 17 of 20."
+  },
+  {
+    "name": "Company Executioner Hood",
+    "slot": "Head",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 126,
+      "Critical Strike": 168,
+      "Critical Severity": 126,
+      "Defense": 420
+    },
+    "combinedRating": 504,
+    "set": "Company PvP Armor",
+    "notes": "PvP IL 620. Set 17 of 20."
+  },
+  {
+    "name": "Company Executioner Gaiters",
+    "slot": "Feet",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Accuracy": 168,
+      "Combat Advantage": 126,
+      "Critical Severity": 126,
+      "Defense": 420
+    },
+    "combinedRating": 504,
+    "set": "Company PvP Armor",
+    "notes": "PvP IL 620. Set 17 of 20."
+  },
+  {
+    "name": "Company Executioner Bracers",
+    "slot": "Arms",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 168,
+      "Critical Strike": 126,
+      "Defense": 420,
+      "Critical Avoidance": 126
+    },
+    "combinedRating": 504,
+    "set": "Company PvP Armor",
+    "notes": "PvP IL 620. Set 17 of 20."
+  },
+  {
+    "name": "Company Executioner Coat",
+    "slot": "Armor",
+    "item_level": 560,
+    "allowedClasses": ["Ranger"],
+    "ratingStats": {
+      "Combat Advantage": 168,
+      "Critical Severity": 126,
+      "Defense": 420,
+      "Awareness": 126
+    },
+    "combinedRating": 504,
+    "set": "Company PvP Armor",
+    "notes": "PvP IL 620. Set 17 of 20."
+  }
+]
