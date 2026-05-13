@@ -729,7 +729,134 @@
     }
     .picker-item-name {
       font-weight: 700; color: var(--text); font-size: 0.95rem;
+      display: flex; align-items: baseline; gap: 0.5rem;
     }
+    .picker-item-name > span:first-child { flex: 1; }
+    /* Small info pill on filled chips — opens a read-only Details
+       popup so users can review what an already-slotted item gives
+       them without re-opening the picker. Sits inline-right of the
+       chip text, looks like a quiet hint until hovered. */
+    .chip-info {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.25rem; height: 1.25rem;
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      padding: 0;
+      font-size: 0.8rem;
+      line-height: 1;
+      cursor: pointer;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+      opacity: 0.55;
+      transition: opacity 0.12s, background 0.12s, transform 0.08s;
+    }
+    .chip-info:hover {
+      opacity: 1;
+      background: rgba(240, 136, 62, 0.18);
+      transform: scale(1.15);
+    }
+    .chip-info:focus { outline: 1px dotted var(--amber); outline-offset: 1px; }
+    /* One-line tip shown at the top of every picker that supports
+       corrections. Persists across sessions — small enough not to be
+       noisy, prominent enough that new users notice the ✎ pattern. */
+    .picker-tip {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      padding: 0.55rem 0.7rem;
+      margin-bottom: 0.5rem;
+      background: rgba(240, 136, 62, 0.07);
+      border: 1px dashed var(--amber);
+      border-radius: 6px;
+      color: var(--text-mute);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    .picker-tip-icon { font-size: 1rem; line-height: 1; flex: 0 0 auto; }
+    .picker-tip-pencil {
+      color: var(--amber);
+      padding: 0 0.25rem;
+      border: 1px solid var(--amber);
+      border-radius: 3px;
+      font-weight: 700;
+    }
+    /* Inline ✎ pencil for "suggest a correction" on any picker card. */
+    .correction-pencil {
+      background: rgba(240, 136, 62, 0.12);
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      border-radius: 5px;
+      padding: 0.1rem 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s, transform 0.08s;
+    }
+    .correction-pencil:hover {
+      background: var(--amber);
+      color: var(--bg);
+      transform: scale(1.08);
+    }
+    /* Correction modal: a focused form to suggest a data fix. */
+    .correction-overlay {
+      display: none; position: fixed; inset: 0; z-index: 700;
+      background: rgba(0,0,0,0.66);
+      align-items: center; justify-content: center;
+      padding: 4vh 1rem; overflow-y: auto;
+    }
+    .correction-overlay.open { display: flex; }
+    .correction-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-width: 540px; width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+    .correction-modal h3 {
+      margin: 0; color: var(--amber); font-family: var(--font-display);
+      padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border);
+      font-size: 1.05rem;
+    }
+    .correction-body { padding: 0.9rem 1.1rem; display: grid; gap: 0.7rem; }
+    .correction-body label {
+      display: block; color: var(--text-mute);
+      font-size: 0.78rem; margin-bottom: 0.25rem;
+    }
+    .correction-body input, .correction-body select, .correction-body textarea {
+      width: 100%; padding: 0.45rem 0.6rem;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); border-radius: 5px; font-size: 0.9rem;
+      font-family: var(--font-main);
+    }
+    .correction-body textarea { resize: vertical; min-height: 4.5em; }
+    .correction-body input:focus, .correction-body select:focus, .correction-body textarea:focus {
+      outline: none; border-color: var(--amber);
+    }
+    .correction-hint {
+      color: var(--text-mute); font-size: 0.75rem; line-height: 1.4;
+      background: var(--elevated); border: 1px dashed var(--border);
+      border-radius: 5px; padding: 0.45rem 0.6rem;
+    }
+    .correction-footer {
+      padding: 0.7rem 1.1rem; border-top: 1px solid var(--border);
+      display: flex; gap: 0.5rem; justify-content: flex-end; align-items: center;
+    }
+    .correction-status {
+      flex: 1; color: var(--text-mute); font-size: 0.78rem;
+    }
+    .correction-status.ok { color: var(--success, #6cba6c); }
+    .correction-status.err { color: var(--danger, #d66); }
+    .correction-btn {
+      padding: 0.45rem 0.9rem; border-radius: 5px;
+      border: 1px solid var(--border); background: var(--bg);
+      color: var(--text); cursor: pointer; font-size: 0.85rem;
+    }
+    .correction-btn.primary {
+      border-color: var(--amber); color: var(--amber);
+    }
+    .correction-btn.primary:hover { background: var(--amber); color: var(--bg); }
+    .correction-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .picker-item-meta {
       color: var(--text-mute); font-size: 0.78rem; margin-top: 0.2rem;
       font-family: var(--font-mono);
@@ -1949,6 +2076,49 @@
     </div>
   </div>
 
+  <!-- ===== Details modal — read-only preview of any slotted item ===== -->
+  <div class="correction-overlay" id="details-overlay">
+    <div class="correction-modal">
+      <h3 id="details-title">Details</h3>
+      <div class="correction-body" id="details-body"></div>
+      <div class="correction-footer">
+        <span class="correction-status"></span>
+        <button class="correction-btn" id="details-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Correction modal — submit a data fix for any item ===== -->
+  <div class="correction-overlay" id="correction-overlay">
+    <div class="correction-modal">
+      <h3 id="correction-title">Suggest a correction</h3>
+      <div class="correction-body">
+        <div class="correction-hint" id="correction-context"></div>
+        <div>
+          <label>What's wrong? (field name)</label>
+          <input type="text" id="correction-field" placeholder='e.g. "Power", "Item Level", "stats[0].value", "Combined Rating"' autocomplete="off">
+        </div>
+        <div>
+          <label>Correct value (as it appears in-game at your rarity)</label>
+          <input type="text" id="correction-value" placeholder='e.g. "4.50" or "3.75%" or "5850"' autocomplete="off">
+        </div>
+        <div>
+          <label>What you saw in-game (optional context)</label>
+          <input type="text" id="correction-observed" placeholder='Rarity + value, e.g. "Celestial 4.50%"' autocomplete="off">
+        </div>
+        <div>
+          <label>Notes (optional)</label>
+          <textarea id="correction-notes" placeholder="Anything extra — screenshot details, in-game tooltip text, etc."></textarea>
+        </div>
+      </div>
+      <div class="correction-footer">
+        <span class="correction-status" id="correction-status"></span>
+        <button class="correction-btn" id="correction-cancel">Cancel</button>
+        <button class="correction-btn primary" id="correction-submit">Submit</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== Detailed Stats modal ===== -->
   <div class="dstats-overlay" id="dstats-overlay">
     <div class="dstats-modal">
@@ -1996,6 +2166,9 @@
   <script src="../data/buffs.js"></script>
   <script src="toon-forge-stats.js"></script>
   <script src="toon-forge-engine.js"></script>
+  <!-- Supabase + data-corrections plumbing — lets users submit ✎ fixes -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../js/data-corrections.js"></script>
 
   <script>
     /* =====================================================
@@ -2459,6 +2632,18 @@
         return (r.name + " " + (r.meta || "") + " " + (r.desc || "")).toLowerCase().includes(f);
       });
       let html = "";
+      // Pencil is rendered when the picker's cfg.dataType is set. The
+      // ✎ button submits a correction for the item to Supabase via the
+      // submit_data_correction RPC; click is stopPropagation'd so it
+      // doesn't also trigger the row's pick handler.
+      const showPencil = !!_pickerState.dataType;
+      if (showPencil) {
+        html += `<div class="picker-tip">
+          <span class="picker-tip-icon">💡</span>
+          <span>See something wrong on an item? Click the <strong class="picker-tip-pencil">✎</strong>
+          on its row to suggest a correction.</span>
+        </div>`;
+      }
       if (_pickerState.allowNone !== false) {
         html += `<div class="picker-item empty" data-pick-none="1">— None —</div>`;
       }
@@ -2467,24 +2652,42 @@
       }
       for (let i = 0; i < items.length; i++) {
         const r = _pickerState.render(items[i]);
+        const pencilHTML = showPencil
+          ? `<button class="correction-pencil" data-correct="${i}" title="Found a wrong value on this item? Click to suggest a fix (sends a correction report — duplicates get upvoted, not re-filed).">✎</button>`
+          : "";
         html += `<div class="picker-item" data-pick="${i}">
-          <div class="picker-item-name">${r.name}</div>
+          <div class="picker-item-name"><span>${r.name}</span>${pencilHTML}</div>
           ${r.meta ? `<div class="picker-item-meta">${r.meta}</div>` : ""}
           ${r.desc ? `<div class="picker-item-desc">${r.desc}</div>` : ""}
         </div>`;
       }
       list.innerHTML = html;
       list.querySelectorAll("[data-pick]").forEach(el => {
-        el.addEventListener("click", () => {
+        el.addEventListener("click", (e) => {
+          if (e.target.classList.contains("correction-pencil")) return; // pencil click handled below
           const it = items[+el.dataset.pick];
+          const stateBefore = _pickerState;
           _pickerState.onPick(it);
-          closePicker();
+          // If onPick chained to a new picker (e.g. 2-stage mount flow:
+          // bonus → mount), _pickerState was replaced inside openPicker.
+          // Don't close in that case — the new picker should stay open.
+          if (_pickerState === stateBefore) closePicker();
         });
       });
+      if (showPencil) {
+        list.querySelectorAll("[data-correct]").forEach(el => {
+          el.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const it = items[+el.dataset.correct];
+            openCorrectionModal(_pickerState.dataType, it);
+          });
+        });
+      }
       list.querySelectorAll("[data-pick-none]").forEach(el => {
         el.addEventListener("click", () => {
+          const stateBefore = _pickerState;
           _pickerState.onPick(null);
-          closePicker();
+          if (_pickerState === stateBefore) closePicker();
         });
       });
     }
@@ -2495,6 +2698,191 @@
     document.getElementById("picker-search").addEventListener("input", e => renderPickerList(e.target.value));
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && document.getElementById("picker-overlay").classList.contains("open")) closePicker();
+      if (e.key === "Escape" && document.getElementById("correction-overlay").classList.contains("open")) closeCorrectionModal();
+      if (e.key === "Escape" && document.getElementById("details-overlay").classList.contains("open")) closeDetailsModal();
+    });
+
+    /* =====================================================================
+       Details modal — read-only preview of any slotted item.
+       ---------------------------------------------------------------------
+       Lets users see "what does this slotted item give me?" without
+       having to re-open the picker. Wired onto chips via openDetailsBy
+       Type(dataType, itemKey, opts).
+       ===================================================================== */
+    const DETAILS_RESOLVERS = {
+      gear:                  (name) => ({ item: findGearByName(name), render: renderGearItem }),
+      artifact:              (name) => ({ item: findArtifactByName(name), render: renderArtifactItem }),
+      enchant:               (name) => ({ item: findEnchantByName(name), render: renderEnchantPick }),
+      overload:              (name) => ({ item: findOverloadByName(name), render: renderOverloadPick }),
+      kit:                   (name) => ({ item: findKitByName(name), render: renderKitPick }),
+      mount:                 (name) => ({ item: findMountByName(name), render: renderMount }),
+      mount_collar:          (name) => ({ item: findCollarByName(name), render: renderCollar }),
+      insignia:              (name) => ({ item: findInsigniaByName(name), render: renderInsignia }),
+      insignia_bonus:        (id)   => ({ item: findBonusById(+id), render: (b) => ({
+                                            name: b.name,
+                                            meta: `Requires ${(b.requiredInsignias || []).join(" + ")}`,
+                                            desc: b.effectText || "(no effect text)"
+                                         }) }),
+      companion_enhancement: (name) => ({ item: findEnhancementByName(name), render: renderEnhancement }),
+      companion_gear:        (name) => ({ item: findCompGearByName(name), render: renderCompGear }),
+      combat_power:          (id)   => ({ item: findCombatPowerById(+id), render: renderCombatPower }),
+      equip_power:           (id)   => ({ item: findEquipPowerById(+id), render: renderEquipPower }),
+      guild_boon:            (name) => {
+        if (typeof GUILD_BOONS_DATA === "undefined") return { item: null, render: () => ({}) };
+        let found = null;
+        for (const cat of Object.keys(GUILD_BOONS_DATA)) {
+          const b = (GUILD_BOONS_DATA[cat] || []).find(x => x.name === name);
+          if (b) { found = b; break; }
+        }
+        return { item: found, render: renderGuildBoonPick };
+      },
+      buff:                  (name) => {
+        const f = (typeof findBuffByName === "function") ? findBuffByName(name) : null;
+        return { item: f, render: (b) => ({ name: b.name, meta: b.duration_s ? `${b.duration_s}s` : "", desc: (typeof describeBuff === "function") ? describeBuff(b) : "" }) };
+      }
+    };
+    // Companion render needs the slot's rarity context; handled inline below.
+
+    function openDetailsByType(dataType, itemKey, opts) {
+      opts = opts || {};
+      let item, render;
+      if (dataType === "companion") {
+        item = (typeof COMPANIONS_DATA !== "undefined") ? COMPANIONS_DATA.find(c => c.name === itemKey) : null;
+        const rarity = opts.rarity || state.companionRarity || "Mythic";
+        render = (c) => (opts.summoned ? renderSummonedCompanion(c, rarity) : renderCompanion(c, rarity));
+      } else {
+        const r = DETAILS_RESOLVERS[dataType];
+        if (!r) return;
+        const got = r(itemKey);
+        item = got.item;
+        render = got.render;
+      }
+      if (!item) return;
+      const card = render(item);
+      const title = `${card.name || "(unnamed)"}`;
+      document.getElementById("details-title").textContent = title;
+      const body = document.getElementById("details-body");
+      body.innerHTML = `
+        ${card.meta ? `<div class="picker-item-meta" style="padding:0;">${card.meta}</div>` : ""}
+        ${card.desc ? `<div class="picker-item-desc" style="padding:0;">${card.desc}</div>` : ""}
+      `;
+      document.getElementById("details-overlay").classList.add("open");
+    }
+    function closeDetailsModal() {
+      document.getElementById("details-overlay").classList.remove("open");
+    }
+    document.getElementById("details-close").addEventListener("click", closeDetailsModal);
+    document.getElementById("details-overlay").addEventListener("click", (e) => {
+      if (e.target.id === "details-overlay") closeDetailsModal();
+    });
+
+    // Global delegated click handler for chip-info buttons. Captures
+    // ANY 🔍 click in the document, stops propagation so the underlying
+    // chip's pick action doesn't fire, then opens the Details modal.
+    // Means individual chips just need data-details-* attributes —
+    // no per-chip wiring required.
+    document.addEventListener("click", (e) => {
+      const btn = (e.target && e.target.classList && e.target.classList.contains("chip-info")) ? e.target : null;
+      if (!btn) return;
+      e.stopPropagation();
+      e.preventDefault();
+      openDetailsByType(btn.dataset.detailsType, btn.dataset.detailsKey, {
+        rarity:   btn.dataset.detailsRarity,
+        summoned: btn.dataset.detailsSummoned === "1"
+      });
+    }, true);  // capture phase: fires before chip's bubble-phase handler
+
+    /* =====================================================================
+       Correction modal — opens from the ✎ pencil on any picker card.
+       Submits to Supabase via submit_data_correction. Identical fixes
+       from N users dedup to one report with N upvotes.
+       ===================================================================== */
+    let _correctionCtx = null;
+
+    function openCorrectionModal(dataType, item) {
+      if (!item) return;
+      _correctionCtx = { dataType: dataType, item: item };
+      const ctxLine = `${dataType} · id ${item.id} · "${item.name || "(unnamed)"}"`;
+      document.getElementById("correction-title").textContent = `Suggest a fix for ${item.name || dataType}`;
+      document.getElementById("correction-context").textContent = ctxLine;
+      document.getElementById("correction-field").value = "";
+      document.getElementById("correction-value").value = "";
+      document.getElementById("correction-observed").value = "";
+      document.getElementById("correction-notes").value = "";
+      document.getElementById("correction-status").textContent = "";
+      document.getElementById("correction-status").className = "correction-status";
+      document.getElementById("correction-submit").disabled = false;
+      document.getElementById("correction-overlay").classList.add("open");
+      setTimeout(() => document.getElementById("correction-field").focus(), 30);
+    }
+    function closeCorrectionModal() {
+      document.getElementById("correction-overlay").classList.remove("open");
+      _correctionCtx = null;
+    }
+    document.getElementById("correction-cancel").addEventListener("click", closeCorrectionModal);
+    document.getElementById("correction-overlay").addEventListener("click", (e) => {
+      if (e.target.id === "correction-overlay") closeCorrectionModal();
+    });
+    document.getElementById("correction-submit").addEventListener("click", () => {
+      if (!_correctionCtx) return;
+      const status = document.getElementById("correction-status");
+      const field    = (document.getElementById("correction-field").value || "").trim();
+      const value    = (document.getElementById("correction-value").value || "").trim();
+      const observed = (document.getElementById("correction-observed").value || "").trim();
+      const notes    = (document.getElementById("correction-notes").value || "").trim();
+      if (!field) {
+        status.textContent = "Tell us which field is wrong.";
+        status.className = "correction-status err";
+        return;
+      }
+      if (!value) {
+        status.textContent = "Tell us the correct value.";
+        status.className = "correction-status err";
+        return;
+      }
+      if (!window.NWCBDataCorrections) {
+        status.textContent = "Correction plumbing not loaded — refresh the page.";
+        status.className = "correction-status err";
+        return;
+      }
+      // Try to parse a numeric value so the fingerprint normalizes well.
+      const numericValue = Number(value.replace(/[%+]/g, "").trim());
+      const claimedBaseValue = Number.isFinite(numericValue) ? numericValue : value;
+      const item = _correctionCtx.item;
+      const dataType = _correctionCtx.dataType;
+      const title = `Data fix: ${item.name || dataType} · ${field} → ${value}`.slice(0, 200);
+      status.textContent = "Submitting…";
+      status.className = "correction-status";
+      document.getElementById("correction-submit").disabled = true;
+      window.NWCBDataCorrections.submitCorrection({
+        type: dataType,
+        id: item.id,
+        field: field,
+        rarityScalingRule: null,           // free-form field; client doesn't infer
+        baseIL: item.item_level || null,
+        claimedBaseValue: claimedBaseValue,
+        userObserved: observed ? { text: observed } : null,
+        title: title,
+        notes: notes || null
+      }).then(res => {
+        if (res.ok) {
+          // Persist the user's correction locally so the engine + UI
+          // reflect it immediately on subsequent reads. The find*
+          // wrappers below consult getAllOverrides() at lookup time.
+          const overrideKey = `${dataType}:${item.id}:${field}`;
+          window.NWCBDataCorrections.setOverride(overrideKey, claimedBaseValue);
+          // Recompute build immediately so the user sees their fix take effect.
+          if (typeof rerenderAll === "function") rerenderAll();
+          const verb = res.action === "created" ? "Created" : res.action === "upvoted" ? "Upvoted" : "Already voted";
+          status.textContent = `${verb} report #${res.report_id} (${res.upvotes} upvote${res.upvotes === 1 ? "" : "s"}). Applied to your build locally.`;
+          status.className = "correction-status ok";
+          setTimeout(closeCorrectionModal, 1700);
+        } else {
+          status.textContent = "Error: " + (res.error || "unknown");
+          status.className = "correction-status err";
+          document.getElementById("correction-submit").disabled = false;
+        }
+      });
     });
 
     /* ===== Reinforcement kit helpers ===== */
@@ -2525,6 +2913,23 @@
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
+    }
+    // Round a number to 2 decimal places, returning a trimmed string
+    // (e.g. 1.20 → "1.2", 1.234 → "1.23"). Used for display of scaled
+    // percent values where we want compact output.
+    function _round2(n) {
+      const r = Math.round((+n || 0) * 100) / 100;
+      return r.toString();
+    }
+    // Escape a string for use inside an HTML attribute value (data-* on
+    // ⓘ buttons). Item names can contain quotes, apostrophes, ampersands.
+    function _escAttr(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
     }
     function _statSection(item, title) {
       const lines = [];
@@ -2717,8 +3122,10 @@
       const il = item.item_level ? "IL " + item.item_level : "";
       const cr = item.combinedRating ? "CR " + item.combinedRating : "";
       const tier = item.tier || "";
-      const origSlot = item.slot ? "orig. " + item.slot : "";
-      const meta = [il, cr, tier, origSlot].filter(Boolean).join(" · ");
+      // Companion gear used to be slot-typed (Neck / Waist / Ring) but NW
+      // unified them into universal "Equipment" slots — any companion gear
+      // fits any of the 3 slots. Drop the "orig. Neck/Waist/Ring" suffix.
+      const meta = [il, cr, tier].filter(Boolean).join(" · ");
       const desc = [
         _statSection(item, "Stats"),
         _equipBonusSection(item.equipBonuses, "Equip Bonuses"),
@@ -2763,23 +3170,29 @@
 
     /* Description builders for each picker. Rich-card style — same
        structure as the gear/artifact pickers above. */
-    function renderCompanion(c) {
+    // displayRarity: optional override. Active comp pickers pass the per-slot
+    // rarity (state.activeCompRarities[i]); falls back to the bulk default.
+    function renderCompanion(c, displayRarity) {
       const power = findCompanionPower(c.powerRef);
-      const tier = state.companionRarity || "Mythic";
+      const tier = displayRarity || state.companionRarity || "Mythic";
       const tierIL = COMPANION_RARITY_IL[tier] || 750;
       const slotTypes = power && Array.isArray(power.slot) ? power.slot.join(" / ") : "";
       const meta = [`IL ${tierIL} (${tier})`, slotTypes, "active"].filter(Boolean).join(" · ");
 
-      // Build a synthetic "item" for the helpers — companion powers
-      // store contributions in stats[] as percent values; convert into
-      // a percentStats object so _statSection picks them up.
+      // Apply rarity scaling so the displayed stat values match what the
+      // power actually gives at the selected tier. Base values in the
+      // data are stored at the power's own item_level; compRarityScale
+      // returns the multiplier (e.g., Mythic→Celestial = 900/750 = 1.2).
+      const scale = power ? compRarityScale(tier, power) : 1;
       const synth = { percentStats: {} };
       if (power) {
         for (const st of (power.stats || [])) {
-          if (st && st.stat) synth.percentStats[st.stat] = (synth.percentStats[st.stat] || 0) + (st.value || 0);
+          if (st && st.stat) {
+            synth.percentStats[st.stat] = (synth.percentStats[st.stat] || 0) + _round2((st.value || 0) * scale);
+          }
         }
       }
-      const statBlock = _statSection(synth, "Active-Slot Bonus (per " + tier + ")");
+      const statBlock = _statSection(synth, "Active-Slot Bonus (at " + tier + ")");
       const procText = power && power.procEffect && (power.procEffect.effect || power.procEffect.description);
       const procBlock = procText
         ? `<div class="gear-card-section">
@@ -2787,10 +3200,11 @@
              <div class="gear-card-bonus-desc">${_escHTML(procText)}</div>
            </div>`
         : "";
+      const scaledCR = power && power.combinedRating ? Math.round((power.combinedRating || 0) * scale) : 0;
       const crBlock = power && power.combinedRating
         ? `<div class="gear-card-section">
              <div class="gear-card-section-title">Combined Rating</div>
-             <div class="gear-card-stat-line">+${(power.combinedRating || 0).toLocaleString()} to all stats (at base IL ${power.item_level || tierIL})</div>
+             <div class="gear-card-stat-line">+${scaledCR.toLocaleString()} to all stats (at ${tier})</div>
            </div>`
         : "";
       const notesBlock = power && power.notes
@@ -2805,9 +3219,9 @@
     // Summoned slot uses a different field — companion.summonedBuff —
     // because the summon's effect on the party is unrelated to the
     // power's active-slot stats.
-    function renderSummonedCompanion(c) {
+    function renderSummonedCompanion(c, displayRarity) {
       const sb = c.summonedBuff;
-      const tier = state.companionRarity || "Mythic";
+      const tier = displayRarity || state.summonedRarity || state.companionRarity || "Mythic";
       const tierIL = COMPANION_RARITY_IL[tier] || 750;
       const scope = sb && sb.scope ? sb.scope : "self";
       const range = sb && sb.range ? sb.range + "'" : "";
@@ -2822,9 +3236,15 @@
                  </div>`
         };
       }
+      // Scale the summoned buff stat by the displayed rarity. Most
+      // summoned buffs in our data store the base-rarity value (typically
+      // at the companion's listed item_level); use the companion power's
+      // item_level if present, else fall back to Mythic's 750 IL.
+      const baseIL = (findCompanionPower(c.powerRef) && findCompanionPower(c.powerRef).item_level) || 750;
+      const scale = (COMPANION_RARITY_IL[tier] || 750) / baseIL;
       const synth = { percentStats: {} };
-      if (sb.stat && typeof sb.value === "number") synth.percentStats[sb.stat] = sb.value;
-      const statBlock = _statSection(synth, "Summoned Party Buff (per " + tier + ")");
+      if (sb.stat && typeof sb.value === "number") synth.percentStats[sb.stat] = _round2(sb.value * scale);
+      const statBlock = _statSection(synth, "Summoned Party Buff (at " + tier + ")");
       const buffText = sb.buff || sb.description || "";
       const buffTextBlock = buffText
         ? `<div class="gear-card-section">
@@ -2933,8 +3353,8 @@
       const cdr = p.rechargeTimeSeconds ? `${p.rechargeTimeSeconds}s recharge` : "";
       const mag = p.magnitude ? `magnitude ${p.magnitude}` : "";
       const meta = [`IL ${p.item_level || "?"}`, mag, cdr].filter(Boolean).join(" · ");
-      // Build equip-bonus rows (combat powers' equipBonuses are usually
-      // buff/debuff effects rather than gear-style structured stats).
+      // Combat powers' equipBonuses are buff/debuff effects rather than
+      // gear-style structured stats. Intrinsic values — not bolster-scaled.
       const bonusBlocks = (p.equipBonuses || []).map(b => {
         if (!b || !b.stat) return "";
         const sign = (b.amount > 0 ? "+" : "");
@@ -2963,7 +3383,7 @@
       const il = p.item_level ? "IL " + p.item_level : "";
       const cr = p.combinedRating ? "CR " + p.combinedRating : "";
       const meta = [il, cr].filter(Boolean).join(" · ");
-      // Stats list (mount equip powers store contributions in stats[])
+      // Stats list — intrinsic to the power, not bolster-scaled.
       const synth = { ratingStats: {}, percentStats: {} };
       for (const s of (p.stats || [])) {
         if (!s || !s.stat) continue;
@@ -3469,12 +3889,23 @@
         }
       }
       add("Reinforcement kits", cur, sources);
-      // Guild boons — verified by n00b 2026-05-11: do NOT count toward
-      // player TIL. Their stat contributions are still applied in the
-      // engine pipeline, but their item_level value is purely an
-      // internal sort/category key, not a TIL contributor.
-      // (Removed from TIL breakdown; if a future patch changes this,
-      // re-enable here.)
+      // Guild boons — counted in TIL. The earlier removal (2026-05-11)
+      // was a false signal: at the time, the Paladin's prototype was
+      // OVER by 2,314 and removing guild boons happened to close the
+      // gap. The real culprit was the missing 5,000 base IL fix that
+      // landed 2026-05-12; with that in place, guild boons DO need to
+      // contribute to TIL (matches in-game for both Paladin and Ranger
+      // builds within ~1%).
+      cur = 0; sources = [];
+      if (state.guildBoonPicks) {
+        for (const cat of ["Offense", "Defense", "Utility"]) {
+          const name = state.guildBoonPicks[cat];
+          if (!name) continue;
+          const b = findGuildBoon(cat, name);
+          if (b && b.item_level) { cur += b.item_level; sources.push({ name: `${cat}: ${b.name}`, il: b.item_level }); }
+        }
+      }
+      add("Guild boons", cur, sources);
       // Mount insignias (per-slot tier) + collars
       let insSum = 0, insSources = [];
       let collarSum = 0, collarSources = [];
@@ -3514,12 +3945,17 @@
       }
       add("Mount insignias", insSum, insSources);
       add("Mount collars", collarSum, collarSources);
-      // Companion gear (Neck/Waist/Ring on summoned)
+      // Companion gear — 3 universal Equipment slots on the summoned.
+      // (Internally keyed Neck/Waist/Ring for back-compat, but NW unified
+      // them: any piece fits any slot, so just number them 1/2/3 in the
+      // breakdown.)
       cur = 0; sources = [];
       if (state.summonedGear) {
+        let slotIdx = 0;
         for (const slot of ["Neck", "Waist", "Ring"]) {
+          slotIdx++;
           const item = findCompGearByName(state.summonedGear[slot], slot);
-          if (item && item.item_level) { cur += item.item_level; sources.push({ name: `${slot}: ${item.name}`, il: item.item_level }); }
+          if (item && item.item_level) { cur += item.item_level; sources.push({ name: `Slot ${slotIdx}: ${item.name}`, il: item.item_level }); }
         }
       }
       add("Companion gear", cur, sources);
@@ -3537,21 +3973,21 @@
       const cp = findCombatPowerById(state.activeCombatPower);
       if (cp && cp.item_level) { cur += cp.item_level; sources.push({ name: `Combat Power: ${cp.name}`, il: cp.item_level }); }
       add("Active mount powers", cur, sources);
-      // Summoned companion rarity IL — verified in-game 2026-05-11 by
-      // n00b's rarity-swap test: switching summoned from Mythic→Celestial
-      // raised TIL by 810 while the bolster contribution only rose by
-      // 660. The extra 150 = ΔRarity IL (900 − 750). So the summoned
-      // companion contributes BOTH its rarity IL AND the bolster line.
-      // (Earlier model omitted this, which hid +900 of TIL.)
-      if (state.summoned) {
-        const sR = state.summonedRarity || state.companionRarity || "Mythic";
-        const sumIL = COMPANION_RARITY_IL[sR] || 0;
-        if (sumIL > 0) {
-          add("Summoned companion", sumIL, [
-            { name: `${state.summoned} (${sR})`, il: sumIL }
-          ]);
-        }
-      }
+      // Summoned companion rarity IL — line REMOVED 2026-05-12.
+      // Earlier (2026-05-11) we added a separate "Summoned companion: 900"
+      // line based on a rarity-swap test that showed TIL went up by 810
+      // when switching Mythic→Celestial summoned (660 from bolster + 150
+      // extra attributed to a "rarity IL delta"). That extra 150 was
+      // misattributed — likely came from the companion power's stat
+      // scaling with rarity, not a separate IL line.
+      //
+      // The correct model: Comp Bolster IL contains EVERYTHING the
+      // summoned brings to TIL. No separate rarity IL line. Empirical
+      // verification 2026-05-12: dropping this line closes the Paladin
+      // gap to within 1 IL and the Ranger gap to within 151 IL.
+      // Note: the engine's CR distribution still uses summoned rarity
+      // (85% × rarity IL per stat) — that's a stat calculation, not
+      // a TIL line.
       // Active companions (per-rarity). Verified in-game 2026-05-11:
       // each slotted comp contributes its FULL rarity IL (Celestial 900
       // each — removing one drops TIL by exactly 900).
@@ -3601,19 +4037,51 @@
       if (cp && cp.item_level) sum += cp.item_level;
       return sum;
     }
+    // Mount bolster scaling factor for equip/combat power displayed and
+    // applied stat values. Calibration anchor: n00b verified 2026-05-11
+    // that our stored equip-power data matches in-game stats at 125%
+    // bolster (CA 112,727 matches Pack Tactics 2953 + CR 3544 at face
+    // value). Per Obikin's rule, effects are doubled at 100% bolster, so
+    // the multiplier is (1 + bolster%/100). To rebase against the 125%
+    // anchor: factor = (1 + bolster/100) / (1 + 125/100) = (1+b)/2.25.
+    //   125% bolster (calibration): factor = 1.00 (no change)
+    //   100% bolster:               factor = 0.89
+    //    50% bolster:               factor = 0.67
+    //     0% bolster:               factor = 0.44
+    const MOUNT_POWER_CALIBRATION_BOLSTER_PCT = 125;
+    function mountPowerBolsterFactor(bolsterPct) {
+      const b = (bolsterPct == null ? 100 : +bolsterPct);
+      const anchor = 1 + MOUNT_POWER_CALIBRATION_BOLSTER_PCT / 100;
+      return (1 + b / 100) / anchor;
+    }
+    // Base IL every NW character has just for existing (level 20 floor).
+    // Documented 2026-05-12 by n00b's community-doc dump: "you start the
+    // game with 5000 TIL, but 0 in your Ratings. That means that all of
+    // your percentages are at 45% from your Ratings." This is also why
+    // our rating-to-% formula (50 + (rating - TIL)/1000) naturally
+    // produces 45% when rating = 0 and TIL = 5000 — they're the same
+    // mechanic, two framings. Missing this constant was hiding ~5,000
+    // IL of contribution from every build.
+    const NW_BASE_ITEM_LEVEL = 5000;
+
     function computeTILBreakdown() {
       const gear = computeGearArtifactILBreakdown();
       const parts = gear.parts.slice();
+      // Base IL is added first so it appears at the top of the breakdown.
+      parts.unshift({ label: "Base IL (level-20 floor)", value: NW_BASE_ITEM_LEVEL });
       const summonedR = state.summonedRarity || state.companionRarity || "Mythic";
-      const mountR    = state.companionRarity || "Mythic";
       const cb = (state.companionBolster == null ? 100 : +state.companionBolster) / 100;
-      const mb = (state.mountBolster     == null ? 100 : +state.mountBolster)     / 100;
       const compBase  = COMP_BOLSTER_BASE_IL[summonedR] || COMP_BOLSTER_BASE_IL.Mythic;
-      const mountBase = MOUNT_BOLSTER_BASE_IL[mountR]   || MOUNT_BOLSTER_BASE_IL.Mythic;
       const compBolsterIL  = Math.round(compBase  * cb);
-      const mountBolsterIL = Math.round(mountBase * mb);
       if (compBolsterIL > 0)  parts.push({ label: `Comp bolster IL (${summonedR} × ${Math.round(cb*100)}%)`, value: compBolsterIL });
-      if (mountBolsterIL > 0) parts.push({ label: `Mount bolster IL (${mountR} × ${Math.round(mb*100)}%)`,   value: mountBolsterIL });
+      // Mount Bolster IL line removed 2026-05-12: NW's in-game "Mount
+      // Bolster IL Contribution" is the sum of active_equip.IL +
+      // active_combat.IL, NOT a separate rarity × bolster% computation.
+      // That sum is already accounted for in the "Active mount powers"
+      // line (computeGearArtifactILBreakdown). The old base×bolster%
+      // formula was double-counting; n00b verified by empirical test
+      // (removing a stable mount drops TIL by exactly insignia+collar
+      // values, no additional mount-itself contribution).
       const total = parts.reduce((a, p) => a + p.value, 0);
       return { total, parts };
     }
@@ -3979,6 +4447,10 @@
       if (s.activeEquipPower) {
         const ep = findEquipPowerById(s.activeEquipPower);
         if (ep) {
+          // Reverted 2026-05-12 — n00b verified mount equip powers have
+          // intrinsic fixed values (no rarity tier; tooltip shows the
+          // power's actual contribution as-is). Earlier bolster-scaling
+          // hypothesis was wrong; values from data apply at face value.
           const ratingStats = {};
           const percentStats = {};
           for (const st of (ep.stats || [])) {
@@ -3989,9 +4461,6 @@
             source: "Mount Equip Power: " + ep.name,
             ratingStats, percentStats
           });
-          // Combined Rating from the equip power, distributed to all 13 core
-          // stats. NOT scaled by mount bolster — the data's combinedRating
-          // is the final value applied (same reasoning as the stats above).
           const cr = expandCR(ep.combinedRating, 1);
           if (cr) {
             buffs.push({
@@ -4428,20 +4897,22 @@
       // of the four CR sources per mekaniks docs.
       function compGearToBuff(label, gearObj) {
         if (!gearObj) return;
+        let slotIdx = 0;
         for (const slot of ["Neck", "Waist", "Ring"]) {
+          slotIdx++;
           const itemName = gearObj[slot];
           if (!itemName) continue;
           const it = findCompGearByName(itemName, slot);
           if (!it) continue;
           buffs.push({
-            source: `${label}: ${slot} — ${it.name}`,
+            source: `${label}: Slot ${slotIdx} — ${it.name}`,
             ratingStats: it.ratingStats || {},
             percentStats: it.percentStats || {}
           });
           const cr = expandCR(it.combinedRating, 1);
           if (cr) {
             buffs.push({
-              source: `${label} CR: ${slot} — ${it.name}`,
+              source: `${label} CR: Slot ${slotIdx} — ${it.name}`,
               ratingStats: cr
             });
           }
@@ -5220,16 +5691,20 @@
         if (filled) chipClasses.push("filled");
         if (noItems) chipClasses.push("disabled");
         // Reinforcement kit chip — only shown when the slot has applicable kits
+        const kitInfo = kitName ? `<button class="chip-info" data-details-type="kit" data-details-key="${_escAttr(kitName)}" title="See kit details">\u{1F50D}</button>` : "";
         const kitChip = kitOptions.length
           ? `<div class="gear-kit-chip ${kitName ? "filled" : ""}" data-gear-kit="${s.label}">
                ${kitName ? "🔧 " + kitName : "+ Reinforcement Kit"}
+               ${kitInfo}
              </div>`
           : "";
+        const gearInfo = filled ? `<button class="chip-info" data-details-type="gear" data-details-key="${_escAttr(v)}" title="See gear details">\u{1F50D}</button>` : "";
         return `
           <div class="slot ${filled ? "filled" : ""}">
             <div class="slot-label">${s.label}${noItems ? " — no items" : ""}</div>
             <div class="${chipClasses.join(" ")}" data-gear-pick="${s.label}" data-slot-type="${s.slot}" title="${filled ? v : "Click to pick an item"}">
               ${chipLabel}
+              ${gearInfo}
             </div>
             ${kitChip}
           </div>`;
@@ -5243,6 +5718,7 @@
           const items = gearOptionsForSlot(slotData.slot, state.class);
           if (!items.length) return;
           openPicker({
+            dataType: "gear",
             title: `${slotLabel} — ${items.length} items available`,
             items,
             render: renderGearItem,
@@ -5263,6 +5739,7 @@
         el.addEventListener("click", () => {
           const slotLabel = el.dataset.gearKit;
           openPicker({
+            dataType: "kit",
             title: `Reinforcement kit for ${slotLabel}`,
             items: kitsForGearSlot(slotLabel),
             render: renderKitPick,
@@ -5323,9 +5800,10 @@
 
       function chip(slotType, name, idx) {
         const filled = !!name;
+        const info = filled ? `<button class="chip-info" data-details-type="enchant" data-details-key="${_escAttr(name)}" title="See enchant details">\u{1F50D}</button>` : "";
         return `<div class="ench-chip ${filled?"filled":""}" data-ench-type="${slotType}"${idx!==undefined?` data-ench-idx="${idx}"`:""}>
           <div class="ench-chip-label">${slotType[0].toUpperCase()+slotType.slice(1)}${idx!==undefined?` ${idx+1}`:""}</div>
-          <div class="ench-chip-name">${filled ? name : "+ pick"}</div>
+          <div class="ench-chip-name">${filled ? name : "+ pick"}${info}</div>
         </div>`;
       }
 
@@ -5345,6 +5823,7 @@
             const t = el.dataset.enchType;
             const idx = el.dataset.enchIdx !== undefined ? +el.dataset.enchIdx : null;
             openPicker({
+              dataType: "enchant",
               title: `${t[0].toUpperCase()+t.slice(1)} enchantment` + (idx !== null ? ` (slot ${idx + 1})` : ""),
               items: enchantsForSlotType(t),
               render: renderEnchantPickFor(t),
@@ -5365,10 +5844,12 @@
       let html = "";
       for (let i = 0; i < state.overloads.length; i++) {
         const v = state.overloads[i];
+        const info = v ? `<button class="chip-info" data-details-type="overload" data-details-key="${_escAttr(v)}" title="See overload details">\u{1F50D}</button>` : "";
         html += `<div class="slot ${v ? "filled" : ""}" style="cursor:pointer;" data-overload="${i}">
           <div class="slot-label">Overload ${i + 1}</div>
           <div style="padding:0.4rem 0.5rem;font-size:0.85rem;color:${v?'var(--gold)':'var(--text-mute)'};">
             ${v ? "🔥 " + v : "+ pick overload"}
+            ${info}
           </div>
         </div>`;
       }
@@ -5379,6 +5860,7 @@
           // Filter out overloads already chosen elsewhere (unique-equip).
           const picked = new Set(state.overloads.filter((x, idx) => x && idx !== i));
           openPicker({
+            dataType: "overload",
             title: `Overload ${i + 1}`,
             items: getOverloadList().filter(o => !picked.has(o.name)),
             render: renderOverloadPick,
@@ -5496,11 +5978,13 @@
         const chipClasses = ["gear-pick-chip"];
         if (filled) chipClasses.push("filled");
         if (noItems) chipClasses.push("disabled");
+        const artInfo = filled ? `<button class="chip-info" data-details-type="artifact" data-details-key="${_escAttr(v)}" title="See artifact details">\u{1F50D}</button>` : "";
         return `
           <div class="slot ${filled ? "filled" : ""}">
             <div class="slot-label">${slot}</div>
             <div class="${chipClasses.join(" ")}" data-art-pick="${slot}" title="${filled ? v : "Click to pick an artifact"}">
               ${chipLabel}
+              ${artInfo}
             </div>
           </div>`;
       }).join("");
@@ -5516,6 +6000,7 @@
           );
           const allowed = opts.filter(item => !others.has(item.name));
           openPicker({
+            dataType: "artifact",
             title: `${slot} — ${allowed.length} artifacts available`,
             items: allowed,
             render: renderArtifactItem,
@@ -5559,9 +6044,10 @@
         const picked = state.guildBoonPicks[cat];
         const b = picked ? findGuildBoon(cat, picked) : null;
         const display = b ? renderGuildBoonPick(b).desc : "no pick yet";
+        const info = b ? ` <button class="chip-info" data-details-type="guild_boon" data-details-key="${_escAttr(b.name)}" title="See guild boon details">\u{1F50D}</button>` : "";
         html += `<div class="boon-row ${b ? "has-pts" : ""}" style="cursor:pointer;" data-guild-cat="${cat}">
           <div class="boon-row-info">
-            <div class="boon-row-name">${cat} — ${b ? b.name : "(none)"}</div>
+            <div class="boon-row-name">${cat} — ${b ? b.name : "(none)"}${info}</div>
             <div class="boon-row-effect">${display} · ${list.length} options</div>
           </div>
           <div class="boon-counter"><span style="font-size:0.78rem;color:var(--text-dim);">click to pick</span></div>
@@ -5572,6 +6058,7 @@
         el.addEventListener("click", () => {
           const cat = el.dataset.guildCat;
           openPicker({
+            dataType: "guild_boon",
             title: `Guild boon — ${cat}`,
             items: getGuildBoonsByCategory(cat),
             render: renderGuildBoonPick,
@@ -5733,9 +6220,10 @@
           if (b && displayGroupOf(b) === g) { active = b; break; }
         }
         const desc = active ? describeBuff(active) : `${list.length} options · pick one`;
+        const info = active ? ` <button class="chip-info" data-details-type="buff" data-details-key="${_escAttr(active.name)}" title="See buff details">\u{1F50D}</button>` : "";
         html += `<div class="boon-row ${active ? "has-pts" : ""}" data-buff-group-pick="${g}" style="cursor:pointer;">
           <div class="boon-row-info">
-            <div class="boon-row-name">${g} — ${active ? active.name : "(none)"}</div>
+            <div class="boon-row-name">${g} — ${active ? active.name : "(none)"}${info}</div>
             <div class="boon-row-effect">${desc}</div>
           </div>
           <div class="boon-counter"><span style="font-size:0.75rem;color:var(--text-dim);">click to pick</span></div>
@@ -5773,6 +6261,7 @@
           const g = row.dataset.buffGroupPick;
           const items = (groups[g] || []).slice().sort((a,b) => a.name.localeCompare(b.name));
           openPicker({
+            dataType: "buff",
             title: `${g} — pick one`,
             items,
             render: (b) => ({
@@ -5821,9 +6310,11 @@
           <div class="stable-row-pickers">
             <div class="stable-collar comp-slot ${slot.collar ? "filled" : ""}" data-stable="collar" data-idx="${i}">
               ${slot.collar ? "🔗 " + slot.collar : "+ Collar"}
+              ${slot.collar ? `<button class="chip-info" data-details-type="mount_collar" data-details-key="${_escAttr(slot.collar)}" title="See what this collar gives">🔍</button>` : ""}
             </div>
             <div class="stable-mount comp-slot ${slot.mount ? "filled" : ""}" data-stable="mount" data-idx="${i}">
               ${slot.mount ? "🐎 " + slot.mount : "+ Mount"}
+              ${slot.mount ? `<button class="chip-info" data-details-type="mount" data-details-key="${_escAttr(slot.mount)}" title="See mount details">🔍</button>` : ""}
             </div>`;
         if (insigniaSlots.length) {
           html += `<div class="stable-insignias">`;
@@ -5841,6 +6332,7 @@
               <div class="stable-ins comp-slot ${cur ? "filled" : ""}"
                 data-stable="insignia" data-idx="${i}" data-ins-idx="${idx}">
                 ${cur ? "💎 " + cur : "+ " + allowedLabel}
+                ${cur ? `<button class="chip-info" data-details-type="insignia" data-details-key="${_escAttr(cur)}" title="See insignia details">🔍</button>` : ""}
               </div>
               <select data-stable="ins-tier" data-idx="${i}" data-ins-idx="${idx}"
                       style="font-size:0.72rem;padding:0.2rem 0.3rem;background:var(--elevated);color:var(--text);border:1px solid var(--border);border-radius:4px;">
@@ -5862,6 +6354,7 @@
           html += `<div class="stable-bonus-row">
             <div class="stable-bonus-pick comp-slot ${desiredBonus ? "filled" : ""}" data-stable="bonus" data-idx="${i}">
               ${desiredBonus ? "🏆 " + desiredBonus.name : "+ Pick desired Insignia Bonus"}
+              ${desiredBonus ? `<button class="chip-info" data-details-type="insignia_bonus" data-details-key="${desiredBonus.id}" title="See insignia bonus details">🔍</button>` : ""}
             </div>`;
           if (desiredBonus) {
             html += `<div class="stable-bonus ${active ? "active" : ""}">
@@ -5877,14 +6370,31 @@
       wrap.innerHTML = html;
 
       // Wire click handlers — open searchable picker modals
+      // Generic ⓘ button — opens read-only details modal. Wire BEFORE
+      // the chip click handlers so we can stopPropagation cleanly.
+      wrap.querySelectorAll(".chip-info").forEach(el => {
+        el.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openDetailsByType(el.dataset.detailsType, el.dataset.detailsKey);
+        });
+      });
       wrap.querySelectorAll("[data-stable='mount']").forEach(el => {
-        el.addEventListener("click", () => pickMount(+el.dataset.idx));
+        el.addEventListener("click", (e) => {
+          if (e.target.classList.contains("chip-info")) return;
+          pickMount(+el.dataset.idx);
+        });
       });
       wrap.querySelectorAll("[data-stable='collar']").forEach(el => {
-        el.addEventListener("click", () => pickCollar(+el.dataset.idx));
+        el.addEventListener("click", (e) => {
+          if (e.target.classList.contains("chip-info")) return;
+          pickCollar(+el.dataset.idx);
+        });
       });
       wrap.querySelectorAll("[data-stable='insignia']").forEach(el => {
-        el.addEventListener("click", () => pickInsignia(+el.dataset.idx, +el.dataset.insIdx));
+        el.addEventListener("click", (e) => {
+          if (e.target.classList.contains("chip-info")) return;
+          pickInsignia(+el.dataset.idx, +el.dataset.insIdx);
+        });
       });
       wrap.querySelectorAll("select[data-stable='ins-tier']").forEach(sel => {
         sel.addEventListener("change", e => {
@@ -5899,7 +6409,10 @@
         });
       });
       wrap.querySelectorAll("[data-stable='bonus']").forEach(el => {
-        el.addEventListener("click", () => pickBonusForMount(+el.dataset.idx));
+        el.addEventListener("click", (e) => {
+          if (e.target.classList.contains("chip-info")) return;
+          pickBonusForMount(+el.dataset.idx);
+        });
       });
 
       renderInsigniaSummary();
@@ -5911,12 +6424,14 @@
       const eq = document.getElementById("active-equip-chip");
       if (cb) {
         const p = findCombatPowerById(state.activeCombatPower);
-        cb.textContent = p ? "⚔ " + p.name : "+ Active Combat Power";
+        const info = p ? ` <button class="chip-info" data-details-type="combat_power" data-details-key="${p.id}" title="See combat power details">\u{1F50D}</button>` : "";
+        cb.innerHTML = (p ? "⚔ " + p.name : "+ Active Combat Power") + info;
         cb.classList.toggle("filled", !!p);
       }
       if (eq) {
         const p = findEquipPowerById(state.activeEquipPower);
-        eq.textContent = p ? "✦ " + p.name : "+ Active Equip Power";
+        const info = p ? ` <button class="chip-info" data-details-type="equip_power" data-details-key="${p.id}" title="See equip power details">\u{1F50D}</button>` : "";
+        eq.innerHTML = (p ? "✦ " + p.name : "+ Active Equip Power") + info;
         eq.classList.toggle("filled", !!p);
       }
     }
@@ -5934,6 +6449,7 @@
 
       // Stage 1: pick the bonus.
       openPicker({
+        dataType: "insignia_bonus",
         title: `Stable slot ${idx + 1} — Pick an Insignia Bonus first`,
         items: bonusItems,
         render: (b) => {
@@ -5964,6 +6480,7 @@
         ? `Stable slot ${idx + 1} — Mount for "${bonus.name}" (${items.length})`
         : `Stable slot ${idx + 1} — Mount (no bonus filter)`;
       openPicker({
+        dataType: "mount",
         title,
         items,
         render: renderMount,
@@ -5985,6 +6502,7 @@
     }
     function pickCollar(idx) {
       openPicker({
+        dataType: "mount_collar",
         title: `Stable slot ${idx + 1} — Collar`,
         items: getCollarList(),
         render: renderCollar,
@@ -6003,6 +6521,7 @@
         return;
       }
       openPicker({
+        dataType: "insignia_bonus",
         title: `Insignia Bonus for ${mount.name} — ${items.length} available`,
         items,
         render: (b) => ({
@@ -6025,6 +6544,7 @@
       const tiers = Array.isArray(state.stable[idx].insigniaTiers) ? state.stable[idx].insigniaTiers : [];
       _activeInsigniaTier = tiers[insIdx] || "Mythic";
       openPicker({
+        dataType: "insignia",
         title: `Insignia · ${allowedLabel} · tier ${_activeInsigniaTier}`,
         items: insigniaOptionsForSlot(allowed),
         render: renderInsignia,
@@ -6053,25 +6573,32 @@
     }
 
     function renderCompanions() {
+      // Helper: render a chip's content with optional ⓘ button when filled.
+      // We use innerHTML (rather than textContent) so the button HTML lands.
+      function setChipContent(el, filledLabel, emptyLabel, infoHTML) {
+        if (!el) return;
+        el.innerHTML = filledLabel ? (filledLabel + (infoHTML || "")) : emptyLabel;
+        el.classList.toggle("filled", !!filledLabel);
+      }
       // ---- Top loadout row ----
       const enchantChip = document.getElementById("comp-enchant-chip");
       if (enchantChip) {
         const v = state.summonedEnchant;
-        enchantChip.textContent = v ? "✨ " + v : "+ Enchantment";
-        enchantChip.classList.toggle("filled", !!v);
+        const info = v ? ` <button class="chip-info" data-details-type="enchant" data-details-key="${_escAttr(v)}" title="See enchant details">\u{1F50D}</button>` : "";
+        setChipContent(enchantChip, v ? "✨ " + v : "", "+ Enchantment", info);
       }
       const enhChip = document.getElementById("comp-enh-chip");
       if (enhChip) {
         const v = state.summonedEnh;
-        enhChip.textContent = v ? "🔮 " + v : "+ Enhancement";
-        enhChip.classList.toggle("filled", !!v);
+        const info = v ? ` <button class="chip-info" data-details-type="companion_enhancement" data-details-key="${_escAttr(v)}" title="See enhancement details">\u{1F50D}</button>` : "";
+        setChipContent(enhChip, v ? "🔮 " + v : "", "+ Enhancement", info);
       }
       ["Neck", "Waist", "Ring"].forEach(slot => {
         const el = document.querySelector(`[data-summoned-equip="${slot}"]`);
         if (!el) return;
         const v = state.summonedGear[slot];
-        el.textContent = v ? "💍 " + v : "+ Equipment";
-        el.classList.toggle("filled", !!v);
+        const info = v ? ` <button class="chip-info" data-details-type="companion_gear" data-details-key="${_escAttr(v)}" title="See companion gear details">\u{1F50D}</button>` : "";
+        setChipContent(el, v ? "💍 " + v : "", "+ Equipment", info);
       });
       // ---- Bottom: 6 even rows (Summoned + 5 typed actives) ----
       renderCompPickRows();
@@ -6098,11 +6625,20 @@
         const rarityOpts = RARITY_OPTS.map(t =>
           `<option value="${t}"${t === r.rarity ? " selected" : ""}>${t}</option>`
         ).join("");
+        const infoBtn = filled
+          ? `<button class="chip-info"
+                     data-details-type="companion"
+                     data-details-key="${_escAttr(r.value)}"
+                     data-details-rarity="${r.rarity}"
+                     ${r.type === "summoned" ? 'data-details-summoned="1"' : ""}
+                     title="See what this companion gives">🔍</button>`
+          : "";
         html += `<div class="comp-row-active" style="display:flex;gap:0.4rem;align-items:center;">
           <div class="comp-slot ${filled ? "filled" : ""} ${r.type === "summoned" ? "summoned" : ""}"
                data-pick-row="${r.type}"${r.idx !== undefined ? ` data-idx="${r.idx}"` : ""}
                style="flex:1;">
             ${text}
+            ${infoBtn}
           </div>
           <select class="comp-rarity-mini" data-rarity-row="${r.type}"${r.idx !== undefined ? ` data-idx="${r.idx}"` : ""}
                   style="font-size:0.78rem;padding:0.3rem 0.4rem;background:var(--elevated);color:var(--text);border:1px solid var(--border);border-radius:4px;">
@@ -6129,17 +6665,32 @@
         });
       });
 
+      // ⓘ buttons: open Details modal for the slotted companion using
+      // the per-slot rarity. Wired before chip click handlers so click
+      // events stopPropagation cleanly.
+      wrap.querySelectorAll(".chip-info").forEach(el => {
+        el.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openDetailsByType(el.dataset.detailsType, el.dataset.detailsKey, {
+            rarity: el.dataset.detailsRarity,
+            summoned: el.dataset.detailsSummoned === "1"
+          });
+        });
+      });
       wrap.querySelectorAll("[data-pick-row]").forEach(el => {
-        el.addEventListener("click", () => {
+        el.addEventListener("click", (e) => {
+          if (e.target.classList.contains("chip-info")) return;
           if (el.dataset.pickRow === "summoned") {
             if (typeof COMPANIONS_DATA === "undefined") return;
+            const summRarity = state.summonedRarity || state.companionRarity || "Mythic";
             openPicker({
-              title: "Summoned companion (party buff)",
+              dataType: "companion",
+              title: `Summoned companion · showing values at ${summRarity}`,
               items: COMPANIONS_DATA.slice().sort((a,b) => {
                 if (!!a.summonedBuff !== !!b.summonedBuff) return a.summonedBuff ? -1 : 1;
                 return a.name.localeCompare(b.name);
               }),
-              render: renderSummonedCompanion,
+              render: (c) => renderSummonedCompanion(c, summRarity),
               onPick: (c) => {
                 state.summoned = c ? c.name : null;
                 renderCompanions(); rerenderAll();
@@ -6155,10 +6706,15 @@
               const p = findCompanionPower(c.powerRef);
               return p && Array.isArray(p.slot) && p.slot.includes(slotType);
             }).sort((a,b) => a.name.localeCompare(b.name));
+            // Per-slot rarity context — picker cards reflect this slot's
+            // selected rarity, not the bulk default.
+            const slotRarity = (state.activeCompRarities && state.activeCompRarities[i])
+              || state.companionRarity || "Mythic";
             openPicker({
-              title: `${slotType} companion`,
+              dataType: "companion",
+              title: `${slotType} companion · showing values at ${slotRarity}`,
               items,
-              render: renderCompanion,
+              render: (c) => renderCompanion(c, slotRarity),
               onPick: (c) => {
                 state.activeComps[i] = c ? c.name : null;
                 renderCompanions(); rerenderAll();
@@ -6710,6 +7266,14 @@
       renderScore();
       renderStepDoneStates();
       if (state.step === 6) { renderSim(); renderSummary(); }
+      // If a picker is open, re-render its list too. This keeps the
+      // displayed values in picker cards in sync with state changes
+      // (e.g., bolster slider, per-slot comp rarity dropdowns) that
+      // affect what render(item) outputs.
+      if (_pickerState) {
+        const search = document.getElementById("picker-search");
+        renderPickerList(search ? search.value : "");
+      }
       flashSaved();
     }
 
@@ -6958,6 +7522,7 @@
       const items = ENCHANTS_DATA.filter(e => e.slotType === "companion")
         .sort((a,b) => (b.item_level||0)-(a.item_level||0) || a.name.localeCompare(b.name));
       openPicker({
+        dataType: "enchant",
         title: "Companion enchantment",
         items,
         render: renderEnchantPick,
@@ -6969,6 +7534,7 @@
     });
     document.getElementById("comp-enh-chip").addEventListener("click", () => {
       openPicker({
+        dataType: "companion_enhancement",
         title: "Companion enhancement (rune)",
         items: getEnhancementList(),
         render: renderEnhancement,
@@ -6984,6 +7550,7 @@
         // Slots are universal — show ALL comp gear, regardless of which chip.
         // Duplicates across slots are allowed (e.g., 3× Thayan Icon).
         openPicker({
+          dataType: "companion_gear",
           title: "Summoned companion equipment (slot is universal — duplicates allowed)",
           items: compGearOptionsForSlot(slot),
           render: renderCompGear,
@@ -6999,6 +7566,7 @@
     document.getElementById("active-combat-chip").addEventListener("click", () => {
       const items = getAllCombatPowers();
       openPicker({
+        dataType: "combat_power",
         title: `Active Combat Power — ${items.length} total`,
         items,
         render: renderCombatPower,
@@ -7011,6 +7579,7 @@
     document.getElementById("active-equip-chip").addEventListener("click", () => {
       const items = getAllEquipPowers();
       openPicker({
+        dataType: "equip_power",
         title: `Active Equip Power — ${items.length} total`,
         items,
         render: renderEquipPower,
@@ -7025,6 +7594,7 @@
     document.getElementById("find-bonus-btn").addEventListener("click", () => {
       if (typeof MOUNT_INSIGNIA_BONUSES_DATA === "undefined") return;
       openPicker({
+        dataType: "insignia_bonus",
         title: "Find an Insignia Bonus",
         items: MOUNT_INSIGNIA_BONUSES_DATA.slice().sort((a,b) => a.name.localeCompare(b.name)),
         render: (b) => {
@@ -7113,6 +7683,31 @@
       loadFromUrlHash();
       updateRoleClassCompatibility();
     }
-  </script>
+  
+    /* OVERRIDE_WRAPPER_INJECT */
+    // Engine override layer: wraps each find* lookup to apply any user-
+    // submitted data corrections (stored locally via NWCBDataCorrections.
+    // setOverride) on top of the source-JSON values, so the prototype
+    // reflects the user's pending fix immediately.
+    (function () {
+      var MAP = {
+        'findGearByName': 'gear','findArtifactByName': 'artifact','findEnchantByName': 'enchant','findOverloadByName': 'overload','findKitByName': 'kit','findMountByName': 'mount','findCollarByName': 'mount_collar','findInsigniaByName': 'insignia','findBonusById': 'insignia_bonus','findCompanionByName': 'companion','findCompanionPower': 'companion_power','findCombatPowerById': 'combat_power','findEquipPowerById': 'equip_power','findEnhancementByName': 'companion_enhancement','findCompGearByName': 'companion_gear','findBuffByName': 'buff'
+      };
+      function wrap(fnName, type) {
+        var orig = window[fnName];
+        if (typeof orig !== "function") return;
+        window[fnName] = function () {
+          var item = orig.apply(this, arguments);
+          if (!item) return item;
+          if (window.NWCBDataCorrections && NWCBDataCorrections.applyOverridesToItem) {
+            return NWCBDataCorrections.applyOverridesToItem(type, item);
+          }
+          return item;
+        };
+      }
+      for (var k in MAP) if (Object.prototype.hasOwnProperty.call(MAP, k)) wrap(k, MAP[k]);
+    })();
+
+</script>
 </body>
 </html>

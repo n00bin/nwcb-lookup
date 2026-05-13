@@ -1,0 +1,324 @@
+/* =====================================================================
+   Data Corrections — client plumbing
+   ---------------------------------------------------------------------
+   Lets users submit corrections to the underlying game data (e.g. a
+   companion power's stat value, a gear piece's IL, an insignia bonus
+   amount) from inline ✎ UI in Toon Forge. Identical corrections from
+   different users are deduped server-side via the submit_data_correction
+   RPC and surface as one report with N upvotes.
+
+   Public API on window.NWCBDataCorrections:
+
+     getVoterHash()
+       Returns a stable per-browser identifier used for upvote dedup.
+
+     fingerprint(parts)
+       Pure: stringifies and SHA-256-hashes the ordered key fields so the
+       same correction submitted by N users produces the same hash.
+
+     submitCorrection({ type, id, field, rarityScalingRule, baseIL,
+                        claimedBaseValue, userObserved, title, notes })
+       Submits to the Supabase RPC. Returns a promise that resolves to
+       { ok, action, report_id, upvotes } on success, or { ok:false, error }
+       on failure.
+
+     setOverride(key, value)  /  getOverride(key)  /  getAllOverrides()
+       localStorage-backed override store the engine can consult to apply
+       any pending in-browser corrections immediately (before they're
+       approved + merged into source JSON).
+   ===================================================================== */
+
+(function () {
+  "use strict";
+
+  var SUPABASE_URL  = "https://ynrfmmccarrpqjdrpvqn.supabase.co";
+  var SUPABASE_ANON = "sb_publishable_RSK4LJnJ4-HQDudcRq3gRw_WJI5WIUw";
+
+  // Lazy supabase client — only built if window.supabase is loaded.
+  var _sb = null;
+  function sbClient() {
+    if (_sb) return _sb;
+    if (!window.supabase) return null;
+    _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    return _sb;
+  }
+
+  // ---- voter hash ---------------------------------------------------
+  // Stable per-browser identifier. Reused by the existing upvote_report
+  // RPC for dedup. We mint once on first call and persist in
+  // localStorage. Not personally identifying.
+  function getVoterHash() {
+    var KEY = "nwcb_voter_hash";
+    try {
+      var h = localStorage.getItem(KEY);
+      if (h && h.length >= 16) return h;
+      h = _randomHex(32);
+      localStorage.setItem(KEY, h);
+      return h;
+    } catch (e) {
+      // localStorage blocked — fall back to a per-session hash that
+      // won't dedup across reloads but at least lets the call succeed.
+      if (!window.__nwcb_voter_hash) {
+        window.__nwcb_voter_hash = _randomHex(32);
+      }
+      return window.__nwcb_voter_hash;
+    }
+  }
+
+  function _randomHex(n) {
+    var bytes = new Uint8Array(n / 2);
+    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    return Array.from(bytes).map(function (b) {
+      return ("0" + b.toString(16)).slice(-2);
+    }).join("");
+  }
+
+  // ---- fingerprint --------------------------------------------------
+  // Deterministic hash of the correction's identity fields. Same inputs
+  // → same hash → server dedupes into one report.
+  //
+  // parts: ordered array of strings/numbers. The caller is responsible
+  // for picking the right normalization (e.g. base-IL value instead of
+  // displayed-at-rarity value) before computing the hash.
+  function fingerprint(parts) {
+    var s = parts.map(function (p) {
+      return (p === null || p === undefined) ? "" : String(p);
+    }).join("|");
+    return _sha256Hex(s);
+  }
+
+  function _sha256Hex(s) {
+    // Synchronous SubtleCrypto fallback wrapper. We return a promise
+    // because SubtleCrypto.digest is async; callers should `await` it.
+    var enc = new TextEncoder().encode(s);
+    return crypto.subtle.digest("SHA-256", enc).then(function (buf) {
+      return Array.from(new Uint8Array(buf)).map(function (b) {
+        return ("0" + b.toString(16)).slice(-2);
+      }).join("");
+    });
+  }
+
+  // ---- submission ---------------------------------------------------
+  // Posts a correction to the submit_data_correction RPC.
+  //
+  // Required input fields:
+  //   type   — short identifier of what kind of data is being corrected,
+  //            e.g. "companion_power", "gear", "insignia_bonus"
+  //   id     — the source JSON's id of the affected entry
+  //   field  — dotted path to the corrected field, e.g. "stats[0].value"
+  //   claimedBaseValue — the corrected value (already back-calculated to
+  //            base IL if the data is rarity-scaled)
+  //   title  — user-facing report title, 3–200 chars
+  //
+  // Optional fields:
+  //   rarityScalingRule — "DOUBLE_STAT" / "SINGLE_STAT" / "FIXED" / null
+  //   baseIL            — the IL that claimedBaseValue is stored at
+  //   userObserved      — { il, value, rarity? } what the user saw in-game
+  //   notes             — user's free-text comment, becomes the report
+  //                       description (10–2000 chars; auto-padded server-side)
+  //
+  // Resolves with { ok, action, report_id, upvotes } on success.
+  // Resolves with { ok:false, error } on RPC failure.
+  function submitCorrection(opts) {
+    opts = opts || {};
+    var sb = sbClient();
+    if (!sb) return Promise.resolve({ ok: false, error: "supabase client not loaded" });
+
+    var fpParts = [
+      "v1",                              // schema version
+      opts.type,
+      opts.id,
+      opts.field,
+      opts.rarityScalingRule || "",
+      _normalizeNumber(opts.claimedBaseValue)
+    ];
+
+    return fingerprint(fpParts).then(function (fp) {
+      var payload = {
+        type:              opts.type,
+        id:                opts.id,
+        field:             opts.field,
+        rarityScalingRule: opts.rarityScalingRule || null,
+        baseIL:            opts.baseIL || null,
+        claimedBaseValue:  opts.claimedBaseValue,
+        userObserved:      opts.userObserved || null,
+        submittedAt:       new Date().toISOString()
+      };
+      return sb.rpc("submit_data_correction", {
+        p_fingerprint: fp,
+        p_payload:     payload,
+        p_voter_hash:  getVoterHash(),
+        p_title:       opts.title,
+        p_description: opts.notes || null
+      });
+    }).then(function (res) {
+      if (res && res.error) return { ok: false, error: res.error.message || String(res.error) };
+      var data = (res && res.data) || {};
+      return {
+        ok:        true,
+        action:    data.action,
+        report_id: data.report_id,
+        upvotes:   data.upvotes
+      };
+    }).catch(function (err) {
+      return { ok: false, error: (err && err.message) || String(err) };
+    });
+  }
+
+  function _normalizeNumber(v) {
+    if (v === null || v === undefined || v === "") return "";
+    var n = Number(v);
+    if (Number.isNaN(n)) return String(v);
+    // Round to 4 decimals to absorb floating-point noise across browsers.
+    return String(Math.round(n * 10000) / 10000);
+  }
+
+  // ---- localStorage overrides --------------------------------------
+  // Keyed by an opaque string the engine constructs (e.g.
+  // `companion_power:160:stats[0].value`). Stores the user's locally-
+  // applied value so the prototype reflects their correction before any
+  // admin merges it into source JSON.
+  var OVERRIDES_KEY = "nwcb_data_overrides";
+
+  function getAllOverrides() {
+    try {
+      var raw = localStorage.getItem(OVERRIDES_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+
+  function setOverride(key, value) {
+    var all = getAllOverrides();
+    if (value === null || value === undefined) {
+      delete all[key];
+    } else {
+      all[key] = { value: value, savedAt: new Date().toISOString() };
+    }
+    try {
+      localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all));
+    } catch (e) { /* full or blocked — silently no-op */ }
+  }
+
+  function getOverride(key) {
+    var all = getAllOverrides();
+    var entry = all[key];
+    return entry ? entry.value : undefined;
+  }
+
+  function clearAllOverrides() {
+    try { localStorage.removeItem(OVERRIDES_KEY); } catch (e) {}
+  }
+
+  // ---- engine integration ------------------------------------------
+  // applyOverridesToItem(type, item)
+  //   Returns a possibly-cloned copy of `item` with any locally-saved
+  //   overrides applied. The find* functions in toon-forge wrap their
+  //   return values with this so the engine + UI naturally pick up the
+  //   user's pending corrections without needing to consult overrides
+  //   at every read site.
+  //
+  // Override key format: `${type}:${id}:${field}` where `field` is the
+  // free-form text the user typed in the correction modal — we try to
+  // resolve it against the item's structure in this order:
+  //   1) Top-level key matching `field` exactly (e.g. "item_level")
+  //   2) ratingStats[field]
+  //   3) percentStats[field]
+  //   4) stats[].stat === field → write to that entry's .value
+  //   5) Dotted/bracket path (e.g. "stats[0].value")
+  //   6) Case-insensitive variants of 1–4
+  function applyOverridesToItem(type, item) {
+    if (!item || !type || item.id === undefined || item.id === null) return item;
+    var all = getAllOverrides();
+    var prefix = type + ":" + item.id + ":";
+    var fields = Object.keys(all).filter(function (k) { return k.indexOf(prefix) === 0; });
+    if (!fields.length) return item;
+    var clone = JSON.parse(JSON.stringify(item));
+    fields.forEach(function (k) {
+      var field = k.slice(prefix.length);
+      var v = all[k] && all[k].value;
+      _applyFieldOverride(clone, field, v);
+    });
+    clone.__overridden = true;  // marker for UI badges if desired
+    return clone;
+  }
+
+  function _applyFieldOverride(obj, field, value) {
+    var coerced = _coerceNumberIfPossible(value);
+    // 1) Direct top-level
+    if (Object.prototype.hasOwnProperty.call(obj, field)) {
+      obj[field] = coerced; return true;
+    }
+    // 2 / 3) ratingStats / percentStats
+    if (obj.ratingStats && Object.prototype.hasOwnProperty.call(obj.ratingStats, field)) {
+      obj.ratingStats[field] = coerced; return true;
+    }
+    if (obj.percentStats && Object.prototype.hasOwnProperty.call(obj.percentStats, field)) {
+      obj.percentStats[field] = coerced; return true;
+    }
+    // 4) stats[].stat === field
+    if (Array.isArray(obj.stats)) {
+      for (var i = 0; i < obj.stats.length; i++) {
+        if (obj.stats[i] && obj.stats[i].stat === field) {
+          obj.stats[i].value = coerced;
+          return true;
+        }
+      }
+    }
+    // 5) Dotted / bracket path
+    if (field.indexOf(".") >= 0 || field.indexOf("[") >= 0) {
+      return _setByPath(obj, field, coerced);
+    }
+    // 6) Case-insensitive retry
+    var lower = field.toLowerCase();
+    var keys = Object.keys(obj);
+    for (var j = 0; j < keys.length; j++) {
+      if (keys[j].toLowerCase() === lower) {
+        obj[keys[j]] = coerced; return true;
+      }
+    }
+    if (obj.ratingStats) {
+      var rk = Object.keys(obj.ratingStats);
+      for (var a = 0; a < rk.length; a++) {
+        if (rk[a].toLowerCase() === lower) { obj.ratingStats[rk[a]] = coerced; return true; }
+      }
+    }
+    if (obj.percentStats) {
+      var pk = Object.keys(obj.percentStats);
+      for (var b = 0; b < pk.length; b++) {
+        if (pk[b].toLowerCase() === lower) { obj.percentStats[pk[b]] = coerced; return true; }
+      }
+    }
+    return false;
+  }
+
+  function _coerceNumberIfPossible(v) {
+    if (typeof v === "number") return v;
+    var n = Number(v);
+    if (Number.isFinite(n)) return n;
+    return v;
+  }
+
+  function _setByPath(obj, path, value) {
+    // Accepts: "stats[0].value", "ratingStats.Power", "a.b.c"
+    var parts = path.replace(/\[(\d+)\]/g, ".$1").split(".").filter(Boolean);
+    var cur = obj;
+    for (var i = 0; i < parts.length - 1; i++) {
+      if (cur[parts[i]] === undefined) return false;
+      cur = cur[parts[i]];
+    }
+    cur[parts[parts.length - 1]] = value;
+    return true;
+  }
+
+  // ---- export -------------------------------------------------------
+  window.NWCBDataCorrections = {
+    getVoterHash:        getVoterHash,
+    fingerprint:         fingerprint,
+    submitCorrection:    submitCorrection,
+    getOverride:         getOverride,
+    setOverride:         setOverride,
+    getAllOverrides:     getAllOverrides,
+    applyOverridesToItem: applyOverridesToItem,
+    clearAllOverrides: clearAllOverrides
+  };
+})();

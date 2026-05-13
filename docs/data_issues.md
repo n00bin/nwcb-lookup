@@ -1,5 +1,65 @@
 # Data Issues To Investigate
 
+## Gear Slot Assignment Audit Needed
+
+Verified 2026-05-12 by n00b: **Mystic Conduit Mark** (Conduit family Shirt/Trousers
+gear) was stored as `slot: "Pants"` across 4 entries (ids 395, 402, 454, 460)
+but is actually a **Shirt** slot item in-game. Fixed those 4 entries.
+
+Broader concern — several Conduit-family pieces have suspicious slot
+assignments worth verifying:
+
+- **Bloodwoven Ink** appears in both Pants (id 13, id 471) and Shirt
+  (id 416, id 423) — same name, two slots. Possibly two distinct NW
+  items, or one of them mis-slotted.
+- **Tempest Gaze Mark** appears as Shirt (id 341), Pants (id 410), and
+  Shirt (id 490) — same naming inconsistency.
+- **Mark of the Convert / Adept / Fledgling / Recruit / Novice /
+  Initiate** mostly Shirt but a few entries (ids 498, 499, 503) are
+  Pants — likely mis-slotted; these have a Shirt-pattern naming.
+
+For each: verify in-game tooltip slot, correct any wrong assignments.
+Best path is one Conduit-family piece at a time as n00b encounters them.
+
+## Gear Set Bonuses — Missing Data
+
+### Impending Doom (Paladin / Ranger Main+Off, two-piece set)
+
+The whole set needs structured equipBonuses + Unleashed proc data.
+Source pieces in `data/gear.json`:
+
+- **Paladin** — Oathbreaker's Malevolence (Main Hand) + Aegis of the Condemned (Off Hand)
+  - IL tiers in data: 3,750 / 4,100 / 4,550 / 4,800 (Mythic) / 5,250 (Celestial)
+  - Tier-4800 Off Hand (id 465) has narrative-only set bonus text — the
+    rest of the Paladin pieces are completely empty.
+- **Ranger** — Grimfang (Main Hand) + Harrowed Messengers (Off Hand)
+  - IL tiers in data: 3,750 / 4,100 / 4,450 / 4,800 (Mythic) / 5,250 (Celestial)
+  - All pieces have empty equipBonuses.
+- **Other classes** (Cleric / Warlock / Bard / etc.) not present in data
+  at all — need separate ingestion if they have Impending Doom variants.
+
+**What's missing per piece:**
+
+1. **2pc stat bonus** — class- and role-specific. Known anchor from n00b
+   2026-05-12: **Ranger Mythic (IL 4800) 2pc = +7.5% Critical Strike +
+   3.7% Accuracy**. Scale to other tiers via the standard tier
+   multiplier and verify each rarity in-game.
+
+2. **Unleashed mechanic** — set builds 10 Charges (1 per Daily power use
+   on a 10s cooldown; 1 per Encounter on a 1s cooldown; +1 per Nsec in
+   combat). On reaching 10, triggers an "Unleashed" buff with
+   class/role-specific effects. Per id 465's existing narrative on the
+   Paladin variant: Tank −1% Incoming Damage, Heal −1% Outgoing Healing,
+   plus +x% Forte and +x% Defense (numbers unverified). Need:
+   - charge generation triggers + cooldowns
+   - buff duration when unleashed
+   - per-class/role stat values
+
+**How to backfill (when ready):**
+1. n00b hovers each class/tier variant in-game and pastes the 2pc tooltip text + the Unleashed effect text per role.
+2. Structure into equipBonuses with `type: "Set"`, role filter, stat/amount fields, perStack/maxStacks for the Unleashed proc.
+3. Engine already supports role-conditional set bonuses (Dark Matter 2pc Healer pattern) and perStack proc bonuses (Critical Harmony pattern) — no engine work expected.
+
 ## Companion Power Scaling Issues
 
 ### Fixed-Effect Powers (No Scaling)
