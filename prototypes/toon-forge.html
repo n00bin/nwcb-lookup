@@ -2262,6 +2262,17 @@
       // is everywhere; VIP is permanent for paying players). Invocation
       // Blessing requires daily invocation, so we don't pre-check it.
       buffs: new Set(["Campfire", "VIP Rank 3 Bonus"]),
+      // Party buffs from companions an ALLY has summoned (e.g. Flapjack
+      // +5% CA, Drizzt +3% Damage Bonus). Distinct from the user's own
+      // summoned companion. NW allows 5 allies in a dungeon, 10 in a
+      // trial — user picks content type, then which companion is in
+      // each slot. Companions can repeat in-game but each unique buff
+      // only stacks once, so duplicates are not allowed in the picker.
+      partyContent: "dungeon",        // "dungeon" (5 slots) | "trial" (10 slots)
+      partyAllies: ["","","","",""],  // companion name per slot, "" = empty
+      partyVipRank3: false,            // separate toggle for ally VIP +1% MaxHP party
+      // (legacy — kept so older saves still load without losing data)
+      partyBuffs: new Set(),
       simMag: 100,
     };
 
@@ -2301,7 +2312,9 @@
           boons: [...state.boons],
           masterOrder: state.masterOrder,
           guildBoonPicks: state.guildBoonPicks,
-          buffs: [...state.buffs]
+          buffs: [...state.buffs],
+          partyContent: state.partyContent || "dungeon",
+          partyAllies: [...(state.partyAllies || [])]
         }
       };
     }
@@ -2312,6 +2325,8 @@
       // Restore Map and Set from arrays
       state.boons = new Map(s.boons || []);
       state.buffs = new Set(s.buffs || []);
+      state.partyContent = s.partyContent || "dungeon";
+      state.partyAllies = Array.isArray(s.partyAllies) ? s.partyAllies.slice() : [];
       // Re-render every section
       populateParagons(state.class || null);
       recomputeAbilityTotals();
@@ -4390,6 +4405,36 @@
         // double-routing; revisit when we add a unified ability-bonus channel.
       }
 
+      // Party buffs — companions that an ALLY has summoned grant their
+      // summonedBuff to the whole party. User picks which companion is
+      // in each ally slot (5 in dungeon / 10 in trial); the engine
+      // de-duplicates so the same buff doesn't stack. Distinct from
+      // the user's own summoned companion (whose summonedBuff already
+      // auto-applies via the summoned companion mechanic). Always-on
+      // when slotted (the user is asserting the buff is active in
+      // their party right now).
+      const _seenPartyBuffs = new Set();
+      for (const compName of (s.partyAllies || [])) {
+        if (!compName) continue;
+        if (_seenPartyBuffs.has(compName)) continue;  // dedupe (engine-side safety; UI also blocks)
+        _seenPartyBuffs.add(compName);
+        const comp = findCompanionByName(compName);
+        const sb = comp && comp.summonedBuff;
+        if (!sb || !Array.isArray(sb.effects) || !sb.effects.length) continue;
+        const ratingStats = {};
+        const percentStats = {};
+        for (const eff of sb.effects) {
+          if (!eff || !eff.stat) continue;
+          const channel = (eff.type === "rating") ? ratingStats : percentStats;
+          channel[eff.stat] = (channel[eff.stat] || 0) + (eff.amount || 0);
+        }
+        buffs.push({
+          source: `Party Buff: Ally's ${compName}`,
+          ratingStats,
+          percentStats
+        });
+      }
+
       // Guild boons — 1 pick per category (Offense / Defense / Utility).
       // Each active guild boon contributes:
       //   1) Its specific stat bonus (e.g., +3000 Crit Sev rating)
@@ -4811,13 +4856,25 @@
         if (cr) {
           buffs.push({ source: label + " CR (" + r + ")", ratingStats: cr });
         }
-        const percentStats = {};
-        for (const st of (power.stats || [])) {
-          if (!st || !st.stat) continue;
-          percentStats[st.stat] = (percentStats[st.stat] || 0) + (st.value || 0) * scale;
-        }
-        if (Object.keys(percentStats).length) {
-          buffs.push({ source: label + " bonus (" + r + ")", percentStats });
+        // IMPORTANT: the companion's power.stats only apply to the PLAYER
+        // when the companion is in one of the 5 ACTIVE slots. Being
+        // summoned alone does NOT grant the power's stat bonuses — only
+        // the IL contribution to TIL (handled separately as bolster) and
+        // the 85%-of-IL CR slice (applied above). The summonedBuff
+        // (party-wide buff like +5% CA to allies) is handled elsewhere if
+        // applicable. Verified by n00b 2026-05-13: Flapjack's Flumph's
+        // Inspiration gives +9% Stamina Regen when slotted in an active
+        // slot — but their summoned Flapjack contributes 0% Stamina
+        // Regen because it's not in an active slot too.
+        if (!isSummoned) {
+          const percentStats = {};
+          for (const st of (power.stats || [])) {
+            if (!st || !st.stat) continue;
+            percentStats[st.stat] = (percentStats[st.stat] || 0) + (st.value || 0) * scale;
+          }
+          if (Object.keys(percentStats).length) {
+            buffs.push({ source: label + " bonus (" + r + ")", percentStats });
+          }
         }
         // Proc effect with structured stat data — push as conditional so
         // it surfaces in Show Conditional view (e.g. Raptor's "Part of the
@@ -4833,7 +4890,10 @@
         // from slotting), the proc adds (maxStacks - 1) more stacks to
         // avoid double-counting the baseline. If the stat is only in
         // statEffects, the full maxStacks × value applies.
-        const pe = power.procEffect;
+        // Proc effects also only apply when the companion is in an active
+        // slot, not when merely summoned (same rule as the always-on
+        // power.stats above).
+        const pe = !isSummoned && power.procEffect;
         if (pe && Array.isArray(pe.statEffects) && pe.statEffects.length) {
           const maxStacks = pe.maxStacks || 1;
           const procRating = {};
@@ -5161,7 +5221,7 @@
         cb: state.companionBolster, mb: state.mountBolster, cr: state.companionRarity, ir: state.insigniaRarity,
         sr: state.summonedRarity, acr: state.activeCompRarities,
         cc: state.compCollection, mc: state.mountCollection,
-        boons: [...state.boons], buffs: [...state.buffs]
+        boons: [...state.boons], buffs: [...state.buffs], partyContent: state.partyContent, partyAllies: state.partyAllies
       });
       if (key === _engineCacheKey && _engineResult) return _engineResult;
       _engineCacheKey = key;
@@ -5530,12 +5590,85 @@
         }</ul></div>`;
       }
 
-      // TIL header line
+      // Character identity header
       html += `<div style="font-size:0.85rem;color:var(--text-mute);margin-bottom:0.7rem;">
-        Total Item Level: <strong style="color:var(--amber)">${(r.totalItemLevel || 0).toLocaleString()}</strong>
-        ${state.class ? " · Class: <strong>" + state.class + "</strong>" : ""}
+        ${state.class ? "Class: <strong>" + state.class + "</strong>" : ""}
         ${state.paragon ? " · Paragon: <strong>" + state.paragon + "</strong>" : ""}
         ${state.race ? " · Race: <strong>" + state.race + "</strong>" : ""}
+      </div>`;
+
+      // Headline stats block — matches the in-game stat panel's top
+      // section (TIL, Max HP, Damage shown above Main Stats).
+      //
+      // Damage = (TIL / 10) × damageRoleMult.
+      //   DPS +20%, Heal +10%, Tank +0%. Formula from in-game tooltip
+      //   on Erik 2026-05-11: "Base Damage = TIL / 10 + role bonus".
+      //
+      // Max HP = TIL × 10 × hpRoleMult × (1 + HP% / 100).
+      //   Tank +20% base, Heal +10% base, DPS +0%. HP% comes from CON
+      //   primary (0.5%/pt), boons, items, buffs (engine percentTotal).
+      //   Verified by n00b 2026-05-13: Erik (Healer TIL 126,775 HP
+      //   1,588,795) = 126,775 × 10 × 1.10 × 1.1393 ≈ matches; Ranger
+      //   Warden (DPS TIL 128,648 HP 1,469,124) = 128,648 × 10 × 1.00
+      //   × 1.142 ≈ matches.
+      const _hdlTIL = r.totalItemLevel || 0;
+      const _role = (state.role || "dps").toLowerCase();
+      const _hdlDamageRoleMult = ({ dps: 1.20, heal: 1.10, tank: 1.00 })[_role] || 1.0;
+      const _hdlHpRoleMult     = ({ dps: 1.00, heal: 1.10, tank: 1.20 })[_role] || 1.0;
+      const _hpStat = r.stats["Maximum Hit Points"] || {};
+      // Use only ALWAYS-ON percent contributors (not conditional procs
+      // like Blessed Advantage R3, Bone Armor, mount insignia bonus
+      // Guardian's Spirit, etc.). Engine's percentTotal sums everything
+      // including conditional; that's right for the engine but wrong for
+      // a "standing around" display matching the in-game stat panel.
+      const _hpAlwaysOnPct = (_hpStat.contributors || [])
+        .filter(c => c.type === "percent" && !c.conditional)
+        .reduce((sum, c) => sum + (c.amount || 0), 0);
+      const _hpAlwaysOnFlat = (_hpStat.contributors || [])
+        .filter(c => c.type === "rating" && !c.conditional)
+        .reduce((sum, c) => sum + (c.amount || 0), 0);
+      const _hdlBaseMaxHP = Math.round(_hdlTIL * 10 * _hdlHpRoleMult);
+      const _hdlMaxHP = Math.round(_hdlBaseMaxHP * (1 + _hpAlwaysOnPct / 100) + _hpAlwaysOnFlat);
+      const _hdlDamage = Math.round((_hdlTIL / 10) * _hdlDamageRoleMult);
+      // Inline HP breakdown so calibration drift is visible. Lists each
+      // always-on percent contributor and its value.
+      const _hpContribLines = (_hpStat.contributors || [])
+        .filter(c => c.type === "percent" && !c.conditional)
+        .map(c => `  ${c.source}: +${c.amount.toFixed(2)}%`)
+        .join("\n") || "  (none)";
+      const _hpFlatContribLines = (_hpStat.contributors || [])
+        .filter(c => c.type === "rating" && !c.conditional)
+        .map(c => `  ${c.source}: +${c.amount.toLocaleString()}`)
+        .join("\n") || "  (none)";
+      const _hpDebugTitle = `Base = TIL ${_hdlTIL.toLocaleString()} × 10 × ${_hdlHpRoleMult.toFixed(2)} = ${_hdlBaseMaxHP.toLocaleString()}\n` +
+        `Percent bonuses sum = +${_hpAlwaysOnPct.toFixed(2)}%\n` +
+        `Flat HP from items = +${_hpAlwaysOnFlat.toLocaleString()}\n` +
+        `\nAlways-on percent contributors:\n${_hpContribLines}\n` +
+        `\nAlways-on flat contributors:\n${_hpFlatContribLines}`;
+      html += `<div class="dstats-section">
+        <div class="dstats-section-title">Character</div>
+        <div class="dstat-row">
+          <div class="dstat-head">
+            <div class="dstat-name">Total Item Level</div>
+            <div class="dstat-value">${_hdlTIL.toLocaleString()}</div>
+          </div>
+        </div>
+        <div class="dstat-row">
+          <div class="dstat-head">
+            <div class="dstat-name">Maximum Hit Points</div>
+            <div class="dstat-value">${_hdlMaxHP.toLocaleString()} HP</div>
+          </div>
+          <details class="dstat-sources" style="margin-top:0.3rem;">
+            <summary>Sources</summary>
+            <div class="dstat-sources-body" style="white-space:pre-wrap;font-size:0.82rem;line-height:1.4;">${_hpDebugTitle}</div>
+          </details>
+        </div>
+        <div class="dstat-row">
+          <div class="dstat-head">
+            <div class="dstat-name">Damage</div>
+            <div class="dstat-value">${_hdlDamage.toLocaleString()}</div>
+          </div>
+        </div>
       </div>`;
 
       // Group stats by category
@@ -5553,6 +5686,9 @@
         for (const def of stats) {
           const s = r.stats[def.name];
           if (!s) continue;
+          // Maximum Hit Points is already shown in the Character headline
+          // block above; skip the duplicate render here.
+          if (def.name === "Maximum Hit Points") continue;
           html += formatStatRow(def, s, ctx);
         }
         html += `</div>`;
@@ -6263,6 +6399,59 @@
         }
         html += `</div>`;
       }
+
+      // Party Buffs — content-type selector + ally companion slot dropdowns.
+      // NW party = 5 (dungeon) or 10 (trial). User picks which companion is
+      // in each slot; their summonedBuff applies to the player. Duplicates
+      // are disabled so the same buff doesn't double-apply (NW allows the
+      // companion to be slotted twice but the buff only stacks once).
+      const partyBuffCompanions = (typeof COMPANIONS_DATA !== "undefined")
+        ? COMPANIONS_DATA.filter(c => c.summonedBuff && c.summonedBuff.scope === "party" && Array.isArray(c.summonedBuff.effects)).slice().sort((a,b) => a.name.localeCompare(b.name))
+        : [];
+      if (partyBuffCompanions.length) {
+        const content = state.partyContent || "dungeon";
+        const slotCount = content === "trial" ? 10 : 5;
+        if (!Array.isArray(state.partyAllies)) state.partyAllies = [];
+        // Ensure the array is the right length without losing existing picks
+        while (state.partyAllies.length < slotCount) state.partyAllies.push("");
+        if (state.partyAllies.length > slotCount) state.partyAllies = state.partyAllies.slice(0, slotCount);
+        // Build effect summary lookup
+        const effSummary = {};
+        for (const c of partyBuffCompanions) {
+          effSummary[c.name] = c.summonedBuff.effects.map(e =>
+            `${e.amount > 0 ? "+" : ""}${e.amount}${e.type === "percent" ? "%" : ""} ${e.stat}`
+          ).join(", ");
+        }
+        const taken = new Set(state.partyAllies.filter(x => x));
+        html += `<div class="boon-tier" style="margin-top:0.8rem;">
+          <div class="boon-tier-header">Party Buffs <span style="color:var(--text-dim);font-weight:400;font-size:0.7rem;text-transform:none;letter-spacing:0;">(allies' summoned companions buff your build)</span></div>
+          <div class="boon-row" style="cursor:default;">
+            <div class="boon-row-info">
+              <div class="boon-row-name">Content type</div>
+              <div class="boon-row-effect">5 ally slots for dungeons, 10 for trials</div>
+            </div>
+            <div class="boon-counter">
+              <select id="party-content-select" style="font-size:0.85rem;padding:0.2rem 0.4rem;background:var(--elevated);color:var(--text);border:1px solid var(--border);border-radius:4px;">
+                <option value="dungeon"${content === "dungeon" ? " selected" : ""}>Dungeon (5)</option>
+                <option value="trial"${content === "trial" ? " selected" : ""}>Trial (10)</option>
+              </select>
+            </div>
+          </div>`;
+        for (let i = 0; i < slotCount; i++) {
+          const picked = state.partyAllies[i] || "";
+          const desc = picked ? effSummary[picked] : "click to pick an ally companion";
+          const chipLabel = picked ? `👥 ${picked}` : "+ Pick ally";
+          html += `<div class="boon-row ${picked ? "has-pts" : ""}" data-party-slot-pick="${i}" style="cursor:pointer;">
+            <div class="boon-row-info">
+              <div class="boon-row-name">Ally slot ${i + 1} — ${picked || "(empty)"}</div>
+              <div class="boon-row-effect">${desc}</div>
+            </div>
+            <div class="boon-counter"><span style="font-size:0.75rem;color:${picked?'var(--gold)':'var(--text-dim)'};">${chipLabel}</span></div>
+          </div>`;
+        }
+        html += `</div>`;
+      }
+
       el.innerHTML = html;
 
       // Single-pick group → opens picker for that category
@@ -6298,6 +6487,64 @@
           if (state.buffs.has(name)) state.buffs.delete(name);
           else state.buffs.add(name);
           renderBuffs(); rerenderAll();
+        });
+      });
+
+      // Party content-type selector (dungeon 5 / trial 10)
+      const partyContentEl = el.querySelector("#party-content-select");
+      if (partyContentEl) {
+        partyContentEl.addEventListener("change", (e) => {
+          state.partyContent = e.target.value;
+          renderBuffs(); rerenderAll();
+        });
+      }
+      // Per-slot ally companion picker — opens the standard picker UI
+      // so the user can see each companion's buff effects (and full
+      // details via 🔍) before choosing. Already-selected companions
+      // in other slots are visually marked as "(already slotted)".
+      el.querySelectorAll("[data-party-slot-pick]").forEach(row => {
+        row.addEventListener("click", () => {
+          const slot = +row.dataset.partySlotPick;
+          const taken = new Set((state.partyAllies || []).filter((n, i) => n && i !== slot));
+          // Items: party-buff companions + a "(none)" sentinel for clearing
+          const noneItem = { __none: true, name: "— None — (clear slot)" };
+          const items = [noneItem, ...partyBuffCompanions];
+          openPicker({
+            dataType: "party_ally",
+            title: `Ally slot ${slot + 1} — pick a party-buff companion`,
+            items,
+            render: (c) => {
+              if (c.__none) {
+                return { name: c.name, meta: "", desc: "Clears this ally slot." };
+              }
+              // Only show the party buff — that's the only thing that
+              // applies to the user when this companion is on an ally.
+              // Active-slot bonus / proc / CR don't matter (those need
+              // the companion in YOUR slot, not your ally's).
+              const eff = c.summonedBuff && Array.isArray(c.summonedBuff.effects)
+                ? c.summonedBuff.effects.map(e => `${e.amount > 0 ? "+" : ""}${e.amount}${e.type === "percent" ? "%" : ""} ${e.stat}`).join(", ")
+                : "(no structured party effects)";
+              const buffText = (c.summonedBuff && c.summonedBuff.buff) || "";
+              const dup = taken.has(c.name) ? " · already in another slot" : "";
+              return {
+                name: c.name + dup,
+                meta: `Party buff: ${eff}`,
+                desc: buffText
+              };
+            },
+            onPick: (c) => {
+              if (!Array.isArray(state.partyAllies)) state.partyAllies = [];
+              if (!c || c.__none) {
+                state.partyAllies[slot] = "";
+              } else if (taken.has(c.name)) {
+                toast(`${c.name} is already in another slot.`);
+                return;
+              } else {
+                state.partyAllies[slot] = c.name;
+              }
+              renderBuffs(); rerenderAll();
+            }
+          });
         });
       });
     }

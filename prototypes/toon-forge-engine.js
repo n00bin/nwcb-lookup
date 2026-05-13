@@ -276,6 +276,12 @@
     }
 
     // 6. Master tier — each rank stacks all perRankEffects of type:"percent"
+    //
+    // Master boons are ALL proc-based ("chance on kill / chance on heal /
+    // chance on hit / chance on encounter use") with a short buff
+    // duration. They should NEVER apply to the always-on stat panel.
+    // Engine flags every master boon contribution as conditional so the
+    // Detailed Stats panel only shows them under "Show Conditional".
     var master = cb.master || [];
     for (var mi = 0; mi < master.length; mi++) {
       var mentry = master[mi];
@@ -290,7 +296,8 @@
         // Skip enemy-scoped effects (e.g. Blood Lust R1 -1% target Def)
         if (eff.scope === "enemy") continue;
         addPercent(result, eff.stat, ranks * eff.amount,
-          "Boon: Master/" + mboon.name + " R" + ranks);
+          "Boon: Master/" + mboon.name + " R" + ranks,
+          /*conditional*/ true);
       }
     }
 
