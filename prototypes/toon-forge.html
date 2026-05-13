@@ -3618,6 +3618,16 @@
         const a = findArtifactByName(state.artifacts["Secondary " + i]);
         if (a) addAbilityBonus(bonus, a.abilityBonuses);
       }
+      // Active buffs — Campfire is the classic example (+1 to all abilities).
+      // Buff abilityBonuses were missing from this aggregation pre-2026-05-13,
+      // causing Campfire's +1 STR/CON/DEX/INT/WIS/CHA to never reach the
+      // ability score totals and the downstream stat % computations.
+      if (state.buffs && typeof findBuffByName === "function") {
+        for (const buffName of state.buffs) {
+          const b = findBuffByName(buffName);
+          if (b) addAbilityBonus(bonus, b.abilityBonuses);
+        }
+      }
       return bonus;
     }
 
