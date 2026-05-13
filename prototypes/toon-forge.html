@@ -6661,6 +6661,11 @@
             }
             state.activeCompRarities[i] = v;
           }
+          // Rebuild the comp rows so the 🔍 button's data-details-rarity
+          // attribute refreshes with the new value (engine cache picks up
+          // the mutation on its own via JSON.stringify, but DOM attrs are
+          // baked in at render time).
+          renderCompanions();
           rerenderAll();
         });
       });
