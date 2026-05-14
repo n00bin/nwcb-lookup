@@ -4730,10 +4730,22 @@
       const picks = (s.slottedClassFeaturePicks || []).slice(0, 2);
       const slottedPicked = slottedAll.filter(f => f && picks.indexOf(f.name) !== -1);
 
+      // Slotted feats — user picks 5 from paragon.feats (one per tier).
+      // Feats that carry percentStats / ratingStats (e.g. Warden's
+      // Skirmisher's Gambit = +10% Crit Sev) flow through the same
+      // classFeatures buff path. Conditional damage modifiers that
+      // ride on specific powers don't surface here — they'd need
+      // power-aware engine logic from the damage simulator.
+      const featAll = (paragonDef && Array.isArray(paragonDef.feats))
+        ? paragonDef.feats : [];
+      const featPicks = (s.slottedFeats || []);
+      const featPicked = featAll.filter(f => f && featPicks.indexOf(f.name) !== -1);
+
       const featureLists = [
         (classDef && Array.isArray(classDef.classFeatures)) ? classDef.classFeatures : null,
         (paragonDef && Array.isArray(paragonDef.classFeatures)) ? paragonDef.classFeatures : null,
-        slottedPicked.length ? slottedPicked : null
+        slottedPicked.length ? slottedPicked : null,
+        featPicked.length ? featPicked : null
       ];
       for (const list of featureLists) {
         if (!list) continue;
@@ -5548,7 +5560,8 @@
         sr: state.summonedRarity, acr: state.activeCompRarities,
         cc: state.compCollection, mc: state.mountCollection,
         boons: [...state.boons], buffs: [...state.buffs], partyContent: state.partyContent, partyAllies: state.partyAllies, partyMountAllies: state.partyMountAllies,
-        scf: state.slottedClassFeaturePicks, stance: state.rangerStance, song: state.bardActiveSong, sparks: state.warlockSoulSparks
+        scf: state.slottedClassFeaturePicks, stance: state.rangerStance, song: state.bardActiveSong, sparks: state.warlockSoulSparks,
+        aw: state.slottedAtWills, enc: state.slottedEncounters, dly: state.slottedDailies, ft: state.slottedFeats
       });
       if (key === _engineCacheKey && _engineResult) return _engineResult;
       _engineCacheKey = key;
