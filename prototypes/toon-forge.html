@@ -1794,6 +1794,12 @@
         <div id="abil-grid-wrapper"></div>
       </div>
 
+      <div class="panel" id="class-loadout-panel" style="display:none;">
+        <h2>Class loadout</h2>
+        <p class="hint">Slot two class features and toggle any class-specific dials. These contribute to your stat panel just like passive class skills.</p>
+        <div id="class-loadout-body"></div>
+      </div>
+
       <div class="nav-buttons">
         <button class="btn btn-ghost" data-go="back">← Back</button>
         <button class="btn btn-primary" data-go="next">Next: Gear →</button>
@@ -2275,6 +2281,26 @@
       // (legacy — kept so older saves still load without losing data)
       partyBuffs: new Set(),
       simMag: 100,
+      // Slotted class features — user picks 2 from the active paragon's
+      // slottedClassFeatures list (NW lets you slot 2 in your hotbar).
+      // Stored as feature names; engine looks them up against
+      // paragonDef.slottedClassFeatures and applies their stats.
+      slottedClassFeaturePicks: [],
+      // Ranger stance — switches Stance Mastery class feature output:
+      //   "melee"  → +5% Movement Speed
+      //   "ranged" → +5% Stamina Regeneration
+      // Ignored for non-Ranger classes.
+      rangerStance: "ranged",
+      // Bard active song — name of the song currently playing.
+      // Songs that grant flat damage bonuses (Steel March / Tailwind
+      // Mambo / Blaze Flamenco) feed into the Damage Bonus stat.
+      // Empty string = no song active.
+      bardActiveSong: "",
+      // Warlock Hellbringer Soul Spark count (0–10). Each spark adds
+      // 1% Damage Bonus while it's stockpiled. Conditional bonus —
+      // sparks deplete via Soul Scorch but the stat panel models the
+      // assumed average uptime.
+      warlockSoulSparks: 0,
     };
 
     /* ===== Save / Load / Share =====
@@ -2316,7 +2342,11 @@
           buffs: [...state.buffs],
           partyContent: state.partyContent || "dungeon",
           partyAllies: [...(state.partyAllies || [])],
-          partyMountAllies: [...(state.partyMountAllies || [])]
+          partyMountAllies: [...(state.partyMountAllies || [])],
+          slottedClassFeaturePicks: [...(state.slottedClassFeaturePicks || [])],
+          rangerStance: state.rangerStance || "ranged",
+          bardActiveSong: state.bardActiveSong || "",
+          warlockSoulSparks: state.warlockSoulSparks || 0
         }
       };
     }
@@ -2330,6 +2360,10 @@
       state.partyContent = s.partyContent || "dungeon";
       state.partyAllies = Array.isArray(s.partyAllies) ? s.partyAllies.slice() : [];
       state.partyMountAllies = Array.isArray(s.partyMountAllies) ? s.partyMountAllies.slice() : [];
+      state.slottedClassFeaturePicks = Array.isArray(s.slottedClassFeaturePicks) ? s.slottedClassFeaturePicks.slice() : [];
+      state.rangerStance = s.rangerStance || "ranged";
+      state.bardActiveSong = s.bardActiveSong || "";
+      state.warlockSoulSparks = typeof s.warlockSoulSparks === "number" ? s.warlockSoulSparks : 0;
       // Re-render every section
       populateParagons(state.class || null);
       recomputeAbilityTotals();
@@ -4503,18 +4537,96 @@
       // and feed into the buffs[] channel the same way.
       const classDef = findClass(s.class);
       const paragonDef = findParagon(s.class, s.paragon);
+      // Slotted picks — user picks up to 2 from paragon.slottedClassFeatures
+      // (in-game you slot 2 of these into your hotbar). Filter the
+      // paragon's full list down to the picked ones; engine treats them
+      // like any other classFeature (percentStats / ratingStats).
+      const slottedAll = (paragonDef && Array.isArray(paragonDef.slottedClassFeatures))
+        ? paragonDef.slottedClassFeatures : [];
+      const picks = (s.slottedClassFeaturePicks || []).slice(0, 2);
+      const slottedPicked = slottedAll.filter(f => f && picks.indexOf(f.name) !== -1);
+
       const featureLists = [
         (classDef && Array.isArray(classDef.classFeatures)) ? classDef.classFeatures : null,
-        (paragonDef && Array.isArray(paragonDef.classFeatures)) ? paragonDef.classFeatures : null
+        (paragonDef && Array.isArray(paragonDef.classFeatures)) ? paragonDef.classFeatures : null,
+        slottedPicked.length ? slottedPicked : null
       ];
       for (const list of featureLists) {
         if (!list) continue;
         for (const cf of list) {
           if (!cf) continue;
+          // Ranger Stance Mastery is stance-toggleable: in data the
+          // percentStats encodes the Ranged-stance default (+5% Stamina
+          // Regen). If the user has Melee selected, swap the output to
+          // +5% Movement Speed.
+          let percentStats = cf.percentStats || {};
+          if (cf.name === "Stance Mastery" && s.class === "Ranger" && s.rangerStance === "melee") {
+            percentStats = { "Movement Speed": 5 };
+          }
           buffs.push({
             source: `Class Feature: ${cf.name}`,
-            percentStats: cf.percentStats || {},
+            percentStats,
             ratingStats:  cf.ratingStats  || {}
+          });
+          // Conditional stats (Soloist's "no party members", Sforzando's
+          // "play song in combat", Aspect of the Lone Wolf's Deflect
+          // scaling with nearby enemies, etc.) — push as conditional so
+          // they only show under "Show Conditional" in stat panel.
+          const cPct = cf.percentStatsConditional || cf.conditionalPercentStats || null;
+          const cRat = cf.ratingStatsConditional  || cf.conditionalRatingStats  || null;
+          if (cPct || cRat) {
+            buffs.push({
+              source: `Class Feature: ${cf.name} (conditional)`,
+              percentStats: cPct || {},
+              ratingStats:  cRat || {},
+              conditional: true
+            });
+          }
+        }
+      }
+
+      // Bard active song — songs that grant a flat damage bonus while
+      // active (Steel March, Tailwind Mambo, Blaze Flamenco). Other
+      // songs (Ballad of the Hero/Witch, Rejuvenating Carol) don't
+      // contribute to the stat panel — their effect is per-power
+      // magnitude (Hero's/Witch's Finale) or HoT magnitude.
+      if (s.class === "Bard" && s.bardActiveSong && paragonDef) {
+        const songsList = (paragonDef.powers && Array.isArray(paragonDef.powers.songs))
+          ? paragonDef.powers.songs : [];
+        const song = songsList.find(sng => sng && sng.name === s.bardActiveSong);
+        if (song) {
+          // The data carries the song's flat damage bonus inside the
+          // addedEffect text. We hardcode the three that grant a stat-
+          // panel bonus rather than NLP-parsing the description.
+          const SONG_DAMAGE_BONUS = {
+            "Steel March":     { "Damage Bonus": 2 },
+            "Tailwind Mambo":  { "Damage Bonus": 2 },
+            "Blaze Flamenco":  { "Damage Bonus": 2 }
+          };
+          const bonus = SONG_DAMAGE_BONUS[song.name];
+          if (bonus) {
+            buffs.push({
+              source: `Song Active: ${song.name}`,
+              percentStats: bonus,
+              ratingStats: {},
+              conditional: true   // song uptime is partial; mark situational
+            });
+          }
+        }
+      }
+
+      // Warlock Hellbringer Soul Sparks — each stockpiled spark grants
+      // +1% Damage Bonus (capped at 10 = +10%). Conditional because
+      // sparks deplete via Soul Scorch / time out; the slider models
+      // an assumed average uptime.
+      if (s.class === "Warlock" && s.paragon === "Hellbringer") {
+        const sparks = Math.max(0, Math.min(10, s.warlockSoulSparks || 0));
+        if (sparks > 0) {
+          buffs.push({
+            source: `Soul Sparks (${sparks})`,
+            percentStats: { "Damage Bonus": sparks * 1 },
+            ratingStats: {},
+            conditional: true
           });
         }
       }
@@ -5251,7 +5363,8 @@
         cb: state.companionBolster, mb: state.mountBolster, cr: state.companionRarity, ir: state.insigniaRarity,
         sr: state.summonedRarity, acr: state.activeCompRarities,
         cc: state.compCollection, mc: state.mountCollection,
-        boons: [...state.boons], buffs: [...state.buffs], partyContent: state.partyContent, partyAllies: state.partyAllies, partyMountAllies: state.partyMountAllies
+        boons: [...state.boons], buffs: [...state.buffs], partyContent: state.partyContent, partyAllies: state.partyAllies, partyMountAllies: state.partyMountAllies,
+        scf: state.slottedClassFeaturePicks, stance: state.rangerStance, song: state.bardActiveSong, sparks: state.warlockSoulSparks
       });
       if (key === _engineCacheKey && _engineResult) return _engineResult;
       _engineCacheKey = key;
@@ -6363,6 +6476,149 @@
         });
       });
     }
+    /* ===== Class loadout (slotted features + per-class toggles) =====
+       Picks 2 from paragon.slottedClassFeatures + class-specific dials
+       (Ranger stance, Bard song, Warlock Soul Sparks). Each entry feeds
+       directly into the engine's buffs pipeline. */
+    function renderClassLoadout() {
+      const panel = document.getElementById("class-loadout-panel");
+      const body  = document.getElementById("class-loadout-body");
+      if (!panel || !body) return;
+
+      const paragonDef = findParagon(state.class, state.paragon);
+      // Panel only matters once paragon is picked.
+      if (!paragonDef) {
+        panel.style.display = "none";
+        body.innerHTML = "";
+        return;
+      }
+      panel.style.display = "";
+
+      const out = [];
+      const slotted = Array.isArray(paragonDef.slottedClassFeatures) ? paragonDef.slottedClassFeatures : [];
+
+      // Drop the cross-reference stubs (e.g. Hunter's Seeker's Vengeance
+      // shim that points to Warden) — they're informational only.
+      const pickable = slotted.filter(f => !f.classShared);
+      const picks = (state.slottedClassFeaturePicks || []).slice();
+
+      out.push('<div class="field"><label>Slotted Class Features <span style="color:var(--text-dim);font-weight:400;">(pick up to 2)</span></label>');
+      out.push('<div style="display:flex;gap:0.5rem;flex-wrap:wrap;">');
+      for (let i = 0; i < 2; i++) {
+        const current = picks[i] || "";
+        out.push('<select data-cf-slot="' + i + '" style="flex:1;min-width:200px;">');
+        out.push('<option value="">— empty —</option>');
+        for (const f of pickable) {
+          // Don't allow the same feature in both slots.
+          if (picks[1 - i] && picks[1 - i] === f.name) continue;
+          const sel = (current === f.name) ? ' selected' : '';
+          out.push('<option value="' + escAttr(f.name) + '"' + sel + '>' + escHtml(f.name) + '</option>');
+        }
+        out.push('</select>');
+      }
+      out.push('</div>');
+      // Description box for the picks
+      const descLines = picks.filter(Boolean).map(name => {
+        const f = pickable.find(x => x.name === name);
+        return f ? ('<div style="margin-top:0.4rem;font-size:0.78rem;color:var(--text-dim);"><strong>' + escHtml(f.name) + ':</strong> ' + escHtml(f.description || "") + '</div>') : '';
+      }).join('');
+      if (descLines) out.push(descLines);
+      out.push('</div>');
+
+      // --- Ranger stance toggle ---
+      if (state.class === "Ranger") {
+        out.push('<div class="field" style="margin-top:0.8rem;"><label>Ranger Stance</label>');
+        out.push('<div style="display:flex;gap:0.5rem;">');
+        out.push('<button type="button" data-stance="ranged" class="btn ' + (state.rangerStance === "ranged" ? "btn-primary" : "btn-ghost") + '">Ranged Stance — +5% Stamina Regen</button>');
+        out.push('<button type="button" data-stance="melee"  class="btn ' + (state.rangerStance === "melee"  ? "btn-primary" : "btn-ghost") + '">Melee Stance — +5% Movement Speed</button>');
+        out.push('</div></div>');
+      }
+
+      // --- Bard active song picker ---
+      if (state.class === "Bard") {
+        const songsList = (paragonDef.powers && Array.isArray(paragonDef.powers.songs)) ? paragonDef.powers.songs : [];
+        // Stat-contributing songs are the three with a flat damage bonus.
+        // Other songs still appear in the list as "no stat panel impact"
+        // so the user can see all options.
+        const STAT_BONUS = {
+          "Steel March":     "+2% Damage Bonus (physical)",
+          "Tailwind Mambo":  "+2% Damage Bonus (projectile)",
+          "Blaze Flamenco":  "+2% Damage Bonus (magical)"
+        };
+        out.push('<div class="field" style="margin-top:0.8rem;"><label>Active Song <span style="color:var(--text-dim);font-weight:400;">(only damage-bonus songs change the stat panel)</span></label>');
+        out.push('<select id="bard-song-picker">');
+        out.push('<option value="">— no song active —</option>');
+        for (const sng of songsList) {
+          const sel = (state.bardActiveSong === sng.name) ? ' selected' : '';
+          const tag = STAT_BONUS[sng.name] ? ' · ' + STAT_BONUS[sng.name] : '';
+          out.push('<option value="' + escAttr(sng.name) + '"' + sel + '>' + escHtml(sng.name + tag) + '</option>');
+        }
+        out.push('</select></div>');
+      }
+
+      // --- Warlock Hellbringer Soul Sparks slider ---
+      if (state.class === "Warlock" && state.paragon === "Hellbringer") {
+        const sparks = Math.max(0, Math.min(10, state.warlockSoulSparks || 0));
+        out.push('<div class="field" style="margin-top:0.8rem;"><label>Soul Sparks <span style="color:var(--text-dim);font-weight:400;">(each spark = +1% Damage Bonus, conditional)</span></label>');
+        out.push('<div style="display:flex;align-items:center;gap:0.6rem;">');
+        out.push('<input type="range" id="warlock-sparks-slider" min="0" max="10" step="1" value="' + sparks + '" style="flex:1;">');
+        out.push('<span id="warlock-sparks-readout" style="min-width:3em;text-align:right;font-variant-numeric:tabular-nums;">' + sparks + ' / 10</span>');
+        out.push('</div></div>');
+      }
+
+      body.innerHTML = out.join("");
+
+      // --- Wire the picker controls ---
+      body.querySelectorAll('select[data-cf-slot]').forEach(sel => {
+        sel.addEventListener('change', e => {
+          const idx = parseInt(e.target.dataset.cfSlot, 10);
+          const val = e.target.value;
+          const arr = (state.slottedClassFeaturePicks || []).slice();
+          // Ensure length 2
+          while (arr.length < 2) arr.push("");
+          arr[idx] = val;
+          // Strip empty trailing entries so storage stays clean
+          state.slottedClassFeaturePicks = arr.filter(Boolean);
+          renderClassLoadout();   // refresh — picks affect the OTHER slot's options
+          rerenderAll();
+        });
+      });
+      body.querySelectorAll('button[data-stance]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          state.rangerStance = e.currentTarget.dataset.stance;
+          renderClassLoadout();
+          rerenderAll();
+        });
+      });
+      const songPicker = body.querySelector('#bard-song-picker');
+      if (songPicker) {
+        songPicker.addEventListener('change', e => {
+          state.bardActiveSong = e.target.value;
+          rerenderAll();
+        });
+      }
+      const sparksSlider = body.querySelector('#warlock-sparks-slider');
+      if (sparksSlider) {
+        sparksSlider.addEventListener('input', e => {
+          state.warlockSoulSparks = parseInt(e.target.value, 10) || 0;
+          const readout = body.querySelector('#warlock-sparks-readout');
+          if (readout) readout.textContent = state.warlockSoulSparks + ' / 10';
+          rerenderAll();
+        });
+      }
+    }
+
+    // Small HTML-safety helpers used by renderClassLoadout above. The
+    // existing escapeHtml in shared.js isn't loaded in the prototype
+    // context, so we inline minimal versions here.
+    function escHtml(s) {
+      return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    function escAttr(s) {
+      return escHtml(s).replace(/"/g, "&quot;");
+    }
+
     function renderBuffs() {
       const el = document.getElementById("buff-list");
       if (!el) return;
@@ -7637,6 +7893,7 @@
       renderQuickStats();
       renderScore();
       renderStepDoneStates();
+      renderClassLoadout();
       if (state.step === 6) { renderSim(); renderSummary(); }
       // If a picker is open, re-render its list too. This keeps the
       // displayed values in picker cards in sync with state changes
@@ -7733,6 +7990,12 @@
         c.classList.add("active");
         state.class = c.dataset.class;
         state.paragon = "";   // class changed → paragon no longer applies
+        // Reset class-specific loadout state — picks/stance/song/sparks
+        // are all keyed to the prior class.
+        state.slottedClassFeaturePicks = [];
+        state.bardActiveSong = "";
+        state.warlockSoulSparks = 0;
+        state.rangerStance = "ranged";
         populateParagons(state.class);
         applyClassBaseScores(state.class);
         renderGear();
@@ -7757,7 +8020,15 @@
       });
     });
     // Form fields
-    document.getElementById("f-paragon").addEventListener("change", e => { state.paragon = e.target.value; rerenderAll(); });
+    document.getElementById("f-paragon").addEventListener("change", e => {
+      state.paragon = e.target.value;
+      // Switching paragon invalidates feature picks (different
+      // slottedClassFeatures lists per paragon) and the active song
+      // (Songblade ≠ Minstrel songs).
+      state.slottedClassFeaturePicks = [];
+      state.bardActiveSong = "";
+      rerenderAll();
+    });
     document.getElementById("f-race").addEventListener("change",    e => {
       state.race = e.target.value;
       state.raceChoices = [];   // reset picks when race changes
