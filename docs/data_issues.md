@@ -79,8 +79,18 @@ assignments worth verifying:
 - **Tempest Gaze Mark** appears as Shirt (id 341), Pants (id 410), and
   Shirt (id 490) — same naming inconsistency.
 - **Mark of the Convert / Adept / Fledgling / Recruit / Novice /
-  Initiate** mostly Shirt but a few entries (ids 498, 499, 503) are
-  Pants — likely mis-slotted; these have a Shirt-pattern naming.
+  Initiate** — **PARTIALLY RESOLVED 2026-05-17.** n00b verified in-game
+  that `Mark of the Convert (Survivor's Remedy)` is a **Shirt**, not Ring,
+  and comes from Red Harvest Heroic Encounters / Red Harvest Campaign
+  Store. Applied to all 12 Ring entries (ids 350-361):
+  - Convert/Adept/Fledgling/Recruit (8 entries) → Shirt
+  - Novice/Initiate (4 entries) → Pants
+  - 9 merged into existing Shirt/Pants twins (richer Ring data preserved
+    — full equipBonuses + allowedClasses)
+  - 3 re-slotted in place (no twin existed)
+  Still open: confirm the Pants vs Shirt assignment for Novice/Initiate is
+  consistent (Pants in current data may itself be wrong — n00b said only
+  Convert was Shirt; pants for the others is inferred from existing data).
 
 For each: verify in-game tooltip slot, correct any wrong assignments.
 Best path is one Conduit-family piece at a time as n00b encounters them.
