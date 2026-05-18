@@ -2097,7 +2097,7 @@
         <div class="row-2">
           <div class="field">
             <label>Paragon Path
-              <span class="hint-icon" data-tip="Determines where your Forte stat is distributed">?</span>
+              <span class="hint-icon" data-tip="Sets which stats Forte boosts for you">?</span>
             </label>
             <select id="f-paragon">
               <option value="">— Pick a path —</option>
@@ -2142,8 +2142,8 @@
       </div>
 
       <div class="panel" id="class-loadout-panel" style="display:none;">
-        <h2>Class loadout</h2>
-        <p class="hint">Slot two class features and toggle any class-specific dials. These contribute to your stat panel just like passive class skills.</p>
+        <h2>Your Powers</h2>
+        <p class="hint">Pick the powers you want to use.</p>
         <div id="class-loadout-body"></div>
       </div>
 
@@ -2198,7 +2198,7 @@
         <div class="bolster-pair" style="border:1px solid var(--border);border-radius:6px;padding:0.7rem 0.8rem;background:var(--elevated);">
           <div class="field">
             <label>Companion bolster
-              <span class="hint-icon" data-tip="0–120%. Auto-computed from your companion collection (top 10 by quality). Scales summoned companion's Enhancement power. Player bonus powers (the 5 active companion powers) are NOT affected by bolster.">?</span>
+              <span class="hint-icon" data-tip="0–120%. Fills in automatically from your top 10 companions by rarity. Boosts your summoned companion's Enhancement. Does NOT boost your 5 active companion powers.">?</span>
               <span style="float:right;color:var(--amber);font-weight:600;" id="comp-bolster-display">0%</span>
             </label>
             <input type="range" id="comp-bolster" min="0" max="120" value="0" style="width:100%;opacity:0.85;cursor:not-allowed;" disabled>
@@ -2231,7 +2231,7 @@
         <div class="bolster-pair" style="border:1px solid var(--border);border-radius:6px;padding:0.7rem 0.8rem;margin-top:0.7rem;background:var(--elevated);">
           <div class="field">
             <label>Mount bolster
-              <span class="hint-icon" data-tip="0–125%. Auto-computed from your mount collection (top 10 by quality). Scales mount Equip Power rating values and Combat Power magnitude. Insignia stats and Insignia Bonuses are NOT affected by bolster.">?</span>
+              <span class="hint-icon" data-tip="0–125%. Fills in automatically from your top 10 mounts by rarity. Boosts your mount's Equip Power and Combat Power. Does NOT boost Insignia stats or Insignia Bonuses.">?</span>
               <span style="float:right;color:var(--amber);font-weight:600;" id="mount-bolster-display">0%</span>
             </label>
             <input type="range" id="mount-bolster" min="0" max="125" value="0" style="width:100%;opacity:0.85;cursor:not-allowed;" disabled>
@@ -2263,7 +2263,7 @@
 
       <div class="panel">
         <h2>Pick your companions</h2>
-        <p class="hint">Top row dresses up your summoned companion — <strong>Enchantment</strong>, <strong>Enhancement</strong>, and 3 <strong>Equipment</strong> slots. Bottom: pick the summoned itself and 5 active companions, each one typed by what their power buffs.</p>
+        <p class="hint">Top row gears up your summoned companion — <strong>Enchantment</strong>, <strong>Enhancement</strong>, and 3 <strong>Equipment</strong> slots. Bottom: pick the summoned companion itself, plus 5 active companions whose powers boost your stats.</p>
         <div id="comp-loadout-row" class="comp-loadout">
           <div class="comp-loadout-chip" id="comp-enchant-chip">+ Enchantment</div>
           <div class="comp-loadout-chip" id="comp-enh-chip">+ Enhancement</div>
@@ -2276,7 +2276,7 @@
 
       <div class="panel">
         <h2>Mount stable</h2>
-        <p class="hint">Five mounts in your stable. Each gets a <strong>collar</strong>, a <strong>mount</strong>, and a fistful of <strong>insignias</strong>. Pick which <strong>Insignia Bonus</strong> you want per mount — slot the matching insignia categories and the row turns green. Running the same bonus on multiple mounts stacks at <strong>100% / 50% / 25%</strong> (see <a href="../mekaniks.html#view-stacking" target="_blank">Mekaniks → Stacking</a>).</p>
+        <p class="hint">Five mounts in your stable. Each gets a <strong>collar</strong>, a <strong>mount</strong>, and a set of <strong>insignias</strong>. Pick which <strong>Insignia Bonus</strong> you want per mount — slot the matching insignia categories and the row turns green. Using the same bonus on multiple mounts stacks at <strong>100% / 50% / 25%</strong> (see <a href="../mekaniks.html#view-stacking" target="_blank">Mekaniks → Stacking</a>).</p>
         <div style="margin-bottom:0.6rem;">
           <button class="btn btn-ghost" id="find-bonus-btn" style="font-size:0.85rem;">🔍 Find an Insignia Bonus</button>
         </div>
@@ -2311,7 +2311,7 @@
 
       <div class="panel">
         <h2>Optional buffs</h2>
-        <p class="hint">Stuff you eat, drink, or smash before a fight. One per category. Always-on freebies sit at the bottom — uncheck the ones you don't actually have.</p>
+        <p class="hint">Things you eat, drink, or pop before a fight. One per category. Free always-on buffs are at the bottom — uncheck any you don't have.</p>
         <div class="toggle-list" id="buff-list"></div>
       </div>
 
@@ -2325,7 +2325,7 @@
     <div class="step-panel" data-panel="6">
       <div class="panel">
         <h2 id="sim-title">What would this do?</h2>
-        <p class="hint" id="sim-hint">Type your power's magnitude from the in-game tooltip. We'll run the math against a typical PvE enemy and show what one hit would actually do. See <a href="../mekaniks.html#view-damage" target="_blank">Mekaniks → Damage</a> for the full formula.</p>
+        <p class="hint" id="sim-hint">Type your power's magnitude from the in-game tooltip. We'll show what one hit would actually do against a typical PvE enemy. See <a href="../mekaniks.html#view-damage" target="_blank">Mekaniks → Damage</a> for the full formula.</p>
         <div class="row-2">
           <div class="field">
             <label>Sample power magnitude
@@ -8725,7 +8725,7 @@
           ? `Type your heal's magnitude from the in-game tooltip. We'll show roughly how much it heals. <strong>Critical Severity is halved on heals</strong>, so crit-heals get a smaller bonus than crit-damage.`
           : isTank
           ? `Type a sample boss-hit magnitude. We'll show how much damage you'd take — your defensive stats (Awareness, Defense, Crit Avoid, Deflect) cut it down.`
-          : `Type your power's magnitude from the in-game tooltip. We'll run the math against a typical PvE enemy and show what one hit would actually do.`;
+          : `Type your power's magnitude from the in-game tooltip. We'll show what one hit would actually do against a typical PvE enemy.`;
       }
 
       // Base before per-hit multipliers
