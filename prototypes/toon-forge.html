@@ -1034,6 +1034,169 @@
     }
     .correction-btn.primary:hover { background: var(--amber); color: var(--bg); }
     .correction-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    /* ===== Card-style correction editor (cc-*) =====
+       Replaces the form layout with a card preview of the item, with
+       an inline ✎ on every editable value. Tap ✎ to edit just that
+       value in place; auto-saves on Enter or check button. */
+    .correction-modal-card { max-width: 620px; }
+    .cc-intro {
+      padding: 0.6rem 1.1rem 0.4rem;
+      color: var(--text-mute);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      margin: 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .cc-intro-pencil {
+      color: var(--amber);
+      padding: 0 0.25rem;
+      border: 1px solid var(--amber);
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 0.85em;
+    }
+    #correction-card {
+      padding: 0.9rem 1.1rem;
+      max-height: 60vh;
+      overflow-y: auto;
+      display: block;
+    }
+    .cc-section {
+      margin-top: 0.9rem;
+      padding-top: 0.6rem;
+      border-top: 1px dashed var(--border);
+    }
+    .cc-section:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+    .cc-section-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--amber);
+      opacity: 0.85;
+      margin-bottom: 0.4rem;
+    }
+    .cc-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0;
+      min-height: 1.9rem;
+    }
+    .cc-row-label {
+      color: var(--text-mute);
+      font-size: 0.85rem;
+      flex: 0 0 auto;
+      min-width: 8rem;
+    }
+    .cc-row-value {
+      color: var(--text);
+      font-size: 0.9rem;
+      flex: 1 1 auto;
+      word-break: break-word;
+    }
+    .cc-row-value-num {
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+    .cc-row .cc-edit {
+      flex: 0 0 auto;
+      background: rgba(240, 136, 62, 0.12);
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      border-radius: 4px;
+      padding: 0.05rem 0.4rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    .cc-row .cc-edit:hover {
+      background: var(--amber);
+      color: var(--bg);
+    }
+    .cc-row-edit {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex: 1 1 auto;
+    }
+    .cc-row-edit input, .cc-row-edit textarea {
+      flex: 1 1 auto;
+      padding: 0.35rem 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--amber);
+      color: var(--text);
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-family: var(--font-main);
+    }
+    .cc-row-edit textarea {
+      min-height: 2.5em;
+      resize: vertical;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+    .cc-row-edit input:focus, .cc-row-edit textarea:focus { outline: none; }
+    .cc-row-edit .cc-save {
+      background: var(--amber);
+      color: var(--bg);
+      border: 1px solid var(--amber);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .cc-row-edit .cc-cancel {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-mute);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .cc-header-block {
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.7rem;
+    }
+    .cc-name {
+      font-family: var(--font-display);
+      color: var(--amber);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .cc-subhead {
+      color: var(--text-mute);
+      font-size: 0.82rem;
+      margin-top: 0.2rem;
+    }
+    .cc-eb-block {
+      margin: 0.4rem 0;
+      padding: 0.5rem 0.7rem;
+      background: var(--elevated);
+      border-radius: 5px;
+      border-left: 2px solid var(--amber);
+    }
+    .cc-eb-name {
+      font-weight: 700;
+      color: var(--amber);
+      font-size: 0.9rem;
+    }
+    .cc-eb-desc {
+      color: var(--text);
+      font-size: 0.85rem;
+      line-height: 1.45;
+      margin-top: 0.3rem;
+    }
+    .cc-row-changed { background: rgba(240, 136, 62, 0.06); border-radius: 4px; }
+    .cc-row-changed .cc-row-value::after {
+      content: " (changed)";
+      color: var(--amber);
+      font-size: 0.7rem;
+      font-style: italic;
+      margin-left: 0.3rem;
+    }
     .picker-item-meta {
       color: var(--text-mute); font-size: 0.78rem; margin-top: 0.2rem;
       font-family: var(--font-mono);
@@ -2278,33 +2441,15 @@
     </div>
   </div>
 
-  <!-- ===== Correction modal — submit a data fix for any item ===== -->
+  <!-- ===== Correction modal — card-style item editor ===== -->
   <div class="correction-overlay" id="correction-overlay">
-    <div class="correction-modal">
+    <div class="correction-modal correction-modal-card">
       <h3 id="correction-title">Fix this item</h3>
-      <div class="correction-body">
-        <div class="correction-hint" id="correction-context"></div>
-        <div>
-          <label>What needs fixing?</label>
-          <input type="text" id="correction-field" placeholder='e.g. Power, Crit Strike, Item Level, Name, Set Name' autocomplete="off">
-        </div>
-        <div>
-          <label>What does in-game show?</label>
-          <input type="text" id="correction-value" placeholder='Whatever your in-game tooltip says (e.g. 5850 or 3.75%)' autocomplete="off">
-        </div>
-        <div>
-          <label>Your rarity (optional)</label>
-          <input type="text" id="correction-observed" placeholder='e.g. Celestial, Mythic, Legendary' autocomplete="off">
-        </div>
-        <div>
-          <label>Anything else? (optional)</label>
-          <textarea id="correction-notes" placeholder="Screenshot link, tooltip text, or any extra details"></textarea>
-        </div>
-      </div>
+      <p class="cc-intro">Tap the <span class="cc-intro-pencil">✎</span> next to anything to change it. Your build will use your version right away.</p>
+      <div class="correction-body" id="correction-card"><!-- card rendered by JS --></div>
       <div class="correction-footer">
         <span class="correction-status" id="correction-status"></span>
-        <button class="correction-btn" id="correction-cancel">Cancel</button>
-        <button class="correction-btn primary" id="correction-submit">Save my fix</button>
+        <button class="correction-btn primary" id="correction-close-btn">Done</button>
       </div>
     </div>
   </div>
@@ -3069,96 +3214,264 @@
     }, true);  // capture phase: fires before chip's bubble-phase handler
 
     /* =====================================================================
-       Correction modal — opens from the ✎ pencil on any picker card.
-       Submits to Supabase via submit_data_correction. Identical fixes
-       from N users dedup to one report with N upvotes.
+       Correction modal — card-style item editor.
+       Shows the item's current data with an inline ✎ on every editable
+       value. Tap ✎ → that line goes into edit mode → Save commits an
+       override (immediate local effect) + silently submits to Supabase
+       so other players can confirm the fix.
        ===================================================================== */
     let _correctionCtx = null;
+
+    function _esc(s) {
+      return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Build the card-style readout of an item. Each editable cell carries
+    // data-field (the override path) + data-kind ("text" or "num" or
+    // "longtext") so the inline edit form can re-render properly.
+    function _ccRenderCard(item, dataType) {
+      const r = (label, value, field, kind) => {
+        const isNum = kind === "num";
+        const valueClass = isNum ? "cc-row-value cc-row-value-num" : "cc-row-value";
+        const display = value == null || value === ""
+          ? '<span style="color:var(--text-mute);font-style:italic;">(empty)</span>'
+          : _esc(value);
+        return `<div class="cc-row" data-row="${_esc(field)}">
+          <span class="cc-row-label">${_esc(label)}</span>
+          <span class="${valueClass}" data-value="${_esc(value == null ? "" : value)}">${display}</span>
+          <button class="cc-edit" data-edit="${_esc(field)}" data-kind="${kind || 'text'}" title="Edit ${_esc(label)}">✎</button>
+        </div>`;
+      };
+      let html = "";
+
+      // Header block: name + slot/IL
+      html += `<div class="cc-header-block">`;
+      html += `<div class="cc-row" data-row="name">
+        <span class="cc-name cc-row-value" data-value="${_esc(item.name || "")}">${_esc(item.name || "(unnamed)")}</span>
+        <button class="cc-edit" data-edit="name" data-kind="text" title="Edit name">✎</button>
+      </div>`;
+      const subParts = [];
+      if (item.slot) subParts.push(`<span>${_esc(item.slot)}</span>`);
+      if (item.item_level !== undefined && item.item_level !== null) {
+        subParts.push(`<span class="cc-row" style="display:inline-flex;padding:0;min-height:0;">
+          <span>Item Level&nbsp;</span>
+          <span class="cc-row-value cc-row-value-num" data-row="item_level" data-value="${_esc(item.item_level)}">${_esc(item.item_level)}</span>
+          <button class="cc-edit" data-edit="item_level" data-kind="num" title="Edit Item Level" style="margin-left:0.3rem;">✎</button>
+        </span>`);
+      }
+      if (subParts.length) html += `<div class="cc-subhead">${subParts.join(" · ")}</div>`;
+      html += `</div>`;
+
+      // Set + Source
+      if (item.set !== undefined || item.source !== undefined) {
+        html += `<div class="cc-section">`;
+        html += `<div class="cc-section-title">Where it's from</div>`;
+        if (item.set !== undefined) html += r("Set", item.set, "set", "text");
+        if (item.source !== undefined) html += r("From", item.source, "source", "text");
+        html += `</div>`;
+      }
+
+      // Rating stats
+      if (item.ratingStats && Object.keys(item.ratingStats).length) {
+        html += `<div class="cc-section"><div class="cc-section-title">Stats</div>`;
+        for (const stat of Object.keys(item.ratingStats)) {
+          html += r(stat, item.ratingStats[stat], stat, "num");
+        }
+        html += `</div>`;
+      }
+
+      // Percent stats
+      if (item.percentStats && Object.keys(item.percentStats).length) {
+        html += `<div class="cc-section"><div class="cc-section-title">Percent Bonuses</div>`;
+        for (const stat of Object.keys(item.percentStats)) {
+          html += r(stat + " %", item.percentStats[stat], `percentStats.${stat}`, "num");
+        }
+        html += `</div>`;
+      }
+
+      // Ability bonuses
+      if (item.abilityBonuses && Object.keys(item.abilityBonuses).length) {
+        html += `<div class="cc-section"><div class="cc-section-title">Ability Bonuses</div>`;
+        for (const stat of Object.keys(item.abilityBonuses)) {
+          html += r(stat, item.abilityBonuses[stat], `abilityBonuses.${stat}`, "num");
+        }
+        html += `</div>`;
+      }
+
+      // Equip bonuses (one block per bonus, with editable name + description)
+      if (Array.isArray(item.equipBonuses) && item.equipBonuses.length) {
+        html += `<div class="cc-section"><div class="cc-section-title">Equip Powers</div>`;
+        item.equipBonuses.forEach((eb, i) => {
+          html += `<div class="cc-eb-block">`;
+          html += `<div class="cc-row" data-row="equipBonuses[${i}].name">
+            <span class="cc-eb-name cc-row-value" data-value="${_esc(eb.name || "")}">${_esc(eb.name || "(unnamed power)")}</span>
+            <button class="cc-edit" data-edit="equipBonuses[${i}].name" data-kind="text" title="Edit power name">✎</button>
+          </div>`;
+          if (eb.description !== undefined) {
+            html += `<div class="cc-row" data-row="equipBonuses[${i}].description" style="align-items:flex-start;">
+              <span class="cc-eb-desc cc-row-value" data-value="${_esc(eb.description || "")}">${_esc(eb.description || "(no description)")}</span>
+              <button class="cc-edit" data-edit="equipBonuses[${i}].description" data-kind="longtext" title="Edit power description">✎</button>
+            </div>`;
+          }
+          html += `</div>`;
+        });
+        html += `</div>`;
+      }
+
+      // Combined Rating (read-only context, but editable if needed)
+      if (item.combinedRating !== undefined) {
+        html += `<div class="cc-section">`;
+        html += r("Combined Rating", item.combinedRating, "combinedRating", "num");
+        html += `</div>`;
+      }
+
+      return html;
+    }
 
     function openCorrectionModal(dataType, item) {
       if (!item) return;
       _correctionCtx = { dataType: dataType, item: item };
-      const ctxLine = `${dataType} · id ${item.id} · "${item.name || "(unnamed)"}"`;
       document.getElementById("correction-title").textContent = `Fix ${item.name || dataType} for your build`;
-      document.getElementById("correction-context").textContent = ctxLine;
-      document.getElementById("correction-field").value = "";
-      document.getElementById("correction-value").value = "";
-      document.getElementById("correction-observed").value = "";
-      document.getElementById("correction-notes").value = "";
+      const card = document.getElementById("correction-card");
+      card.innerHTML = _ccRenderCard(item, dataType);
       document.getElementById("correction-status").textContent = "";
       document.getElementById("correction-status").className = "correction-status";
-      document.getElementById("correction-submit").disabled = false;
       document.getElementById("correction-overlay").classList.add("open");
-      setTimeout(() => document.getElementById("correction-field").focus(), 30);
+      _ccMarkChangedFields();
     }
+
     function closeCorrectionModal() {
       document.getElementById("correction-overlay").classList.remove("open");
       _correctionCtx = null;
     }
-    document.getElementById("correction-cancel").addEventListener("click", closeCorrectionModal);
+    document.getElementById("correction-close-btn").addEventListener("click", closeCorrectionModal);
     document.getElementById("correction-overlay").addEventListener("click", (e) => {
       if (e.target.id === "correction-overlay") closeCorrectionModal();
     });
-    document.getElementById("correction-submit").addEventListener("click", () => {
+
+    // Highlight any row whose field already has a saved override.
+    function _ccMarkChangedFields() {
+      if (!_correctionCtx || !window.NWCBDataCorrections) return;
+      const prefix = `${_correctionCtx.dataType}:${_correctionCtx.item.id}:`;
+      const all = window.NWCBDataCorrections.getAllOverrides();
+      Object.keys(all).forEach(k => {
+        if (k.indexOf(prefix) !== 0) return;
+        const field = k.slice(prefix.length);
+        const row = document.querySelector(`#correction-card .cc-row[data-row="${field}"]`);
+        if (row) row.classList.add("cc-row-changed");
+      });
+    }
+
+    // Delegated handler: ✎ on any row → swap that row to inline-edit mode.
+    document.getElementById("correction-card").addEventListener("click", (e) => {
+      const btn = e.target.closest && e.target.closest(".cc-edit");
+      if (!btn) return;
+      const field = btn.dataset.edit;
+      const kind = btn.dataset.kind;
+      const row = btn.closest(".cc-row");
+      if (!row) return;
+      const valueEl = row.querySelector(".cc-row-value");
+      const current = valueEl ? valueEl.dataset.value : "";
+      const label = row.querySelector(".cc-row-label");
+      const labelText = label ? label.textContent : field;
+
+      // Build the inline editor
+      const useTextarea = kind === "longtext";
+      const editHtml = `
+        <div class="cc-row-edit" data-editing="${_esc(field)}" data-kind="${_esc(kind)}">
+          ${useTextarea
+            ? `<textarea class="cc-input">${_esc(current)}</textarea>`
+            : `<input type="${kind === 'num' ? 'text' : 'text'}" class="cc-input" value="${_esc(current)}" inputmode="${kind === 'num' ? 'decimal' : 'text'}">`}
+          <button class="cc-save" title="Save">✓</button>
+          <button class="cc-cancel" title="Cancel">✕</button>
+        </div>`;
+      // Replace value + ✎ with the editor
+      const valueAndBtn = [valueEl, btn].filter(Boolean);
+      const tmp = document.createElement("div");
+      tmp.innerHTML = editHtml;
+      const editor = tmp.firstElementChild;
+      if (valueEl) valueEl.style.display = "none";
+      btn.style.display = "none";
+      row.appendChild(editor);
+      const input = editor.querySelector(".cc-input");
+      input.focus();
+      if (input.select) input.select();
+
+      // Enter to save (text input only), Escape to cancel
+      input.addEventListener("keydown", (ke) => {
+        if (ke.key === "Enter" && !useTextarea) { ke.preventDefault(); editor.querySelector(".cc-save").click(); }
+        else if (ke.key === "Escape") { ke.preventDefault(); editor.querySelector(".cc-cancel").click(); }
+      });
+      editor.querySelector(".cc-cancel").addEventListener("click", () => {
+        editor.remove();
+        if (valueEl) valueEl.style.display = "";
+        btn.style.display = "";
+      });
+      editor.querySelector(".cc-save").addEventListener("click", () => {
+        const newVal = input.value;
+        _ccSaveField(field, newVal, kind, row, valueEl, btn, editor, labelText);
+      });
+    });
+
+    // Commit an inline edit: store override locally, recompute build,
+    // submit to Supabase silently.
+    function _ccSaveField(field, rawValue, kind, row, valueEl, btn, editor, labelText) {
       if (!_correctionCtx) return;
       const status = document.getElementById("correction-status");
-      const field    = (document.getElementById("correction-field").value || "").trim();
-      const value    = (document.getElementById("correction-value").value || "").trim();
-      const observed = (document.getElementById("correction-observed").value || "").trim();
-      const notes    = (document.getElementById("correction-notes").value || "").trim();
-      if (!field) {
-        status.textContent = "Pick what you want to fix (like Crit Strike, Defense, etc.).";
-        status.className = "correction-status err";
-        return;
-      }
-      if (!value) {
-        status.textContent = "Type the right value (what in-game shows).";
-        status.className = "correction-status err";
-        return;
-      }
-      if (!window.NWCBDataCorrections) {
-        status.textContent = "Correction plumbing not loaded — refresh the page.";
-        status.className = "correction-status err";
-        return;
-      }
-      // Try to parse a numeric value so the fingerprint normalizes well.
-      const numericValue = Number(value.replace(/[%+]/g, "").trim());
-      const claimedBaseValue = Number.isFinite(numericValue) ? numericValue : value;
       const item = _correctionCtx.item;
       const dataType = _correctionCtx.dataType;
-      const title = `Data fix: ${item.name || dataType} · ${field} → ${value}`.slice(0, 200);
-      status.textContent = "Saving…";
-      status.className = "correction-status";
-      document.getElementById("correction-submit").disabled = true;
+      const trimmed = String(rawValue == null ? "" : rawValue).trim();
+      let claimedValue;
+      if (kind === "num") {
+        const cleaned = trimmed.replace(/[%+,]/g, "").trim();
+        const n = Number(cleaned);
+        if (!Number.isFinite(n)) {
+          status.textContent = `That doesn't look like a number — try again.`;
+          status.className = "correction-status err";
+          return;
+        }
+        claimedValue = n;
+      } else {
+        claimedValue = trimmed;
+      }
+
+      // Apply override + recompute immediately so the player sees the fix.
+      const overrideKey = `${dataType}:${item.id}:${field}`;
+      window.NWCBDataCorrections.setOverride(overrideKey, claimedValue);
+      if (typeof rerenderAll === "function") rerenderAll();
+
+      // Update the row UI to reflect new value.
+      if (valueEl) {
+        valueEl.dataset.value = String(claimedValue);
+        valueEl.textContent = claimedValue === "" || claimedValue == null
+          ? "(empty)"
+          : String(claimedValue);
+        valueEl.style.display = "";
+      }
+      if (btn) btn.style.display = "";
+      editor.remove();
+      row.classList.add("cc-row-changed");
+      status.textContent = `Saved! Your build is using your version now.`;
+      status.className = "correction-status ok";
+
+      // Background submit to Supabase. Don't surface the report ID etc.
+      const title = `Data fix: ${item.name || dataType} · ${field} → ${claimedValue}`.slice(0, 200);
       window.NWCBDataCorrections.submitCorrection({
         type: dataType,
         id: item.id,
         field: field,
-        rarityScalingRule: null,           // free-form field; client doesn't infer
+        rarityScalingRule: null,
         baseIL: item.item_level || null,
-        claimedBaseValue: claimedBaseValue,
-        userObserved: observed ? { text: observed } : null,
+        claimedBaseValue: claimedValue,
+        userObserved: null,
         title: title,
-        notes: notes || null
-      }).then(res => {
-        if (res.ok) {
-          // Persist the user's correction locally so the engine + UI
-          // reflect it immediately on subsequent reads. The find*
-          // wrappers below consult getAllOverrides() at lookup time.
-          const overrideKey = `${dataType}:${item.id}:${field}`;
-          window.NWCBDataCorrections.setOverride(overrideKey, claimedBaseValue);
-          // Recompute build immediately so the user sees their fix take effect.
-          if (typeof rerenderAll === "function") rerenderAll();
-          status.textContent = "Saved! Your build is using your version now.";
-          status.className = "correction-status ok";
-          setTimeout(closeCorrectionModal, 1700);
-        } else {
-          status.textContent = "Error: " + (res.error || "unknown");
-          status.className = "correction-status err";
-          document.getElementById("correction-submit").disabled = false;
-        }
-      });
-    });
+        notes: null
+      }).catch(() => { /* silent failure — local override already applied */ });
+    }
 
     /* ===== Reinforcement kit helpers ===== */
     // Map prototype slot label ("Ring 1"/"Ring 2") to the canonical
