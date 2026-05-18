@@ -45,6 +45,17 @@ is ONE entry that carries both `set` AND `source`. Affects:
 the slot assignment (some are Pants, some Shirt) is correct per equip
 power, since base orphan entries showed Pants/Shirt inconsistencies.
 
+## Silverspruce Gladiator Ring — PvP/PvE Status Unknown (2026-05-18)
+
+id 2494 `Silverspruce Gladiator Ring` (IL 756) — Sea of Moving Ice
+gemstone ring family. Other Silverspruce rings (Ward, etc.) at the same
+IL exist as PvE. The "Gladiator" suffix variant could be PvE DPS or
+PvP variant.
+
+n00b couldn't locate this item in-game during 2026-05-18 audit. Kept
+pending verification. If verified as PvP, delete per n00b's PvP gear
+policy.
+
 ## Paladin IL 3900 'of the Thayan Zealot' Weapons — Set Unknown (2026-05-17)
 
 Two Paladin orphan weapons at IL 3900 share the "Thayan Zealot" naming
