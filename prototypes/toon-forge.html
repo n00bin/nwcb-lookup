@@ -3417,6 +3417,53 @@
       });
     });
 
+    // Humanize a field path for display in correction reports.
+    // Falls back to the row's visible label if we already have a nice
+    // one; otherwise tries to interpret common path patterns.
+    function _ccHumanFieldName(field, labelFromRow) {
+      if (labelFromRow && labelFromRow.trim()) return labelFromRow.trim();
+      const map = {
+        name: "Name",
+        item_level: "Item Level",
+        combinedRating: "Combined Rating",
+        set: "Set",
+        source: "Source",
+      };
+      if (map[field]) return map[field];
+      let m = field.match(/^equipBonuses\[(\d+)\]\.(.+)$/);
+      if (m) {
+        const i = Number(m[1]) + 1;
+        const sub = m[2] === "name" ? "name" : m[2] === "description" ? "description" : m[2];
+        return `Equip Power #${i} ${sub}`;
+      }
+      m = field.match(/^percentStats\.(.+)$/);
+      if (m) return `${m[1]} (%)`;
+      m = field.match(/^abilityBonuses\.(.+)$/);
+      if (m) return `${m[1]} bonus`;
+      m = field.match(/^ratingStats\.(.+)$/);
+      if (m) return m[1];
+      return field;
+    }
+
+    // Build the description body the admin will see on the report.
+    function _ccBuildReportDescription(item, dataType, fieldHuman, oldVal, newVal) {
+      const lines = [];
+      lines.push(`Player flagged a mismatch between the site data and what they see in-game.`);
+      lines.push(``);
+      lines.push(`Item: ${item.name || "(unnamed)"}`);
+      if (item.slot) lines.push(`Slot: ${item.slot}`);
+      if (item.item_level != null) lines.push(`Item Level: ${item.item_level}`);
+      if (item.set) lines.push(`Set: ${item.set}`);
+      lines.push(``);
+      lines.push(`Field: ${fieldHuman}`);
+      lines.push(`Site shows: ${oldVal == null || oldVal === "" ? "(empty)" : String(oldVal)}`);
+      lines.push(`Player says in-game: ${newVal == null || newVal === "" ? "(empty)" : String(newVal)}`);
+      lines.push(``);
+      lines.push(`Submitted via Toon Forge correction editor.`);
+      lines.push(`Data type: ${dataType} · Source id: ${item.id}`);
+      return lines.join("\n");
+    }
+
     // Commit an inline edit: store override locally, recompute build,
     // submit to Supabase silently.
     function _ccSaveField(field, rawValue, kind, row, valueEl, btn, editor, labelText) {
@@ -3474,7 +3521,15 @@
       status.className = "correction-status ok";
 
       // Background submit to Supabase. Don't surface the report ID etc.
-      const title = `Data fix: ${item.name || dataType} · ${field} → ${claimedValue}`.slice(0, 200);
+      // Title + description are built to be admin-friendly: human field
+      // names, both old and new values, full item context.
+      const fieldHuman = _ccHumanFieldName(field, labelText);
+      const itemName = item.name || dataType;
+      const oldStr = (originalSourceValue == null || originalSourceValue === "")
+        ? "(empty)" : String(originalSourceValue);
+      const newStr = (claimedValue == null || claimedValue === "") ? "(empty)" : String(claimedValue);
+      const title = `${itemName} — ${fieldHuman}: ${oldStr} → ${newStr}`.slice(0, 200);
+      const description = _ccBuildReportDescription(item, dataType, fieldHuman, originalSourceValue, claimedValue);
       window.NWCBDataCorrections.submitCorrection({
         type: dataType,
         id: item.id,
@@ -3482,9 +3537,9 @@
         rarityScalingRule: null,
         baseIL: item.item_level || null,
         claimedBaseValue: claimedValue,
-        userObserved: null,
+        userObserved: { old: originalSourceValue, new: claimedValue },
         title: title,
-        notes: null
+        notes: description
       }).catch(() => { /* silent failure — local override already applied */ });
     }
 
