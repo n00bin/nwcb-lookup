@@ -45,6 +45,17 @@ is ONE entry that carries both `set` AND `source`. Affects:
 the slot assignment (some are Pants, some Shirt) is correct per equip
 power, since base orphan entries showed Pants/Shirt inconsistencies.
 
+## Celestial Sash + Divine Focus — Singleton Belt/Neck Orphans (2026-05-18)
+
+Two IL 550 singleton orphans with no sibling family context:
+
+- id 1436 `Celestial Sash` (Belt) — Accuracy 412 / Defense 412 + DEX 1
+- id 1435 `Divine Focus` (Neck) — Crit Strike 412 / Crit Severity 412 + CON 2
+
+"Celestial" + "Divine" naming + ability bonuses suggest Cleric-themed class
+quest or campaign reward, possibly from Mod 5-7 era. Needs in-game lookup
+to confirm source.
+
 ## Class-Themed Ring Orphans Pending Source Verification (2026-05-18)
 
 17 ring orphans left after the 70-ring bulk source backfill on 2026-05-18.
