@@ -3131,7 +3131,7 @@
        Type(dataType, itemKey, opts).
        ===================================================================== */
     const DETAILS_RESOLVERS = {
-      gear:                  (name) => ({ item: findGearByName(name), render: renderGearItem }),
+      gear:                  (name, opts) => ({ item: findGearByName(name, opts && opts.slot), render: renderGearItem }),
       artifact:              (name) => ({ item: findArtifactByName(name), render: renderArtifactItem }),
       enchant:               (name) => ({ item: findEnchantByName(name), render: renderEnchantPick }),
       overload:              (name) => ({ item: findOverloadByName(name), render: renderOverloadPick }),
@@ -3174,7 +3174,7 @@
       } else {
         const r = DETAILS_RESOLVERS[dataType];
         if (!r) return;
-        const got = r(itemKey);
+        const got = r(itemKey, opts);
         item = got.item;
         render = got.render;
       }
@@ -3209,7 +3209,8 @@
       e.preventDefault();
       openDetailsByType(btn.dataset.detailsType, btn.dataset.detailsKey, {
         rarity:   btn.dataset.detailsRarity,
-        summoned: btn.dataset.detailsSummoned === "1"
+        summoned: btn.dataset.detailsSummoned === "1",
+        slot:     btn.dataset.detailsSlot
       });
     }, true);  // capture phase: fires before chip's bubble-phase handler
 
@@ -4198,8 +4199,13 @@
 
     function findGearByName(name, slotType) {
       if (!name || typeof GEAR_DATA === "undefined") return null;
+      // When a slot is supplied, disambiguate against it (same-name items
+      // can exist across slots). When omitted, fall back to first-by-name —
+      // used by the Details modal which only knows the name.
       for (const item of GEAR_DATA) {
-        if (item.name === name && item.slot === slotType) return item;
+        if (item.name !== name) continue;
+        if (slotType && item.slot !== slotType) continue;
+        return item;
       }
       return null;
     }
@@ -6606,7 +6612,7 @@
                ${kitInfo}
              </div>`
           : "";
-        const gearInfo = filled ? `<button class="chip-info" data-details-type="gear" data-details-key="${_escAttr(v)}" title="See gear details">\u{1F50D}</button>` : "";
+        const gearInfo = filled ? `<button class="chip-info" data-details-type="gear" data-details-key="${_escAttr(v)}" data-details-slot="${_escAttr(s.slot)}" title="See gear details">\u{1F50D}</button>` : "";
         return `
           <div class="slot ${filled ? "filled" : ""}">
             <div class="slot-label">${s.label}${noItems ? " — no items" : ""}</div>
