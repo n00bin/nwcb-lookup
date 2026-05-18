@@ -187,12 +187,24 @@
     } catch (e) { return {}; }
   }
 
-  function setOverride(key, value) {
+  function setOverride(key, value, originalSourceValue) {
     var all = getAllOverrides();
     if (value === null || value === undefined) {
       delete all[key];
     } else {
-      all[key] = { value: value, savedAt: new Date().toISOString() };
+      // Preserve the originalSourceValue across re-edits — only capture
+      // it the first time we override this field. That value is the
+      // "source snapshot" we compare against later to detect when an
+      // admin has corrected the source JSON; if source changes, we
+      // drop the override and trust the new source.
+      var existing = all[key];
+      var entry = { value: value, savedAt: new Date().toISOString() };
+      if (existing && existing.originalSourceValue !== undefined) {
+        entry.originalSourceValue = existing.originalSourceValue;
+      } else if (originalSourceValue !== undefined && originalSourceValue !== null) {
+        entry.originalSourceValue = originalSourceValue;
+      }
+      all[key] = entry;
     }
     try {
       localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all));
@@ -203,6 +215,64 @@
     var all = getAllOverrides();
     var entry = all[key];
     return entry ? entry.value : undefined;
+  }
+
+  function getOverrideEntry(key) {
+    var all = getAllOverrides();
+    return all[key] || null;
+  }
+
+  // Loose value equality — numbers compare numerically, others as strings.
+  // Used to detect whether the source JSON has been corrected since the
+  // user's override was saved.
+  function _valuesEqual(a, b) {
+    if (a === b) return true;
+    if (a == null && b == null) return true;
+    if (a == null || b == null) return false;
+    var na = Number(a), nb = Number(b);
+    if (Number.isFinite(na) && Number.isFinite(nb)) return na === nb;
+    return String(a) === String(b);
+  }
+
+  // Read the current source value of a field on a raw (pre-override) item.
+  // Mirrors _applyFieldOverride's resolution rules but reads instead of writes.
+  function _readFieldValue(obj, field) {
+    if (!obj || !field) return undefined;
+    if (Object.prototype.hasOwnProperty.call(obj, field)) return obj[field];
+    if (obj.ratingStats && Object.prototype.hasOwnProperty.call(obj.ratingStats, field)) return obj.ratingStats[field];
+    if (obj.percentStats && Object.prototype.hasOwnProperty.call(obj.percentStats, field)) return obj.percentStats[field];
+    if (Array.isArray(obj.stats)) {
+      for (var i = 0; i < obj.stats.length; i++) {
+        if (obj.stats[i] && obj.stats[i].stat === field) return obj.stats[i].value;
+      }
+    }
+    if (field.indexOf(".") >= 0 || field.indexOf("[") >= 0) {
+      var parts = field.replace(/\[(\d+)\]/g, ".$1").split(".").filter(Boolean);
+      var cur = obj;
+      for (var j = 0; j < parts.length; j++) {
+        if (cur == null) return undefined;
+        cur = cur[parts[j]];
+      }
+      return cur;
+    }
+    var lower = field.toLowerCase();
+    var keys = Object.keys(obj);
+    for (var k = 0; k < keys.length; k++) {
+      if (keys[k].toLowerCase() === lower) return obj[keys[k]];
+    }
+    if (obj.ratingStats) {
+      var rk = Object.keys(obj.ratingStats);
+      for (var a = 0; a < rk.length; a++) {
+        if (rk[a].toLowerCase() === lower) return obj.ratingStats[rk[a]];
+      }
+    }
+    if (obj.percentStats) {
+      var pk = Object.keys(obj.percentStats);
+      for (var b = 0; b < pk.length; b++) {
+        if (pk[b].toLowerCase() === lower) return obj.percentStats[pk[b]];
+      }
+    }
+    return undefined;
   }
 
   function clearAllOverrides() {
@@ -230,16 +300,39 @@
     if (!item || !type || item.id === undefined || item.id === null) return item;
     var all = getAllOverrides();
     var prefix = type + ":" + item.id + ":";
-    var fields = Object.keys(all).filter(function (k) { return k.indexOf(prefix) === 0; });
-    if (!fields.length) return item;
-    var clone = JSON.parse(JSON.stringify(item));
-    fields.forEach(function (k) {
+    var keys = Object.keys(all).filter(function (k) { return k.indexOf(prefix) === 0; });
+    if (!keys.length) return item;
+
+    var clone = null;
+    var anyApplied = false;
+    keys.forEach(function (k) {
       var field = k.slice(prefix.length);
-      var v = all[k] && all[k].value;
-      _applyFieldOverride(clone, field, v);
+      var entry = all[k];
+      if (!entry) return;
+      // If we snapshotted the source value at override time, compare it
+      // against the current source value. A mismatch means an admin has
+      // corrected the source JSON since the player saved their override
+      // — trust the new source, clear the override, and let the new
+      // source value flow through unchanged.
+      if (entry.originalSourceValue !== undefined && entry.originalSourceValue !== null) {
+        var currentSource = _readFieldValue(item, field);
+        if (currentSource !== undefined && !_valuesEqual(entry.originalSourceValue, currentSource)) {
+          setOverride(k, null);  // clears it from localStorage
+          return;
+        }
+      }
+      // Lazy-clone so we don't pay deep-copy cost for items with no
+      // surviving overrides.
+      if (!clone) clone = JSON.parse(JSON.stringify(item));
+      _applyFieldOverride(clone, field, entry.value);
+      anyApplied = true;
     });
-    clone.__overridden = true;  // marker for UI badges if desired
-    return clone;
+
+    if (clone && anyApplied) {
+      clone.__overridden = true;  // marker for UI badges if desired
+      return clone;
+    }
+    return item;
   }
 
   function _applyFieldOverride(obj, field, value) {
@@ -316,6 +409,7 @@
     fingerprint:         fingerprint,
     submitCorrection:    submitCorrection,
     getOverride:         getOverride,
+    getOverrideEntry:    getOverrideEntry,
     setOverride:         setOverride,
     getAllOverrides:     getAllOverrides,
     applyOverridesToItem: applyOverridesToItem,
