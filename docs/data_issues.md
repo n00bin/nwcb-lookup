@@ -45,6 +45,35 @@ is ONE entry that carries both `set` AND `source`. Affects:
 the slot assignment (some are Pants, some Shirt) is correct per equip
 power, since base orphan entries showed Pants/Shirt inconsistencies.
 
+## Class-Themed Ring Orphans Pending Source Verification (2026-05-18)
+
+17 ring orphans left after the 70-ring bulk source backfill on 2026-05-18.
+n00b couldn't recall the source for these on-the-spot. Pending verification:
+
+**IL 1400 role-themed rings (6 items):**
+- id 1129 Medic's Ring of Mending
+- id 1130 Mercenary's Ring of Resistance
+- id 1132 Officer's Ring of Striking
+- id 1137 Physician's Ring of Healing
+- id 1136 Scout's Ring of Striking
+- id 1131 Soldier's Ring of Advantage
+
+**IL 1650 class-themed rings (11 items):**
+- id 1119 Wayseeker's Ring of Punishment
+- id 1120 Mightbreaker's Ring of Elegance
+- id 1121 Soulfire Ring of Piety
+- id 1122 Stalwartneedle Ring of Bulwark
+- id 1123 Waywatcher's Ring of Advantage
+- id 1124 Wayseeker's Ring of Intellect
+- id 1125 Soulfire Ring of Penance
+- id 1126 Soothsayer's Ring of Confession
+- id 1127 Waywatcher's Ring of Precision
+- id 1128 Mightbreaker's Ring of Clarity
+- id 243  Soothsayer's Ring of Absolution
+
+Likely Avernus/Vallenhas era (Mod 17-19) but needs verification. If found
+in-game, update with proper source.
+
 ## Silverspruce Gladiator Ring — PvP/PvE Status Unknown (2026-05-18)
 
 id 2494 `Silverspruce Gladiator Ring` (IL 756) — Sea of Moving Ice
