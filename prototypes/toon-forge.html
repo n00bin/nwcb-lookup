@@ -2033,11 +2033,11 @@
 
   <div class="steps" id="steps">
     <div class="step active" data-step="1"><span class="num">1</span> Role &amp; Class</div>
-    <div class="step"        data-step="2"><span class="num">2</span> Build Identity</div>
+    <div class="step"        data-step="2"><span class="num">2</span> Your Character</div>
     <div class="step"        data-step="3"><span class="num">3</span> Gear &amp; Artifacts</div>
     <div class="step"        data-step="4"><span class="num">4</span> Companions &amp; Mounts</div>
     <div class="step"        data-step="5"><span class="num">5</span> Boons &amp; Buffs</div>
-    <div class="step"        data-step="6"><span class="num">6</span> Test &amp; Tune</div>
+    <div class="step"        data-step="6"><span class="num">6</span> See It In Action</div>
   </div>
 
   <div class="page">
@@ -2084,7 +2084,7 @@
 
       <div class="nav-buttons">
         <button class="btn btn-ghost" disabled>← Back</button>
-        <button class="btn btn-primary" data-go="next">Next: Build Identity →</button>
+        <button class="btn btn-primary" data-go="next">Next: Your Character →</button>
       </div>
     </div>
 
@@ -2092,7 +2092,7 @@
     <div class="step-panel" data-panel="2">
       <div class="panel">
         <h2>Tell us about your toon</h2>
-        <p class="hint">Paragon, race, item level. The three knobs that decide what your stats actually mean.</p>
+        <p class="hint">Paragon, race, item level. The three settings that decide what your stats actually do.</p>
 
         <div class="row-2">
           <div class="field">
@@ -2120,7 +2120,7 @@
 
         <div class="field">
           <label>Item Level
-            <span class="hint-icon" data-tip="Auto-summed from every IL source the engine knows about. Click 'Show breakdown' to see each line item. Your TIL is also the baseline for rating-to-percent — see Mekaniks → Stats for the formula.">?</span>
+            <span class="hint-icon" data-tip="Adds up every piece of gear, mount, companion, etc. that gives you IL. Click 'Show breakdown' to see each one. Your TIL also decides how much rating you need for each 1% — see Mekaniks → Stats.">?</span>
             <span style="float:right;">
               <a href="#" id="il-breakdown-toggle" style="font-size:0.75rem;color:var(--amber);text-decoration:none;">▶ Show breakdown</a>
             </span>
@@ -2192,7 +2192,7 @@
     <div class="step-panel" data-panel="4">
       <div class="panel">
         <h2>Bolster</h2>
-        <p class="hint">Bolster is what your <strong>top 10 companions</strong> and <strong>top 10 mounts</strong> by quality contribute, even when they're not summoned. Type how many of each rarity you own and the engine computes your bolster automatically. See <a href="../mekaniks.html#view-bolster" target="_blank">Mekaniks → Bolster</a> for the per-tier table.</p>
+        <p class="hint">Bolster is what your <strong>top 10 companions</strong> and <strong>top 10 mounts</strong> by quality give you, even when they're not summoned. Type how many of each rarity you own and your bolster fills in automatically. See <a href="../mekaniks.html#view-bolster" target="_blank">Mekaniks → Bolster</a> for the per-tier table.</p>
 
         <!-- Companion bolster pair: slider (visual) + collection (input) -->
         <div class="bolster-pair" style="border:1px solid var(--border);border-radius:6px;padding:0.7rem 0.8rem;background:var(--elevated);">
@@ -2317,14 +2317,14 @@
 
       <div class="nav-buttons">
         <button class="btn btn-ghost" data-go="back">← Back</button>
-        <button class="btn btn-primary" data-go="next">Next: Test &amp; Tune →</button>
+        <button class="btn btn-primary" data-go="next">Next: See It In Action →</button>
       </div>
     </div>
 
     <!-- ============ Step 6: Test & Tune ============ -->
     <div class="step-panel" data-panel="6">
       <div class="panel">
-        <h2 id="sim-title">Run the math</h2>
+        <h2 id="sim-title">What would this do?</h2>
         <p class="hint" id="sim-hint">Type your power's magnitude from the in-game tooltip. We'll run the math against a typical PvE enemy and show what one hit would actually do. See <a href="../mekaniks.html#view-damage" target="_blank">Mekaniks → Damage</a> for the full formula.</p>
         <div class="row-2">
           <div class="field">
@@ -2359,7 +2359,7 @@
       </div>
 
       <div class="panel">
-        <h2>Where to spend next</h2>
+        <h2>What to upgrade next</h2>
         <p class="hint" id="advisor-hint">If you added <strong>+1%</strong> to each of these stats, how much would it help your damage (or healing)? The stat at the top is the one that helps you most right now. See <a href="../mekaniks.html#view-priorities" target="_blank">Mekaniks → Priorities</a> for the canonical priority list per role.</p>
         <div id="stat-advisor"></div>
         <p style="font-size:0.72rem;color:var(--text-dim);margin-top:0.7rem;line-height:1.5;">
@@ -8716,9 +8716,9 @@
       const titleEl = document.getElementById("sim-title");
       const hintEl = document.getElementById("sim-hint");
       if (titleEl) {
-        titleEl.textContent = isHealer ? "Run the heal math"
-                            : isTank   ? "Run the survival math"
-                            :            "Run the math";
+        titleEl.textContent = isHealer ? "What would this heal for?"
+                            : isTank   ? "How much can you take?"
+                            :            "What would this do?";
       }
       if (hintEl) {
         hintEl.innerHTML = isHealer
