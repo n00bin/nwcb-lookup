@@ -1862,7 +1862,7 @@
     <div class="hero-correction-callout" role="note">
       <span class="hcc-icon">✎</span>
       <div class="hcc-body">
-        <strong>Something not matching your game?</strong>
+        <strong>Something not matching in-game?</strong>
         Tap the <span class="hcc-pencil">✎</span> next to any item to fix it — stats, names, anything. Your build uses your version right away!
       </div>
     </div>
@@ -2289,7 +2289,7 @@
           <input type="text" id="correction-field" placeholder='e.g. Power, Crit Strike, Item Level, Name, Set Name' autocomplete="off">
         </div>
         <div>
-          <label>What does your game show?</label>
+          <label>What does in-game show?</label>
           <input type="text" id="correction-value" placeholder='Whatever your in-game tooltip says (e.g. 5850 or 3.75%)' autocomplete="off">
         </div>
         <div>
@@ -2916,7 +2916,7 @@
       if (showPencil) {
         html += `<div class="picker-tip">
           <span class="picker-tip-icon">💡</span>
-          <span>Something not matching your game? Tap the <strong class="picker-tip-pencil">✎</strong>
+          <span>Something not matching in-game? Tap the <strong class="picker-tip-pencil">✎</strong>
           on any item to fix it for your build.</span>
         </div>`;
       }
@@ -3112,7 +3112,7 @@
         return;
       }
       if (!value) {
-        status.textContent = "Type the right value (what your game shows).";
+        status.textContent = "Type the right value (what in-game shows).";
         status.className = "correction-status err";
         return;
       }
