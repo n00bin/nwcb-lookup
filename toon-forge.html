@@ -9896,7 +9896,7 @@
     function rerenderAll() {
       // Recompute ability scores first — buff/state changes that affect
       // abilityBonuses (e.g. Campfire) must propagate to state.abil before
-      // any downstream code (TIL, engine) reads it. Idempotent and cheap.
+      // any downstream code (engine) reads it. Idempotent and cheap.
       recomputeAbilityTotals();
       // Recompute TIL first — every state change (gear, summoned comp,
       // active mount, bolster, rarity) can affect it. The IL input
