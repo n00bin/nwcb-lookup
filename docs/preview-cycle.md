@@ -16,7 +16,10 @@ When a new mod (say Mod 34) enters preview:
    so they reference the new mod.
 3. Edit `preview.html` line ~202 — update the `renderNav(...)` argument
    string to match the new `PREVIEW_LABEL` so the new nav entry is
-   highlighted as active when on this page.
+   highlighted as active when on this page. (If this string doesn't match
+   the label exactly, the nav link won't show as "current page" — it still
+   works, it just won't be underlined/highlighted when someone is already
+   on the preview page.)
 4. Update the preview content on `preview.html` itself with the new mod's
    gear, companions, mounts, etc.
 5. Commit and push. GitHub Pages auto-deploys in 1-2 minutes.
