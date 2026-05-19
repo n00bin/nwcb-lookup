@@ -5829,10 +5829,9 @@
           ratingStats: b.ratingStats || {},
           percentStats: b.percentStats || {}
         });
-        // Ability bonuses from buffs (e.g. Campfire +1 to all stats) flow
-        // through abilityBonuses — already aggregated by getAutoAbilityBonus,
-        // but only for gear+artifact sources. Skipping for now to avoid
-        // double-routing; revisit when we add a unified ability-bonus channel.
+        // Ability bonuses from buffs (e.g. Campfire +1 all stats) are
+        // aggregated upstream in getAutoAbilityBonus() and reach state.abil
+        // via recomputeAbilityTotals(). No separate handling needed here.
       }
 
       // Party buffs — companions that an ALLY has summoned grant their
@@ -9895,6 +9894,10 @@
     }
 
     function rerenderAll() {
+      // Recompute ability scores first — buff/state changes that affect
+      // abilityBonuses (e.g. Campfire) must propagate to state.abil before
+      // any downstream code (TIL, engine) reads it. Idempotent and cheap.
+      recomputeAbilityTotals();
       // Recompute TIL first — every state change (gear, summoned comp,
       // active mount, bolster, rarity) can affect it. The IL input
       // value is updated in place, so users typing manually will see
