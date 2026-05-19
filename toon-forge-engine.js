@@ -174,8 +174,10 @@
   //   - race.traits[*].percentStats
   //   - campaignBoons.tier1..tier5 (each entry: { boon, points })
   //   - campaignBoons.master (each entry: { boon, ranks })
-  //   - guildBoons (each entry: { boon, level }) — TODO when shape known
-  //   - buffs (each entry: { buff, active }) — TODO when shape known
+  //   - buffs (each entry with percentStats/ratingStats) — covers
+  //     consumable buffs, party-companion buffs, summoned-companion CR,
+  //     enhancement runes, guild boons (routed via the buffs[] channel
+  //     in buildEngineCharacter rather than a dedicated guildBoons field).
   //
   // Adds into result.stats[stat].percentTotal.
 
@@ -301,7 +303,10 @@
       }
     }
 
-    // 7. Guild boons — TODO once shape is finalized
+    // 7. Guild boons are aggregated upstream in buildEngineCharacter()
+    //    and arrive via the buffs[] channel (step 8 below). The dedicated
+    //    character.guildBoons field is currently unused — kept on the
+    //    character shape for future direct-channel use if needed.
 
     // 8. Buffs (any active effect with percentStats/ratingStats).
     //    Currently used for: summoned-companion party buffs.
