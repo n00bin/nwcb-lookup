@@ -121,6 +121,20 @@
   // Resolves with { ok:false, error } on RPC failure.
   function submitCorrection(opts) {
     opts = opts || {};
+
+    // Allowlist guard: refuse to submit corrections for protected fields.
+    // Mirrors NEVER_EDIT_FIELDS in toon-forge.html. This is a belt-and-
+    // suspenders check — the correction modal UI already hides pencils for
+    // these fields, but a direct call to submitCorrection must also be safe.
+    var NEVER_EDIT = new Set([
+      "id",
+      "powerRef", "combatRef", "equipRef", "enhancementRef", "bonusRef",
+      "source_version", "effects"
+    ]);
+    if (opts.field && NEVER_EDIT.has(opts.field)) {
+      return Promise.resolve({ ok: false, error: "This field is not user-correctable." });
+    }
+
     var sb = sbClient();
     if (!sb) return Promise.resolve({ ok: false, error: "supabase client not loaded" });
 
@@ -393,6 +407,15 @@
 
   function _setByPath(obj, path, value) {
     // Accepts: "stats[0].value", "ratingStats.Power", "a.b.c"
+    //
+    // NOTE: walks dotted/bracketed paths. Returns false if an intermediate
+    // node is null/undefined (e.g. the key doesn't exist yet). So saving
+    // "procEffect.effectScaling.heal.75" when procEffect is null fails
+    // silently. The toon-forge correction modal treats effectScaling as a
+    // single JSON field (kind:"json") to avoid this — the override path is
+    // just "procEffect.effectScaling", which has only one intermediate node
+    // (procEffect itself). Don't add pencils to individual effectScaling
+    // sub-values; use the JSON editor only.
     var parts = path.replace(/\[(\d+)\]/g, ".$1").split(".").filter(Boolean);
     var cur = obj;
     for (var i = 0; i < parts.length - 1; i++) {

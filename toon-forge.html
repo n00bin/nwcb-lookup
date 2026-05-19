@@ -3333,6 +3333,523 @@
       try { return eval(name); } catch (_) { return undefined; }
     }
 
+    // ---- FIELD_DESCRIPTORS ------------------------------------------
+    // Per-dataType arrays of field descriptors. Each entry declares:
+    //   field      — key on the item object
+    //   label      — human-readable column header
+    //   kind       — text | num | longtext | ref | map | array-of-objects |
+    //                array-scalar | object | json | insignia-slots
+    //   section    — optional grouping hint (header/where/stats/powers/footer)
+    //   childFields — required for array-of-objects and object kinds
+    //
+    // Only types listed here use the descriptor renderer; all others fall
+    // back to the Phase 1 auto-scan logic.
+    const FIELD_DESCRIPTORS = {
+      gear: [
+        { field: "name",           label: "Name",            kind: "text",   section: "header" },
+        { field: "slot",           label: "Slot",            kind: "text",   section: "header" },
+        { field: "item_level",     label: "Item Level",      kind: "num",    section: "header" },
+        { field: "tier",           label: "Tier",            kind: "text",   section: "header" },
+        { field: "set",            label: "Set",             kind: "text",   section: "where" },
+        { field: "source",         label: "From",            kind: "text",   section: "where" },
+        { field: "notes",          label: "Notes",           kind: "longtext", section: "where" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num",    section: "footer" },
+        { kind: "map",             field: "ratingStats",     label: "Stats",            section: "stats" },
+        { kind: "map",             field: "percentStats",    label: "Percent Bonuses",  section: "stats" },
+        { kind: "map",             field: "abilityBonuses",  label: "Ability Bonuses",  section: "stats" },
+        { kind: "array-of-objects", field: "equipBonuses",  label: "Equip Powers",     section: "powers",
+          childFields: [
+            { field: "name",        label: "Name",        kind: "text" },
+            { field: "description", label: "Description", kind: "longtext" }
+          ] }
+      ],
+      companion: [
+        { field: "name",           label: "Name",        kind: "text" },
+        { field: "source",         label: "Source",      kind: "text" },
+        { field: "notes",          label: "Notes",       kind: "longtext" },
+        { field: "powerRef",       label: "Active Power",  kind: "ref" },
+        { field: "enhancementRef", label: "Enhancement",   kind: "ref" }
+      ],
+      companion_power: [
+        { field: "name",           label: "Name",            kind: "text" },
+        { field: "item_level",     label: "Item Level",      kind: "num" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num" },
+        { field: "notes",          label: "Notes",           kind: "longtext" },
+        { kind: "array-scalar",    field: "slot",            label: "Slot Options" },
+        { kind: "array-of-objects", field: "stats",          label: "Stats",
+          childFields: [
+            { field: "stat",  label: "Stat",  kind: "text" },
+            { field: "value", label: "Value", kind: "num" }
+          ] },
+        { kind: "object",          field: "procEffect",      label: "Proc Effect",
+          childFields: [
+            { field: "trigger",       label: "Trigger",          kind: "text" },
+            { field: "chance",        label: "Chance (%)",       kind: "num" },
+            { field: "effect",        label: "Effect",           kind: "longtext" },
+            { field: "cooldown",      label: "Cooldown",         kind: "text" },
+            { field: "effectScaling", label: "Scaling (JSON)",   kind: "json" }
+          ] }
+      ],
+      companion_enhancement: [
+        { field: "name",       label: "Name",       kind: "text" },
+        { field: "stat",       label: "Stat",       kind: "text" },
+        { field: "value",      label: "Value",      kind: "num" },
+        { field: "type",       label: "Type",       kind: "text" },
+        { field: "item_level", label: "Item Level", kind: "num" },
+        { field: "notes",      label: "Notes",      kind: "longtext" }
+      ],
+      companion_gear: [
+        { field: "name",           label: "Name",            kind: "text",   section: "header" },
+        { field: "slot",           label: "Slot",            kind: "text",   section: "header" },
+        { field: "item_level",     label: "Item Level",      kind: "num",    section: "header" },
+        { field: "tier",           label: "Tier",            kind: "text",   section: "header" },
+        { field: "set",            label: "Set",             kind: "text",   section: "where" },
+        { field: "source",         label: "From",            kind: "text",   section: "where" },
+        { field: "notes",          label: "Notes",           kind: "longtext", section: "where" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num",    section: "footer" },
+        { kind: "map",             field: "ratingStats",     label: "Stats",           section: "stats" },
+        { kind: "map",             field: "percentStats",    label: "Percent Bonuses", section: "stats" },
+        { kind: "map",             field: "abilityBonuses",  label: "Ability Bonuses", section: "stats" },
+        { kind: "array-of-objects", field: "equipBonuses",  label: "Equip Powers",    section: "powers",
+          childFields: [
+            { field: "name",        label: "Name",        kind: "text" },
+            { field: "description", label: "Description", kind: "longtext" }
+          ] }
+      ],
+      mount: [
+        { field: "name",   label: "Name",   kind: "text" },
+        { field: "source", label: "Source", kind: "text" },
+        { field: "notes",  label: "Notes",  kind: "longtext" },
+        { field: "combatRef", label: "Combat Power",   kind: "ref" },
+        { field: "equipRef",  label: "Equip Power",    kind: "ref" },
+        { field: "bonusRef",  label: "Insignia Bonus", kind: "ref" },
+        { kind: "insignia-slots", field: "insigniaSlots", label: "Insignia Slots" }
+      ],
+      combat_power: [
+        { field: "name",           label: "Name",            kind: "text" },
+        { field: "item_level",     label: "Item Level",      kind: "num" },
+        { field: "magnitude",      label: "Magnitude",       kind: "num" },
+        { field: "rechargeTimeSeconds", label: "Recharge (sec)", kind: "num" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num" },
+        { field: "notes",          label: "Notes",           kind: "longtext" },
+        { kind: "array-of-objects", field: "equipBonuses",   label: "Equip Bonuses",
+          childFields: [
+            { field: "type",   label: "Type",   kind: "text" },
+            { field: "scope",  label: "Scope",  kind: "text" },
+            { field: "stat",   label: "Stat",   kind: "text" },
+            { field: "amount", label: "Amount", kind: "num" }
+          ] },
+        { kind: "object", field: "procEffect", label: "Proc Effect",
+          childFields: [
+            { field: "trigger",       label: "Trigger",        kind: "text" },
+            { field: "chance",        label: "Chance (%)",     kind: "num" },
+            { field: "effect",        label: "Effect",         kind: "longtext" },
+            { field: "effectScaling", label: "Scaling (JSON)", kind: "json" }
+          ] }
+      ],
+      equip_power: [
+        { field: "name",              label: "Name",            kind: "text" },
+        { field: "item_level",        label: "Item Level",      kind: "num" },
+        { field: "combinedRating",    label: "Combined Rating", kind: "num" },
+        { field: "cooldownSeconds",   label: "Cooldown (sec)",  kind: "num" },
+        { field: "notes",             label: "Notes",           kind: "longtext" },
+        { kind: "array-of-objects",   field: "stats",           label: "Stats",
+          childFields: [
+            { field: "stat",  label: "Stat",  kind: "text" },
+            { field: "value", label: "Value", kind: "num" }
+          ] }
+      ],
+      // party_mount_equip_power items come from the same data as equip_power
+      party_mount_equip_power: [
+        { field: "name",              label: "Name",            kind: "text" },
+        { field: "item_level",        label: "Item Level",      kind: "num" },
+        { field: "combinedRating",    label: "Combined Rating", kind: "num" },
+        { field: "cooldownSeconds",   label: "Cooldown (sec)",  kind: "num" },
+        { field: "notes",             label: "Notes",           kind: "longtext" },
+        { kind: "array-of-objects",   field: "stats",           label: "Stats",
+          childFields: [
+            { field: "stat",  label: "Stat",  kind: "text" },
+            { field: "value", label: "Value", kind: "num" }
+          ] }
+      ],
+      mount_collar: [
+        { field: "name",           label: "Name",            kind: "text" },
+        { field: "collarSlot",     label: "Collar Slot",     kind: "text" },
+        { field: "item_level",     label: "Item Level",      kind: "num" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num" },
+        { field: "effectText",     label: "Effect",          kind: "longtext" },
+        { field: "notes",          label: "Notes",           kind: "longtext" },
+        { kind: "map",             field: "ratingStats",     label: "Stats" },
+        { kind: "map",             field: "percentStats",    label: "Percent Bonuses" }
+      ],
+      insignia_bonus: [
+        { field: "name",       label: "Name",   kind: "text" },
+        { field: "effectText", label: "Effect", kind: "longtext" },
+        { field: "condition",  label: "Condition", kind: "text" },
+        { field: "notes",      label: "Notes",  kind: "longtext" },
+        { kind: "array-scalar", field: "requiredInsignias", label: "Required Insignias" }
+      ],
+      artifact: [
+        { field: "name",           label: "Name",            kind: "text",   section: "header" },
+        { field: "type",           label: "Type",            kind: "text",   section: "header" },
+        { field: "item_level",     label: "Item Level",      kind: "num",    section: "header" },
+        { field: "cooldown",       label: "Cooldown (sec)",  kind: "num",    section: "header" },
+        { field: "set",            label: "Set",             kind: "text",   section: "where" },
+        { field: "source",         label: "From",            kind: "text",   section: "where" },
+        { field: "power",          label: "Active Power",    kind: "longtext", section: "where" },
+        { field: "debuff",         label: "Debuff",          kind: "text",   section: "where" },
+        { field: "notes",          label: "Notes",           kind: "longtext", section: "where" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num",    section: "footer" },
+        { kind: "map",             field: "ratingStats",     label: "Stats",           section: "stats" },
+        { kind: "map",             field: "percentStats",    label: "Percent Bonuses", section: "stats" },
+        { kind: "map",             field: "abilityBonuses",  label: "Ability Bonuses", section: "stats" },
+        { kind: "array-of-objects", field: "equipBonuses",  label: "Equip Bonuses",   section: "powers",
+          childFields: [
+            { field: "type",   label: "Type",   kind: "text" },
+            { field: "scope",  label: "Scope",  kind: "text" },
+            { field: "stat",   label: "Stat",   kind: "text" },
+            { field: "amount", label: "Amount", kind: "num" }
+          ] }
+      ],
+      // enchants have a nested universal:{offense,defense,utility} map-of-maps.
+      // We render the top-level scalars + the three sub-maps manually.
+      enchant: [
+        { field: "name",           label: "Name",            kind: "text" },
+        { field: "slotType",       label: "Slot Type",       kind: "text" },
+        { field: "item_level",     label: "Item Level",      kind: "num" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num" },
+        { field: "notes",          label: "Notes",           kind: "longtext" },
+        { kind: "map", field: "ratingStats",  label: "Rating Stats" },
+        { kind: "map", field: "percentStats", label: "Percent Bonuses" },
+        // universal sub-maps rendered as separate map sections
+        { kind: "submap", field: "universal.offense",  label: "Universal (Offense)" },
+        { kind: "submap", field: "universal.defense",  label: "Universal (Defense)" },
+        { kind: "submap", field: "universal.utility",  label: "Universal (Utility)" }
+      ],
+      overload: [
+        { field: "name",            label: "Name",            kind: "text" },
+        { field: "slotType",        label: "Slot Type",       kind: "text" },
+        { field: "item_level",      label: "Item Level",      kind: "num" },
+        { field: "combinedPercent", label: "Combined %",      kind: "num" },
+        { field: "enemyType",       label: "Enemy Type",      kind: "text" },
+        { field: "damagePct",       label: "Damage Bonus %",  kind: "num" },
+        { field: "notes",           label: "Notes",           kind: "longtext" },
+        { kind: "map", field: "ratingStats",  label: "Rating Stats" },
+        { kind: "map", field: "percentStats", label: "Percent Bonuses" }
+      ],
+      kit: [
+        { field: "name",       label: "Name",       kind: "text" },
+        { field: "item_level", label: "Item Level", kind: "num" },
+        { field: "notes",      label: "Notes",      kind: "longtext" },
+        { kind: "map",          field: "ratingStats",  label: "Stats" },
+        { kind: "map",          field: "percentStats", label: "Percent Bonuses" },
+        { kind: "array-scalar", field: "appliesTo",    label: "Applies To" }
+      ],
+      buff: [
+        { field: "name",          label: "Name",          kind: "text" },
+        { field: "category",      label: "Category",      kind: "text" },
+        { field: "duration_s",    label: "Duration (sec)", kind: "num" },
+        { field: "expiration",    label: "Expiration",    kind: "text" },
+        { field: "scope",         label: "Scope",         kind: "text" },
+        { field: "enemyType",     label: "Enemy Type",    kind: "text" },
+        { field: "damagePct",     label: "Damage Bonus %", kind: "num" },
+        { field: "source",        label: "Source",        kind: "text" },
+        { field: "notes",         label: "Notes",         kind: "longtext" },
+        { kind: "map",            field: "ratingStats",   label: "Stats" },
+        { kind: "map",            field: "percentStats",  label: "Percent Bonuses" },
+        { kind: "map",            field: "abilityBonuses", label: "Ability Bonuses" }
+      ],
+      guild_boon: [
+        { field: "name",           label: "Name",            kind: "text" },
+        { field: "stat",           label: "Stat",            kind: "text" },
+        { field: "amount",         label: "Amount",          kind: "num" },
+        { field: "statType",       label: "Stat Type",       kind: "text" },
+        { field: "item_level",     label: "Item Level",      kind: "num" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num" },
+        { field: "notes",          label: "Notes",           kind: "longtext" }
+      ],
+      // insignia items from mount_insignias.json
+      insignia: [
+        { field: "name",           label: "Name",            kind: "text" },
+        { field: "category",       label: "Category",        kind: "text" },
+        { field: "statTemplate",   label: "Stat Template",   kind: "text" },
+        { field: "item_level",     label: "Item Level",      kind: "num" },
+        { field: "combinedRating", label: "Combined Rating", kind: "num" },
+        { field: "notes",          label: "Notes",           kind: "longtext" },
+        { kind: "array-of-objects", field: "stats", label: "Stats",
+          childFields: [
+            { field: "stat",  label: "Stat",  kind: "text" },
+            { field: "value", label: "Value", kind: "num" }
+          ] }
+      ],
+      // party_ally items are companion objects — minimal fields needed
+      party_ally: [
+        { field: "name",           label: "Name",       kind: "text" },
+        { field: "source",         label: "Source",     kind: "text" },
+        { field: "notes",          label: "Notes",      kind: "longtext" },
+        { field: "powerRef",       label: "Active Power",  kind: "ref" },
+        { field: "enhancementRef", label: "Enhancement",   kind: "ref" }
+      ]
+    };
+
+    // ---- _ccRenderDescriptor ----------------------------------------
+    // Generic walker: renders an item using a FIELD_DESCRIPTORS entry.
+    // Returns { html, rendered } where rendered is a Set of top-level
+    // field names touched (so _ccRenderCard can skip them in the fallback
+    // and _ccRenderMissingFieldsExpander can skip them too).
+    function _ccRenderDescriptor(item, dataType, descriptors) {
+      // r() mirrors the one inside _ccRenderCard.
+      const r = (label, value, field, kind) => {
+        const isNum = kind === "num";
+        const valueClass = isNum ? "cc-row-value cc-row-value-num" : "cc-row-value";
+        const display = value == null || value === ""
+          ? '<span style="color:var(--text-mute);font-style:italic;">(empty)</span>'
+          : _esc(value);
+        return `<div class="cc-row" data-row="${_esc(field)}">
+          <span class="cc-row-label">${_esc(label)}</span>
+          <span class="${valueClass}" data-value="${_esc(value == null ? "" : value)}">${display}</span>
+          <button class="cc-edit" data-edit="${_esc(field)}" data-kind="${kind || 'text'}" title="Edit ${_esc(label)}">✎</button>
+        </div>`;
+      };
+
+      const rendered = new Set();
+      // Track which top-level fields each descriptor touches.
+      const markTopLevel = (field) => {
+        const top = field.split(".")[0].replace(/\[.*/, "");
+        rendered.add(top);
+      };
+
+      // Group descriptors by section. Items with no section go to "default".
+      const sections = {};
+      const sectionOrder = [];
+      for (const desc of descriptors) {
+        const sec = desc.section || "default";
+        if (!sections[sec]) { sections[sec] = []; sectionOrder.push(sec); }
+        sections[sec].push(desc);
+      }
+
+      const SECTION_TITLES = {
+        header: null,  // no title — it IS the header
+        where: "Where it's from",
+        stats: "Stats",
+        powers: "Powers",
+        footer: null,
+        default: null
+      };
+
+      let html = "";
+
+      for (const sec of sectionOrder) {
+        const descs = sections[sec];
+        const title = SECTION_TITLES[sec];
+        const isHeader = sec === "header";
+        const wrapClass = isHeader ? "cc-header-block" : "cc-section";
+
+        let secHtml = "";
+
+        for (const desc of descs) {
+          const { field, label, kind } = desc;
+
+          if (kind === "ref") {
+            markTopLevel(field);
+            secHtml += _ccDerefRow(field, item[field], label);
+            continue;
+          }
+
+          if (kind === "map") {
+            markTopLevel(field);
+            const obj = item[field];
+            if (!obj || typeof obj !== "object" || Array.isArray(obj)) continue;
+            const keys = Object.keys(obj);
+            if (!keys.length) continue;
+            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            for (const k of keys) {
+              const mapPath = `${field}.${k}`;
+              secHtml += r(k, obj[k], mapPath, "num");
+            }
+            secHtml += `</div>`;
+            continue;
+          }
+
+          if (kind === "submap") {
+            // field is a dotted path like "universal.offense"
+            // Walk it to get the sub-object.
+            const parts = field.split(".");
+            markTopLevel(parts[0]);
+            let obj = item;
+            for (const p of parts) { obj = obj && typeof obj === "object" ? obj[p] : undefined; }
+            if (!obj || typeof obj !== "object" || Array.isArray(obj)) continue;
+            const keys = Object.keys(obj);
+            if (!keys.length) continue;
+            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            for (const k of keys) {
+              secHtml += r(k, obj[k], `${field}.${k}`, "num");
+            }
+            secHtml += `</div>`;
+            continue;
+          }
+
+          if (kind === "array-of-objects") {
+            markTopLevel(field);
+            const arr = item[field];
+            if (!Array.isArray(arr) || !arr.length) continue;
+            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            arr.forEach((entry, i) => {
+              if (!entry || typeof entry !== "object") return;
+              secHtml += `<div class="cc-eb-block">`;
+              for (const cf of (desc.childFields || [])) {
+                if (entry[cf.field] === undefined && entry[cf.field] === null) continue;
+                const path = `${field}[${i}].${cf.field}`;
+                // Use first childField as the "header" row of the block
+                if (cf === desc.childFields[0]) {
+                  const v = entry[cf.field];
+                  const display2 = v == null || v === ""
+                    ? `<span style="color:var(--text-mute);font-style:italic;">(unnamed)</span>`
+                    : _esc(v);
+                  secHtml += `<div class="cc-row" data-row="${_esc(path)}">
+                    <span class="cc-eb-name cc-row-value" data-value="${_esc(v == null ? "" : v)}">${display2}</span>
+                    <button class="cc-edit" data-edit="${_esc(path)}" data-kind="${cf.kind || 'text'}" title="Edit ${_esc(cf.label)}">✎</button>
+                  </div>`;
+                } else {
+                  // Use the regular r() for subsequent child fields
+                  const cfKind = cf.kind || "text";
+                  if (entry[cf.field] === undefined) continue;
+                  secHtml += `<div class="cc-row" data-row="${_esc(path)}" style="align-items:flex-start;">
+                    <span class="cc-eb-desc cc-row-value" data-value="${_esc(entry[cf.field] == null ? "" : entry[cf.field])}">${
+                      entry[cf.field] == null || entry[cf.field] === ""
+                        ? '<span style="color:var(--text-mute);font-style:italic;">(empty)</span>'
+                        : _esc(entry[cf.field])
+                    }</span>
+                    <button class="cc-edit" data-edit="${_esc(path)}" data-kind="${_esc(cfKind)}" title="Edit ${_esc(cf.label)}">✎</button>
+                  </div>`;
+                }
+              }
+              secHtml += `</div>`;
+            });
+            secHtml += `</div>`;
+            continue;
+          }
+
+          if (kind === "object") {
+            markTopLevel(field);
+            const obj = item[field];
+            if (!obj || typeof obj !== "object") continue;
+            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            for (const cf of (desc.childFields || [])) {
+              const path = `${field}.${cf.field}`;
+              const val = obj[cf.field];
+              if (cf.kind === "json") {
+                // JSON editor: show compact preview + pencil with kind="json"
+                const preview = val == null
+                  ? "(empty)"
+                  : (() => {
+                      const s = typeof val === "string" ? val : JSON.stringify(val);
+                      return s.length > 80 ? s.slice(0, 77) + "…" : s;
+                    })();
+                const rawForAttr = val == null ? "" : (typeof val === "string" ? val : JSON.stringify(val, null, 2));
+                secHtml += `<div class="cc-row" data-row="${_esc(path)}">
+                  <span class="cc-row-label">${_esc(cf.label)}</span>
+                  <span class="cc-row-value cc-row-value-json" data-value="${_esc(rawForAttr)}" style="font-family:monospace;font-size:0.8rem;word-break:break-all;">${_esc(preview)}</span>
+                  <button class="cc-edit" data-edit="${_esc(path)}" data-kind="json" title="Edit ${_esc(cf.label)}">✎</button>
+                </div>`;
+              } else {
+                secHtml += r(cf.label, val == null ? "" : val, path, cf.kind || "text");
+              }
+            }
+            secHtml += `</div>`;
+            continue;
+          }
+
+          if (kind === "array-scalar") {
+            markTopLevel(field);
+            const arr = item[field];
+            if (!Array.isArray(arr)) continue;
+            const sep = field === "slot" ? " / " : ", ";
+            const joined = arr.join(sep);
+            // Read-only display — array membership editing requires special UI
+            secHtml += `<div class="cc-row" data-row="${_esc(field)}">
+              <span class="cc-row-label">${_esc(label)}</span>
+              <span class="cc-row-value">${_esc(joined) || '<span style="color:var(--text-mute);font-style:italic;">(empty)</span>'}</span>
+              <span style="color:var(--text-mute);font-size:0.75rem;white-space:nowrap;">(read-only)</span>
+            </div>`;
+            continue;
+          }
+
+          if (kind === "insignia-slots") {
+            markTopLevel(field);
+            const slots = item[field];
+            if (!Array.isArray(slots)) continue;
+            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            slots.forEach((slot, i) => {
+              const allowed = Array.isArray(slot.allowed) ? slot.allowed.join(", ").replace(/\*/g, "Universal") : "";
+              secHtml += `<div class="cc-eb-block">`;
+              secHtml += `<div class="cc-row">
+                <span class="cc-row-label">Slot ${i + 1} allowed</span>
+                <span class="cc-row-value" style="color:var(--text-mute);">${_esc(allowed)}</span>
+                <span style="color:var(--text-mute);font-size:0.75rem;white-space:nowrap;">(read-only)</span>
+              </div>`;
+              const prefPath = `insigniaSlots[${i}].preferred`;
+              const prefVal = slot.preferred !== undefined ? slot.preferred : "";
+              secHtml += r("Slot " + (i + 1) + " preferred", prefVal, prefPath, "text");
+              secHtml += `</div>`;
+            });
+            secHtml += `</div>`;
+            continue;
+          }
+
+          // text / num / longtext
+          if (kind === "text" || kind === "num" || kind === "longtext") {
+            markTopLevel(field);
+            secHtml += r(label, item[field] == null ? "" : item[field], field, kind);
+            continue;
+          }
+        }  // end descriptor loop
+
+        if (!secHtml) continue;
+
+        if (isHeader) {
+          html += `<div class="${wrapClass}">${secHtml}</div>`;
+        } else if (title) {
+          html += `<div class="${wrapClass}"><div class="cc-section-title">${_esc(title)}</div>${secHtml}</div>`;
+        } else {
+          html += `<div class="${wrapClass}">${secHtml}</div>`;
+        }
+      }
+
+      return { html, rendered };
+    }
+
+    // ---- _ccRenderMissingFieldsExpander ------------------------------
+    // Returns HTML for a collapsed <details> listing fields that are
+    // null/empty AND not already rendered by the descriptor (or fallback).
+    function _ccRenderMissingFieldsExpander(item, rendered) {
+      const missing = [];
+      for (const key of Object.keys(item)) {
+        if (rendered.has(key)) continue;
+        if (NEVER_EDIT_FIELDS.has(key) && !REF_FIELD_MAP[key]) continue;
+        const value = item[key];
+        if (value === null || value === undefined || value === "") {
+          missing.push(key);
+        }
+      }
+      if (missing.length === 0) return "";
+
+      const rows = missing.map(key => {
+        return `<div class="cc-row" data-row="${_esc(key)}">
+          <span class="cc-row-label">${_esc(_ccHumanFieldName(key, null) || key)}</span>
+          <span class="cc-row-value" style="color:var(--text-mute);font-style:italic;">(empty)</span>
+          <button class="cc-edit" data-edit="${_esc(key)}" data-kind="text" title="Add value">✎</button>
+        </div>`;
+      }).join("");
+
+      return `<details class="cc-section" style="margin-top:1rem;">
+        <summary style="cursor:pointer;color:var(--text-mute);font-size:0.85rem;padding:0.4rem 0;">
+          Show ${missing.length} empty field${missing.length > 1 ? "s" : ""}
+        </summary>
+        <div style="padding-top:0.5rem;">${rows}</div>
+      </details>`;
+    }
+
     // Render a read-only ref row that shows the referenced item's name + id
     // with a "view →" button that opens that item's correction modal.
     function _ccDerefRow(field, value, label) {
@@ -3379,6 +3896,15 @@
     // data-field (the override path) + data-kind ("text" or "num" or
     // "longtext") so the inline edit form can re-render properly.
     function _ccRenderCard(item, dataType) {
+      // ---- Descriptor path (Phase 2): use per-type field descriptors ----
+      const descriptors = FIELD_DESCRIPTORS[dataType];
+      if (descriptors) {
+        const { html, rendered } = _ccRenderDescriptor(item, dataType, descriptors);
+        return html + _ccRenderMissingFieldsExpander(item, rendered);
+      }
+
+      // ---- Fallback path (Phase 1): hand-rendered + auto-scan ----------
+      // Kept intact as safety net for any dataType not yet in FIELD_DESCRIPTORS.
       const r = (label, value, field, kind) => {
         const isNum = kind === "num";
         const valueClass = isNum ? "cc-row-value cc-row-value-num" : "cc-row-value";
@@ -3496,8 +4022,8 @@
         }
 
         if (value === null || value === undefined) continue;
-        if (typeof value === "boolean") continue;  // booleans need checkbox UI; deferred to Phase 2
-        if (typeof value === "object") continue;  // arrays + objects deferred to Phase 2
+        if (typeof value === "boolean") continue;  // booleans need checkbox UI
+        if (typeof value === "object") continue;   // arrays + objects need special UI
 
         const kind = (typeof value === "number")
           ? "num"
@@ -3579,12 +4105,12 @@
       const labelText = label ? label.textContent : field;
 
       // Build the inline editor
-      const useTextarea = kind === "longtext";
+      const useTextarea = kind === "longtext" || kind === "json";
       const editHtml = `
         <div class="cc-row-edit" data-editing="${_esc(field)}" data-kind="${_esc(kind)}">
           ${useTextarea
-            ? `<textarea class="cc-input">${_esc(current)}</textarea>`
-            : `<input type="${kind === 'num' ? 'text' : 'text'}" class="cc-input" value="${_esc(current)}" inputmode="${kind === 'num' ? 'decimal' : 'text'}">`}
+            ? `<textarea class="cc-input" style="${kind === 'json' ? 'font-family:monospace;font-size:0.8rem;min-height:8rem;' : ''}">${_esc(current)}</textarea>`
+            : `<input type="text" class="cc-input" value="${_esc(current)}" inputmode="${kind === 'num' ? 'decimal' : 'text'}">`}
           <button class="cc-save" title="Save">✓</button>
           <button class="cc-cancel" title="Cancel">✕</button>
         </div>`;
@@ -3641,6 +4167,20 @@
       if (m) return `${m[1]} bonus`;
       m = field.match(/^ratingStats\.(.+)$/);
       if (m) return m[1];
+      // Phase 2 additions:
+      m = field.match(/^stats\[(\d+)\]\.value$/);
+      if (m) return `Stat #${Number(m[1]) + 1} value`;
+      m = field.match(/^stats\[(\d+)\]\.stat$/);
+      if (m) return `Stat #${Number(m[1]) + 1} name`;
+      m = field.match(/^procEffect\.(.+)$/);
+      if (m) return `Proc Effect — ${m[1]}`;
+      m = field.match(/^insigniaSlots\[(\d+)\]\.preferred$/);
+      if (m) return `Slot ${Number(m[1]) + 1} preferred`;
+      m = field.match(/^slot\[(\d+)\]$/);
+      if (m) return `Slot option ${Number(m[1]) + 1}`;
+      // Generic dotted/bracketed path — make it human-readable
+      m = field.match(/^(\w+)\[(\d+)\]\.(.+)$/);
+      if (m) return `${m[1]} #${Number(m[2]) + 1} ${m[3]}`;
       return field;
     }
 
@@ -3681,6 +4221,22 @@
           return;
         }
         claimedValue = n;
+      } else if (kind === "json") {
+        // JSON editor: validate + parse before storing.
+        // We store the parsed object so the engine gets a real JS value,
+        // not a raw string. If the input is invalid, block save.
+        if (trimmed === "") {
+          // Allow empty to clear the field
+          claimedValue = null;
+        } else {
+          try {
+            claimedValue = JSON.parse(trimmed);
+          } catch (parseErr) {
+            status.textContent = `Invalid JSON — fix and try again. (${parseErr.message})`;
+            status.className = "correction-status err";
+            return;  // Do NOT close the editor or call setOverride
+          }
+        }
       } else {
         claimedValue = trimmed;
       }
@@ -3707,10 +4263,23 @@
 
       // Update the row UI to reflect new value.
       if (valueEl) {
-        valueEl.dataset.value = String(claimedValue);
-        valueEl.textContent = claimedValue === "" || claimedValue == null
-          ? "(empty)"
-          : String(claimedValue);
+        if (kind === "json") {
+          // Store the stringified form in the data-value attribute so
+          // re-open of the editor pre-fills correctly.
+          const jsonStr = claimedValue == null ? "" : JSON.stringify(claimedValue, null, 2);
+          valueEl.dataset.value = jsonStr;
+          if (claimedValue == null) {
+            valueEl.textContent = "(empty)";
+          } else {
+            const preview = JSON.stringify(claimedValue);
+            valueEl.textContent = preview.length > 80 ? preview.slice(0, 77) + "…" : preview;
+          }
+        } else {
+          valueEl.dataset.value = String(claimedValue);
+          valueEl.textContent = claimedValue === "" || claimedValue == null
+            ? "(empty)"
+            : String(claimedValue);
+        }
         valueEl.style.display = "";
       }
       if (btn) btn.style.display = "";
