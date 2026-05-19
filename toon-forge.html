@@ -3322,14 +3322,36 @@
       bonusRef:       { dataType: "insignia_bonus",        datasetVar: "MOUNT_INSIGNIA_BONUSES_DATA" }
     };
 
+    // Resolve a dataset variable by name. Top-level `const` declarations in
+    // browser scripts do NOT attach to window (unlike `var`), so window[name]
+    // returns undefined for variables like COMPANION_POWERS_DATA. We try window
+    // first (works for var-declared globals in some environments), then fall back
+    // to eval which always finds the variable in the enclosing script scope.
+    // The eval fallback is intentional — do not remove it.
+    function _ccGetDataset(name) {
+      if (typeof window !== "undefined" && window[name]) return window[name];
+      try { return eval(name); } catch (_) { return undefined; }
+    }
+
     // Render a read-only ref row that shows the referenced item's name + id
     // with a "view →" button that opens that item's correction modal.
     function _ccDerefRow(field, value, label) {
       const refEntry = REF_FIELD_MAP[field];
       if (!refEntry) return "";
-      const dataset = (typeof window !== "undefined") ? window[refEntry.datasetVar] : undefined;
-      const datasetGlobal = (typeof globalThis !== "undefined") ? globalThis[refEntry.datasetVar] : undefined;
-      const arr = dataset || datasetGlobal || (typeof eval !== "undefined" ? (function(){ try { return eval(refEntry.datasetVar); } catch(e){ return undefined; } })() : undefined);
+
+      // Sentinel values: bonusRef:0 means "no bonus" (~276 mounts) and
+      // enhancementRef:null means "no enhancement" (some companions). Both are
+      // documented "no value assigned" signals — not data errors. Render a
+      // quiet "(none)" row instead of a scary "not found" warning.
+      if (value === null || value === undefined || value === 0) {
+        const safeLabel = _esc(label || field);
+        return `<div class="cc-row" data-row="${_esc(field)}">
+          <span class="cc-row-label">${safeLabel}</span>
+          <span class="cc-row-value" style="color:var(--text-mute);font-style:italic;">(none)</span>
+        </div>`;
+      }
+
+      const arr = _ccGetDataset(refEntry.datasetVar);
 
       let refItem = null;
       if (Array.isArray(arr) && value != null) {
@@ -3474,6 +3496,7 @@
         }
 
         if (value === null || value === undefined) continue;
+        if (typeof value === "boolean") continue;  // booleans need checkbox UI; deferred to Phase 2
         if (typeof value === "object") continue;  // arrays + objects deferred to Phase 2
 
         const kind = (typeof value === "number")
@@ -3535,8 +3558,8 @@
       const refId = Number(btn.dataset.derefId);
       const refEntry = Object.values(REF_FIELD_MAP).find(r => r.dataType === refType);
       if (!refEntry) return;
-      const arr = (typeof window !== "undefined" ? window[refEntry.datasetVar] : null);
-      const refItem = arr ? arr.find(it => it && it.id === refId) : null;
+      const arr = _ccGetDataset(refEntry.datasetVar);
+      const refItem = Array.isArray(arr) ? arr.find(it => it && it.id === refId) : null;
       if (refItem) openCorrectionModal(refType, refItem);
     });
 
