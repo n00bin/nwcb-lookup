@@ -13,8 +13,8 @@ function loadInto(file) {
   vm.runInContext(src, sandbox);
 }
 
-loadInto("toon-forge-stats.js");
-loadInto("toon-forge-engine.js");
+loadInto("../toon-forge-stats.js");
+loadInto("../toon-forge-engine.js");
 
 const E = sandbox.window.TOON_FORGE_ENGINE;
 

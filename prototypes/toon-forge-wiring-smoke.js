@@ -26,8 +26,8 @@ loadInto("data/artifacts.js");
 loadInto("data/companion-gear.js");
 loadInto("data/campaign-boons.js");
 loadInto("data/guild-boons.js");
-loadHere("toon-forge-stats.js");
-loadHere("toon-forge-engine.js");
+loadInto("toon-forge-stats.js");
+loadInto("toon-forge-engine.js");
 
 // Probe loaded data via inside-the-sandbox length checks.
 const counts = vm.runInContext(`({
