@@ -4246,7 +4246,7 @@
           try {
             claimedValue = JSON.parse(trimmed);
           } catch (parseErr) {
-            status.textContent = `Invalid JSON — fix and try again. (${parseErr.message})`;
+            status.textContent = `The text isn't valid JSON — check for missing quotes, commas, or brackets, then try again.`;
             status.className = "correction-status err";
             return;  // Do NOT close the editor or call setOverride
           }
