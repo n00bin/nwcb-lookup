@@ -1075,6 +1075,14 @@
       opacity: 0.85;
       margin-bottom: 0.4rem;
     }
+    .cc-subsection-title {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-mute);
+      margin-top: 0.6rem;
+      margin-bottom: 0.2rem;
+    }
     .cc-row {
       display: flex;
       align-items: center;
@@ -3351,8 +3359,10 @@
         { field: "item_level",     label: "Item Level",      kind: "num",    section: "header" },
         { field: "tier",           label: "Tier",            kind: "text",   section: "header" },
         { field: "set",            label: "Set",             kind: "text",   section: "where" },
+        { field: "setSize",        label: "Set Size",        kind: "num",    section: "where" },
         { field: "source",         label: "From",            kind: "text",   section: "where" },
         { field: "notes",          label: "Notes",           kind: "longtext", section: "where" },
+        { kind: "array-scalar",    field: "allowedClasses",  label: "Allowed Classes",  section: "header" },
         { field: "combinedRating", label: "Combined Rating", kind: "num",    section: "footer" },
         { kind: "map",             field: "ratingStats",     label: "Stats",            section: "stats" },
         { kind: "map",             field: "percentStats",    label: "Percent Bonuses",  section: "stats" },
@@ -3404,8 +3414,10 @@
         { field: "item_level",     label: "Item Level",      kind: "num",    section: "header" },
         { field: "tier",           label: "Tier",            kind: "text",   section: "header" },
         { field: "set",            label: "Set",             kind: "text",   section: "where" },
+        { field: "setSize",        label: "Set Size",        kind: "num",    section: "where" },
         { field: "source",         label: "From",            kind: "text",   section: "where" },
         { field: "notes",          label: "Notes",           kind: "longtext", section: "where" },
+        { kind: "array-scalar",    field: "allowedClasses",  label: "Allowed Classes",  section: "header" },
         { field: "combinedRating", label: "Combined Rating", kind: "num",    section: "footer" },
         { kind: "map",             field: "ratingStats",     label: "Stats",           section: "stats" },
         { kind: "map",             field: "percentStats",    label: "Percent Bonuses", section: "stats" },
@@ -3483,11 +3495,18 @@
         { kind: "map",             field: "percentStats",    label: "Percent Bonuses" }
       ],
       insignia_bonus: [
-        { field: "name",       label: "Name",   kind: "text" },
-        { field: "effectText", label: "Effect", kind: "longtext" },
-        { field: "condition",  label: "Condition", kind: "text" },
-        { field: "notes",      label: "Notes",  kind: "longtext" },
-        { kind: "array-scalar", field: "requiredInsignias", label: "Required Insignias" }
+        { field: "name",       label: "Name",       kind: "text" },
+        { field: "effectText", label: "Effect",     kind: "longtext" },
+        { field: "condition",  label: "Condition",  kind: "text" },
+        { field: "maxStacks",  label: "Max Stacks", kind: "num" },
+        { field: "notes",      label: "Notes",      kind: "longtext" },
+        { kind: "array-scalar",    field: "requiredInsignias", label: "Required Insignias" },
+        { kind: "array-of-objects", field: "stats",            label: "Stat Modifiers",
+          childFields: [
+            { field: "stat",  label: "Stat",  kind: "text" },
+            { field: "value", label: "Value", kind: "num" },
+            { field: "type",  label: "Type",  kind: "text" }
+          ] }
       ],
       artifact: [
         { field: "name",           label: "Name",            kind: "text",   section: "header" },
@@ -3662,12 +3681,11 @@
             if (!obj || typeof obj !== "object" || Array.isArray(obj)) continue;
             const keys = Object.keys(obj);
             if (!keys.length) continue;
-            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            secHtml += `<div class="cc-subsection-title">${_esc(label)}</div>`;
             for (const k of keys) {
               const mapPath = `${field}.${k}`;
               secHtml += r(k, obj[k], mapPath, "num");
             }
-            secHtml += `</div>`;
             continue;
           }
 
@@ -3681,11 +3699,10 @@
             if (!obj || typeof obj !== "object" || Array.isArray(obj)) continue;
             const keys = Object.keys(obj);
             if (!keys.length) continue;
-            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            secHtml += `<div class="cc-subsection-title">${_esc(label)}</div>`;
             for (const k of keys) {
               secHtml += r(k, obj[k], `${field}.${k}`, "num");
             }
-            secHtml += `</div>`;
             continue;
           }
 
@@ -3693,12 +3710,12 @@
             markTopLevel(field);
             const arr = item[field];
             if (!Array.isArray(arr) || !arr.length) continue;
-            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            secHtml += `<div class="cc-subsection-title">${_esc(label)}</div>`;
             arr.forEach((entry, i) => {
               if (!entry || typeof entry !== "object") return;
               secHtml += `<div class="cc-eb-block">`;
               for (const cf of (desc.childFields || [])) {
-                if (entry[cf.field] === undefined && entry[cf.field] === null) continue;
+                if (entry[cf.field] === undefined || entry[cf.field] === null) continue;
                 const path = `${field}[${i}].${cf.field}`;
                 // Use first childField as the "header" row of the block
                 if (cf === desc.childFields[0]) {
@@ -3726,7 +3743,6 @@
               }
               secHtml += `</div>`;
             });
-            secHtml += `</div>`;
             continue;
           }
 
@@ -3734,7 +3750,7 @@
             markTopLevel(field);
             const obj = item[field];
             if (!obj || typeof obj !== "object") continue;
-            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            secHtml += `<div class="cc-subsection-title">${_esc(label)}</div>`;
             for (const cf of (desc.childFields || [])) {
               const path = `${field}.${cf.field}`;
               const val = obj[cf.field];
@@ -3756,7 +3772,6 @@
                 secHtml += r(cf.label, val == null ? "" : val, path, cf.kind || "text");
               }
             }
-            secHtml += `</div>`;
             continue;
           }
 
@@ -3779,7 +3794,7 @@
             markTopLevel(field);
             const slots = item[field];
             if (!Array.isArray(slots)) continue;
-            secHtml += `<div class="cc-section"><div class="cc-section-title">${_esc(label)}</div>`;
+            secHtml += `<div class="cc-subsection-title">${_esc(label)}</div>`;
             slots.forEach((slot, i) => {
               const allowed = Array.isArray(slot.allowed) ? slot.allowed.join(", ").replace(/\*/g, "Universal") : "";
               secHtml += `<div class="cc-eb-block">`;
@@ -3793,7 +3808,6 @@
               secHtml += r("Slot " + (i + 1) + " preferred", prefVal, prefPath, "text");
               secHtml += `</div>`;
             });
-            secHtml += `</div>`;
             continue;
           }
 
