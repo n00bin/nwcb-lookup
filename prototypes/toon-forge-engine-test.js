@@ -81,7 +81,8 @@ console.log("\n--- Test 2: rating-to-% formula ---");
     gear: { "Head": { name: "T", ratingStats: { "Power": 105000 } } }
   });
   assertClose(r3.stats["Power"].ratingContribPct, 60, 0.01, "Power overcap clamped to 60");
-  let hasOvercapWarn = r3.warnings.some(w => /overcap on Power/.test(w));
+  // Engine emits: "Power: <N> rating is wasted because this stat is already at its rating cap."
+  let hasOvercapWarn = r3.warnings.some(w => /Power:.*already at its rating cap/.test(w));
   assertEq(hasOvercapWarn, true, "overcap warning emitted");
 }
 
@@ -174,7 +175,8 @@ console.log("\n--- Test 4: combined finalPct + cap clamping ---");
   });
   assertClose(r2.stats["Power"].finalPct, 120, 0.01, "Power clamped to 120 cap");
   assertEq(r2.stats["Power"].capReached, true, "Power capReached = true");
-  let totalCapWarn = r2.warnings.some(w => /Total cap on Power/.test(w));
+  // Engine emits: "Power is <N>% over its total cap of 120% — anything past the cap doesn't help."
+  let totalCapWarn = r2.warnings.some(w => /Power is.*over its total cap/.test(w));
   assertEq(totalCapWarn, true, "total-cap warning emitted");
 }
 
